@@ -1,0 +1,73 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Producto</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+<li><a ng-click="VCrearActor9(idPila)"
+       ng-show="actor=='duenoProducto' || false">
+  +Actor</a></li>
+<li><a ng-click="VCrearAccion10(idPila)"
+       ng-show="actor=='duenoProducto' || false">
+  +Accion</a></li>
+<li><a ng-click="VCrearObjetivo11()"
+       ng-show="actor=='duenoProducto' || false">
+  +Objetivo</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VProductos1()"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+<li><a ng-click="VLogin8()">
+    Salir</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <form name="fPilaForm" ng-submit="AModifProducto0(fPilaForm.$valid)" novalidate>
+            <div class="form-group" ng-class="{ 'has-error' :  fPilaSubmitted && fPilaForm.descripcion.$invalid && fPilaForm.descripcion.$pristine && fPilaSubmitted}"><label for="fPila_descripcion">Descripción</label><textarea id="fPila_descripcion" name="descripcion" class="form-control" ng-model="fPila.descripcion" placeholder="Descripción" required></textarea><p ng-show="fPilaSubmitted && fPilaForm.descripcion.$invalid" class="help-block">Error en campo Descripción.</p></div>
+            <input id="fPila_idPila" type="hidden" name="idPila" ng-model="fPila.idPila" />
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Modificar
+        </button>
+    </form>
+    <hr /><h3>Actores</h3>
+        <table ng-table="tableParams3" template-pagination="pager.html" class="table">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Descripción'">{{row['descripcion']}}</td>
+                <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VActor3(row['idActor'])">Ver</a></td>
+            </tr>
+        </table>
+
+<hr /><h3>Acciones</h3>
+        <table ng-table="tableParams5" template-pagination="pager.html" class="table">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Descripción'">{{row['descripcion']}}</td>
+                <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VAccion5(row['idAccion'])">Ver</a></td>
+            </tr>
+        </table>
+
+<hr /><h3>Objetivos</h3>
+        <table ng-table="tableParams7" template-pagination="pager.html" class="table">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Descripción'">{{row['descripcion']}}</td>
+                <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VObjetivo7(row['idObjetivo'])">Ver</a></td>
+            </tr>
+        </table>
+
+<hr />
+
+
+<div id="right"></div>

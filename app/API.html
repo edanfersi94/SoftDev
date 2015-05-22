@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<h2>Control de acceso</h2>
+<p><span style="line-height: 1.2; font-family: Arial; font-size: 15px;">En tanto que participante en el desarrollo incluyendo el maestro Scrum, el dueño del producto y los miembros del equipo de desarrollo puedo tener acceso a la aplicación para identificarse como miembro del equipo y obtener soporte al desarrollo de un producto bajo Scrum.</span></p>
+<ol>
+ <li>
+  <p></p>
+  <ul>
+   <li>URL: '/ident/AIdentificar'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>usuario -  
+Requerido. 
+Long. mínima: <code>1</code>. 
+     </li>     <li>clave -  
+Requerido. 
+Long. mínima: <code>1</code>. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: Sin restricción de rol
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProductos',</li>
+       <li> msg:"Bienvenido dueño de producto".</li>
+      </ul>
+<p>Se continúa con el rol de duenoProducto.</p>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VMaestroScrum',</li>
+       <li> msg:"Bienvenido Maestro Scrum".</li>
+      </ul>
+<p>Se continúa con el rol de maestroScrum.</p>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VDesarrollador',</li>
+       <li> msg:"Bienvenido Desarrollador".</li>
+      </ul>
+<p>Se continúa con el rol de desarrollador.</p>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VLogin',</li>
+       <li> msg:"Datos de identificación incorrectos".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/ident/VLogin'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: Sin restricción de rol
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/ident/ARegistrar'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>nombre -  
+Requerido. 
+Long. máxima: <code>50</code>. 
+     </li>     <li>usuario -  
+Requerido. 
+Long. máxima: <code>15</code>. 
+     </li>     <li>clave -  
+Requerido. 
+Long. mínima: <code>8</code>. 
+Long. máxima: <code>16</code>. 
+     </li>     <li>correo -  
+Requerido. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: Sin restricción de rol
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VLogin',</li>
+       <li> msg:"Felicitaciones, Ya estás registrado en la aplicación".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VRegistro',</li>
+       <li> msg:"Error al tratar de registrarse".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/ident/VRegistro'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: Sin restricción de rol
+  </ul>
+ </li>
+</ol>
+<h2>Pila del producto</h2>
+<p><span style="line-height: 1.2; font-family: Arial; font-size: 15px;">En tanto que Dueño del producto puedo manejar la pila para definiendo actores, acciones y objetivos del producto a desarrollar para establecer el alcance del producto.</span></p>
+<ol>
+ <li>
+  <p></p>
+  <ul>
+   <li>URL: '/prod/VProductos'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/prod/AModifProducto'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>descripcion -  
+Requerido. 
+     </li>     <li>idPila -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: duenoProducto </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProductos',</li>
+       <li> msg:"Producto actualizado".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/prod/VProducto'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/prod/ACrearProducto'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>descripcion -  
+Requerido. 
+     </li>     <li>idPila -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: duenoProducto </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProductos',</li>
+       <li> msg:"Producto creado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCrearProducto',</li>
+       <li> msg:"Error al crear producto".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/prod/VCrearProducto'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: duenoProducto </li>
+  </ul>
+ </li>
+</ol>
+<h2>MaestroScrum</h2>
+<p></p>
+<ol>
+ <li>
+  <p></p>
+  <ul>
+   <li>URL: '/mast/VMaestroScrum'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: maestroScrum </li>
+  </ul>
+ </li>
+</ol>
+<h2>Desarrollador</h2>
+<p></p>
+<ol>
+ <li>
+  <p></p>
+  <ul>
+   <li>URL: '/dev/VDesarrollador'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: desarrollador </li>
+  </ul>
+ </li>
+</ol>
+<h2>Actores</h2>
+<p><span style="font-size: 15px; font-family: Arial; vertical-align: baseline;" id="docs-internal-guid-ac2a4afb-2a78-eb94-7235-1fa64cd065a1">Identificar actores de los usuarios de la aplicación a desarrollar.</span></p>
+<ol>
+ <li>
+  <p></p>
+  <ul>
+   <li>URL: '/actor/AModifActor'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>nombre -  
+Opcional. 
+     </li>     <li>descripcion -  
+Requerido. 
+     </li>     <li>idActor -  
+Opcional. 
+     </li>     <li>idPila -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: duenoProducto </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProducto',</li>
+       <li> msg:"Actor actualizado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VActor',</li>
+       <li> msg:"Error al modificar actor".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/actor/VActor'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idActor
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/actor/ACrearActor'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>nombre -  
+Opcional. 
+     </li>     <li>descripcion -  
+Requerido. 
+     </li>     <li>idActor -  
+Opcional. 
+     </li>     <li>idPila -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: duenoProducto </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProducto',</li>
+       <li> msg:"Actor creado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCrearActor',</li>
+       <li> msg:"Error al crear actor".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/actor/VCrearActor'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: duenoProducto </li>
+  </ul>
+ </li>
+</ol>
+<h2>Objetivos</h2>
+<p><span style="font-family: Arial; font-size: 15px;">Definir los objetivos de la aplicación a desarrollar.</span></p>
+<ol>
+ <li>
+  <p></p>
+  <ul>
+   <li>URL: '/objetivo/VObjetivo'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idObjetivo
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/objetivo/AModifObjetivo'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>descripcion -  
+Opcional. 
+     </li>     <li>idObjetivo -  
+Opcional. 
+     </li>     <li>idPila -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: duenoProducto </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProducto',</li>
+       <li> msg:"Objetivo actualizado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VObjetivo',</li>
+       <li> msg:"Error al modificar objetivo".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/objetivo/VCrearObjetivo'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: duenoProducto </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/objetivo/ACrearObjetivo'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>descripcion -  
+Opcional. 
+     </li>     <li>idObjetivo -  
+Opcional. 
+     </li>     <li>idPila -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: duenoProducto </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProducto',</li>
+       <li> msg:"Actor creado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCrearObjetivo',</li>
+       <li> msg:"Error al crear objetivo".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li>
+</ol>
+<h2>Acciones</h2>
+<p>Definir los objetivos de la aplicación a desarrollar.</p>
+<ol>
+ <li>
+  <p></p>
+  <ul>
+   <li>URL: '/accion/AModifAccion'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>descripcion -  
+Opcional. 
+     </li>     <li>idAccion -  
+Opcional. 
+     </li>     <li>idPila -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: duenoProducto </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProducto',</li>
+       <li> msg:"Acción actualizada".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VAccion',</li>
+       <li> msg:"Error al modificar acción".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/accion/VAccion'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idAccion
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/accion/ACrearAccion'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>descripcion -  
+Opcional. 
+     </li>     <li>idAccion -  
+Opcional. 
+     </li>     <li>idPila -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: duenoProducto </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProducto',</li>
+       <li> msg:"Acción creada".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCrearAccion',</li>
+       <li> msg:"Error al crear acción".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/accion/VCrearAccion'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: duenoProducto </li>
+  </ul>
+ </li>
+</ol>
+
+</html>

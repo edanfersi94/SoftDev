@@ -1,0 +1,39 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Crear Actor</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+<li><a ng-click="VProducto1(idPila)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+  Regresar</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <form name="fActorForm" ng-submit="ACrearActor0(fActorForm.$valid)" novalidate>
+            <div class="form-group" ng-class="{ 'has-error' :  fActorSubmitted && fActorForm.nombre.$invalid && fActorForm.nombre.$pristine && fActorSubmitted}"><label for="fActor_nombre">Nombre del actor</label><input id="fActor_nombre" type="text" name="nombre" class="form-control" ng-model="fActor.nombre" placeholder="Nombre del actor" /><p ng-show="fActorSubmitted && fActorForm.nombre.$invalid" class="help-block">Error en campo Nombre del actor.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fActorSubmitted && fActorForm.descripcion.$invalid && fActorForm.descripcion.$pristine && fActorSubmitted}"><label for="fActor_descripcion">Descripción</label><div id="fActor_descripcion" text-angular="text-angular" name="descripcion" ng-model="fActor.descripcion" ></div><p ng-show="fActorSubmitted && fActorForm.descripcion.$invalid" class="help-block">Error en campo Descripción.</p></div>
+            <input id="fActor_idActor" type="hidden" name="idActor" ng-model="fActor.idActor" />
+            <input id="fActor_idPila" type="hidden" name="idPila" ng-model="fActor.idPila" />
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Crear
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>
