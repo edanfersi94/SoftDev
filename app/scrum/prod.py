@@ -72,7 +72,7 @@ def VProducto():
     pilas = [{'idPila':1, 'nombre':'Pagos en línea', 'descripcion':'Pagos usando tarjeta de débito'}]
     res['fPila'] = pilas[idPila-1]
     res['data3'] = [
-        {'idActor':act.id_actores, 'descripcion':act.nombre_actores}
+        {'idActor':act.id_actores, 'nombre':act.nombre_actores,'descripcion':act.descripcion_actores}
         for act in actores]
     res['data5'] = [
         {'idAccion':acc.idacciones, 'descripcion':acc.descripAcciones}
