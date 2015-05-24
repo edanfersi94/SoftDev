@@ -24,12 +24,12 @@ def ACrearProducto():
     nuevoActor = clsActor()
    
     idProductActual = resultInsert[1]
-    print(idProductActual)
-    re1 = nuevoActor.insert_Actor(idProductActual, 'Product Owner','Es el dueño del producto')
-    re2 = nuevoActor.insert_Actor(idProductActual, 'Scrum Master','Es el Maestro Scrum del producto')
-    re3 = nuevoActor.insert_Actor(idProductActual, 'Developer','Es el desarrollador del producto')    
 
-    if (resultInsert[0] and re1 and re2 and re3):
+    check1 = nuevoActor.insert_Actor(idProductActual, 'Product Owner','Es el dueño del producto')
+    check2 = nuevoActor.insert_Actor(idProductActual, 'Scrum Master','Es el Maestro Scrum del producto')
+    check3 = nuevoActor.insert_Actor(idProductActual, 'Developer','Es el desarrollador del producto')    
+
+    if (resultInsert[0] and check1 and check2 and check3):
         res = results[0]
     else:
         res = results[1]    
@@ -77,7 +77,6 @@ def VCrearProducto():
     pagActorActual= request.url
     pagActorActual.split('=')
     productoActual = pagActorActual[-1]
-    print(productoActual)
 
     res = {}
     if "actor" in session:
@@ -95,7 +94,6 @@ def VProducto():
     pagActorActual= request.url
     pagActorActual.split('=')
     productoActual = pagActorActual[-1]
-    print(productoActual)
 
     if (productoActual == 'undefined' or productoActual == 's'):
         # Se obtiene el ultimo producto visitado.
@@ -147,7 +145,6 @@ def VProductos():
     pagActorActual= request.url
     pagActorActual.split('=')
     productoActual = pagActorActual[-1]
-    print(productoActual)
 
     if (productoActual == 'undefined' or productoActual == 's'):
         # Se obtiene el ultimo producto visitado.
