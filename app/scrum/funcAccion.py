@@ -11,10 +11,11 @@ class clsAccion():
 
 	#-------------------------------------------------------------------------------
 	
-	def insert_Accion(self, newDescripAccion):
+	def insert_Accion(self, idProducto, newDescripAccion):
 		"""
 			@brief Funcion que permite insertar una nuevo acción en la base de datos.
 			
+			@param idProducto 		: Producto al que pertenecerá la acción.
 			@param newDescripAccion : Descripcion de la acción a insertar.
 
 			@return True si se insertó la acción dada. De lo contrario False.
@@ -24,15 +25,17 @@ class clsAccion():
 
 		# Booleano que indica si el tipo es el correcto.
 		descripIsStr = type(newDescripAccion) == str
-	
-		if ( descripIsStr ):
+		idProdIsInt	 = type(idProducto) == int
+
+		if ( descripIsStr and idProdIsInt ):
 
 			# Booleano que indica si cumplen con los limites.
 			descripLenValid = 1 <= len(newDescripAccion) <= 500
-		
-			if ( descripLenValid ):
+			idProducIsPosit = idProducto > 0
+
+			if ( descripLenValid and idProducIsPosit ):
 				num_acciones = num_acciones + 1
-				newAccion = model.Acciones(num_acciones, newDescripAccion)
+				newAccion = model.Acciones(idProducto, num_acciones, newDescripAccion)
 				model.db.session.add(newAccion)
 				model.db.session.commit()
 				return( True )
@@ -41,22 +44,25 @@ class clsAccion():
 	
 	#-------------------------------------------------------------------------------
 	
-	def find_idAccion(self, idAccion):
+	def find_idAccion(self, idProducto, idAccion):
 		"""
 			@brief Funcion que realiza la busqueda de la acción cuyo identificador
 				   sea "idAccion".
 			
-			@param idAccion: Identificador de la acción a buscar.
+			@param idProducto : Producto al que pertenece la acción.
+			@param idAccion   : Identificador de la acción a buscar.
 			
 			@return lista que contiene las tuplas obtenidas del subquery. De lo 
 					contrario retorna la lista vacia.
 		"""
 		
 		idIsInt = type(idAccion) == int
+		idProdIsInt	 = type(idProducto) == int
 		
-		if ( idIsInt ):
-			accionesEsp = model.Acciones.idacciones == idAccion
-			query = model.db.session.query(model.Acciones).filter(accionesEsp).all()
+		if ( idIsInt and idProdIsInt ):
+			accionesEsp = model.Acciones.idacciones == idAccion 
+			idProductoEsp =  model.Acciones.idProducto == idProducto
+			query = model.db.session.query(model.Acciones).filter(accionesEsp, idProductoEsp).all()
 			return( query )
 		return( [] )
 	
@@ -64,10 +70,11 @@ class clsAccion():
 
 	#-------------------------------------------------------------------------------
 
-	def modify_Accion(self, idAccion, newDescripAccion):
+	def modify_Accion(self, idProducto, idAccion, newDescripAccion):
 		"""
 			@brief Funcion que modifica los datos de la acción cuyo id sea "idAccion".
 			
+			@param idProducto 		: Producto al que pertenece la acción.
 			@param idAccion	  	    : id de la accion a modificar.
 			@param newDescripAccion : nueva descripcion para la acción dada.
 			
@@ -77,18 +84,22 @@ class clsAccion():
 		# Booleanos que indican si el tipo es el correcto.
 		descripIsStr = type(newDescripAccion) == str
 		idIsInt 	 = type(idAccion) == int
+		idProdIsInt	 = type(idProducto) == int
 		
 		if ( idIsInt and descripIsStr ):
 			# Booleanos que indican si se cumplen los limites.
+			idProducIsPosit = idProducto > 0	
 			idIsPositive 	= idAccion > 0
 			descripLenValid = 1 <= len(newDescripAccion) <= 500
 			
-			if ( idIsPositive and descripLenValid ):
+
+			if ( idIsPositive and descripLenValid and idProducIsPosit):
 				query = self.find_idAccion(idAccion)
 				
 				if ( query != [] ):
-					acciones = model.Acciones.idacciones == idAccion
-					model.db.session.query(model.Acciones).filter(acciones).\
+					acciones = model.Acciones.idacciones == idAccion 
+					idProductoEsp =  model.Acciones.idProducto == idProducto
+					model.db.session.query(model.Acciones).filter(acciones, idProductoEsp).\
 						update({'descripAcciones':(newDescripAccion)})
 					model.db.session.commit()
 					return( True )
