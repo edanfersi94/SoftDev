@@ -393,6 +393,7 @@ Opcional.
   <ul>
    <li>URL: '/objetivo/VCrearObjetivo'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
    <li>Roles: duenoProducto </li>
   </ul>
  </li> <li>
@@ -529,6 +530,151 @@ Opcional.
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idPila
    <li>Roles: duenoProducto </li>
+  </ul>
+ </li>
+</ol>
+<h2>Historias</h2>
+<p></p>
+<ol>
+ <li>
+  <p></p>
+  <ul>
+   <li>URL: '/historias/VHistorias'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/historias/ACrearHistoria'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>opcionesActores -  
+Opcional. 
+     </li>     <li>opcionesTiposHistoria -  
+Opcional. 
+     </li>     <li>opcionesAcciones -  
+Opcional. 
+     </li>     <li>opcionesObjetivos -  
+Opcional. 
+     </li>     <li>opcionesHistorias -  
+Opcional. 
+     </li>     <li>codigo -  
+Requerido. 
+     </li>     <li>super -  
+Opcional. 
+     </li>     <li>actores -  
+Opcional. 
+     </li>     <li>tipo -  
+Opcional. 
+     </li>     <li>accion -  
+Opcional. 
+     </li>     <li>objetivos -  
+Opcional. 
+     </li>     <li>idPila -  
+Opcional. 
+     </li>     <li>idHistoria -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VHistorias',</li>
+       <li> msg:"Historia creada".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCrearHistoria',</li>
+       <li> msg:"Error al crear historia".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/historias/VCrearHistoria'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/historias/AModifHistoria'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>opcionesActores -  
+Opcional. 
+     </li>     <li>opcionesTiposHistoria -  
+Opcional. 
+     </li>     <li>opcionesAcciones -  
+Opcional. 
+     </li>     <li>opcionesObjetivos -  
+Opcional. 
+     </li>     <li>opcionesHistorias -  
+Opcional. 
+     </li>     <li>codigo -  
+Requerido. 
+     </li>     <li>super -  
+Opcional. 
+     </li>     <li>actores -  
+Opcional. 
+     </li>     <li>tipo -  
+Opcional. 
+     </li>     <li>accion -  
+Opcional. 
+     </li>     <li>objetivos -  
+Opcional. 
+     </li>     <li>idPila -  
+Opcional. 
+     </li>     <li>idHistoria -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VHistorias',</li>
+       <li> msg:"Historia modificada".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VHistoria',</li>
+       <li> msg:"Error al modificar historia".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/historias/VHistoria'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idHistoria
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
   </ul>
  </li>
 </ol>

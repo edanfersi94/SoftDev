@@ -36,11 +36,8 @@ scrumModule.controller('VAccionController',
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];
-              if (label == '/VAccion') {
-                  $route.reload();
-              } else {
-                  $location.path(label);
-              }
+              $location.path(label);
+              $route.reload();
           });
         }
       };
@@ -74,11 +71,8 @@ scrumModule.controller('VCrearAccionController',
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];
-              if (label == '/VCrearAccion') {
-                  $route.reload();
-              } else {
-                  $location.path(label);
-              }
+              $location.path(label);
+              $route.reload();
           });
         }
       };
