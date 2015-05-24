@@ -24,7 +24,6 @@ def AIdentificar():
         checkUsername = userInput.find_username(usuarioReq)
         
         if (checkUsername != []):
-            print(str(checkUsername))
             checkPassword = checkUsername[0].password            
             if (checkPassword == passwordReq):
                 #userActor = checkUsername.idActor
@@ -72,11 +71,9 @@ def ARegistrar():
 
     # Falta acomodar el password
     if (checkUsername == [] and checkCorreo == [] and claveReq == clave2Req):
-        print(len(usuarioReq))
         # El actor es 1 porque sera un desarrollador.
         # actorUsuario = 1
         resultInsert = userInput.insert_user(nombreReq,usuarioReq,claveReq,correoReq)
-        print(resultInsert)
         if (resultInsert):
             res = results[0]
         else:
