@@ -19,16 +19,19 @@ def ACrearActor():
     nuevo_nombre_actores      = params['nombre']
     nueva_descripcion_actores = params['descripcion']
     
+    # Se obtiene la información del estado de la página.
+    query = model.db.session.query(model.EstadoActual).all()
+    idProducto = int(query[0].id_producto_actual)
+
     nuevoActor   = clsActor()
-    resultInsert = nuevoActor.insert_Actor(nuevo_nombre_actores, nueva_descripcion_actores)
+    resultInsert = nuevoActor.insert_Actor( idProducto, nuevo_nombre_actores, nueva_descripcion_actores)
 
     if ( resultInsert ):
         res = results[0]
     else:
         res = results[1]
 
-    idPila = 1
-    res['label'] = res['label'] + '/' + str(idPila)
+    res['label'] = res['label'] + '/' + str(idProducto)
 
     if "actor" in res:
         if res['actor'] is None:
@@ -46,18 +49,18 @@ def AModifActor():
     results = [{'label':'/VProducto', 'msg':['Actor actualizado']}, {'label':'/VActor', 'msg':['Error al modificar actor']}, ]
     res = results[0]
 
-    idPila = 1
+    # Se obtiene la información del estado de la página.
+    query = model.db.session.query(model.EstadoActual).all()
+
+    idPila = int(query[0].id_producto_actual)
     res['label'] = res['label'] + '/' + str(idPila)
 
-    productoActual = model.EstadoActual.id_producto_actual == idPila
-    query = model.db.session.query(model.EstadoActual).filter(productoActual).all()
-    
     id_actor = query[0].id_actor_actual
     nuevo_nombre_actores = params['nombre']
     nueva_descripcion_actores = params['descripcion']
 
     actorModif = clsActor()
-    resultsModif = actorModif.modify_Actor(id_actor, nuevo_nombre_actores, nueva_descripcion_actores)
+    resultsModif = actorModif.modify_Actor( idPila, id_actor, nuevo_nombre_actores, nueva_descripcion_actores)
 
     if ( resultsModif ):
         res = results[0]
@@ -79,15 +82,17 @@ def VActor():
     if "actor" in session:
         res['actor']=session['actor']
 
-    res['idPila'] = 1 
+    # Se obtiene la información del estado de la página.
+    query = model.db.session.query(model.EstadoActual).all()
+    idProducto = int(query[0].id_producto_actual)
+
+    res['idPila'] = idProducto
 
     pagActorActual= request.url
     pagActorActual.split('=')
     actorActual = int(pagActorActual[-1])
 
-    productoActual = model.EstadoActual.id_producto_actual == 1
-    model.db.session.query(model.EstadoActual).filter(productoActual).\
-        update({'id_actor_actual':actorActual})
+    model.db.session.query(model.EstadoActual).update({'id_actor_actual':actorActual})
     model.db.session.commit()    
 
     return json.dumps(res)
