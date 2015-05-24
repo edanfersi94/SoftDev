@@ -4,7 +4,6 @@ from app.scrum.funcActor import clsActor
 from app.scrum.funcProducto import clsProducto
 import model
 
-
 prod = Blueprint('prod', __name__)
 
 #.----------------------------------------------------------------------------------------.
@@ -15,6 +14,7 @@ def ACrearProducto():
     params = request.get_json()
     results = [{'label':'/VProductos', 'msg':['Producto creado']}, {'label':'/VCrearProducto', 'msg':['Error al crear producto']}, ]
     res = results[0]
+    #Action code goes here, res should be a list with a label and a message
 
     nuevaDescripcionProducto = params['descripcion']
 
@@ -81,6 +81,10 @@ def VCrearProducto():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+
+    #Action code ends here
     return json.dumps(res)
 
 #.----------------------------------------------------------------------------------------.
@@ -90,6 +94,7 @@ def VProducto():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
 
     pagActorActual= request.url
     pagActorActual.split('=')
@@ -119,7 +124,7 @@ def VProducto():
     res['data7'] = [
         {'idObjetivo':obj.idObjetivo, 'descripcion':obj.descripObjetivo}
          for obj in objetivos]
-    #res['idPila'] = idPila    
+    
     return json.dumps(res)
 
 #.----------------------------------------------------------------------------------------.
@@ -129,6 +134,7 @@ def VProductos():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
 
     productosListados = model.EstadoActual.query.all()
     if ( len(productosListados) == 0):
@@ -159,3 +165,4 @@ def VProductos():
     return json.dumps(res)
 
 #.----------------------------------------------------------------------------------------.
+

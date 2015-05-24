@@ -3,10 +3,8 @@ from flask import request, session, Blueprint, json
 from app.scrum.funcAccion import clsAccion
 import model
 
-
 accion = Blueprint('accion', __name__)
 
-#.----------------------------------------------------------------------------------------.
 
 @accion.route('/accion/ACrearAccion', methods=['POST'])
 def ACrearAccion():
@@ -14,9 +12,9 @@ def ACrearAccion():
     params = request.get_json()
     results = [{'label':'/VProducto', 'msg':['Acción creada']}, {'label':'/VCrearAccion', 'msg':['Error al crear acción']}, ]
     res = results[0]
-    
-    nueva_descripcion_acciones = params['descripcion']
+    #Action code goes here, res should be a list with a label and a message
 
+    nueva_descripcion_acciones = params['descripcion']
     # Se obtiene la información del estado de la página.
     query = model.db.session.query(model.EstadoActual).all()
     idProducto = int(query[0].id_producto_actual)
@@ -32,6 +30,7 @@ def ACrearAccion():
     idPila = 1
     res['label'] = res['label'] + '/' + str(idProducto)
 
+    #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -39,7 +38,7 @@ def ACrearAccion():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+
 
 @accion.route('/accion/AModifAccion', methods=['POST'])
 def AModifAccion():
@@ -50,6 +49,7 @@ def AModifAccion():
     
     # Se obtiene la información del estado de la página.
     query = model.db.session.query(model.EstadoActual).all()
+
 
     idPila = int(query[0].id_producto_actual)
     res['label'] = res['label'] + '/' + str(idPila)
@@ -72,14 +72,14 @@ def AModifAccion():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+
 
 @accion.route('/accion/VAccion')
 def VAccion():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
-    
+
     # Se obtiene la información del estado de la página.
     query = model.db.session.query(model.EstadoActual).all()
     idProducto = int(query[0].id_producto_actual)
@@ -95,14 +95,26 @@ def VAccion():
 
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+
 
 @accion.route('/accion/VCrearAccion')
 def VCrearAccion():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
 
+    #Datos de prueba
+    res['idPila'] = 1
+
+    #Action code ends here
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+
+
+
+
+#Use case code starts here
+
+
+#Use case code ends here

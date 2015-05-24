@@ -5,16 +5,14 @@ import model
 
 objetivo = Blueprint('objetivo', __name__)
 
-#.----------------------------------------------------------------------------------------.
 
 @objetivo.route('/objetivo/ACrearObjetivo', methods=['POST'])
 def ACrearObjetivo():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VProducto', 'msg':['Objetivo creado']}, {'label':'/VCrearObjetivo', 'msg':['Error al crear objetivo']}, ]
+    results = [{'label':'/VProducto', 'msg':['Actor creado']}, {'label':'/VCrearObjetivo', 'msg':['Error al crear objetivo']}, ]
     res = results[0]
-    
-    nueva_descripcion_objetivo = params['descripcion']
+    #Action code goes here, res should be a list with a label and a message
 
     # Se obtiene la información del estado de la página.
     query = model.db.session.query(model.EstadoActual).all()
@@ -30,6 +28,8 @@ def ACrearObjetivo():
     
     res['label'] = res['label'] + '/' + str(idProducto) 
 
+
+    #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -37,7 +37,7 @@ def ACrearObjetivo():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+
 
 @objetivo.route('/objetivo/AModifObjetivo', methods=['POST'])
 def AModifObjetivo():
@@ -62,6 +62,7 @@ def AModifObjetivo():
         res = results[0]
     else:
         res = results[1]
+        
 
     if "actor" in res:
         if res['actor'] is None:
@@ -70,23 +71,29 @@ def AModifObjetivo():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+
 
 @objetivo.route('/objetivo/VCrearObjetivo')
 def VCrearObjetivo():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    #Datos de prueba
+    res['idPila'] = 1
+
+    #Action code ends here
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+
 
 @objetivo.route('/objetivo/VObjetivo')
 def VObjetivo():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
-  
+         
     # Se obtiene la información del estado de la página.
     query = model.db.session.query(model.EstadoActual).all()
     idProducto = int(query[0].id_producto_actual)
@@ -102,4 +109,11 @@ def VObjetivo():
 
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+
+
+
+
+#Use case code starts here
+
+
+#Use case code ends here

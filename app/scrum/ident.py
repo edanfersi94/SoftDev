@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-from flask              import request, session, Blueprint, json
-from app.scrum.user     import clsUser
+from flask import request, session, Blueprint, json
+from app.scrum.user import clsUser
 
 ident = Blueprint('ident', __name__)
 
-#.------------------------------------------------------------------------------------------------.
 
 @ident.route('/ident/AIdentificar', methods=['POST'])
 def AIdentificar():
@@ -48,7 +47,6 @@ def AIdentificar():
     return json.dumps(res)
 
 
-#.------------------------------------------------------------------------------------------------.
 
 @ident.route('/ident/ARegistrar', methods=['POST'])
 def ARegistrar():
@@ -92,8 +90,6 @@ def ARegistrar():
     return json.dumps(res)
 
 
-#.------------------------------------------------------------------------------------------------.
-
 
 @ident.route('/ident/VLogin')
 def VLogin():
@@ -107,8 +103,6 @@ def VLogin():
     return json.dumps(res)
 
 
-#.------------------------------------------------------------------------------------------------.
-
 
 @ident.route('/ident/VRegistro')
 def VRegistro():
@@ -116,7 +110,7 @@ def VRegistro():
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
-    
+
 
     #Action code ends here
     return json.dumps(res)
@@ -129,5 +123,3 @@ def VRegistro():
 
 
 #Use case code ends here
-
-#.------------------------------------------------------------------------------------------------.
