@@ -35,7 +35,7 @@ class clsObjetivo():
 		
 			if ( descripLenValid and idProducIsPosit ):
 				num_objetivos = num_objetivos + 1
-				newObjetivo = model.Objetivo(idProduct, num_objetivos, newDescripObjetivo)
+				newObjetivo = model.Objetivo(idProducto, num_objetivos, newDescripObjetivo)
 				model.db.session.add(newObjetivo)
 				model.db.session.commit()
 				return( True )
@@ -59,7 +59,7 @@ class clsObjetivo():
 		idIsInt = type(idObjetivo) == int
 		idProdIsInt	 = type(idProducto) == int
 		
-		if ( idIsInt and idProducIsPosit ):
+		if ( idIsInt and idProdIsInt ):
 			objetivoEsp = model.Objetivo.idObjetivo == idObjetivo 
 			idProductoEsp =  model.Objetivo.idProducto == idProducto
 			query = model.db.session.query(model.Objetivo).filter(objetivoEsp, idProductoEsp).all()
@@ -93,7 +93,7 @@ class clsObjetivo():
 			descripLenValid = 1 <= len(newDescripObjetivo) <= 500
 			
 			if ( idIsPositive and descripLenValid and idProducIsPosit):
-				query = self.find_idObjetivo(idObjetivo)
+				query = self.find_idObjetivo( idProducto, idObjetivo)
 				
 				if ( query != [] ):
 					objetivo = model.Objetivo.idObjetivo == idObjetivo 

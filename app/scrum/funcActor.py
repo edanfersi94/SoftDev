@@ -21,8 +21,6 @@ class clsActor():
 
 			@return True si se inserto el actor dado. De lo contrario False.
 		"""
-		
-		print(idProducto)
 
 		global num_actores
 
@@ -41,7 +39,6 @@ class clsActor():
 			if (nameLenValid and descripLenValid and idProducIsPosit):
 				query = self.find_nameActor( idProducto, newNameActor)
 
-				print(query)
 				if ( query == [] ):
 					num_actores = num_actores + 1
 					newActor = model.Actores(idProducto, num_actores,newNameActor, newDescripActor)
@@ -101,7 +98,7 @@ class clsActor():
 		
 	#-------------------------------------------------------------------------------
 
-	def modify_Actor(self, idProduc, idActor, newNameActor, newDescripActor):
+	def modify_Actor(self, idProducto, idActor, newNameActor, newDescripActor):
 		"""
 			@brief Funcion que modifica los datos del actor cuyo id sea "idActor".
 

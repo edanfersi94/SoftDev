@@ -94,7 +94,7 @@ class clsAccion():
 			
 
 			if ( idIsPositive and descripLenValid and idProducIsPosit):
-				query = self.find_idAccion(idAccion)
+				query = self.find_idAccion( idProducto, idAccion)
 				
 				if ( query != [] ):
 					acciones = model.Acciones.idacciones == idAccion 
