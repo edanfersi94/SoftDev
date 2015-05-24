@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from flask import request, session, Blueprint, json
 from app.scrum.funcActor import clsActor
+from app.scrum.funcProducto import clsProducto
 import model
 
 
 prod = Blueprint('prod', __name__)
 
+#.----------------------------------------------------------------------------------------.
 
 @prod.route('/prod/ACrearProducto', methods=['POST'])
 def ACrearProducto():
@@ -14,6 +16,24 @@ def ACrearProducto():
     results = [{'label':'/VProductos', 'msg':['Producto creado']}, {'label':'/VCrearProducto', 'msg':['Error al crear producto']}, ]
     res = results[0]
 
+    nuevaDescripcionProducto = params['descripcion']
+
+    nuevoProducto = clsProducto()
+    resultInsert = nuevoProducto.insert_Producto(nuevaDescripcionProducto)
+
+    nuevoActor = clsActor()
+   
+    idProductActual = resultInsert[1]
+    print(idProductActual)
+    re1 = nuevoActor.insert_Actor(idProductActual, 'Product Owner','Es el dueño del producto')
+    re2 = nuevoActor.insert_Actor(idProductActual, 'Scrum Master','Es el Maestro Scrum del producto')
+    re3 = nuevoActor.insert_Actor(idProductActual, 'Developer','Es el desarrollador del producto')    
+
+    if (resultInsert[0] and re1 and re2 and re3):
+        res = results[0]
+    else:
+        res = results[1]    
+
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -21,7 +41,7 @@ def ACrearProducto():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-
+#.----------------------------------------------------------------------------------------.
 
 @prod.route('/prod/AModifProducto', methods=['POST'])
 def AModifProducto():
@@ -30,6 +50,19 @@ def AModifProducto():
     results = [{'label':'/VProductos', 'msg':['Producto actualizado']}, ]
     res = results[0]
 
+    productoActual = model.db.session.query(model.EstadoActual).all()
+
+    idProductoModif = int(productoActual[0].id_producto_actual)
+    nuevaDescripcionProducto = params['descripcion']
+
+    productoModif = clsProducto()
+    resultsModif = productoModif.modify_Producto(idProductoModif, nuevaDescripcionProducto)
+
+    if (resultsModif):
+        res = results[0]
+    else:
+        res = results[1]
+
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -37,16 +70,21 @@ def AModifProducto():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-
+#.----------------------------------------------------------------------------------------.
 
 @prod.route('/prod/VCrearProducto')
 def VCrearProducto():
+    pagActorActual= request.url
+    pagActorActual.split('=')
+    productoActual = pagActorActual[-1]
+    print(productoActual)
+
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
     return json.dumps(res)
 
-
+#.----------------------------------------------------------------------------------------.
 
 @prod.route('/prod/VProducto')
 def VProducto():
@@ -54,23 +92,26 @@ def VProducto():
     if "actor" in session:
         res['actor']=session['actor']
 
-    actores = model.Actores.query.all()
-    acciones = model.Acciones.query.all()
-    objetivos = model.Objetivo.query.all()
+    pagActorActual= request.url
+    pagActorActual.split('=')
+    productoActual = pagActorActual[-1]
+    print(productoActual)
 
-    if (request.args.get('idPila', 1) == 'undefined'):
-        idPila = 1
+    if (productoActual == 'undefined' or productoActual == 's'):
+        # Se obtiene el ultimo producto visitado.
+        productoVisitado = model.db.session.query(model.EstadoActual).all()
+        idPila = int(productoVisitado[0].id_producto_actual)
     else:
-        idPila = int(request.args.get('idPila', 1))
+        idPila = int(productoActual)
 
-    productosListados = model.EstadoActual.query.all()
-    if ( len(productosListados) == 0):
-        producto1 = model.EstadoActual(1)
-        model.db.session.add(producto1)
-        model.db.session.commit()
-    
-    pilas = [{'idPila':1, 'nombre':'Pagos en línea', 'descripcion':'Pagos usando tarjeta de débito'}]
-    res['fPila'] = pilas[idPila-1]
+    # Se actualiza el producto actual en la tabla de datos.
+    model.db.session.query(model.EstadoActual).update({'id_producto_actual':idPila})
+
+    # Carga de los actores, objetivos y acciones a la base de datos.
+    actores = model.db.session.query(model.Actores).filter_by(idProducto = idPila).all()
+    acciones = model.db.session.query(model.Acciones).filter_by(idProducto = idPila).all()
+    objetivos = model.db.session.query(model.Objetivo).filter_by(idProducto = idPila).all()
+
     res['data3'] = [
         {'idActor':act.id_actores, 'descripcion':act.nombre_actores}
         for act in actores]
@@ -80,10 +121,10 @@ def VProducto():
     res['data7'] = [
         {'idObjetivo':obj.idObjetivo, 'descripcion':obj.descripObjetivo}
          for obj in objetivos]
-    res['idPila'] = idPila    
+    #res['idPila'] = idPila    
     return json.dumps(res)
 
-
+#.----------------------------------------------------------------------------------------.
 
 @prod.route('/prod/VProductos')
 def VProductos():
@@ -91,13 +132,33 @@ def VProductos():
     if "actor" in session:
         res['actor']=session['actor']
 
-    res['data0'] = [{'idPila':1, 'nombre':'Pagos en línea'} ]
+    productosListados = model.EstadoActual.query.all()
+    if ( len(productosListados) == 0):
+        producto1 = model.EstadoActual(1)
+        model.db.session.add(producto1)
+        model.db.session.commit()
 
-    actoresListados = model.Actores.query.all()
-    if ( len(actoresListados) == 0 ):
-        nuevoActor = clsActor()
-        nuevoActor.insert_Actor('Product Owner','Es el dueño del producto')
-        nuevoActor.insert_Actor('Scrum Master','Es el Maestro Scrum del producto')
-        nuevoActor.insert_Actor('Developer','Es el desarrollador del producto')
+    producto = model.Pila.query.all()
+
+    res['data0'] = [
+        {'idPila':product.idPila, 'nombre':product.descripProducto}
+        for product in producto ]
+
+    pagActorActual= request.url
+    pagActorActual.split('=')
+    productoActual = pagActorActual[-1]
+    print(productoActual)
+
+    if (productoActual == 'undefined' or productoActual == 's'):
+        # Se obtiene el ultimo producto visitado.
+        productoVisitado = model.db.session.query(model.EstadoActual).all()
+        idPila = int(productoVisitado[0].id_producto_actual)
+    else:
+        idPila = int(productoActual)
+
+    # Se actualiza el producto actual en la tabla de datos.
+    model.db.session.query(model.EstadoActual).update({'id_producto_actual':idPila})
 
     return json.dumps(res)
+
+#.----------------------------------------------------------------------------------------.
