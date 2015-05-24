@@ -28,11 +28,11 @@ app = Flask(__name__, static_url_path='')
 
 # Construcción de la base de datos.
 
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres:1234@localhost/prueba1"
+SQLALCHEMY_DATABASE_URI = "postgresql://BMO:@localhost/newapmwsc"
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
-db_dir = 'postgresql+psycopg2://postgres:1234@localhost/prueba1'
+db_dir = 'postgresql+psycopg2://BMO:@localhost/newapmwsc'
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
@@ -95,24 +95,12 @@ num_objetivos = 0
 class Pila(db.Model):
     __tablename__   = 'pila'
     idPila          = db.Column(db.Integer, primary_key = True)
-    nomProducto     = db.Column(db.String(30), nullable = True)
-    idActor         = db.Column(db.Integer, nullable = True)
-    nomActor        = db.Column(db.String(500), nullable = True)
-    idObjetivo      = db.Column(db.Integer, nullable = True)
-    descripObjetivo = db.Column(db.String(500), nullable = True)
-    idAccion        = db.Column(db.Integer, nullable = True)
-    descripAccion   = db.Column(db.String(500), nullable = True)
+    descripProducto = db.Column(db.String(50), nullable = True)
 
-    def __init__(self,nomProducto,idActor,nomActor, idObjetivo, descripObjetivo, idAccion, descripAccion):
+    def __init__(self,descripProducto):
         num_pila     = num_pila + 1
         self.idPila  = num_pila
-        self.nomProducto = nomProducto
-        self.idActor = idActor
-        self.nomActor = nomActor
-        self.idObjetivo = idObjetivo
-        self.descripObjetivo = descripObjetivo
-        self.idAccion = idAccion
-        self.descripAccion = descripAccion
+        self.descripProducto = descripProducto
 
 # Tabla Usuario.
 class User(db.Model):

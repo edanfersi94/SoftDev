@@ -26,11 +26,11 @@ from sqlalchemy             import CheckConstraint
 
 # Construcción de la base de datos.
 
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres:1234@localhost/prueba1"
+SQLALCHEMY_DATABASE_URI = "postgresql://BMO:@localhost/newapmwsc"
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
-db_dir = 'postgresql+psycopg2://postgres:1234@localhost/prueba1'
+db_dir = 'postgresql+psycopg2://BMO:@localhost/newapmwsc'
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
@@ -49,14 +49,19 @@ manager.add_command('db', MigrateCommand)
 
 #-------------------------------------------------------------------------------
 
-num_acciones  = 0
-num_objetivos = 0
-num_actores   = 0
-
-#-------------------------------------------------------------------------------
-
 # Tablas de la base de datos a definir.
 
+# Tabla Pila (Productos):
+class Pila(db.Model):
+    __tablename__   = 'pila'
+    idPila          = db.Column(db.Integer, primary_key = True)
+    descripProducto = db.Column(db.String(50), nullable = True)
+    pilaAcciones    = db.relationship('Acciones', backref = 'pila', cascade="all, delete, delete-orphan")
+    pilaObjetivos   = db.relationship('Objetivo', backref = 'pila', cascade="all, delete, delete-orphan")
+    pilaActores     = db.relationship('Actores', backref = 'pila', cascade="all, delete, delete-orphan")
+    def __init__(self, idPila, descripProducto):
+        self.idPila  = idPila
+        self.descripProducto = descripProducto
 
 # Tabla Usuario.
 class User(db.Model):
@@ -78,10 +83,12 @@ class User(db.Model):
 # Tabla Acciones.
 class Acciones(db.Model):
     __tablename__ = 'acciones'
-    idacciones         = db.Column(db.Integer, primary_key = True)
+    idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
+    idacciones      = db.Column(db.Integer, primary_key = True)
     descripAcciones = db.Column(db.String(50), nullable = False)
     
-    def __init__(self,idAcciones, descripAcciones):
+    def __init__(self, idPila, idAcciones, descripAcciones):
+        self.idProducto = idPila
         self.idacciones      = idAcciones
         self.descripAcciones = descripAcciones
         
@@ -91,24 +98,27 @@ class Acciones(db.Model):
 # Tabla Objetivo
 class Objetivo(db.Model):
     __tablename__ = 'objetivo'
+    idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     idObjetivo    = db.Column(db.Integer, primary_key = True)
     descripObjetivo = db.Column(db.String(500), nullable = False)
-    #pilas = relationship('Pila', backref = 'objetivo', cascade="all, delete, delete-orphan")
 
-    def __init__(self, idObjetivo, descripObjetivo):
+    def __init__(self, idPila, idObjetivo, descripObjetivo):
         # Constructor del modelo Acciones.
+        self.idProducto = idPila
         self.idObjetivo       = idObjetivo
         self.descripObjetivo  = descripObjetivo
 
 # Tabla Actores.
 class Actores(db.Model):
     __tablename__  = 'actores'
+    idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     id_actores     = db.Column(db.Integer, primary_key = True)
     nombre_actores = db.Column(db.String(50), nullable = False)
     descripcion_actores = db.Column(db.String(500), nullable = True)
 
-    def __init__(self, id_actores, nombre_actores, descripcion_actores):
+    def __init__(self, idPila, id_actores, nombre_actores, descripcion_actores):
         # Constructor del modelo Actores.
+        self.idProducto = idPila
         self.id_actores          = id_actores
         self.nombre_actores      = nombre_actores
         self.descripcion_actores = descripcion_actores
