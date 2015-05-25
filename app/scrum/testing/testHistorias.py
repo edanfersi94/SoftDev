@@ -30,6 +30,7 @@ import unittest
 class TestHistoria(unittest.TestCase):
     
     def testHistoriaExist(self):
+        model.db.session.query(model.Historia_Usuario).delete()
         model.db.session.query( model.Pila ).delete() # Se limpia la base de datos
         tempProducto = clsProducto()
         salida= tempProducto.insert_Producto('Prueba de Producto1')
