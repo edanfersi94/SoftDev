@@ -26,11 +26,19 @@ from sqlalchemy             import CheckConstraint
 
 # Construcción de la base de datos.
 
+<<<<<<< HEAD
 SQLALCHEMY_DATABASE_URI = "postgresql://BMO:@localhost/newapmwsc"
+=======
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:joel123@localhost/prueba"
+>>>>>>> refs/heads/ramaJoel1
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
+<<<<<<< HEAD
 db_dir = 'postgresql+psycopg2://BMO:@localhost/newapmwsc'
+=======
+db_dir = 'postgresql+psycopg2://postgres:joel123@localhost/prueba'
+>>>>>>> refs/heads/ramaJoel1
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
@@ -83,9 +91,14 @@ class User(db.Model):
 # Tabla Acciones.
 class Acciones(db.Model):
     __tablename__ = 'acciones'
+<<<<<<< HEAD
     idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     idacciones      = db.Column(db.Integer, primary_key = True)
     descripAcciones = db.Column(db.String(50), nullable = False)
+=======
+    idacciones         = db.Column(db.Integer, primary_key = True)
+    descripAcciones = db.Column(db.String(500), nullable = False)
+>>>>>>> refs/heads/ramaJoel1
     
     def __init__(self, idPila, idAcciones, descripAcciones):
         self.idProducto = idPila
@@ -114,7 +127,7 @@ class Actores(db.Model):
     idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     id_actores     = db.Column(db.Integer, primary_key = True)
     nombre_actores = db.Column(db.String(50), nullable = False)
-    descripcion_actores = db.Column(db.String(500), nullable = True)
+    descripcion_actores = db.Column(db.String(500), nullable = False)
 
     def __init__(self, idPila, id_actores, nombre_actores, descripcion_actores):
         # Constructor del modelo Actores.

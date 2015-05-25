@@ -1,4 +1,11 @@
 eclipse.preferences.version=1
+<<<<<<< HEAD
 encoding//app/scrum/funcActor.py=utf-8
+=======
+encoding//app/scrum/actor.py=utf-8
+encoding//app/scrum/funcAccion.py=utf-8
+encoding//app/scrum/funcActor.py=utf-8
+encoding//app/scrum/funcObjetivo.py=utf-8
+>>>>>>> refs/heads/ramaJoel1
 encoding/base.py=utf-8
 encoding/model.py=utf-8

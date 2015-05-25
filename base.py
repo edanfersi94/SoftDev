@@ -28,11 +28,19 @@ app = Flask(__name__, static_url_path='')
 
 # Construcción de la base de datos.
 
+<<<<<<< HEAD
 SQLALCHEMY_DATABASE_URI = "postgresql://BMO:@localhost/newapmwsc"
+=======
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:joel123@localhost/prueba"
+>>>>>>> refs/heads/ramaJoel1
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
+<<<<<<< HEAD
 db_dir = 'postgresql+psycopg2://BMO:@localhost/newapmwsc'
+=======
+db_dir = 'postgresql+psycopg2://postgres:joel123@localhost/prueba'
+>>>>>>> refs/heads/ramaJoel1
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
@@ -139,14 +147,17 @@ class Actores(db.Model):
     __tablename__ = 'actores'
     id_actores     = db.Column(db.Integer, primary_key = True)
     nombre_actores = db.Column(db.String(50), nullable = False)
+    descripcion_actores = db.Column(db.String(500), nullable = True)
     #pilas = relationship('Pila', backref = 'acciones', cascade="all, delete, delete-orphan")
 
-    def __init__(self, nombre_actores):
+    def __init__(self, nombre_actores, descripcion_actores):
         # Constructor del modelo Acciones.
         num_actores          = num_actores + 1
         self.id_actores      = num_actores
         self.nombre_actores  = nombre_actores
-        
+        self.descripcion_actores = descripcion_actores
+
+      
 class Objetivos(db.Model):
     __tablename__ = 'objetivos'
     id_objetivos   = db.Column(db.Integer, primary_key = True)
