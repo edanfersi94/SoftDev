@@ -1,5 +1,18 @@
 # -*- coding: utf-8 -*-
 
+"""
+    UNIVERSIDAD SIMON BOLIVAR
+    Departamento de Computacion y Tecnologia de la Informacion.
+    CI-3715 - Ingenieria de Software I (CI-3715)
+    Abril - Julio 2015
+
+    AUTORES:
+        Equipo SoftDev
+
+    DESCRIPCION: 
+        
+"""
+
 # Función a importar.
 import model
 

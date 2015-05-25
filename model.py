@@ -26,11 +26,11 @@ from sqlalchemy             import CheckConstraint
 
 # Construcción de la base de datos.
 
-SQLALCHEMY_DATABASE_URI = "postgresql://BMO:@localhost/newapmwsc"
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:1234@localhost/prueba1"
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
-db_dir = 'postgresql+psycopg2://BMO:@localhost/newapmwsc'
+db_dir = 'postgresql+psycopg2://postgres:1234@localhost/prueba1'
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
@@ -55,13 +55,30 @@ manager.add_command('db', MigrateCommand)
 class Pila(db.Model):
     __tablename__   = 'pila'
     idPila          = db.Column(db.Integer, primary_key = True)
+    #nombreProducto  = db.Column(db.String(50), unique = True)
     descripProducto = db.Column(db.String(50), nullable = True)
     pilaAcciones    = db.relationship('Acciones', backref = 'pila', cascade="all, delete, delete-orphan")
     pilaObjetivos   = db.relationship('Objetivo', backref = 'pila', cascade="all, delete, delete-orphan")
     pilaActores     = db.relationship('Actores', backref = 'pila', cascade="all, delete, delete-orphan")
+    pilaHistoriaUsuario = db.relationship('Historia_Usuario',backref='pila',cascade = "all, delete, delete-orphan")
+    
     def __init__(self, idPila, descripProducto):
         self.idPila  = idPila
         self.descripProducto = descripProducto
+        
+
+# Tabla Historia:        
+class Historia_Usuario(db.Model):
+    __tablename__    = 'historia'
+    idHistoria_Usuario       = db.Column(db.Integer, unique=True)
+    tipoHistoria_Usuario     = db.Column(db.String(13))
+    codigoHistoria_Usuario   = db.Column(db.String(10), primary_key=True,)
+    id_Pila_Historia_Usuario = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
+    def __init__(self, idHistoria,tipoHistoria,codigoHistoria,historiaIdPila):
+        self.idHistoria_Usuario  = idHistoria
+        self.tipoHistoria_Usuario = tipoHistoria
+        self.codigoHistoria_Usuario = codigoHistoria
+        self.id_Pila_Historia_Usuario = historiaIdPila
 
 # Tabla Usuario.
 class User(db.Model):
@@ -85,7 +102,7 @@ class Acciones(db.Model):
     __tablename__ = 'acciones'
     idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     idacciones      = db.Column(db.Integer, primary_key = True)
-    descripAcciones = db.Column(db.String(50), nullable = False)
+    descripAcciones = db.Column(db.String(500), nullable = False)
     
     def __init__(self, idPila, idAcciones, descripAcciones):
         self.idProducto = idPila
