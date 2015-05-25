@@ -26,11 +26,12 @@ from sqlalchemy             import CheckConstraint
 
 # Construcción de la base de datos.
 
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres:1234@localhost/prueba1"
+
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:joel123@localhost/prueba"
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
-db_dir = 'postgresql+psycopg2://postgres:1234@localhost/prueba1'
+db_dir = 'postgresql+psycopg2://postgres:joel123@localhost/prueba'
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
@@ -55,8 +56,7 @@ manager.add_command('db', MigrateCommand)
 class Pila(db.Model):
     __tablename__   = 'pila'
     idPila          = db.Column(db.Integer, primary_key = True)
-    #nombreProducto  = db.Column(db.String(50), unique = True)
-    descripProducto = db.Column(db.String(50), nullable = True)
+    descripProducto = db.Column(db.String(500), nullable = True)
     pilaAcciones    = db.relationship('Acciones', backref = 'pila', cascade="all, delete, delete-orphan")
     pilaObjetivos   = db.relationship('Objetivo', backref = 'pila', cascade="all, delete, delete-orphan")
     pilaActores     = db.relationship('Actores', backref = 'pila', cascade="all, delete, delete-orphan")
@@ -103,7 +103,6 @@ class Acciones(db.Model):
     idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     idacciones      = db.Column(db.Integer, primary_key = True)
     descripAcciones = db.Column(db.String(500), nullable = False)
-    
     def __init__(self, idPila, idAcciones, descripAcciones):
         self.idProducto = idPila
         self.idacciones      = idAcciones
@@ -131,7 +130,7 @@ class Actores(db.Model):
     idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     id_actores     = db.Column(db.Integer, primary_key = True)
     nombre_actores = db.Column(db.String(50), nullable = False)
-    descripcion_actores = db.Column(db.String(500), nullable = True)
+    descripcion_actores = db.Column(db.String(500), nullable = False)
 
     def __init__(self, idPila, id_actores, nombre_actores, descripcion_actores):
         # Constructor del modelo Actores.
