@@ -87,6 +87,8 @@ class clsHistoria():
         """
         
         codigoStr = type(newcodigo) == str
+        if not codigoStr:
+            return []
         codigoLenValid = 1<= len(newcodigo)<=10
         
         if codigoStr and codigoLenValid:
