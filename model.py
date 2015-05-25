@@ -56,7 +56,7 @@ manager.add_command('db', MigrateCommand)
 class Pila(db.Model):
     __tablename__   = 'pila'
     idPila          = db.Column(db.Integer, primary_key = True)
-    descripProducto = db.Column(db.String(50), nullable = True)
+    descripProducto = db.Column(db.String(500), nullable = True)
     pilaAcciones    = db.relationship('Acciones', backref = 'pila', cascade="all, delete, delete-orphan")
     pilaObjetivos   = db.relationship('Objetivo', backref = 'pila', cascade="all, delete, delete-orphan")
     pilaActores     = db.relationship('Actores', backref = 'pila', cascade="all, delete, delete-orphan")
@@ -86,7 +86,7 @@ class Acciones(db.Model):
     __tablename__ = 'acciones'
     idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     idacciones      = db.Column(db.Integer, primary_key = True)
-    descripAcciones = db.Column(db.String(50), nullable = False)
+    descripAcciones = db.Column(db.String(500), nullable = False)
    
     def __init__(self, idPila, idAcciones, descripAcciones):
         self.idProducto = idPila

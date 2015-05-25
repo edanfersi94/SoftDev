@@ -33,7 +33,7 @@ class TestProducto(unittest.TestCase):
     # Test 1: Se crea el objeto clsProducto
     def testObjectExist(self):
         tempProducto = clsProducto()
-        self.assertIsNone( tempProducto )
+        self.assertIsNotNone( tempProducto )
         model.db.session.query( model.Pila ).delete() # Se limpia la base de datos
 
     #.-----------------------------------------------------.
@@ -46,14 +46,15 @@ class TestProducto(unittest.TestCase):
     def testfind_idProductExist(self):
         #Se inserta un elemento valido en la base de datos
         newIdProducto = 1
-        newProducto = model.Pila(newIdProducto)
+        newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? '
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit()
 
-        tempProducto = clsProducto
+        tempProducto = clsProducto()
         idProducto = 1
-        query = tempProducto.find_idProducto( idProducto )
-        self.assertIsNone(query[0])
+        query = tempProducto.find_idProducto(idProducto)
+        self.assertIsNotNone(query[0])
         model.db.session.query( model.Pila ).delete() # Se limpia la base de datos
 
     # Test 3: Buscar el id de un Producto que no existe
@@ -112,8 +113,8 @@ class TestProducto(unittest.TestCase):
     def testinsert_productoLen500(self):
         tempProducto = clsProducto()
         newDescripProducto ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
-        result = tempProducto.insert_Producto( newDescripProducto )
-        self.assertTrue(result)
+        result = tempProducto.insert_Producto(newDescripProducto)
+        self.assertTrue(result[0])
         model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
                 
     ### CASOS INVALIDOS( Casos Malicia ):    
@@ -122,7 +123,7 @@ class TestProducto(unittest.TestCase):
         tempProducto = clsProducto()
         newDescripProducto = ''
         result = tempProducto.insert_Producto( newDescripProducto )
-        self.assertFalse(result)
+        self.assertFalse(result[0])
         model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
 
     # Test 11: Se insertara un producto cuyo tama�o es de 501.
@@ -130,7 +131,7 @@ class TestProducto(unittest.TestCase):
         tempProducto = clsProducto()
         newDescripProducto = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu,'
         result = tempProducto.insert_Producto( newDescripProducto )
-        self.assertFalse(result)
+        self.assertFalse(result[0])
         model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
 
     # Test 12: Se insertara un producto cuya descripcion es un numero.
@@ -138,7 +139,7 @@ class TestProducto(unittest.TestCase):
         tempProducto = clsProducto()
         newDescripProducto = 501
         result = tempProducto.insert_Producto( newDescripProducto )
-        self.assertFalse(result)
+        self.assertFalse(result[0])
         model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
 
     # Test 13: Se insertara un producto cuya descripcion dada es None.
@@ -146,7 +147,7 @@ class TestProducto(unittest.TestCase):
         tempProducto = clsProducto()
         newDescripProducto = None
         result = tempProducto.insert_Producto( newDescripProducto )
-        self.assertFalse(result)
+        self.assertFalse(result[0])
         model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
 
  #.-------------------------------------------------------------------.  
