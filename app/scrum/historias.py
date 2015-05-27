@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import request, session, Blueprint, json
+from flask import request, session, Blueprint, json, redirect
 from app.scrum.funcHistoria import clsHistoria
 import model
 
@@ -14,9 +14,18 @@ def ACrearHistoria():
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
     nuevoCodigoHistoria = params['codigo']
+    nuevotipoHistoria = params['tipo']
     
+    if (nuevotipoHistoria == 1):
+        newTipo = "Opcional"
+    
+    if (nuevotipoHistoria == 2):
+        newTipo = "Obligatorio"
+        
+    nuevoActorHistoria = params['actor']
+    print("holaaaa bebebe", nuevoActorHistoria)
     nuevaHistoria = clsHistoria()
-    resultInsert = nuevaHistoria.insert_Historia(nuevoCodigoHistoria,1)
+    resultInsert = nuevaHistoria.insert_Historia(nuevoCodigoHistoria,1, newTipo)
     
     #Datos de prueba
     res['label'] = res['label'] + '/1'
@@ -64,28 +73,36 @@ def VCrearHistoria():
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
 
+    accionesEsp = model.Acciones.idProducto == 1
+    acciones = model.db.session.query(model.Acciones).filter(accionesEsp).all()
+    
+    actoresEsp = model.Actores.idProducto == 1
+    actores = model.db.session.query(model.Actores).filter(accionesEsp).all()
+    
+    objetivosEsp = model.Objetivo.idProducto == 1
+    objetivos = model.db.session.query(model.Objetivo).filter(objetivosEsp).all()
+    
+    
+    
+
     #Ejemplo de relleno de listas para selectrores
     res['fHistoria_opcionesActores'] = [
-      {'key':1,'value':'Actor1'},
-      {'key':2,'value':'Actor2'},
-      {'key':3,'value':'Actor3'}]
+      {'key':act.id_actores,'value':act.descripcion_actores}
+        for act in actores]
     res['fHistoria_opcionesAcciones'] = [
-      {'key':1,'value':'Acccion1'},
-      {'key':2,'value':'Acccion2'},
-      {'key':3,'value':'Acccion3'}]
+      {'key':acc.idacciones,'value':acc.descripAcciones}
+        for acc in acciones]
     res['fHistoria_opcionesObjetivos'] = [
-      {'key':1,'value':'Objetivo1'},
-      {'key':2,'value':'Objetivo2'},
-      {'key':3,'value':'Objetivo3'}]
+      {'key':obj.idObjetivo,'value':obj.descripObjetivo}
+        for obj in objetivos]
     res['fHistoria_opcionesHistorias'] = [
       {'key':0,'value':'Ninguna'},
-      {'key':1,'value':'Historia1'},
-      {'key':2,'value':'Historia2'},
-      {'key':3,'value':'Historia3'}]
+      {'key':1,'value':'Historia1'}]
     res['fHistoria_opcionesTiposHistoria'] = [
       {'key':1,'value':'Opcional'},
       {'key':2,'value':'Obligatoria'}]
-    res['fHistoria'] = {'super':0}
+    res['fHistoria'] = {'super':0, 
+       'actor':1, 'accion':2, 'objetivo':3, 'tipo':1} 
     res['idPila'] = 1
 
 
@@ -100,25 +117,31 @@ def VHistoria():
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
+    accionesEsp = model.Acciones.idProducto == 1
+    acciones = model.db.session.query(model.Acciones).filter(accionesEsp).all()
+    
+    actoresEsp = model.Actores.idProducto == 1
+    actores = model.db.session.query(model.Actores).filter(accionesEsp).all()
+    
+    objetivosEsp = model.Objetivo.idProducto == 1
+    objetivos = model.db.session.query(model.Objetivo).filter(objetivosEsp).all()
+    
+    
+    
 
     #Ejemplo de relleno de listas para selectrores
     res['fHistoria_opcionesActores'] = [
-      {'key':1,'value':'Actor1'},
-      {'key':2,'value':'Actor2'},
-      {'key':3,'value':'Actor3'}]
+      {'key':act.id_actores,'value':act.descripcion_actores}
+        for act in actores]
     res['fHistoria_opcionesAcciones'] = [
-      {'key':1,'value':'Acccion1'},
-      {'key':2,'value':'Acccion2'},
-      {'key':3,'value':'Acccion3'}]
+      {'key':acc.idacciones,'value':acc.descripAcciones}
+        for acc in acciones]
     res['fHistoria_opcionesObjetivos'] = [
-      {'key':1,'value':'Objetivo1'},
-      {'key':2,'value':'Objetivo2'},
-      {'key':3,'value':'Objetivo3'}]
+      {'key':obj.idObjetivo,'value':obj.descripObjetivo}
+        for obj in objetivos]
     res['fHistoria_opcionesHistorias'] = [
       {'key':0,'value':'Ninguna'},
-      {'key':1,'value':'Historia1'},
-      {'key':2,'value':'Historia2'},
-      {'key':3,'value':'Historia3'}]
+      {'key':1,'value':'Historia1'}]
     res['fHistoria_opcionesTiposHistoria'] = [
       {'key':1,'value':'Opcional'},
       {'key':2,'value':'Obligatoria'}]

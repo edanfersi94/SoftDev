@@ -74,7 +74,7 @@ class Historia_Usuario(db.Model):
     tipoHistoria_Usuario     = db.Column(db.String(13), nullable = True)
     codigoHistoria_Usuario   = db.Column(db.String(10), primary_key=True,)
     id_Pila_Historia_Usuario = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
-    def __init__(self, idHistoria,codigoHistoria,historiaIdPila, tipoHistoria_Usuario= None):
+    def __init__(self, idHistoria,codigoHistoria,historiaIdPila, tipoHistoria_Usuario):
         self.idHistoria_Usuario  = idHistoria
         self.tipoHistoria_Usuario = tipoHistoria_Usuario
         self.codigoHistoria_Usuario = codigoHistoria

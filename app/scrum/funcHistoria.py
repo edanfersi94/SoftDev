@@ -25,7 +25,7 @@ class clsHistoria():
     
     #-------------------------------------------------------------------------------
     
-    def insert_Historia(self, newCodigo, newIdProducto):
+    def insert_Historia(self, newCodigo, newIdProducto, newTipo):
         
         """
             @brief Funcion que permite insertar un nueva historia en la base de datos.
@@ -69,7 +69,7 @@ class clsHistoria():
                 query_historia = model.db.session.query(model.Historia_Usuario).filter(historiaEsp).all()
                 
                 if(query_producto!=[] and query_historia==[]):
-                    newHistoriaUsuario = model.Historia_Usuario(num_historias,newCodigo, newIdProducto)
+                    newHistoriaUsuario = model.Historia_Usuario(num_historias,newCodigo, newIdProducto, newTipo)
                     model.db.session.add(newHistoriaUsuario)
                     model.db.session.commit()
                     
