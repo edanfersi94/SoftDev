@@ -22,10 +22,10 @@ def ACrearHistoria():
     if (nuevotipoHistoria == 2):
         newTipo = "Obligatorio"
         
-    nuevoActorHistoria = params['actor']
-    print("holaaaa bebebe", nuevoActorHistoria)
+    nuevoAccionHistoria = params['accion']
+    
     nuevaHistoria = clsHistoria()
-    resultInsert = nuevaHistoria.insert_Historia(nuevoCodigoHistoria,1, newTipo)
+    resultInsert = nuevaHistoria.insert_Historia(nuevoCodigoHistoria,1, newTipo, nuevoAccionHistoria)
     
     #Datos de prueba
     res['label'] = res['label'] + '/1'
@@ -104,6 +104,9 @@ def VCrearHistoria():
     res['fHistoria'] = {'super':0, 
        'actor':1, 'accion':2, 'objetivo':3, 'tipo':1} 
     res['idPila'] = 1
+    
+    for acci in acciones:
+        print("id",acci.idacciones)
 
 
     #Action code ends here
