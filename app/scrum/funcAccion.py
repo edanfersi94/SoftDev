@@ -3,8 +3,6 @@
 # Función a importar.
 import model
 
-# Numero de acciones creados en la base de datos.
-num_acciones   = 0
 
 # Clase que tendra las diferentes funcionalidades de la tabla "Actores".
 class clsAccion():
@@ -20,8 +18,14 @@ class clsAccion():
 
 			@return True si se insertó la acción dada. De lo contrario False.
 		"""
+
+		# Búsqueda del identificador más alto.	
+		query = model.db.session.query(model.func.max(model.Acciones.idacciones)).all()
 		
-		global num_acciones
+		# Se toma la tupla resultante
+		tuplaResult = query[0]
+		
+		num_acciones = tuplaResult[0]
 
 		# Booleano que indica si el tipo es el correcto.
 		descripIsStr = type(newDescripAccion) == str
@@ -34,7 +38,12 @@ class clsAccion():
 			idProducIsPosit = idProducto > 0
 
 			if ( descripLenValid and idProducIsPosit ):
+
+				# Si no hay acciones en la base de datos, entonces se inicializa el contador.
+				if num_acciones == None:
+					num_acciones = 0				
 				num_acciones = num_acciones + 1
+
 				newAccion = model.Acciones(idProducto, num_acciones, newDescripAccion)
 				model.db.session.add(newAccion)
 				model.db.session.commit()
