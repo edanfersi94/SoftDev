@@ -24,7 +24,6 @@ class clsAccion():
 		tuplaResult = query[0]
 		
 		num_acciones = int(tuplaResult[0] or 0)
-		num_acciones = num_acciones + 1
 
 		# Booleano que indica si el tipo es el correcto.
 		descripIsStr = type(newDescripAccion) == str

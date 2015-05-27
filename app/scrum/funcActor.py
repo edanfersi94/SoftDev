@@ -25,7 +25,6 @@ class clsActor():
 		tuplaResult = query[0]
 		
 		num_actores = int(tuplaResult[0] or 0)
-		num_actores = num_actores + 1
 
 		# Booleanos que indican si el tipo es el correcto.
 		descripIsStr = type(newDescripActor) == str
