@@ -1,10 +1,14 @@
 eclipse.preferences.version=1
 encoding//app/scrum/accion.py=utf-8
 encoding//app/scrum/actor.py=utf-8
+encoding//app/scrum/funcAccion.py=utf-8
+encoding//app/scrum/funcActor.py=utf-8
 encoding//app/scrum/funcHistoria.py=utf-8
+encoding//app/scrum/funcObjetivo.py=utf-8
 encoding//app/scrum/funcProducto.py=utf-8
 encoding//app/scrum/historias.py=utf-8
 encoding//app/scrum/ident.py=utf-8
+encoding//app/scrum/mast.py=utf-8
 encoding//app/scrum/objetivo.py=utf-8
 encoding//app/scrum/prod.py=utf-8
 encoding/base.py=utf-8

@@ -3,8 +3,6 @@
 # Función a importar.
 import model
 
-# Numero de actores creados en la base de datos.
-num_actores   = 0
 
 # Clase que tendra las diferentes funcionalidades de la tabla "Actores".
 class clsActor():
@@ -22,7 +20,12 @@ class clsActor():
 			@return True si se inserto el actor dado. De lo contrario False.
 		"""
 
-		global num_actores
+		query = model.db.session.query(model.func.max(model.Actores.id_actores)).all()
+		
+		tuplaResult = query[0]
+		
+		num_actores = int(tuplaResult[0] or 0)
+		num_actores = num_actores + 1
 
 		# Booleanos que indican si el tipo es el correcto.
 		descripIsStr = type(newDescripActor) == str

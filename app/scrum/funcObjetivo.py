@@ -3,8 +3,6 @@
 # Función a importar.
 import model
 
-# Numero de objetivos creados en la base de datos.
-num_objetivos   = 0
 
 # Clase que tendra las diferentes funcionalidades de la tabla "Objetivo".
 class clsObjetivo():
@@ -14,14 +12,16 @@ class clsObjetivo():
 	def insert_Objetivo(self, idProducto, newDescripObjetivo):
 		"""
 			@brief Funcion que permite insertar un nuevo objetivo en la base de datos.
-
 			@param idProducto 		  : Producto al que pertenecerá el objetivo.			
 			@param newDescripObjetivo : Descripcion del objetivo a insertar.
-
 			@return True si se insertó el objetivo dado. De lo contrario False.
 		"""
+		query = model.db.session.query(model.func.max(model.Objetivo.idObjetivo)).all()
 		
-		global num_objetivos
+		tuplaResult = query[0]
+		
+		num_objetivos = int(tuplaResult[0] or 0)
+		num_objetivos = num_objetivos + 1
 
 		# Booleano que indica si el tipo es el correcto.
 		descripIsStr = type(newDescripObjetivo) == str
@@ -73,7 +73,6 @@ class clsObjetivo():
 	def modify_Objetivo(self, idProducto, idObjetivo, newDescripObjetivo):
 		"""
 			@brief Funcion que modifica los datos del objetivo cuyo id sea "idObjetivo".
-
 			@param idProducto 		  : Producto al que pertenece el objetivo.			
 			@param idObjetivo	  	  : id del objetivo a modificar.
 			@param newDescripObjetivo : nueva descripcion para el objetivo dada.
@@ -106,4 +105,4 @@ class clsObjetivo():
 		return( False )
 	
 	#--------------------------------------------------------------------------------	
-	
+		
