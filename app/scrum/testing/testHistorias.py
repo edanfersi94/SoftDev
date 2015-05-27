@@ -34,6 +34,6 @@ class TestHistoria(unittest.TestCase):
         tempProducto = clsProducto()
         tempProducto.insert_Producto('Prueba de Producto1')
         tempHistoria = clsHistoria()
-        result = tempHistoria.insert_Historia('Opcional','codigo',1)
+        result = tempHistoria.insert_Historia('codigo',1)
         self.assertTrue(result)
           # Se limpia la base de datos.

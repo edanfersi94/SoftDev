@@ -17,7 +17,7 @@
 import model
 
 # Numero de historias creadas en la base de datos.
-num_historias   = 0
+
 
 # Clase que tendra las diferentes funcionalidades de la tabla "Historia_Usuario".
 
@@ -25,7 +25,7 @@ class clsHistoria():
     
     #-------------------------------------------------------------------------------
     
-    def insert_Historia(self,newTipo, newCodigo, newIdProducto):
+    def insert_Historia(self, newCodigo, newIdProducto):
         
         """
             @brief Funcion que permite insertar un nueva historia en la base de datos.
@@ -41,15 +41,19 @@ class clsHistoria():
 
         """
         
-        global num_historias
+        query = model.db.session.query(model.func.max(model.Historia_Usuario.idHistoria_Usuario)).all()
         
+        # Se toma la tupla resultante
+        tuplaResult = query[0]
         
-        tipo = (newTipo== 'Opcional') or (newTipo== 'Obligatoria')
+        num_historias = int(tuplaResult[0] or 0)
+        num_historias = num_historias + 1        
+        
 
         # Booleano que indica si el tipo es el correcto.
         codigoStr = type(newCodigo) == str
         
-        if (tipo and codigoStr):
+        if (codigoStr):
             
             # Booleano que indica si cumplen con los limites.
             codigoLenValid = 1<= len(newCodigo)<=13
@@ -57,7 +61,6 @@ class clsHistoria():
             IdProductoInt = type(newIdProducto)== int
             
             if(IdProductoInt and codigoLenValid):
-                num_historias = num_historias + 1
                 
                 productoEsp = model.Pila.idPila == newIdProducto
                 query_producto = model.db.session.query(model.Pila).filter(productoEsp).all()
@@ -66,7 +69,7 @@ class clsHistoria():
                 query_historia = model.db.session.query(model.Historia_Usuario).filter(historiaEsp).all()
                 
                 if(query_producto!=[] and query_historia==[]):
-                    newHistoriaUsuario = model.Historia_Usuario(num_historias,newTipo,newCodigo, newIdProducto)
+                    newHistoriaUsuario = model.Historia_Usuario(num_historias,newCodigo, newIdProducto)
                     model.db.session.add(newHistoriaUsuario)
                     model.db.session.commit()
                     

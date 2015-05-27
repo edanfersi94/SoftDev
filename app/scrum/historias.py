@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import request, session, Blueprint, json
+from app.scrum.funcHistoria import clsHistoria
+import model
 
 historias = Blueprint('historias', __name__)
 
@@ -11,9 +13,18 @@ def ACrearHistoria():
     results = [{'label':'/VHistorias', 'msg':['Historia creada']}, {'label':'/VCrearHistoria', 'msg':['Error al crear historia']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
-
+    nuevaDescripcionProducto = params['codigo']
+    
+    nuevoProducto = clsHistoria()
+    resultInsert = nuevoProducto.insert_Historia(nuevaDescripcionProducto,1)
+    
     #Datos de prueba
     res['label'] = res['label'] + '/1'
+    
+    if(resultInsert):
+        res= results[0]
+    else:
+        res = results[1]
 
     #Action code ends here
     if "actor" in res:
@@ -126,11 +137,14 @@ def VHistorias():
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
-
+    
+    historia = model.Historia_Usuario.query.all()
+    
     #Datos de prueba
     res['idPila'] = 1
     res['data0'] = [
-      {'idHistoria':1, 'enunciado':'En tanto que picho podría tomar agua para saciar mi sed'}]
+      {'idHistoria':his.idHistoria_Usuario, 'enunciado':his.codigoHistoria_Usuario} 
+      for his in historia]
     
 
     #Action code ends here

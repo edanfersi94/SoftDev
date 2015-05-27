@@ -20,7 +20,7 @@ from flask                  import Flask
 from flask.ext.migrate      import Migrate, MigrateCommand
 from flask.ext.sqlalchemy   import SQLAlchemy
 from flask.ext.script       import Manager
-from sqlalchemy             import CheckConstraint
+from sqlalchemy             import CheckConstraint,func
 
 #-------------------------------------------------------------------------------
 
@@ -71,12 +71,12 @@ class Pila(db.Model):
 class Historia_Usuario(db.Model):
     __tablename__    = 'historia'
     idHistoria_Usuario       = db.Column(db.Integer, unique=True)
-    tipoHistoria_Usuario     = db.Column(db.String(13))
+    tipoHistoria_Usuario     = db.Column(db.String(13), nullable = True)
     codigoHistoria_Usuario   = db.Column(db.String(10), primary_key=True,)
     id_Pila_Historia_Usuario = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
-    def __init__(self, idHistoria,tipoHistoria,codigoHistoria,historiaIdPila):
+    def __init__(self, idHistoria,codigoHistoria,historiaIdPila, tipoHistoria_Usuario= None):
         self.idHistoria_Usuario  = idHistoria
-        self.tipoHistoria_Usuario = tipoHistoria
+        self.tipoHistoria_Usuario = tipoHistoria_Usuario
         self.codigoHistoria_Usuario = codigoHistoria
         self.id_Pila_Historia_Usuario = historiaIdPila
 
