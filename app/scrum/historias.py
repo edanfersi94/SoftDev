@@ -13,10 +13,10 @@ def ACrearHistoria():
     results = [{'label':'/VHistorias', 'msg':['Historia creada']}, {'label':'/VCrearHistoria', 'msg':['Error al crear historia']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
-    nuevaDescripcionProducto = params['codigo']
+    nuevoCodigoHistoria = params['codigo']
     
-    nuevoProducto = clsHistoria()
-    resultInsert = nuevoProducto.insert_Historia(nuevaDescripcionProducto,1)
+    nuevaHistoria = clsHistoria()
+    resultInsert = nuevaHistoria.insert_Historia(nuevoCodigoHistoria,1)
     
     #Datos de prueba
     res['label'] = res['label'] + '/1'
