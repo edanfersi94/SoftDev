@@ -26,11 +26,11 @@ from sqlalchemy             import CheckConstraint,func
 
 # Construcción de la base de datos.
 
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres:1234@localhost/prueba1"
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:1234@localhost/neyare"
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
-db_dir = 'postgresql+psycopg2://postgres:1234@localhost/prueba1'
+db_dir = 'postgresql+psycopg2://postgres:1234@localhost/neyare'
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
@@ -68,17 +68,7 @@ class Pila(db.Model):
         
 
 # Tabla Historia:        
-class Historia_Usuario(db.Model):
-    __tablename__    = 'historia'
-    idHistoria_Usuario       = db.Column(db.Integer, unique=True)
-    tipoHistoria_Usuario     = db.Column(db.String(13), nullable = True)
-    codigoHistoria_Usuario   = db.Column(db.String(10), primary_key=True,)
-    id_Pila_Historia_Usuario = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
-    def __init__(self, idHistoria,codigoHistoria,historiaIdPila, tipoHistoria_Usuario):
-        self.idHistoria_Usuario  = idHistoria
-        self.tipoHistoria_Usuario = tipoHistoria_Usuario
-        self.codigoHistoria_Usuario = codigoHistoria
-        self.id_Pila_Historia_Usuario = historiaIdPila
+
 
 # Tabla Usuario.
 class User(db.Model):
@@ -139,6 +129,21 @@ class Actores(db.Model):
         self.id_actores          = id_actores
         self.nombre_actores      = nombre_actores
         self.descripcion_actores = descripcion_actores
+        
+class Historia_Usuario(db.Model):
+    __tablename__    = 'historia'
+    idHistoria_Usuario       = db.Column(db.Integer, unique=True)
+    tipoHistoria_Usuario     = db.Column(db.String(13), nullable = True)
+    codigoHistoria_Usuario   = db.Column(db.String(10), primary_key=True,)
+    id_Pila_Historia_Usuario = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
+    id_Acciones_Historia_Usuario = db.Column(db.Integer, db.ForeignKey('acciones.idacciones'))
+    
+    def __init__(self, idHistoria,codigoHistoria,historiaIdPila, tipoHistoria_Usuario,id_Acciones_Historia_Usuario):
+        self.idHistoria_Usuario  = idHistoria
+        self.tipoHistoria_Usuario = tipoHistoria_Usuario
+        self.codigoHistoria_Usuario = codigoHistoria
+        self.id_Pila_Historia_Usuario = historiaIdPila
+        self.id_Acciones_Historia_Usuario = id_Acciones_Historia_Usuario
 
 
 class EstadoActual(db.Model):

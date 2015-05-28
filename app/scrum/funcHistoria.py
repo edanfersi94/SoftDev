@@ -69,7 +69,7 @@ class clsHistoria():
                 query_historia = model.db.session.query(model.Historia_Usuario).filter(historiaEsp).all()
                 
                 if(query_producto!=[] and query_historia==[]):
-                    newHistoriaUsuario = model.Historia_Usuario(num_historias,newCodigo, newIdProducto, newTipo)
+                    newHistoriaUsuario = model.Historia_Usuario(num_historias,newCodigo, newIdProducto, newTipo, NewAccion)
                     model.db.session.add(newHistoriaUsuario)
                     model.db.session.commit()
                     

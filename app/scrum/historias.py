@@ -13,27 +13,19 @@ def ACrearHistoria():
     results = [{'label':'/VHistorias', 'msg':['Historia creada']}, {'label':'/VCrearHistoria', 'msg':['Error al crear historia']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
-    nuevoCodigoHistoria = params['codigo']
-    nuevotipoHistoria = params['tipo']
+    nuevaAccion = params['actor']
+    print(nuevaAccion)
     
-    if (nuevotipoHistoria == 1):
-        newTipo = "Opcional"
     
-    if (nuevotipoHistoria == 2):
-        newTipo = "Obligatorio"
-        
-    nuevoActorHistoria = params['actor']
-    print("holaaaa bebebe", nuevoActorHistoria)
-    nuevaHistoria = clsHistoria()
-    resultInsert = nuevaHistoria.insert_Historia(nuevoCodigoHistoria,1, newTipo)
+    #resultInsert = nuevaHistoria.insert_Historia(nuevoCodigoHistoria,1, newTipo, nuevoAccionHistoria)
     
     #Datos de prueba
     res['label'] = res['label'] + '/1'
     
-    if(resultInsert):
-        res= results[0]
-    else:
-        res = results[1]
+    #if(resultInsert):
+        #res= results[0]
+    #else:
+        #res = results[1]
 
     #Action code ends here
     if "actor" in res:
