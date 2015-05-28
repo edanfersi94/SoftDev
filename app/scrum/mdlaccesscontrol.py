@@ -100,13 +100,13 @@ class clsAccessControl(object):
     #.------------------------------------------------------------------------------------------------.
 
     def check_descrip(self, descripc):
-       """
-            @brief Función que permite verificar si la descripción dada es válida.
+        """
+        @brief Función que permite verificar si la descripción dada es válida.
 
-            @param descripc: cadena de caracteres a verificar.
+        @param descripc: cadena de caracteres a verificar.
 
-            @return True si la descripc es válida. De lo contrario retorna False.
-       """
+        @return True si la descripc es válida. De lo contrario retorna False.
+        """
 
         # Se realiza el casteo de la descripción dada.
         descripc = str(descripc)
@@ -114,11 +114,11 @@ class clsAccessControl(object):
         if (1 <= lenDescrip <= 500):        
             # Verificación de la descripción con la exp. regular.
             matchObj = re.search(self.regularExpDesc,descripc)
-            
+
             # Se verifica si la cadena introducida es valida.
             if (matchObj):  
                 return( True )
-        
+
         return( False )   
 
     #.------------------------------------------------------------------------------------------------.
