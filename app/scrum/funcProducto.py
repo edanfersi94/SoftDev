@@ -16,9 +16,6 @@
 # Función a importar.
 import model
 
-# Numero de productos creados en la base de datos.
-num_productos   = 0
-
 # Clase que tendra las diferentes funcionalidades de la tabla "Pila".
 class clsProducto():
 
@@ -36,8 +33,14 @@ class clsProducto():
 					*(False, 0) en caso contrario.
 
 		"""
+		# Búsqueda del identificador más alto.	
+		query = model.db.session.query(model.func.max(model.Pila.idPila)).all()
 		
-		global num_productos
+		# Se toma la tupla resultante
+		tuplaResult = query[0]
+		
+		num_productos = tuplaResult[0]
+
 		salida = (False, 0)
 
 		# Booleano que indica si el tipo es el correcto.
@@ -49,6 +52,11 @@ class clsProducto():
 			descripLenValid = 1 <= len(newDescripProducto) <= 500
 		
 			if ( descripLenValid ):
+
+				# Si no hay productos en la base de datos, entonces se inicializa el contador.
+				if num_productos == None:
+					num_productos = 0
+					
 				num_productos = num_productos + 1
 				newProducto = model.Pila(num_productos, newDescripProducto)
 				model.db.session.add(newProducto)

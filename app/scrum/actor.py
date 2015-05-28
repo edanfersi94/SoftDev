@@ -14,24 +14,22 @@ def ACrearActor():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VProducto', 'msg':['Actor creado']}, {'label':'/VCrearActor', 'msg':['Error al crear actor']}, ]
-    res = results[0]
+    res = results[1]
 
+    # Información del actor a crear.
     nuevo_nombre_actores      = params['nombre']
     nueva_descripcion_actores = params['descripcion']
     
-    # Se obtiene la información del estado de la página.
-    query = model.db.session.query(model.EstadoActual).all()
-    idProducto = int(query[0].id_producto_actual)
+    # Se obtiene el identificador del producto actual.
+    idProducto = int(session['idPila'])
 
     nuevoActor   = clsActor()
     resultInsert = nuevoActor.insert_Actor( idProducto, nuevo_nombre_actores, nueva_descripcion_actores)
 
     if ( resultInsert ):
-        res = results[0]
-    else:
-        res = results[1]
-
-    res['label'] = res['label'] + '/' + str(idProducto)
+        res = results[0]  
+        # Se actualiza el URL de la pág a donde se va a redirigir.
+        res['label'] = res['label'] + '/' + str(idProducto) 
 
     if "actor" in res:
         if res['actor'] is None:
@@ -47,15 +45,13 @@ def AModifActor():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VProducto', 'msg':['Actor actualizado']}, {'label':'/VActor', 'msg':['Error al modificar actor']}, ]
-    res = results[0]
+    res = results[1]
 
-    # Se obtiene la información del estado de la página.
-    query = model.db.session.query(model.EstadoActual).all()
+    # Se obtiene el identificador del producto actual.
+    idPila = int(session['idPila'])
 
-    idPila = int(query[0].id_producto_actual)
-    res['label'] = res['label'] + '/' + str(idPila)
-
-    id_actor = query[0].id_actor_actual
+    # Se obtiene los atributos del actor actual.
+    id_actor = int(session['idActor'])
     nuevo_nombre_actores = params['nombre']
     nueva_descripcion_actores = params['descripcion']
 
@@ -64,8 +60,8 @@ def AModifActor():
 
     if ( resultsModif ):
         res = results[0]
-    else:
-        res = results[1]
+        # Se actualiza el URL de la pág a donde se va a redirigir.
+        res['label'] = res['label'] + '/' + str(idPila)
 
     if "actor" in res:
         if res['actor'] is None:
@@ -76,34 +72,49 @@ def AModifActor():
 
 #.----------------------------------------------------------------------------------------.
 
+@actor.route('/actor/VCrearActor')
+def VCrearActor():
+    res = {}
+
+    # Producto actual.
+    idProducto = session['idPila']
+
+    # Se almacena la información recibida.
+    res['fActor'] = {'idPila':session['idPila'],
+                     'idActor':request.args.get('idActor',1),
+                     'descripcion':request.args.get('descripcion')}
+    res['idPila'] = idProducto
+
+    if "actor" in session:
+        res['actor']=session['actor']
+    return json.dumps(res)
+
+#.----------------------------------------------------------------------------------------.
+
 @actor.route('/actor/VActor')
 def VActor():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
 
-    # Se obtiene la información del estado de la página.
-    query = model.db.session.query(model.EstadoActual).all()
-    idProducto = int(query[0].id_producto_actual)
-
+    idProducto = int(request.args.get('idPila',1))
+    
+    # Se envía el identificador del producto al que pertenece el producto actual.
     res['idPila'] = idProducto
 
-    pagActorActual= request.url
-    pagActorActual.split('=')
-    actorActual = int(pagActorActual[-1])
+    # Se obtiene el identificador del actor actual.
+    idActorActual = int(request.args.get('idActor',1))
+    session['idActor'] = idActorActual
 
-    model.db.session.query(model.EstadoActual).update({'id_actor_actual':actorActual})
-    model.db.session.commit()    
+    # Se obtiene la información del actor a modificar.
+    infoActorActual = model.db.session.query(model.Actores).filter_by(id_actores = idActorActual)
+    nombreActorActual = infoActorActual[0].nombre_actores
+    descripcionActorActual = infoActorActual[0].descripcion_actores
 
-    return json.dumps(res)
+    res['fActor'] = {'idPila': idProducto,
+                     'nombre':nombreActorActual,
+                     'descripcion':descripcionActorActual}
 
-#.----------------------------------------------------------------------------------------.
-
-@actor.route('/actor/VCrearActor')
-def VCrearActor():
-    res = {}
-    if "actor" in session:
-        res['actor']=session['actor']
     return json.dumps(res)
 
 #.----------------------------------------------------------------------------------------.

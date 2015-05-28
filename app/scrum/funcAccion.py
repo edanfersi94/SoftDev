@@ -18,12 +18,16 @@ class clsAccion():
 
 			@return True si se insertó la acción dada. De lo contrario False.
 		"""
+
+		# Búsqueda del identificador más alto.	
+		query = model.db.session.query(model.func.max(model.Acciones.idacciones)).all()
 		
 		query = model.db.session.query(model.func.max(model.Acciones.idacciones)).all()
 		
 		tuplaResult = query[0]
 		
 		num_acciones = int(tuplaResult[0] or 0)
+
 
 		# Booleano que indica si el tipo es el correcto.
 		descripIsStr = type(newDescripAccion) == str
@@ -36,7 +40,12 @@ class clsAccion():
 			idProducIsPosit = idProducto > 0
 
 			if ( descripLenValid and idProducIsPosit ):
+
+				# Si no hay acciones en la base de datos, entonces se inicializa el contador.
+				if num_acciones == None:
+					num_acciones = 0				
 				num_acciones = num_acciones + 1
+
 				newAccion = model.Acciones(idProducto, num_acciones, newDescripAccion)
 				model.db.session.add(newAccion)
 				model.db.session.commit()

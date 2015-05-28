@@ -3,7 +3,6 @@
 # Función a importar.
 import model
 
-
 # Clase que tendra las diferentes funcionalidades de la tabla "Objetivo".
 class clsObjetivo():
 
@@ -18,6 +17,7 @@ class clsObjetivo():
 		"""
 		query = model.db.session.query(model.func.max(model.Objetivo.idObjetivo)).all()
 		
+
 		tuplaResult = query[0]
 		
 		num_objetivos = int(tuplaResult[0] or 0)
@@ -33,6 +33,11 @@ class clsObjetivo():
 			idProducIsPosit = idProducto > 0
 		
 			if ( descripLenValid and idProducIsPosit ):
+				
+				# Si no hay objetivos en la base de datos, entonces se inicializa el contador.
+				if num_objetivos == None:
+					num_objetivos = 0
+				
 				num_objetivos = num_objetivos + 1
 				newObjetivo = model.Objetivo(idProducto, num_objetivos, newDescripObjetivo)
 				model.db.session.add(newObjetivo)
