@@ -55,12 +55,11 @@ manager.add_command('db', MigrateCommand)
 class Pila(db.Model):
     __tablename__   = 'pila'
     idPila          = db.Column(db.Integer, primary_key = True)
-    #nombreProducto  = db.Column(db.String(50), unique = True)
     descripProducto = db.Column(db.String(50), nullable = True)
-    pilaAcciones    = db.relationship('Acciones', backref = 'pila', cascade="all, delete, delete-orphan")
-    pilaObjetivos   = db.relationship('Objetivo', backref = 'pila', cascade="all, delete, delete-orphan")
-    pilaActores     = db.relationship('Actores', backref = 'pila', cascade="all, delete, delete-orphan")
-    pilaHistoriaUsuario = db.relationship('Historia_Usuario',backref='pila',cascade = "all, delete, delete-orphan")
+    pilaAcciones    = db.relationship('Acciones', backref = 'pila_acciones', cascade="all, delete, delete-orphan")
+    pilaObjetivos   = db.relationship('Objetivo', backref = 'pila_objetivos', cascade="all, delete, delete-orphan")
+    pilaActores     = db.relationship('Actores', backref = 'pila_actores', cascade="all, delete, delete-orphan")
+    pilaHistoria    = db.relationship('Historia_Usuario',backref='pila_historia',cascade = "all, delete, delete-orphan")
     
     def __init__(self, idPila, descripProducto):
         self.idPila  = idPila
@@ -75,7 +74,9 @@ class Historia_Usuario(db.Model):
     codigoHistoria_Usuario   = db.Column(db.String(10), primary_key=True,)
     id_Pila_Historia_Usuario = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     id_Acciones_Historia_Usuario = db.Column(db.Integer, db.ForeignKey('acciones.idacciones'))
-    
+    listaObjetivos = db.relationship('ObjHistorias',backref='historia',cascade = "all, delete, delete-orphan")
+    listaActores = db.relationship('ActoresHistorias',backref='historia',cascade = "all, delete, delete-orphan")
+
     def __init__(self, idHistoria,codigoHistoria,historiaIdPila, tipoHistoria_Usuario,id_Acciones_Historia_Usuario):
         self.idHistoria_Usuario  = idHistoria
         self.tipoHistoria_Usuario = tipoHistoria_Usuario
@@ -106,8 +107,7 @@ class Acciones(db.Model):
     idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     idacciones      = db.Column(db.Integer, primary_key = True)
     descripAcciones = db.Column(db.String(500), nullable = False)
-
-    
+    pilaHistoriaUsuario = db.relationship('Historia_Usuario',backref='pila',cascade = "all, delete, delete-orphan")
     def __init__(self, idPila, idAcciones, descripAcciones):
         self.idProducto = idPila
         self.idacciones      = idAcciones
@@ -122,14 +122,14 @@ class Objetivo(db.Model):
     idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     idObjetivo    = db.Column(db.Integer, primary_key = True)
     descripObjetivo = db.Column(db.String(500), nullable = False)
-    codigoObjetivos = db.Column(db.String(10), db.ForeignKey('historia.codigoHistoria_Usuario'), nullable = True)
+    historiaAsociada = db.relationship('ObjHistorias',backref='objetivo',cascade = "all, delete, delete-orphan")
 
-    def __init__(self, idPila, idObjetivo, descripObjetivo, codigoObjetivos = None):
+    def __init__(self, idPila, idObjetivo, descripObjetivo):
         # Constructor del modelo Acciones.
         self.idProducto = idPila
         self.idObjetivo       = idObjetivo
         self.descripObjetivo  = descripObjetivo
-        self.codigoObjetivos  = codigoObjetivos
+
 # Tabla Actores.
 class Actores(db.Model):
     __tablename__  = 'actores'
@@ -137,15 +137,37 @@ class Actores(db.Model):
     id_actores     = db.Column(db.Integer, primary_key = True)
     nombre_actores = db.Column(db.String(50), nullable = False)
     descripcion_actores = db.Column(db.String(500), nullable = True)
-    codigoActores = db.Column(db.String(10), db.ForeignKey('historia.codigoHistoria_Usuario'), nullable = True)
-    def __init__(self, idPila, id_actores, nombre_actores, descripcion_actores,codigoActores = None):
+    historiaAsociada = db.relationship('ActoresHistorias',backref='actores',cascade = "all, delete, delete-orphan")
+    
+    def __init__(self, idPila, id_actores, nombre_actores, descripcion_actores):
         # Constructor del modelo Actores.
         self.idProducto = idPila
         self.id_actores          = id_actores
         self.nombre_actores      = nombre_actores
         self.descripcion_actores = descripcion_actores
-        self.codigoActores       = codigoActores  
 
+
+class ObjHistorias(db.Model):
+    __tablename__ = 'objHistorias'
+    idObjetivoHistoria = db.Column(db.Integer, primary_key = True)
+    idHistoria = db.Column(db.Integer, db.ForeignKey('historia.idHistoria_Usuario'))
+    idObjetivo = db.Column(db.Integer, db.ForeignKey('objetivo.idObjetivo'))
+
+    def __init__(self, idObjetivoHistoria, idHistoria, idObjetivo):
+        self.idObjetivoHistoria = idObjetivoHistoria
+        self.idHistoria = idHistoria
+        self.idObjetivo = idObjetivo
+
+class ActoresHistorias(db.Model):
+    __tablename__ = 'actHistorias'
+    idActoresHistoria = db.Column(db.Integer, primary_key = True)
+    idHistoria = db.Column(db.Integer, db.ForeignKey('historia.idHistoria_Usuario'))
+    idActores = db.Column(db.Integer, db.ForeignKey('actores.id_actores'))
+
+    def __init__(self, idActoresHistoria, idHistoria, idObjetivo):
+        self.idActoresHistoria = idActoresHistoria
+        self.idHistoria = idHistoria
+        self.idObjetivo = idObjetivo
 
 class EstadoActual(db.Model):
     __tablename__ = 'estados'
