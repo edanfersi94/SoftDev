@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from flask import request, session, Blueprint, json, redirect
 from app.scrum.funcHistoria import clsHistoria
+from app.scrum.funcObjetivo import clsObjetivo
+from app.scrum.funcActor import clsActor
 import model
 
 historias = Blueprint('historias', __name__)
@@ -19,9 +21,21 @@ def ACrearHistoria():
     if (params!=[]):
         newTipo   = params['tipo']
         newAccion = params['accion']
+        objetivos = params['objetivos']
+        actores   = params['actores']
+        codigo    = params['codigo']
+        obj       = clsObjetivo()
+        act       = clsActor()
+        idProducto = 1
         
-        if (objetivos=! []):
-            for ob
+        if (objetivos != []):
+            for ob in objetivos:
+                print("ob",type(ob),ob)
+                print("producto",type(idProducto),idProducto)
+                print("codigo",type(codigo),codigo)
+                resultObj = obj.modify_Objetivo_Codigo(ob,idProducto,codigo)
+                
+                
         
     
     

@@ -103,5 +103,40 @@ class clsObjetivo():
 					
 		return( False )
 	
+	
 	#--------------------------------------------------------------------------------	
+	
+	def modify_Objetivo_Codigo(self, idObjetivo, idProducto, newCodigoObjetivo):
+		"""
+			@brief Funcion que modifica los datos del objetivo cuyo id sea "idObjetivo".
+			@param idProducto 		  : Producto al que pertenece el objetivo.			
+			@param idObjetivo	  	  : id del objetivo a modificar.
+			@param newDescripObjetivo : nueva descripcion para el objetivo dada.
+			
+			@return True si se modifico el objetivo dada. De lo contrario False.
+		"""
 		
+		# Booleanos que indican si el tipo es el correcto.
+		CodigoIsStr = type(newCodigoObjetivo) == str
+		idIsInt 	 = type(idObjetivo) == int
+		idProdIsInt	 = type(idProducto) == int
+		
+		if ( idIsInt and CodigoIsStr and idProdIsInt):
+			# Booleanos que indican si se cumplen los limites.
+			idIsPositive 	= idObjetivo > 0
+			idProducIsPosit = idProducto > 0
+			descripLenValid = 1 <= len(newCodigoObjetivo) <= 500
+			
+			if ( idIsPositive and descripLenValid and idProducIsPosit):
+				query = self.find_idObjetivo( idProducto, idObjetivo)
+				
+				if ( query != [] ):
+					objetivo = model.Objetivo.idObjetivo == idObjetivo 
+					idProductoEsp = model.Objetivo.idProducto == idProducto
+					model.db.session.query(model.Objetivo).filter(objetivo, idProductoEsp).\
+						update({'codigoObjetivos':(newCodigoObjetivo)})
+					model.db.session.commit()
+					return( True )
+					
+		return( False )
+    #------------------------------------------------------------------------------------		
