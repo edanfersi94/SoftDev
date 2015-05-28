@@ -120,6 +120,7 @@ def VProducto():
          for obj in objetivos]   
 
     session['idPila'] = idPila
+    res['idPila'] = idPila
 
     if "actor" in session:
         res['actor']=session['actor']
