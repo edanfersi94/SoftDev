@@ -5,10 +5,8 @@
     Departamento de Computacion y Tecnologia de la Informacion.
     CI-3715 - Ingenieria de Software I (CI-3715)
     Abril - Julio 2015
-
     AUTORES:
         Equipo SoftDev
-
     DESCRIPCION: 
         
 """
@@ -33,12 +31,9 @@ class clsHistoria():
             @param newTipo : Tipos de Historia.
                    newCodigo: Codigo que le asigna a la historia de un usuario el dueño del producto
                    newIdProducto: IdProducto asociado la historia de usario
-
             @return Variable Booleana
-
                     * True cuando se inserta correctamente en la bases de datos.
                     * False caso contrario.
-
         """
         
         query = model.db.session.query(model.func.max(model.Historia_Usuario.idHistoria_Usuario)).all()
@@ -99,5 +94,3 @@ class clsHistoria():
             return( query )
 
         return ([])
-
-    
