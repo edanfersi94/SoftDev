@@ -1,3 +1,19 @@
+# -*- coding: utf-8 -*-. 
+
+"""
+    UNIVERSIDAD SIMON BOLIVAR
+    Departamento de Computacion y Tecnologia de la Informacion.
+    CI-3715 - Ingenieria de Software I (CI-3715)
+    Abril - Julio 2015
+    AUTORES:
+        Equipo SoftDev
+    DESCRIPCION: 
+        
+"""
+#.-------------------------------------------------------------------------------.
+
+# Librerias a importar:
+
 from flask                  import Flask, request, session, Blueprint, json
 from flask.ext.migrate      import Migrate, MigrateCommand
 from flask.ext.sqlalchemy   import SQLAlchemy
@@ -6,17 +22,17 @@ from sqlalchemy             import CheckConstraint
 from random                 import SystemRandom
 from datetime               import timedelta
 
-app = Flask(__name__, static_url_path='')
+#.-------------------------------------------------------------------------------.
 
+app = Flask(__name__, static_url_path='')
 
 # Construcción de la base de datos.
 
-
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres:1234@localhost/neyare"
+SQLALCHEMY_DATABASE_URI = "postgresql://BMO:@localhost/newapmwsc"
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
-db_dir = 'postgresql+psycopg2://postgres:1234@localhost/neyare'
+db_dir = 'postgresql+psycopg2://BMO:@localhost/newapmwsc'
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
@@ -30,13 +46,16 @@ app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-
 manager = Manager(app)
 manager.add_command("runserver", Server(
     use_debugger = True,
     use_reloader = True,
     host = '0.0.0.0')
 )
+#manager = Manager(app)
+manager.add_command('db', MigrateCommand)
+
+
 
 @app.before_request
 def make_session_permanent():
@@ -47,11 +66,6 @@ def make_session_permanent():
 @app.route('/')
 def root():
     return app.send_static_file('index.html')
-
-#Application code starts here
-
-
-#Application code ends here
 
 from app.scrum.ident import ident
 app.register_blueprint(ident)
@@ -160,7 +174,6 @@ class EstadoActual(db.Model):
         self.id_objetivos_actual = id_objetivos_actual
     
 #-------------------------------------------------------------------------------
-
 
 if __name__ == '__main__':
     app.config.update(
