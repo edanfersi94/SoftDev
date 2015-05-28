@@ -5,7 +5,6 @@ import model
 
 historias = Blueprint('historias', __name__)
 
-#.----------------------------------------------------------------------------------------.
 
 @historias.route('/historias/ACrearHistoria', methods=['POST'])
 def ACrearHistoria():
@@ -14,27 +13,19 @@ def ACrearHistoria():
     results = [{'label':'/VHistorias', 'msg':['Historia creada']}, {'label':'/VCrearHistoria', 'msg':['Error al crear historia']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
-    nuevoCodigoHistoria = params['codigo']
-    nuevotipoHistoria = params['tipo']
+    nuevaAccion = params['actor']
+    print(nuevaAccion)
     
-    if (nuevotipoHistoria == 1):
-        newTipo = "Opcional"
     
-    if (nuevotipoHistoria == 2):
-        newTipo = "Obligatorio"
-        
-    nuevoAccionHistoria = params['accion']
-    
-    nuevaHistoria = clsHistoria()
-    resultInsert = nuevaHistoria.insert_Historia(nuevoCodigoHistoria,1, newTipo, nuevoAccionHistoria)
+    #resultInsert = nuevaHistoria.insert_Historia(nuevoCodigoHistoria,1, newTipo, nuevoAccionHistoria)
     
     #Datos de prueba
     res['label'] = res['label'] + '/1'
     
-    if(resultInsert):
-        res= results[0]
-    else:
-        res = results[1]
+    #if(resultInsert):
+        #res= results[0]
+    #else:
+        #res = results[1]
 
     #Action code ends here
     if "actor" in res:
@@ -44,7 +35,7 @@ def ACrearHistoria():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+
 
 @historias.route('/historias/AModifHistoria', methods=['POST'])
 def AModifHistoria():
@@ -65,7 +56,7 @@ def AModifHistoria():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+
 
 @historias.route('/historias/VCrearHistoria')
 def VCrearHistoria():
@@ -105,15 +96,12 @@ def VCrearHistoria():
     res['fHistoria'] = {'super':0, 
        'actor':1, 'accion':2, 'objetivo':3, 'tipo':1} 
     res['idPila'] = 1
-    
-    for acci in acciones:
-        print("id",acci.idacciones)
 
 
     #Action code ends here
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+
 
 @historias.route('/historias/VHistoria')
 def VHistoria():
@@ -156,14 +144,14 @@ def VHistoria():
     #Action code ends here
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+
 
 @historias.route('/historias/VHistorias')
 def VHistorias():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
-    
+    #Action code goes here, res should be a JSON structure
     
     historia = model.Historia_Usuario.query.all()
     
@@ -178,4 +166,10 @@ def VHistorias():
     return json.dumps(res)
 
 
-#.----------------------------------------------------------------------------------------.
+
+
+
+#Use case code starts here
+
+
+#Use case code ends here
