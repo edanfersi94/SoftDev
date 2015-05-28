@@ -13,9 +13,7 @@ def ACrearProducto():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VProductos', 'msg':['Producto creado']}, {'label':'/VCrearProducto', 'msg':['Error al crear producto']}, ]
-
     res = results[1]
-
 
     # Descripción del producto a crear.
     nuevaDescripcionProducto = params['descripcion']
@@ -83,10 +81,6 @@ def VCrearProducto():
 
     if "actor" in session:
         res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
-
-
-    #Action code ends here
     return json.dumps(res)
 
 #.----------------------------------------------------------------------------------------.
@@ -94,11 +88,6 @@ def VCrearProducto():
 @prod.route('/prod/VProducto')
 def VProducto():
     res = {}
-    
-    if "actor" in session:
-        res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
-
 
     idPila = int(request.args.get('idPila', 1))
 
@@ -115,7 +104,6 @@ def VProducto():
 
     # Se muestran todos los actores asosiados al producto.
     res['data3'] = [
-
         {'idActor':act.id_actores, 
          'nombre':act.nombre_actores, 
          'descripcion':act.descripcion_actores}
@@ -135,7 +123,6 @@ def VProducto():
 
     if "actor" in session:
         res['actor']=session['actor']
-
     return json.dumps(res)
 
 #.----------------------------------------------------------------------------------------.
@@ -145,7 +132,6 @@ def VProductos():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
 
     # Se muestra la lista de productos.
     producto = model.Pila.query.all()
@@ -156,4 +142,3 @@ def VProductos():
     return json.dumps(res)
 
 #.----------------------------------------------------------------------------------------.
-

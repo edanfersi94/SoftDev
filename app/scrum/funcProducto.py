@@ -1,18 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-    UNIVERSIDAD SIMON BOLIVAR
-    Departamento de Computacion y Tecnologia de la Informacion.
-    CI-3715 - Ingenieria de Software I (CI-3715)
-    Abril - Julio 2015
-
-    AUTORES:
-        Equipo SoftDev
-
-    DESCRIPCION: 
-        
-"""
-
 # Función a importar.
 import model
 
@@ -33,6 +20,7 @@ class clsProducto():
 					*(False, 0) en caso contrario.
 
 		"""
+
 		# Búsqueda del identificador más alto.	
 		query = model.db.session.query(model.func.max(model.Pila.idPila)).all()
 		
@@ -122,4 +110,3 @@ class clsProducto():
 		return( False )
 	
 	#--------------------------------------------------------------------------------	
-	

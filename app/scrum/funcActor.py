@@ -19,12 +19,13 @@ class clsActor():
 			@return True si se inserto el actor dado. De lo contrario False.
 		"""
 
+		# Búsqueda del identificador más alto.
 		query = model.db.session.query(model.func.max(model.Actores.id_actores)).all()
 		
+		# Se toma la tupla resultante
 		tuplaResult = query[0]
 		
 		num_actores = int(tuplaResult[0] or 0)
-
 
 		# Booleanos que indican si el tipo es el correcto.
 		descripIsStr = type(newDescripActor) == str
@@ -152,4 +153,3 @@ class clsActor():
 		return( False )
 	
 	#--------------------------------------------------------------------------------	
-	

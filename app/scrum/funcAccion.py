@@ -22,12 +22,10 @@ class clsAccion():
 		# Búsqueda del identificador más alto.	
 		query = model.db.session.query(model.func.max(model.Acciones.idacciones)).all()
 		
-		query = model.db.session.query(model.func.max(model.Acciones.idacciones)).all()
-		
+		# Se toma la tupla resultante
 		tuplaResult = query[0]
 		
 		num_acciones = int(tuplaResult[0] or 0)
-
 
 		# Booleano que indica si el tipo es el correcto.
 		descripIsStr = type(newDescripAccion) == str
@@ -77,8 +75,6 @@ class clsAccion():
 			return( query )
 		return( [] )
 	
-
-
 	#-------------------------------------------------------------------------------
 
 	def modify_Accion(self, idProducto, idAccion, newDescripAccion):
@@ -118,4 +114,3 @@ class clsAccion():
 		return( False )
 	
 	#--------------------------------------------------------------------------------	
-	
