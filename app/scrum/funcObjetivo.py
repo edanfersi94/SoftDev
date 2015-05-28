@@ -3,7 +3,6 @@
 # Función a importar.
 import model
 
-
 # Clase que tendra las diferentes funcionalidades de la tabla "Objetivo".
 class clsObjetivo():
 
@@ -12,15 +11,20 @@ class clsObjetivo():
 	def insert_Objetivo(self, idProducto, newDescripObjetivo):
 		"""
 			@brief Funcion que permite insertar un nuevo objetivo en la base de datos.
+			
 			@param idProducto 		  : Producto al que pertenecerá el objetivo.			
 			@param newDescripObjetivo : Descripcion del objetivo a insertar.
+			
 			@return True si se insertó el objetivo dado. De lo contrario False.
 		"""
+
+		# Búsqueda del identificador más alto.		
 		query = model.db.session.query(model.func.max(model.Objetivo.idObjetivo)).all()
 		
+		# Se toma la tupla resultante.
 		tuplaResult = query[0]
 		
-		num_objetivos = int(tuplaResult[0] or 0)
+		num_objetivos = tuplaResult[0]
 
 		# Booleano que indica si el tipo es el correcto.
 		descripIsStr = type(newDescripObjetivo) == str
@@ -33,6 +37,11 @@ class clsObjetivo():
 			idProducIsPosit = idProducto > 0
 		
 			if ( descripLenValid and idProducIsPosit ):
+				
+				# Si no hay objetivos en la base de datos, entonces se inicializa el contador.
+				if num_objetivos == None:
+					num_objetivos = 0
+				
 				num_objetivos = num_objetivos + 1
 				newObjetivo = model.Objetivo(idProducto, num_objetivos, newDescripObjetivo)
 				model.db.session.add(newObjetivo)
@@ -65,13 +74,12 @@ class clsObjetivo():
 			return( query )
 		return( [] )
 	
-
-
 	#-------------------------------------------------------------------------------
 
 	def modify_Objetivo(self, idProducto, idObjetivo, newDescripObjetivo):
 		"""
 			@brief Funcion que modifica los datos del objetivo cuyo id sea "idObjetivo".
+	
 			@param idProducto 		  : Producto al que pertenece el objetivo.			
 			@param idObjetivo	  	  : id del objetivo a modificar.
 			@param newDescripObjetivo : nueva descripcion para el objetivo dada.
@@ -103,40 +111,4 @@ class clsObjetivo():
 					
 		return( False )
 	
-	
 	#--------------------------------------------------------------------------------	
-	
-	def modify_Objetivo_Codigo(self, idObjetivo, idProducto, newCodigoObjetivo):
-		"""
-			@brief Funcion que modifica los datos del objetivo cuyo id sea "idObjetivo".
-			@param idProducto 		  : Producto al que pertenece el objetivo.			
-			@param idObjetivo	  	  : id del objetivo a modificar.
-			@param newDescripObjetivo : nueva descripcion para el objetivo dada.
-			
-			@return True si se modifico el objetivo dada. De lo contrario False.
-		"""
-		
-		# Booleanos que indican si el tipo es el correcto.
-		CodigoIsStr = type(newCodigoObjetivo) == str
-		idIsInt 	 = type(idObjetivo) == int
-		idProdIsInt	 = type(idProducto) == int
-		
-		if ( idIsInt and CodigoIsStr and idProdIsInt):
-			# Booleanos que indican si se cumplen los limites.
-			idIsPositive 	= idObjetivo > 0
-			idProducIsPosit = idProducto > 0
-			descripLenValid = 1 <= len(newCodigoObjetivo) <= 500
-			
-			if ( idIsPositive and descripLenValid and idProducIsPosit):
-				query = self.find_idObjetivo( idProducto, idObjetivo)
-				
-				if ( query != [] ):
-					objetivo = model.Objetivo.idObjetivo == idObjetivo 
-					idProductoEsp = model.Objetivo.idProducto == idProducto
-					model.db.session.query(model.Objetivo).filter(objetivo, idProductoEsp).\
-						update({'codigoObjetivos':(newCodigoObjetivo)})
-					model.db.session.commit()
-					return( True )
-					
-		return( False )
-    #------------------------------------------------------------------------------------		
