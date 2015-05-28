@@ -3,7 +3,6 @@
 # Función a importar.
 import model
 
-
 # Clase que tendra las diferentes funcionalidades de la tabla "Actores".
 class clsActor():
 
@@ -20,8 +19,10 @@ class clsActor():
 			@return True si se inserto el actor dado. De lo contrario False.
 		"""
 
+		# Búsqueda del identificador más alto.
 		query = model.db.session.query(model.func.max(model.Actores.id_actores)).all()
 		
+		# Se toma la tupla resultante
 		tuplaResult = query[0]
 		
 		num_actores = int(tuplaResult[0] or 0)
@@ -42,6 +43,10 @@ class clsActor():
 				query = self.find_nameActor( idProducto, newNameActor)
 
 				if ( query == [] ):
+					# Si no hay productos en la base de datos, entonces se inicializa el contador.
+					if num_actores == None:
+						num_actores = 0
+					
 					num_actores = num_actores + 1
 					newActor = model.Actores(idProducto, num_actores,newNameActor, newDescripActor)
 					model.db.session.add(newActor)
@@ -129,15 +134,22 @@ class clsActor():
 				query1 = self.find_idActor(idProducto, idActor)
 				query2 = self.find_nameActor(idProducto, newNameActor)
 				
-				if (( query1 != [] ) and ( query2 == [])):
+				if ( query1 != [] ):
+
 					actores = model.Actores.id_actores == idActor
 					idProductoEsp =  model.Actores.idProducto == idProducto
-					model.db.session.query(model.Actores).filter(actores, idProductoEsp).\
-						update({'nombre_actores':(newNameActor),'descripcion_actores':(newDescripActor)})
-					model.db.session.commit()
-					return( True )
-					
+
+					if (query2 == []):
+						model.db.session.query(model.Actores).filter(actores, idProductoEsp).\
+							update({'nombre_actores':(newNameActor),'descripcion_actores':(newDescripActor)})
+						model.db.session.commit()
+						return( True )
+					elif (query2 != [] and query1[0].nombre_actores == newNameActor):
+						model.db.session.query(model.Actores).filter(actores, idProductoEsp).\
+							update({'descripcion_actores':(newDescripActor)})
+						model.db.session.commit()
+						return( True )
+
 		return( False )
 	
 	#--------------------------------------------------------------------------------	
-	

@@ -5,6 +5,7 @@ import model
 
 historias = Blueprint('historias', __name__)
 
+#.----------------------------------------------------------------------------------------.
 
 @historias.route('/historias/ACrearHistoria', methods=['POST'])
 def ACrearHistoria():
@@ -43,7 +44,7 @@ def ACrearHistoria():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-
+#.----------------------------------------------------------------------------------------.
 
 @historias.route('/historias/AModifHistoria', methods=['POST'])
 def AModifHistoria():
@@ -64,7 +65,7 @@ def AModifHistoria():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-
+#.----------------------------------------------------------------------------------------.
 
 @historias.route('/historias/VCrearHistoria')
 def VCrearHistoria():
@@ -112,7 +113,7 @@ def VCrearHistoria():
     #Action code ends here
     return json.dumps(res)
 
-
+#.----------------------------------------------------------------------------------------.
 
 @historias.route('/historias/VHistoria')
 def VHistoria():
@@ -155,14 +156,14 @@ def VHistoria():
     #Action code ends here
     return json.dumps(res)
 
-
+#.----------------------------------------------------------------------------------------.
 
 @historias.route('/historias/VHistorias')
 def VHistorias():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
+    
     
     historia = model.Historia_Usuario.query.all()
     
@@ -177,10 +178,4 @@ def VHistorias():
     return json.dumps(res)
 
 
-
-
-
-#Use case code starts here
-
-
-#Use case code ends here
+#.----------------------------------------------------------------------------------------.

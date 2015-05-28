@@ -12,23 +12,23 @@ def ACrearObjetivo():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VProducto', 'msg':['Objetivo creado']}, {'label':'/VCrearObjetivo', 'msg':['Error al crear objetivo']}, ]
-    res = results[0]
+    res = results[1]
     
+    # Descripción del objetivo a crear.
     nueva_descripcion_objetivo = params['descripcion']
 
-    # Se obtiene la información del estado de la página.
-    query = model.db.session.query(model.EstadoActual).all()
-    idProducto = int(query[0].id_producto_actual)
+    # Se obtiene el identificador del producto actual.
+    idProducto = int(session['idPila'])
 
     nuevoObjetivo = clsObjetivo()
     resultInset = nuevoObjetivo.insert_Objetivo( idProducto, nueva_descripcion_objetivo)
 
     if ( resultInset ):
-        res = results[0]
-    else:
-        res = results[1]    
+        res = results[0]  
+        # Se actualiza el URL de la pág a donde se va a redirigir.
+        res['label'] = res['label'] + '/' + str(idProducto) 
     
-    res['label'] = res['label'] + '/' + str(idProducto) 
+    res['idPila'] = idProducto
 
     if "actor" in res:
         if res['actor'] is None:
@@ -44,15 +44,13 @@ def AModifObjetivo():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VProducto', 'msg':['Objetivo actualizado']}, {'label':'/VObjetivo', 'msg':['Error al modificar objetivo']}, ]
-    res = results[0]
+    res = results[1]
     
-    # Se obtiene la información del estado de la página.
-    query = model.db.session.query(model.EstadoActual).all()
+    # Se obtiene el identificador del producto actual.
+    idPila = int(session['idPila'])
 
-    idPila = int(query[0].id_producto_actual)
-    res['label'] = res['label'] + '/' + str(idPila)
-    
-    id_objetivo = query[0].id_objetivos_actual
+    # Se obtiene los atributos del objetivo a modificar.
+    id_objetivo = int(session['idObjetivo'])
     nueva_descripcion_objetivo = params['descripcion']
 
     objetivoModif = clsObjetivo()
@@ -60,8 +58,8 @@ def AModifObjetivo():
 
     if ( resultsModif ):
         res = results[0]
-    else:
-        res = results[1]
+        # Se actualiza el URL de la pág a donde se va a redirigir.
+        res['label'] = res['label'] + '/' + str(idPila)
 
     if "actor" in res:
         if res['actor'] is None:
@@ -75,6 +73,16 @@ def AModifObjetivo():
 @objetivo.route('/objetivo/VCrearObjetivo')
 def VCrearObjetivo():
     res = {}
+
+    # Producto actual.
+    idProducto = session['idPila']
+
+    # Se almacena la información recibida.
+    res['fObjetivo'] = {'idPila': idProducto,
+                        'idObjetivo':request.args.get('idObjetivo',1),
+                        'descripcion':request.args.get('descripcion')}
+    res['idPila'] = idProducto
+
     if "actor" in session:
         res['actor']=session['actor']
     return json.dumps(res)
@@ -86,19 +94,25 @@ def VObjetivo():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
-  
-    # Se obtiene la información del estado de la página.
-    query = model.db.session.query(model.EstadoActual).all()
-    idProducto = int(query[0].id_producto_actual)
 
+    idProducto = int(request.args.get('idPila',1))
+
+    # Se envía el identificador del producto al que pertenece el producto actual.
     res['idPila'] = idProducto
 
-    pagActorActual= request.url
-    pagActorActual.split('=')
-    objetivoActual = int(pagActorActual[-1])
+    # Se obtiene el identificador del objetivo actual.
+    idObjetivoActual = int(request.args.get('idObjetivo',1))
+    session['idObjetivo'] = idObjetivoActual
 
-    model.db.session.query(model.EstadoActual).update({'id_objetivos_actual':objetivoActual})
-    model.db.session.commit()   
+    # Se obtiene la información del objetivo a modificar.
+    infoObjActual = model.db.session.query(model.Objetivo).filter_by(idObjetivo = idObjetivoActual)
+    descripcionObjetivoActual = infoObjActual[0].descripObjetivo
+
+    # Se almacena la información a enviar.
+    res['fObjetivo'] = {'idPila': idProducto,
+                        'idObjetivo':idObjetivoActual,
+                        'descripcion':descripcionObjetivoActual}
+
 
     return json.dumps(res)
 

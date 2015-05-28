@@ -113,7 +113,7 @@ class clsAccessControl(object):
         lenDescrip = len(descripc)
         if (1 <= lenDescrip <= 500):        
             # Verificación de la descripción con la exp. regular.
-            matchObj = re.search(self.regularExp,value)
+            matchObj = re.search(self.regularExpDesc,descripc)
             
             # Se verifica si la cadena introducida es valida.
             if (matchObj):  
