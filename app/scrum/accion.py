@@ -19,7 +19,9 @@ def ACrearAccion():
 
     # Se obtiene la información del estado de la página.
     query = model.db.session.query(model.EstadoActual).all()
+    print("idProducto", query)
     idProducto = int(query[0].id_producto_actual)
+    
 
     nuevaAccion = clsAccion()
     resultInset = nuevaAccion.insert_Accion( idProducto, nueva_descripcion_acciones)
