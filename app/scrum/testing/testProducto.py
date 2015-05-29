@@ -53,7 +53,7 @@ class TestProducto(unittest.TestCase):
         self.vaciarBaseDeDatos()
 
         newIdProducto = 1
-        newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? '
+        newDescripProducto=' Descripcion Producto.. '
         newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
@@ -81,7 +81,7 @@ class TestProducto(unittest.TestCase):
     def testfind_idProductoNotExistOneElemento(self):
         self.vaciarBaseDeDatos()
         newIdProducto = 1
-        newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? '
+        newDescripProducto=' Descripcion Producto.. '
         newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
@@ -101,7 +101,7 @@ class TestProducto(unittest.TestCase):
         # que es valida.
         for indice in range(1,4,1):
             newIdProducto = indice
-            newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? ' + str(indice)
+            newDescripProducto=' Descripcion Producto.. ' + str(indice)
             newProducto = model.Pila(newIdProducto,newDescripProducto)
             model.db.session.add(newProducto)
             model.db.session.commit()   
@@ -120,7 +120,7 @@ class TestProducto(unittest.TestCase):
         # que es valida.
         for indice in range(1,4,1):
             newIdProducto = indice
-            newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? ' + str(indice)
+            newDescripProducto=' Descripcion Producto.. ' + str(indice)
             newProducto = model.Pila(newIdProducto,newDescripProducto)
             model.db.session.add(newProducto)
             model.db.session.commit()   
@@ -136,7 +136,7 @@ class TestProducto(unittest.TestCase):
     def testfind_idProductoString(self):
         self.vaciarBaseDeDatos()
         newIdProducto = 1
-        newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? '
+        newDescripProducto=' Descripcion Producto.. '
         newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
@@ -153,7 +153,7 @@ class TestProducto(unittest.TestCase):
         self.vaciarBaseDeDatos()
         
         newIdProducto = 1
-        newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? '
+        newDescripProducto=' Descripcion Producto.. '
         newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
@@ -169,7 +169,7 @@ class TestProducto(unittest.TestCase):
         self.vaciarBaseDeDatos()
 
         newIdProducto = 1
-        newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? '
+        newDescripProducto=' Descripcion Producto.. '
         newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
@@ -185,7 +185,7 @@ class TestProducto(unittest.TestCase):
         self.vaciarBaseDeDatos()
 
         newIdProducto = 1
-        newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? '
+        newDescripProducto=' Descripcion Producto.. '
         newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
@@ -205,7 +205,7 @@ class TestProducto(unittest.TestCase):
         self.vaciarBaseDeDatos()
         
         newIdProducto = 2
-        newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? '
+        newDescripProducto=' Descripcion Producto.. '
         newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
@@ -327,7 +327,7 @@ class TestProducto(unittest.TestCase):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
         newIdProducto = 1
-        newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? '
+        newDescripProducto=' Descripcion Producto.. '
         newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
@@ -451,7 +451,7 @@ class TestProducto(unittest.TestCase):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
         newIdProducto = 1
-        newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? '
+        newDescripProducto=' Descripcion Producto.. '
         newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
@@ -469,7 +469,7 @@ class TestProducto(unittest.TestCase):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
         newIdProducto = 1
-        newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? '
+        newDescripProducto=' Descripcion Producto.. '
         newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
@@ -486,7 +486,7 @@ class TestProducto(unittest.TestCase):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
         newIdProducto = 1
-        newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? '
+        newDescripProducto=' Descripcion Producto.. '
         newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
@@ -503,7 +503,7 @@ class TestProducto(unittest.TestCase):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
         newIdProducto = 1
-        newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? '
+        newDescripProducto=' Descripcion Producto.. '
         newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
@@ -520,7 +520,7 @@ class TestProducto(unittest.TestCase):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
         newIdProducto = 1
-        newDescripProducto='ola k ase? Viendo mis casos de prueba o k ase? '
+        newDescripProducto=' Descripcion Producto.. '
         newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
