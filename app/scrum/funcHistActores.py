@@ -11,7 +11,7 @@ class clsHistoriaActores():
 	def insert_Actor(self, idHistoria, idActor):
 
 		# Búsqueda del identificador más alto.
-		query = model.db.session.query(model.func.max(model.ActoresHistorias.idHistoria)).all()
+		query = model.db.session.query(model.func.max(model.ActoresHistorias.idActoresHistoria)).all()
 
 		# Se toma la tupla resultante.
 		tuplaResult = query[0]

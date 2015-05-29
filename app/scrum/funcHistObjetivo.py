@@ -11,7 +11,7 @@ class clsHistoriaObj():
 	def insert_Objetivo(self, idHistoria, idObjetivo):
 
 		# Búsqueda del identificador más alto.
-		query = model.db.session.query(model.func.max(model.ObjHistorias.idHistoria)).all()
+		query = model.db.session.query(model.func.max(model.ObjHistorias.idObjetivoHistoria)).all()
 
 		# Se toma la tupla resultante.
 		tuplaResult = query[0]
