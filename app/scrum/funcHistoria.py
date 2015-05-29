@@ -54,8 +54,17 @@ class clsHistoria():
         # Booleanos que indican si el tipo es el correcto.
         idProductoIsInt = type(newIdProducto) == int
         codigoHistoriaIsStr = type(newCodigoHistoria) == str
+        tipo = type(newTipo)== int
+        if (tipo):
+            if (newTipo == 1):
+                newTipo = 'Opcional'
+            if (newTipo == 2):
+                newTipo = 'Obligatoria'
+        
+        TipoStr= newTipo == str
 
-        if (codigoHistoriaIsStr and idProductoIsInt):
+
+        if (codigoHistoriaIsStr and idProductoIsInt and TipoStr ):
             
             # Booleano que indica si cumplen con los limites.
             codigoLenValid = 1<= len(newCodigoHistoria)<=13

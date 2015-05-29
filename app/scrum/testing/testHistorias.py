@@ -126,52 +126,69 @@ class TestHistoria(unittest.TestCase):
     # Test 9: Se insertara una historia con codigo float.
     def testinsert_HistoriaCodFloat(self):
         model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
+        model.db.session.query(model.Acciones).delete()
         model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
         tempProducto = clsProducto()
         salida= tempProducto.insert_Producto('Prueba de Producto1')
         tempAccion = clsAccion()
         tempAccion.insert_Accion(1,"Holaaa")
         tempHistoria = clsHistoria()
-        result = tempHistoria.insert_Historia('Opcional',12.0,salida[1],1)
-        self.assertFalse(result)
+        result = tempHistoria.insert_Historia(1,12.0,'Opcional',1)
+        self.assertFalse(result[0])
                 
     ### CASOS INVALIDOS( Casos Malicia ):    
     # Test 10: Se insertara una historia con un tipo distinto.
-    #def testinsert_HistoriaTipoDistinto(self):
-        #model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        #model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        #tempProducto = clsProducto()
-        #salida= tempProducto.insert_Producto('Prueba de Producto1')
-        #tempHistoria = clsHistoria()
-        #result = tempHistoria.insert_Historia(salida[1],"c12",'tipoDistinto',1)
-        #self.assertFalse(result)
+    def testinsert_HistoriaTipoDistinto(self):
+        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
+        model.db.session.query(model.Acciones).delete()
+        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
+        tempProducto = clsProducto()
+        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        tempHistoria = clsHistoria()
+        tempAccion = clsAccion()
+        tempAccion.insert_Accion(1,"Holaaa")
+        tempHistoria = clsHistoria()
+        result = tempHistoria.insert_Historia(salida[1],"c12",'tipoDistinto',1)
+        self.assertFalse(result[0])
 
-    # Test 11: Se insertara una historia con tipo distinto y codigo entero.
-    #def testinsert_HistoriaTipoDistintoyCodInt(self):
-        #model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        #model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        #tempProducto = clsProducto()
-        #salida= tempProducto.insert_Producto('Prueba de Producto1')
-        #tempHistoria = clsHistoria()
-        #result = tempHistoria.insert_Historia('tipoDistinto',12,salida[1])
-        #self.assertFalse(result)
+    #Test 11: Se insertara una historia con tipo distinto y codigo entero.
+    def testinsert_HistoriaTipoDistintoyCodInt(self):
+        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
+        model.db.session.query(model.Acciones).delete()
+        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
+        tempProducto = clsProducto()
+        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        tempHistoria = clsHistoria()
+        tempAccion = clsAccion()
+        tempAccion.insert_Accion(1,"Holaaa")
+        tempHistoria = clsHistoria()
+        result = tempHistoria.insert_Historia(salida[1],12,'tipoDistinto',1)
+        self.assertFalse(result[0])
 
     # Test 12:  Se insertara una historia con tipo distinto y codigo float.
-    #def testinsert_HistoriaTipoDistintoyCodFloat(self):
-        #model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        #model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        #tempProducto = clsProducto()
-        #salida= tempProducto.insert_Producto('Prueba de Producto1')
-        #tempHistoria = clsHistoria()
-        #result = tempHistoria.insert_Historia('tipoDistinto',12.34,salida[1])
-        #self.assertFalse(result)
+    def testinsert_HistoriaTipoDistintoyCodFloat(self):
+        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
+        model.db.session.query(model.Acciones).delete()
+        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
+        tempProducto = clsProducto()
+        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        tempHistoria = clsHistoria()
+        tempAccion = clsAccion()
+        tempAccion.insert_Accion(1,"Holaaa")
+        tempHistoria = clsHistoria()
+        result = tempHistoria.insert_Historia(salida[1],12.34,'tipoDistinto',1)
+        self.assertFalse(result[0])
 
-    # Test 13: Se insertara una historia con codigo None.
-    #def testinsert_HistoriaNone(self):
-       # model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        #model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        #tempProducto = clsProducto()
-        #salida= tempProducto.insert_Producto('Prueba de Producto1')
-        #tempHistoria = clsHistoria()
-        #result = tempHistoria.insert_Historia('Obligatoria',None,salida[1])
-        #self.assertFalse(result)
+    #Test 13: Se insertara una historia con codigo None.
+    def testinsert_HistoriaNone(self):
+        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
+        model.db.session.query(model.Acciones).delete()
+        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
+        tempProducto = clsProducto()
+        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        tempHistoria = clsHistoria()
+        tempAccion = clsAccion()
+        tempAccion.insert_Accion(1,"Holaaa")
+        tempHistoria = clsHistoria()
+        result = tempHistoria.insert_Historia(salida[1], None, 'Obligatorio',1)
+        self.assertFalse(result[0])
