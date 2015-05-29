@@ -17,19 +17,24 @@ def ACrearActor():
     res = results[1]
 
     # Información del actor a crear.
-    nuevo_nombre_actores      = params['nombre']
-    nueva_descripcion_actores = params['descripcion']
-    
+    nuevo_nombre_actores      = params.get('nombre',None)
+    nueva_descripcion_actores = params.get('descripcion', None)
+   
     # Se obtiene el identificador del producto actual.
     idProducto = int(session['idPila'])
 
-    nuevoActor   = clsActor()
-    resultInsert = nuevoActor.insert_Actor( idProducto, nuevo_nombre_actores, nueva_descripcion_actores)
+    if(( nuevo_nombre_actores != None ) and ( nueva_descripcion_actores != None )):
 
-    if ( resultInsert ):
-        res = results[0]  
-        # Se actualiza el URL de la pág a donde se va a redirigir.
-        res['label'] = res['label'] + '/' + str(idProducto) 
+        nuevoActor   = clsActor()
+        resultInsert = nuevoActor.insert_Actor( idProducto, nuevo_nombre_actores, nueva_descripcion_actores)
+
+        if ( resultInsert ):
+            res = results[0]  
+       
+    # Se actualiza el URL de la pág a donde se va a redirigir.
+    res['label'] = res['label'] + '/' + str(idProducto) 
+
+    res['idPila'] = idProducto
 
     if "actor" in res:
         if res['actor'] is None:
@@ -60,8 +65,9 @@ def AModifActor():
 
     if ( resultsModif ):
         res = results[0]
-        # Se actualiza el URL de la pág a donde se va a redirigir.
-        res['label'] = res['label'] + '/' + str(idPila)
+
+    # Se actualiza el URL de la pág a donde se va a redirigir.
+    res['label'] = res['label'] + '/' + str(id_actor)
 
     if "actor" in res:
         if res['actor'] is None:
@@ -77,10 +83,10 @@ def VCrearActor():
     res = {}
 
     # Producto actual.
-    idProducto = session['idPila']
+    idProducto = request.args.get('idPila',1)
 
     # Se almacena la información recibida.
-    res['fActor'] = {'idPila':session['idPila'],
+    res['fActor'] = {'idPila':idProducto,
                      'idActor':request.args.get('idActor',1),
                      'descripcion':request.args.get('descripcion')}
     res['idPila'] = idProducto
@@ -97,11 +103,11 @@ def VActor():
     if "actor" in session:
         res['actor']=session['actor']
 
-    idProducto = int(request.args.get('idPila',1))
+    idProducto = session['idPila']
     
     # Se envía el identificador del producto al que pertenece el producto actual.
     res['idPila'] = idProducto
-
+    print(idProducto)
     # Se obtiene el identificador del actor actual.
     idActorActual = int(request.args.get('idActor',1))
     session['idActor'] = idActorActual
