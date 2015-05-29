@@ -59,6 +59,7 @@
         <table ng-table="tableParams5" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
                 <td data-title="'Descripcion'">{{row['descripcion']}}</td>
+
                 <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VAccion5(row['idAccion'])">Ver</a></td>
             </tr>
         </table>

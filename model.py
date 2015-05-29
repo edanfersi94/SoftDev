@@ -26,11 +26,16 @@ from sqlalchemy             import CheckConstraint, func
 
 # Construcción de la base de datos.
 
-SQLALCHEMY_DATABASE_URI = "postgresql://BMO:@localhost/newapmwsc"
+
+
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:joel123@localhost/prueba"
+
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
-db_dir = 'postgresql+psycopg2://BMO:@localhost/newapmwsc'
+
+db_dir = 'postgresql+psycopg2://postgres:joel123@localhost/prueba'
+
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
@@ -55,11 +60,11 @@ manager.add_command('db', MigrateCommand)
 class Pila(db.Model):
     __tablename__   = 'pila'
     idPila          = db.Column(db.Integer, primary_key = True)
-    descripProducto = db.Column(db.String(50), nullable = True)
-    pilaAcciones    = db.relationship('Acciones', backref = 'pila_acciones', cascade="all, delete, delete-orphan")
-    pilaObjetivos   = db.relationship('Objetivo', backref = 'pila_objetivos', cascade="all, delete, delete-orphan")
-    pilaActores     = db.relationship('Actores', backref = 'pila_actores', cascade="all, delete, delete-orphan")
-    pilaHistoria    = db.relationship('Historia_Usuario',backref='pila_historia',cascade = "all, delete, delete-orphan")
+    descripProducto = db.Column(db.String(500), nullable = True)
+    pilaAcciones    = db.relationship('Acciones', backref = 'pila', cascade="all, delete, delete-orphan")
+    pilaObjetivos   = db.relationship('Objetivo', backref = 'pila', cascade="all, delete, delete-orphan")
+    pilaActores     = db.relationship('Actores', backref = 'pila', cascade="all, delete, delete-orphan")
+    pilaHistoriaUsuario = db.relationship('Historia_Usuario',backref='pila',cascade = "all, delete, delete-orphan")
     
     def __init__(self, idPila, descripProducto):
         self.idPila  = idPila
@@ -108,6 +113,7 @@ class Acciones(db.Model):
     idacciones      = db.Column(db.Integer, primary_key = True)
     descripAcciones = db.Column(db.String(500), nullable = False)
     pilaHistoriaUsuario = db.relationship('Historia_Usuario',backref='pila',cascade = "all, delete, delete-orphan")
+
     def __init__(self, idPila, idAcciones, descripAcciones):
         self.idProducto = idPila
         self.idacciones      = idAcciones
@@ -139,6 +145,7 @@ class Actores(db.Model):
     descripcion_actores = db.Column(db.String(500), nullable = True)
     historiaAsociada = db.relationship('ActoresHistorias',backref='actores',cascade = "all, delete, delete-orphan")
     
+
     def __init__(self, idPila, id_actores, nombre_actores, descripcion_actores):
         # Constructor del modelo Actores.
         self.idProducto = idPila
