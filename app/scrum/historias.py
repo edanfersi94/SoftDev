@@ -109,13 +109,12 @@ def VCrearHistoria():
         res['actor']=session['actor']
 
     idProductoActual = session['idPila']
-
     accionesEsp = model.Acciones.idProducto == idProductoActual
     acciones = model.db.session.query(model.Acciones).filter(accionesEsp).all()
     
     actoresEsp = model.Actores.idProducto == idProductoActual
-    actores = model.db.session.query(model.Actores).filter(accionesEsp).all()
-    
+    actores = model.db.session.query(model.Actores).filter(actoresEsp).all()
+
     objetivosEsp = model.Objetivo.idProducto == idProductoActual
     objetivos = model.db.session.query(model.Objetivo).filter(objetivosEsp).all()
 
@@ -161,7 +160,7 @@ def VHistoria():
 
     idProducto = int(request.args.get('idPila',1))
     idHistoriaActual = int(request.args.get('idHistoria',1))
-
+    print(idProducto)
     historialActual = model.db.session.query(model.Historia_Usuario).filter(model.Historia_Usuario.idHistoria_Usuario == idHistoriaActual).all()
     historialActual = historialActual[0]
     res['idPila'] = idProducto
@@ -171,7 +170,7 @@ def VHistoria():
     acciones = model.db.session.query(model.Acciones).filter(accionesEsp).all()
     
     actoresEsp = model.Actores.idProducto == idProducto
-    actores = model.db.session.query(model.Actores).filter(accionesEsp).all()
+    actores = model.db.session.query(model.Actores).filter(actoresEsp).all()
     
     objetivosEsp = model.Objetivo.idProducto == idProducto
     objetivos = model.db.session.query(model.Objetivo).filter(objetivosEsp).all()

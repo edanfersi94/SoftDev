@@ -54,8 +54,9 @@ class clsHistoria():
         # Booleanos que indican si el tipo es el correcto.
         idProductoIsInt = type(newIdProducto) == int
         codigoHistoriaIsStr = type(newCodigoHistoria) == str
+    
 
-        if (codigoHistoriaIsStr and idProductoIsInt):
+        if (codigoHistoriaIsStr and idProductoIsInt ):
             
             # Booleano que indica si cumplen con los limites.
             codigoLenValid = 1<= len(newCodigoHistoria)<=13
@@ -87,13 +88,15 @@ class clsHistoria():
         """
         
         codigoStr = type(newcodigo) == str
-        codigoLenValid = 1<= len(newcodigo)<=10
         
-        if codigoStr and codigoLenValid:
-            productoEsp = model.Pila.idPila == idProducto
-            historiaEsp = model.Historia_Usuario.codigoHistoria_Usuario == newcodigo
-            query = model.db.session.query(model.Historia_Usuario).filter(historiaEsp).all()
-            return( query )
+        
+        if codigoStr:
+            codigoLenValid = 1<= len(newcodigo)<=10
+            if (codigoLenValid):
+                productoEsp = model.Pila.idPila == idProducto
+                historiaEsp = model.Historia_Usuario.codigoHistoria_Usuario == newcodigo
+                query = model.db.session.query(model.Historia_Usuario).filter(historiaEsp).all()
+                return( query )
 
         return ([])
 
