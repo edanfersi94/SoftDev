@@ -47,6 +47,7 @@ def ACrearHistoria():
 
                 # Se agregan los actores seleccionados en la base de datos.
                 for act in actoresAsociar:
+                    print(act)
                     histActores.insert_Actor(resultInsert[1], act)
 
                 res = results[0]
@@ -128,8 +129,7 @@ def VCrearHistoria():
       {'key':2,'value':'Obligatoria'}]
 
     # Se almacena la información recibida.  
-    res['fHistoria'] = {'super':0, 
-       'actor':1, 'accion':2, 'objetivo':3, 'tipo':1} 
+
     res['idPila'] = session['idPila']
     res['idHistoria'] = int(request.args.get('idHistoria',1))
 
@@ -184,10 +184,6 @@ def VHistoria():
       {'key':1,'value':'Opcional'},
       {'key':2,'value':'Obligatoria'}]
 
-    # Se almacena la información recibida.  
-    res['fHistoria'] = {'super':0, 
-       'actor':1, 'accion':2, 'objetivo':3, 'tipo':1} 
-    
     res['idPila'] = 1
     session['idHistoria'] = idHistoriaActual
 
