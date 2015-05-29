@@ -87,13 +87,15 @@ class clsHistoria():
         """
         
         codigoStr = type(newcodigo) == str
-        codigoLenValid = 1<= len(newcodigo)<=10
         
-        if codigoStr and codigoLenValid:
-            productoEsp = model.Pila.idPila == idProducto
-            historiaEsp = model.Historia_Usuario.codigoHistoria_Usuario == newcodigo
-            query = model.db.session.query(model.Historia_Usuario).filter(historiaEsp).all()
-            return( query )
+        
+        if codigoStr:
+            codigoLenValid = 1<= len(newcodigo)<=10
+            if (codigoLenValid):
+                productoEsp = model.Pila.idPila == idProducto
+                historiaEsp = model.Historia_Usuario.codigoHistoria_Usuario == newcodigo
+                query = model.db.session.query(model.Historia_Usuario).filter(historiaEsp).all()
+                return( query )
 
         return ([])
 
