@@ -164,10 +164,10 @@ class ActoresHistorias(db.Model):
     idHistoria = db.Column(db.Integer, db.ForeignKey('historia.idHistoria_Usuario'))
     idActores = db.Column(db.Integer, db.ForeignKey('actores.id_actores'))
 
-    def __init__(self, idActoresHistoria, idHistoria, idObjetivo):
+    def __init__(self, idActoresHistoria, idHistoria, idActor):
         self.idActoresHistoria = idActoresHistoria
         self.idHistoria = idHistoria
-        self.idObjetivo = idObjetivo
+        self.idActores = idActor
 
 class EstadoActual(db.Model):
     __tablename__ = 'estados'
