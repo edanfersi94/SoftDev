@@ -18,6 +18,10 @@ class clsAccessControl(object):
                        '(([0-9a-zA-Z]|[@.#$+*])*[@.#$+*]([0-9a-zA-Z]|[@.#$+*])*\d([0-9a-zA-Z]|[@.#$+*])*[A-Z])|'
                        '(([0-9a-zA-Z]|[@.#$+*])*[@.#$+*]([0-9a-zA-Z]|[@.#$+*])*[A-Z]([0-9a-zA-Z]|[@.#$+*])*\d)'
                        )
+
+        # Expresión que permite verificar si una descripción es válida.
+        #self.regularExpDescrip = ('[-@!.,/#&+\w\s]*')
+
     #.------------------------------------------------------------------------------------------------.     
     
     def encript(self, value):
@@ -95,4 +99,23 @@ class clsAccessControl(object):
 
     #.------------------------------------------------------------------------------------------------.
 
+    def check_descripcion(self, descripcion):
+        """
+            @brief Función que verifica si una descripción dada es válida.
 
+            @param descripcion: cadena de caracteres a verificar.
+
+            @return True si la cadena es válida. De lo contrario False.
+        """
+
+        #matchObj = re.match(self.regularExpDescrip, descripcion)
+        
+        #if (matchObj): 
+        clean = re.compile(r'<.*?>')
+        resultClean = clean.sub('', descripcion)
+    
+        if (len(resultClean) > 0):
+            return( True )
+        return( False )
+
+    #.------------------------------------------------------------------------------------------------.
