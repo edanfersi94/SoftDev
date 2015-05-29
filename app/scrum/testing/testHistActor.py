@@ -5,7 +5,7 @@
     Abril - Julio 2015
     AUTORES:
         
-    DESCRIPCION: Script que contiene los casos de prueba del modulo "funcActor.py"
+    DESCRIPCION: Script que contiene los casos de prueba del modulo "funcHistActor.py"
     
 """
 
@@ -664,7 +664,7 @@ class TestHistActor(unittest.TestCase):
     # test17: Se inserta un idHistoria de tipo None
     #                idActor de tipo None
         
-    def testInsertIdHistoriaNone(self):
+    def testInsertIdNone(self):
         
         tempHistActor = clsHistoriaActores()
         
