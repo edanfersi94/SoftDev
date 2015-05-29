@@ -25,7 +25,7 @@ class clsHistoria():
     
     #-------------------------------------------------------------------------------
     
-    def insert_Historia(self, newIdProducto, newCodigoHistoria, newTipo, NewAccion):
+    def insert_Historia(self, newIdProducto, newCodigoHistoria, newTipo, newAccion):
         
         """
             @brief Funcion que permite insertar un nueva historia en la base de datos.
@@ -65,7 +65,7 @@ class clsHistoria():
                     num_historias = 0
                 num_historias = num_historias + 1
 
-                newHistoriaUsuario = model.Historia_Usuario(num_historias, newCodigoHistoria, newIdProducto, newTipo, NewAccion)
+                newHistoriaUsuario = model.Historia_Usuario(num_historias, newCodigoHistoria, newIdProducto, newTipo, newAccion)
                 model.db.session.add(newHistoriaUsuario)
                 model.db.session.commit()  
                 salida = (True, num_historias)
@@ -96,5 +96,45 @@ class clsHistoria():
             return( query )
 
         return ([])
+
+    #-------------------------------------------------------------------------------
+
+    def modify_Historia(self, idProducto, idHistoria, newCodigoHistoria, newTipo, newAccion):
+
+        # Booleanos que indican si el tipo es correcto.
+        idHistoriaIsInt = type(idHistoria) == int
+        newCodigoIsStr  = type(newCodigoHistoria) == str
+        newAccionIsInt  = type(newAccion) == int
+
+        if (idHistoriaIsInt and newCodigoIsStr and newAccionIsInt):
+            idHistoriaIsPos = idHistoria > 0
+            newCodigoLenValid = 0 < len(newCodigoHistoria) < 14
+            newAccionIsPos = newAccion > 0
+
+            if ( idHistoriaIsPos and newCodigoLenValid and newAccionIsPos ):
+                    historiaQuery = model.Historia_Usuario.idHistoria_Usuario == idHistoria
+                    productoHistoria = model.Historia_Usuario.id_Pila_Historia_Usuario = idProducto
+                    query = model.db.session.query(model.Historia_Usuario).filter(historiaQuery, productoHistoria).all()
+                    historiaAct = query[0]
+
+                    if (historiaAct.codigoHistoria_Usuario != newCodigoHistoria):
+                        model.db.session.query(model.Historia_Usuario).filter(historiaQuery, productoHistoria).\
+                            update({'codigoHistoria_Usuario':(newCodigoHistoria)})
+                        model.db.session.commit()
+
+                    if (historiaAct.tipoHistoria_Usuario != newTipo):
+                        model.db.session.query(model.Historia_Usuario).filter(historiaQuery, productoHistoria).\
+                            update({'tipoHistoria_Usuario':(newTipo)})
+                        model.db.session.commit()
+
+                    if (historiaAct.id_Acciones_Historia_Usuario != newAccion):
+                        model.db.session.query(model.Historia_Usuario).filter(historiaQuery, productoHistoria).\
+                            update({'id_Acciones_Historia_Usuario':(newAccion)})
+                        model.db.session.commit()
+                    
+                    return( True )
+        return( False )
+
+    #-------------------------------------------------------------------------------
 
     

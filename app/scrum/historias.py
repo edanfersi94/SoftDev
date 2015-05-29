@@ -70,13 +70,29 @@ def AModifHistoria():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VHistorias', 'msg':['Historia modificada']}, {'label':'/VHistoria', 'msg':['Error al modificar historia']}, ]
-    res = results[0]
-    #Action code goes here, res should be a list with a label and a message
+    res = results[1]
 
-    #Datos de prueba
-    res['label'] = res['label'] + '/1'
+    # Se obtiene el identificador del producto actual.
+    idPila = int(session['idPila'])
+    idHistoria = int(session['idHistoria'])
 
-    #Action code ends here
+    # Nuevos atributos de la historia a modificar.
+    tipoAsociar = params.get('tipo', None)
+    codigoHistoria = params.get('codigo', None)
+    accionAsociar = params.get('accion', None) 
+    objetivosAsociar = params.get('objetivos', None)
+    actoresAsociar = params.get('actores', None)
+
+    nuevaHistoria = clsHistoria()
+    resultsModif = nuevaHistoria.modify_Historia(idPila, idHistoria, codigoHistoria, tipoAsociar, accionAsociar) 
+
+    if ( resultsModif ):
+        res = results[0]
+
+    res['idHistoria'] = idHistoria
+    # Se actualiza el URL de la pág a donde se va a redirigir.
+    res['label'] = res['label'] + '/' + str(idHistoria)
+
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -146,6 +162,8 @@ def VHistoria():
     idProducto = int(request.args.get('idPila',1))
     idHistoriaActual = int(request.args.get('idHistoria',1))
 
+    historialActual = model.db.session.query(model.Historia_Usuario).filter(model.Historia_Usuario.idHistoria_Usuario == idHistoriaActual).all()
+    historialActual = historialActual[0]
     res['idPila'] = idProducto
 
     #Action code goes here, res should be a JSON structure
@@ -158,33 +176,35 @@ def VHistoria():
     objetivosEsp = model.Objetivo.idProducto == idProducto
     objetivos = model.db.session.query(model.Objetivo).filter(objetivosEsp).all()
     
+    res['fHistoria'] = { 'codigo': historialActual.codigoHistoria_Usuario,
+                         'super' : 0}
     
     # Se muestra por pantalla los actores que pertenecen al producto.
-    res['fHistoria_opcionesActores'] = [
+    res['fHistoria.actores'] = [
       {'key':act.id_actores,'value':act.descripcion_actores}
         for act in actores]
 
     # Se muestra por pantalla las acciones que pertenecen al producto.
-    res['fHistoria_opcionesAcciones'] = [
+    res['fHistoria.accion'] = [
       {'key':acc.idacciones,'value':acc.descripAcciones}
         for acc in acciones]
 
     # Se muestra por pantalla los objetivos que pertenecen al producto.
-    res['fHistoria_opcionesObjetivos'] = [
+    res['fHistoria.objetivo'] = [
       {'key':obj.idObjetivo,'value':obj.descripObjetivo}
         for obj in objetivos]
 
     # TEMPORAL.
-    res['fHistoria_opcionesHistorias'] = [
+    res['fHistoria.super'] = [
       {'key':0,'value':'Ninguna'},
       {'key':1,'value':'Historia1'}]
 
     # Tipos de historias disponibles. 
-    res['fHistoria_opcionesTiposHistoria'] = [
+    res['fHistoria.actores.tipo'] = [
       {'key':1,'value':'Opcional'},
       {'key':2,'value':'Obligatoria'}]
 
-    res['idPila'] = 1
+    res['idPila'] = idProducto
     session['idHistoria'] = idHistoriaActual
 
     return json.dumps(res)
