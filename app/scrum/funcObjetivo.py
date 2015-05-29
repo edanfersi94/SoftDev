@@ -24,7 +24,7 @@ class clsObjetivo():
 		# Se toma la tupla resultante.
 		tuplaResult = query[0]
 		
-		num_objetivos = tuplaResult[0]
+		num_objetivos = int(tuplaResult[0] or 0)
 
 		# Booleano que indica si el tipo es el correcto.
 		descripIsStr = type(newDescripObjetivo) == str

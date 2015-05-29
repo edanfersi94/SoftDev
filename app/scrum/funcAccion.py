@@ -25,22 +25,22 @@ class clsAccion():
 		# Se toma la tupla resultante
 		tuplaResult = query[0]
 		
-		num_acciones = tuplaResult[0]
+		num_acciones = int(tuplaResult[0] or 0)
 
-		# Booleanos que indica si el tipo es el correcto.
+		# Booleano que indica si el tipo es el correcto.
 		descripIsStr = type(newDescripAccion) == str
 		idProdIsInt	 = type(idProducto) == int
 
 		if ( descripIsStr and idProdIsInt ):
 
-			# Booleano que indican si cumplen con los limites.
+			# Booleano que indica si cumplen con los limites.
 			descripLenValid = 1 <= len(newDescripAccion) <= 500
 			idProducIsPosit = idProducto > 0
 
 			if ( descripLenValid and idProducIsPosit ):
 
 				# Si no hay acciones en la base de datos, entonces se inicializa el contador.
-				if ( num_acciones == None ):
+				if num_acciones == None:
 					num_acciones = 0				
 				num_acciones = num_acciones + 1
 

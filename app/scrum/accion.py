@@ -13,24 +13,23 @@ def ACrearAccion():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VProducto', 'msg':['Acción creada']}, {'label':'/VCrearAccion', 'msg':['Error al crear acción']}, ]
-    res = results[0]
-    
+    res = results[1]
+
+    # Descripción de la acción a crear.
     nueva_descripcion_acciones = params['descripcion']
 
-    # Se obtiene la información del estado de la página.
-    query = model.db.session.query(model.EstadoActual).all()
-    idProducto = int(query[0].id_producto_actual)
+    # Se obtiene el identificador del producto actual.
+    idProducto = int(session['idPila'])
 
     nuevaAccion = clsAccion()
     resultInset = nuevaAccion.insert_Accion( idProducto, nueva_descripcion_acciones)
 
     if ( resultInset ):
         res = results[0]
-    else:
-        res = results[1]    
-    
-    idPila = 1
-    res['label'] = res['label'] + '/' + str(idProducto)
+        # Se actualiza el URL.
+        res['label'] = res['label'] + '/' + str(idProducto)
+
+    res['idPila'] = idProducto
 
     if "actor" in res:
         if res['actor'] is None:
@@ -46,15 +45,13 @@ def AModifAccion():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VProducto', 'msg':['Acción actualizada']}, {'label':'/VAccion', 'msg':['Error al modificar acción']}, ]
-    res = results[0]
+    res = results[1]
     
-    # Se obtiene la información del estado de la página.
-    query = model.db.session.query(model.EstadoActual).all()
-
-    idPila = int(query[0].id_producto_actual)
-    res['label'] = res['label'] + '/' + str(idPila)
+    # Se obtiene el identificador del producto actual.
+    idPila = int(session['idPila'])
     
-    id_accion = query[0].id_accion_actual
+    # Se obtiene los atributos de la acción a modificar.
+    id_accion = int(session['idAccion'])
     nueva_descripcion_acciones = params['descripcion']
 
     accionModif = clsAccion()
@@ -62,8 +59,8 @@ def AModifAccion():
 
     if ( resultsModif ):
         res = results[0]
-    else:
-        res = results[1]
+        # Se actualiza el URL.
+        res['label'] = res['label'] + '/' + str(idPila)
 
     if "actor" in res:
         if res['actor'] is None:
@@ -74,34 +71,49 @@ def AModifAccion():
 
 #.----------------------------------------------------------------------------------------.
 
+@accion.route('/accion/VCrearAccion')
+def VCrearAccion():
+    res = {}
+
+    # Producto actual.
+    idProducto = session['idPila']
+
+    # Se almacena la información recibida.
+    res['fAccion'] = {'idPila':idProducto,
+                      'idAccion':request.args.get('idAccion',1),
+                      'descripción':request.args.get('descripcion')}
+    res['idPila'] = idProducto
+
+    if "actor" in session:
+        res['actor']=session['actor']
+
+    return json.dumps(res)
+
+#.----------------------------------------------------------------------------------------.
+
 @accion.route('/accion/VAccion')
 def VAccion():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
     
-    # Se obtiene la información del estado de la página.
-    query = model.db.session.query(model.EstadoActual).all()
-    idProducto = int(query[0].id_producto_actual)
+    idProducto = int(request.args.get('idPila',1))
 
+    # Se envía el identificador del producto al que pertenece el producto actual.
     res['idPila'] = idProducto
 
-    pagAccionActual = request.url
-    pagAccionActual.split('=')
-    accionActual = int(pagAccionActual[-1])
+    # Se obtiene el identificador de la acción actual.
+    idAccionActual = int(request.args.get('idAccion',1))
+    session['idAccion'] = idAccionActual
 
-    model.db.session.query(model.EstadoActual).update({'id_accion_actual':accionActual})
-    model.db.session.commit()
+    # Se obtiene la información del objetivo a modificar.
+    infoAccionActual = model.db.session.query(model.Acciones).filter_by(idacciones = idAccionActual)
+    descripcionAccionActual = infoAccionActual[0].descripAcciones
 
-    return json.dumps(res)
-
-#.----------------------------------------------------------------------------------------.
-
-@accion.route('/accion/VCrearAccion')
-def VCrearAccion():
-    res = {}
-    if "actor" in session:
-        res['actor']=session['actor']
+    # Se almacena la información a enviar.
+    res['fAccion'] = {'idPila': idProducto,
+                      'idAccion':idAccionActual,
+                      'descripcion':descripcionAccionActual}
 
     return json.dumps(res)
 
