@@ -25,7 +25,7 @@ class clsHistoria():
     
     #-------------------------------------------------------------------------------
     
-    def insert_Historia(self, newCodigo, newIdProducto, newTipo, NewAccion):
+    def insert_Historia(self, newIdProducto, newCodigoHistoria, newTipo, NewAccion):
         
         """
             @brief Funcion que permite insertar un nueva historia en la base de datos.
@@ -41,42 +41,39 @@ class clsHistoria():
 
         """
         
+        salida = (False, 0)
+
+        # Búsqueda del identificador más alto.
         query = model.db.session.query(model.func.max(model.Historia_Usuario.idHistoria_Usuario)).all()
         
         # Se toma la tupla resultante
         tuplaResult = query[0]
         
-        num_historias = int(tuplaResult[0] or 0)
-        num_historias = num_historias + 1        
-        
+        num_historias = tuplaResult[0]
 
-        # Booleano que indica si el tipo es el correcto.
-        codigoStr = type(newCodigo) == str
-        
-        if (codigoStr):
+        # Booleanos que indican si el tipo es el correcto.
+        idProductoIsInt = type(newIdProducto) == int
+        codigoHistoriaIsStr = type(newCodigoHistoria) == str
+
+        if (codigoHistoriaIsStr and idProductoIsInt):
             
             # Booleano que indica si cumplen con los limites.
-            codigoLenValid = 1<= len(newCodigo)<=13
+            codigoLenValid = 1<= len(newCodigoHistoria)<=13
             
-            IdProductoInt = type(newIdProducto)== int
-            
-            if(IdProductoInt and codigoLenValid):
+            if(codigoLenValid):
+                if (num_historias == None):
+                    num_historias = 0
+                num_historias = num_historias + 1
+
+                newHistoriaUsuario = model.Historia_Usuario(num_historias, newCodigoHistoria, newIdProducto, newTipo, NewAccion)
+                model.db.session.add(newHistoriaUsuario)
+                model.db.session.commit()  
+                salida = (True, num_historias)
                 
-                productoEsp = model.Pila.idPila == newIdProducto
-                query_producto = model.db.session.query(model.Pila).filter(productoEsp).all()
-                
-                historiaEsp = model.Historia_Usuario.idHistoria_Usuario == num_historias
-                query_historia = model.db.session.query(model.Historia_Usuario).filter(historiaEsp).all()
-                
-                if(query_producto!=[] and query_historia==[]):
-                    newHistoriaUsuario = model.Historia_Usuario(num_historias,newCodigo, newIdProducto, newTipo, NewAccion)
-                    model.db.session.add(newHistoriaUsuario)
-                    model.db.session.commit()
-                    
-                    return (True)
-                    
-        return ( False )
-    
+        return ( salida )
+ 
+    #-------------------------------------------------------------------------------
+
     def find_CodHistoria(self,newcodigo):
         
         """

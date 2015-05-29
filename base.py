@@ -81,6 +81,8 @@ from app.scrum.objetivo import objetivo
 app.register_blueprint(objetivo)
 from app.scrum.accion import accion
 app.register_blueprint(accion)
+from app.scrum.historias import historias
+app.register_blueprint(historias)
 
 #-------------------------------------------------------------------------------
 

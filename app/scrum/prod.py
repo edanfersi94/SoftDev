@@ -72,7 +72,7 @@ def AModifProducto():
 def VCrearProducto():
     res = {}
 
-    idProducto = request.args.get('idPila')
+    idProducto = int(request.args.get('idPila'))
 
     # Se almacena la información recibida.
     res['fPila'] = {'idPila': idProducto,
