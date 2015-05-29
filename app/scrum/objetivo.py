@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import request, session, Blueprint, json
 from app.scrum.funcObjetivo import clsObjetivo
+from app.scrum.mdlaccesscontrol import clsAccessControl
 import model
 
 objetivo = Blueprint('objetivo', __name__)
@@ -15,19 +16,25 @@ def ACrearObjetivo():
     res = results[1]
     
     # Descripción del objetivo a crear.
-    nueva_descripcion_objetivo = params['descripcion']
+    nueva_descripcion_objetivo = params.get('descripcion', None)
 
     # Se obtiene el identificador del producto actual.
     idProducto = int(session['idPila'])
 
-    nuevoObjetivo = clsObjetivo()
-    resultInset = nuevoObjetivo.insert_Objetivo( idProducto, nueva_descripcion_objetivo)
+    if ( nueva_descripcion_objetivo != None ):
+        accessControl = clsAccessControl()
+        resultCheck = accessControl.check_descripcion( nueva_descripcion_objetivo )
 
-    if ( resultInset ):
-        res = results[0]  
-        # Se actualiza el URL de la pág a donde se va a redirigir.
-        res['label'] = res['label'] + '/' + str(idProducto) 
-    
+        if ( resultCheck ):
+            nuevoObjetivo = clsObjetivo()
+            resultInset = nuevoObjetivo.insert_Objetivo( idProducto, nueva_descripcion_objetivo)
+
+            if ( resultInset ):
+                res = results[0]  
+  
+    # Se actualiza el URL de la pág a donde se va a redirigir.
+    res['label'] = res['label'] + '/' + str(idProducto) 
+
     res['idPila'] = idProducto
 
     if "actor" in res:
@@ -58,8 +65,9 @@ def AModifObjetivo():
 
     if ( resultsModif ):
         res = results[0]
-        # Se actualiza el URL de la pág a donde se va a redirigir.
-        res['label'] = res['label'] + '/' + str(idPila)
+    
+    # Se actualiza el URL de la pág a donde se va a redirigir.
+    res['label'] = res['label'] + '/' + str(id_objetivo)
 
     if "actor" in res:
         if res['actor'] is None:

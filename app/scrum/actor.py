@@ -3,6 +3,7 @@
 # Librerias a importar.
 from flask import request, session, Blueprint, json
 from app.scrum.funcActor import clsActor
+from app.scrum.mdlaccesscontrol import clsAccessControl
 import model
 
 actor = Blueprint('actor', __name__)
@@ -24,13 +25,16 @@ def ACrearActor():
     idProducto = int(session['idPila'])
 
     if(( nuevo_nombre_actores != None ) and ( nueva_descripcion_actores != None )):
+        accessControl = clsAccessControl()
+        resultCheck = accessControl.check_descripcion( nueva_descripcion_actores )
 
-        nuevoActor   = clsActor()
-        resultInsert = nuevoActor.insert_Actor( idProducto, nuevo_nombre_actores, nueva_descripcion_actores)
+        if ( resultCheck ):
+            nuevoActor   = clsActor()
+            resultInsert = nuevoActor.insert_Actor( idProducto, nuevo_nombre_actores, nueva_descripcion_actores)
 
-        if ( resultInsert ):
-            res = results[0]  
-       
+            if ( resultInsert ):
+                res = results[0]  
+           
     # Se actualiza el URL de la pág a donde se va a redirigir.
     res['label'] = res['label'] + '/' + str(idProducto) 
 
@@ -107,7 +111,7 @@ def VActor():
     
     # Se envía el identificador del producto al que pertenece el producto actual.
     res['idPila'] = idProducto
-    print(idProducto)
+
     # Se obtiene el identificador del actor actual.
     idActorActual = int(request.args.get('idActor',1))
     session['idActor'] = idActorActual

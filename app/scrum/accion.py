@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import request, session, Blueprint, json
 from app.scrum.funcAccion import clsAccion
+from app.scrum.mdlaccesscontrol import clsAccessControl
 import model
 
 
@@ -16,18 +17,24 @@ def ACrearAccion():
     res = results[1]
 
     # Descripción de la acción a crear.
-    nueva_descripcion_acciones = params['descripcion']
+    nueva_descripcion_acciones = params.get('descripcion', None)
 
     # Se obtiene el identificador del producto actual.
     idProducto = int(session['idPila'])
 
-    nuevaAccion = clsAccion()
-    resultInset = nuevaAccion.insert_Accion( idProducto, nueva_descripcion_acciones)
+    if ( nueva_descripcion_acciones != None):
+        accessControl = clsAccessControl()
+        resultCheck = accessControl.check_descripcion( nueva_descripcion_acciones )
 
-    if ( resultInset ):
-        res = results[0]
-        # Se actualiza el URL.
-        res['label'] = res['label'] + '/' + str(idProducto)
+        if ( resultCheck ):
+            nuevaAccion = clsAccion()
+            resultInset = nuevaAccion.insert_Accion( idProducto, nueva_descripcion_acciones)
+
+            if ( resultInset ):
+                res = results[0]
+
+    # Se actualiza el URL de la pág a donde se va a redirigir.
+    res['label'] = res['label'] + '/' + str(idProducto)
 
     res['idPila'] = idProducto
 
@@ -59,8 +66,9 @@ def AModifAccion():
 
     if ( resultsModif ):
         res = results[0]
-        # Se actualiza el URL.
-        res['label'] = res['label'] + '/' + str(idPila)
+   
+    # Se actualiza el URL.
+    res['label'] = res['label'] + '/' + str(id_accion)
 
     if "actor" in res:
         if res['actor'] is None:
