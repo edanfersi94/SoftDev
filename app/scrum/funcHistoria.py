@@ -54,8 +54,9 @@ class clsHistoria():
         # Booleanos que indican si el tipo es el correcto.
         idProductoIsInt = type(newIdProducto) == int
         codigoHistoriaIsStr = type(newCodigoHistoria) == str
+    
 
-        if (codigoHistoriaIsStr and idProductoIsInt):
+        if (codigoHistoriaIsStr and idProductoIsInt ):
             
             # Booleano que indica si cumplen con los limites.
             codigoLenValid = 1<= len(newCodigoHistoria)<=13
@@ -87,13 +88,15 @@ class clsHistoria():
         """
         
         codigoStr = type(newcodigo) == str
-        codigoLenValid = 1<= len(newcodigo)<=10
         
-        if codigoStr and codigoLenValid:
-            productoEsp = model.Pila.idPila == idProducto
-            historiaEsp = model.Historia_Usuario.codigoHistoria_Usuario == newcodigo
-            query = model.db.session.query(model.Historia_Usuario).filter(historiaEsp).all()
-            return( query )
+        
+        if codigoStr:
+            codigoLenValid = 1<= len(newcodigo)<=10
+            if (codigoLenValid):
+                productoEsp = model.Pila.idPila == idProducto
+                historiaEsp = model.Historia_Usuario.codigoHistoria_Usuario == newcodigo
+                query = model.db.session.query(model.Historia_Usuario).filter(historiaEsp).all()
+                return( query )
 
         return ([])
 
@@ -116,8 +119,13 @@ class clsHistoria():
                     productoHistoria = model.Historia_Usuario.id_Pila_Historia_Usuario = idProducto
                     query = model.db.session.query(model.Historia_Usuario).filter(historiaQuery, productoHistoria).all()
                     historiaAct = query[0]
+                    
+                    model.db.session.delete(historiaAct)
+                    model.db.session.commit()
+                    
+        
 
-                    if (historiaAct.codigoHistoria_Usuario != newCodigoHistoria):
+                    """if (historiaAct.codigoHistoria_Usuario != newCodigoHistoria):
                         model.db.session.query(model.Historia_Usuario).filter(historiaQuery, productoHistoria).\
                             update({'codigoHistoria_Usuario':(newCodigoHistoria)})
                         model.db.session.commit()
@@ -130,8 +138,7 @@ class clsHistoria():
                     if (historiaAct.id_Acciones_Historia_Usuario != newAccion):
                         model.db.session.query(model.Historia_Usuario).filter(historiaQuery, productoHistoria).\
                             update({'id_Acciones_Historia_Usuario':(newAccion)})
-                        model.db.session.commit()
-                    
+                        model.db.session.commit()"""
                     return( True )
         return( False )
 

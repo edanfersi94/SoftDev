@@ -2,6 +2,7 @@
 
 # Función a importar.
 import model
+from sqlalchemy.sql.dml import Insert
 
 # Clase que tendra las diferentes funcionalidades de la tabla " ActoresHistorias "
 class clsHistoriaActores():
@@ -45,3 +46,21 @@ class clsHistoriaActores():
 
 		#-------------------------------------------------------------------------------
 
+	def modify_Actor (self,idHistoria,idActores):
+		
+		idHistoriaIsInt = type(idHistoria) == int
+		idActoresIsInt = type(idActores) == int
+		
+		if (idHistoriaIsInt and idActoresIsInt):
+			idHistoriaIsPos = idHistoria >0
+			idActoresIsPos = idActores> 0
+			
+			if ( idHistoriaIsPos and idActoresIsPos):
+				actoresEsp   = model.ActoresHistorias.idActores == idActores
+				historiaEsp  = model.ActoresHistorias.idHistoria == idHistoria
+				query = model.db.session.query(model.ActoresHistorias).filter(actoresEsp, historiaEsp).all()
+				actores = query[0]
+
+				model.db.session.delete(actores)
+				model.db.session.commit()
+					

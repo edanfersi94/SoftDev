@@ -44,3 +44,22 @@ class clsHistoriaObj():
 		return( False )
 
 		#-------------------------------------------------------------------------------
+		
+	def modify_Objetivo (self,idHistoria,idObjetivo):
+		
+		idHistoriaIsInt = type(idHistoria) == int
+		idObjetivoIsInt = type(idObjetivo) == int
+		
+		if (idHistoriaIsInt and idObjetivoIsInt):
+			idHistoriaIsPos = idHistoria >0
+			idObjetivoIsPos = idObjetivo> 0
+			
+			if (idHistoriaIsPos and idObjetivoIsPos):
+				objEsp   = model.ObjHistorias.idObjetivo == idObjetivo
+				historiaEsp  = model.ObjHistorias.idHistoria == idHistoria
+				query = model.db.session.query(model.ObjHistorias).filter(objEsp, historiaEsp).all()
+				objetivo = query[0]
+
+				model.db.session.delete(objetivo)
+				model.db.session.commit()
+					
