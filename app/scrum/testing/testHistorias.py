@@ -192,3 +192,9 @@ class TestHistoria(unittest.TestCase):
         tempHistoria = clsHistoria()
         result = tempHistoria.insert_Historia(salida[1], None, 'Obligatorio',1)
         self.assertFalse(result[0])
+        
+    # FUNCION MODIFICAR
+    
+        
+        
+    

@@ -3,6 +3,7 @@ encoding//app/scrum/accion.py=utf-8
 encoding//app/scrum/actor.py=utf-8
 encoding//app/scrum/funcAccion.py=utf-8
 encoding//app/scrum/funcActor.py=utf-8
+encoding//app/scrum/funcHistActores.py=utf-8
 encoding//app/scrum/funcHistObjetivo.py=utf-8
 encoding//app/scrum/funcHistoria.py=utf-8
 encoding//app/scrum/funcObjetivo.py=utf-8

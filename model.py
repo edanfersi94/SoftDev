@@ -71,7 +71,7 @@ class Historia_Usuario(db.Model):
     __tablename__    = 'historia'
     idHistoria_Usuario       = db.Column(db.Integer, unique=True)
     tipoHistoria_Usuario     = db.Column(db.String(13), nullable = True)
-    codigoHistoria_Usuario   = db.Column(db.String(10), primary_key=True,)
+    codigoHistoria_Usuario   = db.Column(db.String(10), primary_key=True)
     id_Pila_Historia_Usuario = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     id_Acciones_Historia_Usuario = db.Column(db.Integer, db.ForeignKey('acciones.idacciones'))
     listaObjetivos = db.relationship('ObjHistorias',backref='historia',cascade = "all, delete, delete-orphan")

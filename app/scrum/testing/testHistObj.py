@@ -50,8 +50,25 @@ class TestHistObj(unittest.TestCase):
         model.db.session.add(newPila)
         model.db.session.commit()
         
+        NewIdPila = 2
+        NewdescripProducto = "PruebaPila2"
+        
+        #Se ingresa manualmente los datos a la tabla pila
+        newPila = model.Pila(NewIdPila, NewdescripProducto)
+        model.db.session.add(newPila)
+        model.db.session.commit()
+        
         #Datos a ingresar a la tabla actor
         NewidObjetivo = 1
+        NewdescripObjetivo = "Descrip Objetivo"
+        NewidProducto = 1
+        
+        #Se ingresa manualmente los datos a la tabla objetivos
+        newObjetivo = model.Objetivo(NewidProducto, NewidObjetivo,NewdescripObjetivo)
+        model.db.session.add(newObjetivo)
+        model.db.session.commit()
+        
+        NewidObjetivo = 2
         NewdescripObjetivo = "Descrip Objetivo"
         NewidProducto = 1
         
@@ -63,6 +80,15 @@ class TestHistObj(unittest.TestCase):
         #Datos a ingresar a la tabla accion
         Newidaccion = 1
         NewdescripAccion = "Descrip Accion"
+        NewidProducto = 1
+        
+        #Se ingresa manualmente los datos a la tabla acciones
+        newAccion = model.Acciones(NewidProducto, Newidaccion, NewdescripAccion)
+        model.db.session.add(newAccion)
+        model.db.session.commit()
+        
+        Newidaccion = 2
+        NewdescripAccion = "Descrip Accion2"
         NewidProducto = 1
         
         #Se ingresa manualmente los datos a la tabla acciones
@@ -82,6 +108,19 @@ class TestHistObj(unittest.TestCase):
         newHistoria = model.Historia_Usuario(NewIdHistoria,NewCodigoHistoria_Usuario, NewId_Pila_Historia_Usuario, NewtipoHistoria_Usuario,NewId_Acciones_Historia_Usuario)
         model.db.session.add(newHistoria)
         model.db.session.commit()
+        
+        
+        NewIdHistObj = 2
+        NewIdHistoria  = 2
+        NewtipoHistoria_Usuario = "Obligatorio"
+        NewCodigoHistoria_Usuario = "codigo2"
+        NewId_Pila_Historia_Usuario = 1
+        NewId_Acciones_Historia_Usuario = 2
+        
+        #Se ingresa manualmente los datos a la tabla historia
+        newHistoria = model.Historia_Usuario(NewIdHistoria,NewCodigoHistoria_Usuario, NewId_Pila_Historia_Usuario, NewtipoHistoria_Usuario,NewId_Acciones_Historia_Usuario)
+        model.db.session.add(newHistoria)
+        model.db.session.commit()
     # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------   
     
     #.-------------------------------------------------------------------.  
@@ -91,7 +130,7 @@ class TestHistObj(unittest.TestCase):
     # test1:Insertar una objetivo-historia  en la base de datos.
     
     #---------------------------------------------------------------------------------------------------------------------         
-    def testHistObjetivoExist(self):
+    """def testHistObjetivoExist(self):
         
         #Limpia bases de datos
         self.vaciarBaseDeDatos()
@@ -638,4 +677,36 @@ class TestHistObj(unittest.TestCase):
     #    self.vaciarBaseDeDatos()
         
     #-------------------------------------------------------------------------------------------------------
-    
+    """
+    def testmodify(self):
+        
+        #Inserta tablas dependientes
+        self.insertar()
+        
+        tempObj = clsHistoriaObj()
+        
+        #Datos a ingresar a la tabla objHistorias
+        NewIdHistObj = 1
+        NewIdObj = 1
+        
+        #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
+        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewIdObj)
+        self.assertTrue(resultInsert)
+        
+        NewIdHistObj = 1
+        NewIdObj = 2
+        
+        #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
+        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewIdObj)
+        #self.assertTrue(resultInsert)
+        
+        query =tempObj.find_Objetivo(NewIdHistObj)
+
+        for q in query:
+            tempObj.modify_Objetivo(NewIdHistObj,q)
+        
+        
+        
+           
+        
+        

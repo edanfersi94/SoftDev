@@ -99,7 +99,7 @@ class TestHistActor(unittest.TestCase):
     # test1:Insertar una accion-historia  en la base de datos.
     
     #---------------------------------------------------------------------------------------------------------------------         
-    def testHistActoresExist(self):
+    """def testHistActoresExist(self):
         
     
         tempHistActor = clsHistoriaActores()
@@ -832,6 +832,36 @@ class TestHistActor(unittest.TestCase):
     #    self.vaciarBaseDeDatos()
         
     #-------------------------------------------------------------------------------------------------------
-
+"""
         
-    
+    def testmodifyActor(self):
+        
+        tempHistActor = clsHistoriaActores()
+        
+        #Se limpia la bases de datos
+        self.vaciarBaseDeDatos()
+        
+        #Se añade una fila a la bases de datos de pila
+        self.insertarPila()
+        
+        #Se añade una fila a la bases de datos de actores
+        self.insertarActor()
+        
+        #Se añade una fila a la bases de datos de actores
+        self.insertarAccion()
+        
+        #Se añade una fila a la bases de datos de historia
+        self.insertarHistoria()
+        
+        #Datos a ingresar a la tabla actHistoria
+        NewIdHistActor = 1
+        NewIdActores = 1
+        
+
+        #Se llama a la funcion "insertActor" para que ingrese los datos a la bases de datos
+        resultInsert = tempHistActor.insert_Actor(NewIdHistActor,NewIdActores)
+        self.assertTrue(resultInsert)
+        
+        tempHistActor.modify_Actor(1,1,1)
+        #print(result)
+        
