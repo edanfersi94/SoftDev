@@ -26,17 +26,17 @@ def ACrearHistoria():
     objetivosAsociar = params.get('objetivos', None)
     actoresAsociar = params.get('actores', None)
 
-    print(params)
 
     idProductoActual = session['idPila']
     if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) ):
         accionQuery = model.Historia_Usuario.id_Acciones_Historia_Usuario == accionAsociar
         accionInHistory = model.db.session.query(model.Historia_Usuario).filter(accionQuery).all()
-
+        print("entreeeeee")
+        print("bool",accionInHistory == [])
         if (accionInHistory == []):
             nuevaHistoria = clsHistoria()
             resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar) 
-
+            print("holaaaa",resultInsert)
             if ( resultInsert[0] ):
                 histObjetivo = clsHistoriaObj()
                 histActores  = clsHistoriaActores()
@@ -49,6 +49,7 @@ def ACrearHistoria():
                 for act in actoresAsociar:
                     print(act)
                     histActores.insert_Actor(resultInsert[1], act)
+                
 
                 res = results[0]
                 res['idHistoria'] = resultInsert[1]
@@ -82,12 +83,94 @@ def AModifHistoria():
     accionAsociar = params.get('accion', None) 
     objetivosAsociar = params.get('objetivos', None)
     actoresAsociar = params.get('actores', None)
-
+    
     nuevaHistoria = clsHistoria()
-    resultsModif = nuevaHistoria.modify_Historia(idPila, idHistoria, codigoHistoria, tipoAsociar, accionAsociar) 
+    nuevoObjetivo = clsHistoriaObj()
+    nuevoActor    = clsHistoriaActores()
+    listaModify   = []
+    
+    #---------------------------------------------------------------------------------------
+    # BORRAR ACTORES ASOCIADOS A UNA HISTORIA
+    
+    findActor = nuevoActor.find_Actores(idHistoria)
+    
+    resultModifActores = False
+    
+    if ( findActor != [] ):
+            resultModifActores = True
+            for find in findActor:
+                if ( resultModifActores == True ):
+                    resultModifActores = nuevoActor.modify_Actor(idHistoria,find)
+            listaModify.append(resultModifActores)
+            
+    #----------------------------------------------------------------------------------------
+    #BORRAR OBJETIVOS ASOCIADOS A UNA HISTORIA        
+    
+    findObjetivo = nuevoObjetivo.find_Objetivo(idHistoria)
+    
+    resultModifObjetivo = False
+    
+    if ( findObjetivo != [] ):    
+              
+            resultModifObjetivo = True
+            for find in findObjetivo:
+                 if ( resultModifObjetivo == True ):
+                     resultModifObjetivo= nuevoObjetivo.modify_Objetivo(idHistoria,find)
+            listaModify.append(resultModifObjetivo)
+         
+              
+    #------------------------------------------------------------------------------------------
+    # BORRAR UNA HISTORIA
+             
+    findHistoria = nuevaHistoria.find_Historia(idHistoria)
+    resultModifHistoria = False
+        
+    if ( findHistoria != [] ):
+        
+            resultModifHistoria = True
+            for find in findHistoria:
+                if ( resultModifHistoria == True ):
+                    resultModifHistoria = nuevaHistoria.modify_Historia(idPila,idHistoria)
+            listaModify.append(resultModifHistoria)
+            
+    #------------------------------------------------------------------------------------------
+    idProductoActual = session['idPila']
+    if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) ):
+        accionQuery = model.Historia_Usuario.id_Acciones_Historia_Usuario == accionAsociar
+        accionInHistory = model.db.session.query(model.Historia_Usuario).filter(accionQuery).all()
+        print("entreeeeee")
+        print("bool",accionInHistory == [])
+        if (accionInHistory == []):
+            nuevaHistoria = clsHistoria()
+            resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar) 
+            print("holaaaa",resultInsert)
+            if ( resultInsert[0] ):
+                histObjetivo = clsHistoriaObj()
+                histActores  = clsHistoriaActores()
 
-    if ( resultsModif ):
+                # Se agregan los objetivos seleccionados en la base de datos.
+                for obj in objetivosAsociar:
+                    histObjetivo.insert_Objetivo(resultInsert[1], obj)
+
+                # Se agregan los actores seleccionados en la base de datos.
+                for act in actoresAsociar:
+                    print(act)
+                    histActores.insert_Actor(resultInsert[1], act)
+                
+
+                resu = True
+                res['idHistoria'] = resultInsert[1]
+    
+   
+    if ( listaModify == [True,True,True] and resu ):
         res = results[0]
+    #----------------------------------------------------------------------------------------------------------------------------------------------
+
+    #nuevaHistoria = clsHistoria()
+    #resultsModif = nuevaHistoria.modify_Historia(idPila, idHistoria, codigoHistoria, tipoAsociar, accionAsociar) 
+
+    #if ( resultsModif ):
+    #    res = results[0]
 
     res['idHistoria'] = idHistoria
     # Se actualiza el URL de la pág a donde se va a redirigir.

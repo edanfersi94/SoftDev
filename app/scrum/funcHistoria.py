@@ -102,46 +102,48 @@ class clsHistoria():
 
     #-------------------------------------------------------------------------------
 
-    def modify_Historia(self, idProducto, idHistoria, newCodigoHistoria, newTipo, newAccion):
+    def modify_Historia(self, idProducto, idHistoria_Usuario):
 
         # Booleanos que indican si el tipo es correcto.
-        idHistoriaIsInt = type(idHistoria) == int
-        newCodigoIsStr  = type(newCodigoHistoria) == str
-        newAccionIsInt  = type(newAccion) == int
+        idHistoriaIsInt = type(idHistoria_Usuario) == int
+        idProductoIsInt = type(idProducto) == int
 
-        if (idHistoriaIsInt and newCodigoIsStr and newAccionIsInt):
-            idHistoriaIsPos = idHistoria > 0
-            newCodigoLenValid = 0 < len(newCodigoHistoria) < 14
-            newAccionIsPos = newAccion > 0
+        if (idHistoriaIsInt and idProductoIsInt):
+            idHistoriaIsPos = idHistoria_Usuario > 0
+            idProductoIsPos = idProducto > 0
 
-            if ( idHistoriaIsPos and newCodigoLenValid and newAccionIsPos ):
-                    historiaQuery = model.Historia_Usuario.idHistoria_Usuario == idHistoria
-                    productoHistoria = model.Historia_Usuario.id_Pila_Historia_Usuario = idProducto
+            if ( idHistoriaIsPos and idProductoIsPos ):
+                    historiaQuery = model.Historia_Usuario.idHistoria_Usuario == idHistoria_Usuario
+                    productoHistoria = model.Historia_Usuario.id_Pila_Historia_Usuario == idProducto
                     query = model.db.session.query(model.Historia_Usuario).filter(historiaQuery, productoHistoria).all()
-                    historiaAct = query[0]
+                    historiaAct = query
                     
-                    model.db.session.delete(historiaAct)
-                    model.db.session.commit()
+                    for hist in historiaAct:
+                        model.db.session.delete(hist)
+                        model.db.session.commit()
                     
-        
-
-                    """if (historiaAct.codigoHistoria_Usuario != newCodigoHistoria):
-                        model.db.session.query(model.Historia_Usuario).filter(historiaQuery, productoHistoria).\
-                            update({'codigoHistoria_Usuario':(newCodigoHistoria)})
-                        model.db.session.commit()
-
-                    if (historiaAct.tipoHistoria_Usuario != newTipo):
-                        model.db.session.query(model.Historia_Usuario).filter(historiaQuery, productoHistoria).\
-                            update({'tipoHistoria_Usuario':(newTipo)})
-                        model.db.session.commit()
-
-                    if (historiaAct.id_Acciones_Historia_Usuario != newAccion):
-                        model.db.session.query(model.Historia_Usuario).filter(historiaQuery, productoHistoria).\
-                            update({'id_Acciones_Historia_Usuario':(newAccion)})
-                        model.db.session.commit()"""
                     return( True )
         return( False )
 
     #-------------------------------------------------------------------------------
+    
+    def find_Historia(self,idHistoria_Usuario):
+        
+        idHistoriaIsInt = type(idHistoria_Usuario) == int
+        
+        if (idHistoriaIsInt):
+            idHistoriaIsPos = idHistoria_Usuario >0
+            
+            if (idHistoriaIsPos):
+                historiaEsp  = model.Historia_Usuario.idHistoria_Usuario == idHistoria_Usuario
+                query = model.db.session.query(model.Historia_Usuario).filter(historiaEsp).all()
+                historia = query
+                    
+                return (historia)
+            
+            return ([])
+        
+        return ([])
+    
 
     

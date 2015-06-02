@@ -45,7 +45,7 @@ class clsHistoriaObj():
 
 		#-------------------------------------------------------------------------------
 		
-	def modify_Objetivo (self,idHistoria,idObjetivo):
+	def modify_Objetivo(self,idHistoria,idObjetivo):
 		
 		idHistoriaIsInt = type(idHistoria) == int
 		idObjetivoIsInt = type(idObjetivo) == int
@@ -58,8 +58,39 @@ class clsHistoriaObj():
 				objEsp   = model.ObjHistorias.idObjetivo == idObjetivo
 				historiaEsp  = model.ObjHistorias.idHistoria == idHistoria
 				query = model.db.session.query(model.ObjHistorias).filter(objEsp, historiaEsp).all()
-				objetivo = query[0]
-
-				model.db.session.delete(objetivo)
-				model.db.session.commit()
+				objetivo = query
+				
+				for obj in objetivo:
+					model.db.session.delete(obj)
+					model.db.session.commit()
+				
+				return ( True )
+			
+		return ( False )
+				
+				
+	def find_Objetivo(self,idHistoria):
+		listaObjetivo = []
+		
+		idHistoriaIsInt = type(idHistoria) == int
+		
+		if (idHistoriaIsInt):
+			idHistoriaIsPos = idHistoria >0
+			
+			if (idHistoriaIsPos):
+				historiaEsp  = model.ObjHistorias.idHistoria == idHistoria
+				query = model.db.session.query(model.ObjHistorias).filter(historiaEsp).all()
+				objetivo = query
+				
+				for obj in objetivo:
+					idObjetivo = obj.idObjetivo
+					listaObjetivo.append(idObjetivo)
+					
+				return (listaObjetivo)
+			
+			return ([])
+		
+		return ([])		
+			
+					
 					
