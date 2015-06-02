@@ -119,6 +119,7 @@ def VProducto():
         {'idObjetivo':obj.idObjetivo, 'descripcion':obj.descripObjetivo}
          for obj in objetivos]   
 
+    print(idPila)
     session['idPila'] = idPila
     res['idPila'] = idPila
 
