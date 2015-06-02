@@ -109,19 +109,25 @@ def VCrearHistoria():
         res['actor']=session['actor']
 
     idProductoActual = session['idPila']
+    print(idProductoActual)
 
-    accionesEsp = model.Acciones.idProducto == idProductoActual
-    acciones = model.db.session.query(model.Acciones).filter(accionesEsp).all()
+    # Lista de acciones que están asociado al producto actual.
+    acciones = model.db.session.query(model.Acciones).\
+                filter(model.Acciones.idProducto == idProductoActual).\
+                all()
+
+    # Lista de actores que están asociado al producto actual.
+    actores = model.db.session.query(model.Actores).\
+                filter(model.Actores.idProducto == idProductoActual).\
+                all()
     
-    actoresEsp = model.Actores.idProducto == idProductoActual
-    actores = model.db.session.query(model.Actores).filter(accionesEsp).all()
-    
-    objetivosEsp = model.Objetivo.idProducto == idProductoActual
-    objetivos = model.db.session.query(model.Objetivo).filter(objetivosEsp).all()
+    objetivos = model.db.session.query(model.Objetivo).\
+                filter(model.Objetivo.idProducto == idProductoActual).\
+                all()
 
     # Se muestra por pantalla los actores que pertenecen al producto.
     res['fHistoria_opcionesActores'] = [
-      {'key':act.id_actores,'value':act.descripcion_actores}
+      {'key':act.id_actores,'value':act.nombre_actores}
         for act in actores]
 
     # Se muestra por pantalla las acciones que pertenecen al producto.
@@ -159,26 +165,71 @@ def VHistoria():
     if "actor" in session:
         res['actor']=session['actor']
 
-    idProducto = int(request.args.get('idPila',1))
+    idProducto = int(session['idPila'])
     idHistoriaActual = int(request.args.get('idHistoria',1))
 
-    historialActual = model.db.session.query(model.Historia_Usuario).filter(model.Historia_Usuario.idHistoria_Usuario == idHistoriaActual).all()
+    # Se obtiene la información de la historia actual.
+    historialActual = model.db.session.query(model.Historia_Usuario).\
+                        filter(model.Historia_Usuario.idHistoria_Usuario == idHistoriaActual).\
+                        all()
     historialActual = historialActual[0]
-    res['idPila'] = idProducto
 
-    #Action code goes here, res should be a JSON structure
-    accionesEsp = model.Acciones.idProducto == idProducto
-    acciones = model.db.session.query(model.Acciones).filter(accionesEsp).all()
+
+     # Lista de acciones que están asociado al producto actual.
+    acciones = model.db.session.query(model.Acciones).\
+                filter(model.Acciones.idProducto == idProducto).\
+                all()
+
+    # Lista de actores que están asociado al producto actual.
+    actores = model.db.session.query(model.Actores).\
+                filter(model.Actores.idProducto == idProducto).\
+                all()
+    print(actores)
+
+    objetivos = model.db.session.query(model.Objetivo).\
+                filter(model.Objetivo.idProducto == idProducto).\
+                all()
     
-    actoresEsp = model.Actores.idProducto == idProducto
-    actores = model.db.session.query(model.Actores).filter(accionesEsp).all()
+    # Se muestra por pantalla los actores que pertenecen al producto.
+    res['fHistoria_opcionesActores'] = [
+      {'key':act.id_actores,'value':act.descripcion_actores}
+        for act in actores]
+
+    # Se muestra por pantalla las acciones que pertenecen al producto.
+    res['fHistoria_opcionesAcciones'] = [
+      {'key':acc.idacciones,'value':acc.descripAcciones}
+        for acc in acciones]
+
+    # Se muestra por pantalla los objetivos que pertenecen al producto.
+    res['fHistoria_opcionesObjetivos'] = [
+      {'key':obj.idObjetivo,'value':obj.descripObjetivo}
+        for obj in objetivos]
+
+    # TEMPORAL.
+    res['fHistoria_opcionesHistorias'] = [
+      {'key':0,'value':'Ninguna'},
+      {'key':1,'value':'Historia1'}]
+
+    # Tipos de historias disponibles. 
+    res['fHistoria_opcionesTiposHistoria'] = [
+      {'key':1,'value':'Opcional'},
+      {'key':2,'value':'Obligatoria'}]
+
+    #print(listaActores)
+    posicionActores = []
+    actores2 = model.db.session.query(model.Actores.id_actores).\
+            filter(model.Actores.idProducto == idProducto).\
+            all()
+
+    for act, in model.db.session.query(model.ActoresHistorias.idActores).\
+                    filter(model.ActoresHistorias.idHistoria == idHistoriaActual):
+        indexAct = [x + 1 for x, y in enumerate(actores2) if y[0] == act]
+        posicionActores = posicionActores + indexAct
     
-    objetivosEsp = model.Objetivo.idProducto == idProducto
-    objetivos = model.db.session.query(model.Objetivo).filter(objetivosEsp).all()
-    
-    res['fHistoria'] = { 'codigo': historialActual.codigoHistoria_Usuario,
-                         'super' : 0}
-    
+    res['fHistoria'] = { 'idHistoria': idHistoriaActual,
+                         'idPila': idProducto,
+                         'actores': [1]}
+    """ 
     # Se muestra por pantalla los actores que pertenecen al producto.
     res['fHistoria.actores'] = [
       {'key':act.id_actores,'value':act.descripcion_actores}
@@ -203,7 +254,7 @@ def VHistoria():
     res['fHistoria.actores.tipo'] = [
       {'key':1,'value':'Opcional'},
       {'key':2,'value':'Obligatoria'}]
-
+    """
     res['idPila'] = idProducto
     session['idHistoria'] = idHistoriaActual
 
@@ -218,7 +269,7 @@ def VHistorias():
     if "actor" in session:
         res['actor']=session['actor']
     
-    idProductoActual = int(request.args.get('idPila'))
+    idProductoActual = int(session['idPila'])
     idProducto = model.Historia_Usuario.id_Pila_Historia_Usuario == idProductoActual
     historia = model.db.session.query(model.Historia_Usuario).filter(idProducto).all()
 
