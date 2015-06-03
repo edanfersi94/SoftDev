@@ -68,7 +68,7 @@ def AModifAccion():
         res = results[0]
    
     # Se actualiza el URL.
-    res['label'] = res['label'] + '/' + str(id_accion)
+    res['label'] = res['label'] + '/' + str(idPila)
 
     if "actor" in res:
         if res['actor'] is None:

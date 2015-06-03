@@ -71,7 +71,7 @@ def AModifActor():
         res = results[0]
 
     # Se actualiza el URL de la pág a donde se va a redirigir.
-    res['label'] = res['label'] + '/' + str(id_actor)
+    res['label'] = res['label'] + '/' + str(idPila)
 
     if "actor" in res:
         if res['actor'] is None:
