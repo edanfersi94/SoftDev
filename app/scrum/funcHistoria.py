@@ -187,11 +187,15 @@ class clsHistoria():
 
         if not(numNuevaHistoria in listaEnlaces):
             listaEnlaces[numNuevaHistoria] = []
+            
+        print("list",listaEnlaces)
         
 
         aux = listaEnlaces.copy()
 
         # Se agrega el nuevo enlace.
+        #print("holaaa",type([numNuevaHistoria]))
+        print("super",idSuper)
         aux[idSuper] += [numNuevaHistoria]
 
         existCiclo = existenciaCiclo(aux)

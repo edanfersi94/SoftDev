@@ -21,6 +21,7 @@ def ACrearHistoria():
 
     # Se toma la lista de enlaces que se encuentra en la session.
     listaEnlace = session['enlaces']
+    print("enlace",listaEnlace)
 
     # Atributos de la historia a crear.
     tipoAsociar = params['tipo']
