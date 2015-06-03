@@ -60,11 +60,12 @@ class clsHistoriaObj():
 				query = model.db.session.query(model.ObjHistorias).filter(objEsp, historiaEsp).all()
 				objetivo = query
 				
-				for obj in objetivo:
-					model.db.session.delete(obj)
-					model.db.session.commit()
+				if (objetivo!=[]):
+					for obj in objetivo:
+						model.db.session.delete(obj)
+						model.db.session.commit()
 				
-				return ( True )
+					return ( True )
 			
 		return ( False )
 				

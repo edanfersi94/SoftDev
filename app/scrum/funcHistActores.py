@@ -81,11 +81,12 @@ class clsHistoriaActores():
 				query = model.db.session.query(model.ActoresHistorias).filter(historiaEsp).all()
 				actores = query
 				
-				for act in actores:
-					idActores = act.idActores
-					listaActores.append(idActores)
+				if (actores!=[]):
+					for act in actores:
+						idActores = act.idActores
+						listaActores.append(idActores)
 					
-				return (listaActores)
+					return (listaActores)
 			
 			return ([])
 		

@@ -118,11 +118,12 @@ class clsHistoria():
                     query = model.db.session.query(model.Historia_Usuario).filter(historiaQuery, productoHistoria).all()
                     historiaAct = query
                     
-                    for hist in historiaAct:
-                        model.db.session.delete(hist)
-                        model.db.session.commit()
+                    if historiaAct !=[]:
+                        for hist in historiaAct:
+                            model.db.session.delete(hist)
+                            model.db.session.commit()
                     
-                    return( True )
+                        return( True )
         return( False )
 
     #-------------------------------------------------------------------------------
