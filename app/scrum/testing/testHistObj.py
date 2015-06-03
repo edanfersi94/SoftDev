@@ -50,13 +50,6 @@ class TestHistObj(unittest.TestCase):
         model.db.session.add(newPila)
         model.db.session.commit()
         
-        NewIdPila = 2
-        NewdescripProducto = "PruebaPila2"
-        
-        #Se ingresa manualmente los datos a la tabla pila
-        newPila = model.Pila(NewIdPila, NewdescripProducto)
-        model.db.session.add(newPila)
-        model.db.session.commit()
         
         #Datos a ingresar a la tabla actor
         NewidObjetivo = 1
@@ -68,14 +61,6 @@ class TestHistObj(unittest.TestCase):
         model.db.session.add(newObjetivo)
         model.db.session.commit()
         
-        NewidObjetivo = 2
-        NewdescripObjetivo = "Descrip Objetivo"
-        NewidProducto = 1
-        
-        #Se ingresa manualmente los datos a la tabla objetivos
-        newObjetivo = model.Objetivo(NewidProducto, NewidObjetivo,NewdescripObjetivo)
-        model.db.session.add(newObjetivo)
-        model.db.session.commit()
         
         #Datos a ingresar a la tabla accion
         Newidaccion = 1
@@ -87,14 +72,6 @@ class TestHistObj(unittest.TestCase):
         model.db.session.add(newAccion)
         model.db.session.commit()
         
-        Newidaccion = 2
-        NewdescripAccion = "Descrip Accion2"
-        NewidProducto = 1
-        
-        #Se ingresa manualmente los datos a la tabla acciones
-        newAccion = model.Acciones(NewidProducto, Newidaccion, NewdescripAccion)
-        model.db.session.add(newAccion)
-        model.db.session.commit()
         
         #Datos a ingresar a la tabla de historia
         NewIdHistObj = 1
@@ -103,24 +80,13 @@ class TestHistObj(unittest.TestCase):
         NewCodigoHistoria_Usuario = "codigo1"
         NewId_Pila_Historia_Usuario = 1
         NewId_Acciones_Historia_Usuario = 1
+        NewSuper = 1
         
         #Se ingresa manualmente los datos a la tabla historia
-        newHistoria = model.Historia_Usuario(NewIdHistoria,NewCodigoHistoria_Usuario, NewId_Pila_Historia_Usuario, NewtipoHistoria_Usuario,NewId_Acciones_Historia_Usuario)
+        newHistoria = model.Historia_Usuario(NewIdHistoria,NewCodigoHistoria_Usuario, NewId_Pila_Historia_Usuario, NewtipoHistoria_Usuario,NewId_Acciones_Historia_Usuario,NewSuper)
         model.db.session.add(newHistoria)
         model.db.session.commit()
         
-        
-        NewIdHistObj = 2
-        NewIdHistoria  = 2
-        NewtipoHistoria_Usuario = "Obligatorio"
-        NewCodigoHistoria_Usuario = "codigo2"
-        NewId_Pila_Historia_Usuario = 1
-        NewId_Acciones_Historia_Usuario = 2
-        
-        #Se ingresa manualmente los datos a la tabla historia
-        newHistoria = model.Historia_Usuario(NewIdHistoria,NewCodigoHistoria_Usuario, NewId_Pila_Historia_Usuario, NewtipoHistoria_Usuario,NewId_Acciones_Historia_Usuario)
-        model.db.session.add(newHistoria)
-        model.db.session.commit()
     # -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------   
     
     #.-------------------------------------------------------------------.  
@@ -677,6 +643,10 @@ class TestHistObj(unittest.TestCase):
     #    self.vaciarBaseDeDatos()
         
     #-------------------------------------------------------------------------------------------------------
+    # FUNCION MODIFICAR
+    
+    #CASO VALIDO
+    #test : Modificar un objetivo que se encuentra en la base de datos
     def testmodify(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -696,6 +666,8 @@ class TestHistObj(unittest.TestCase):
         result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
         self.assertTrue(result)
         
+    #CASOS INVALIDOS    
+    #test: Modificar un objetivo con IdHistora de tipo None   
     def testmodifyIdHistoriaNone(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -717,7 +689,8 @@ class TestHistObj(unittest.TestCase):
         
         result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
         self.assertFalse(result)
-        
+    
+    #test: Modificar un objetivo con IdHistora de tipo String    
     def testmodifyIdHistoriaString(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -739,7 +712,8 @@ class TestHistObj(unittest.TestCase):
         
         result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
         self.assertFalse(result)
-        
+    
+    #test: Modificar un objetivo con IdHistora Vacio    
     def testmodifyIdHistoriaEmpty(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -762,6 +736,7 @@ class TestHistObj(unittest.TestCase):
         result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
         self.assertFalse(result)
     
+    #test: Modificar un objetivo con IdHistora de tipo Lista
     def testmodifyIdHistoriaList(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -783,7 +758,8 @@ class TestHistObj(unittest.TestCase):
         
         result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
         self.assertFalse(result)
-        
+    
+    #test: Modificar un objetivo con IdHistora de tipo Float    
     def testmodifyIdHistoriaFloat(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -805,7 +781,8 @@ class TestHistObj(unittest.TestCase):
         
         result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
         self.assertFalse(result)
-        
+    
+    #test: Modificar un objetivo con IdHistora de tipo Numero Negativo    
     def testmodifyIdHistoriaNegNum(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -827,7 +804,8 @@ class TestHistObj(unittest.TestCase):
         
         result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
         self.assertFalse(result)
-        
+    
+    #test: Modificar un objetivo con IdObjetivo de tipo None     
     def testmodifyIdObjetivoNone(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -849,7 +827,8 @@ class TestHistObj(unittest.TestCase):
         
         result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
         self.assertFalse(result)
-        
+    
+    #test: Modificar un objetivo con IdObjetivo de tipo String    
     def testmodifyIdObjetivoStr(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -871,7 +850,8 @@ class TestHistObj(unittest.TestCase):
         
         result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
         self.assertFalse(result)
-        
+    
+    #test: Modificar un objetivo con IdObjetivo Vacio    
     def testmodifyIdObjetivoEmpty(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -893,7 +873,8 @@ class TestHistObj(unittest.TestCase):
         
         result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
         self.assertFalse(result)
-        
+    
+    #test: Modificar un objetivo con IdObjetivo de tipo List    
     def testmodifyIdObjetivoList(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -915,7 +896,8 @@ class TestHistObj(unittest.TestCase):
         
         result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
         self.assertFalse(result)
-        
+    
+    #test: Modificar un objetivo con IdObjetivo de tipo Float    
     def testmodifyIdObjetivoFLoat(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -937,7 +919,8 @@ class TestHistObj(unittest.TestCase):
         
         result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
         self.assertFalse(result)
-        
+    
+    #test: Modificar un objetivo con IdObjetivo de tipo Numero Negativo    
     def testmodifyIdObjetivoNegNum(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -959,7 +942,8 @@ class TestHistObj(unittest.TestCase):
         
         result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
         self.assertFalse(result)
-        
+    
+    #test: Modificar un objetivo con IdObjetivo y IdHistoria que no se encuentran en la base de datos    
     def testmodifyInvalid(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -981,7 +965,10 @@ class TestHistObj(unittest.TestCase):
         
         result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
         self.assertFalse(result)
+    # FUNCION FIND OBJETIVO
     
+    #CASO VALIDO
+    #test: Encontrar un objetivo valido
     def testfindObjetivo(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -1003,6 +990,7 @@ class TestHistObj(unittest.TestCase):
         query = tempObj.find_Objetivo(idHistoria)
         self.assertIsNotNone(query)
         
+    #test: Encontrar un objetivo con IdHistoria de tipo None  
     def testfindObjetivoIdHistoriaNone(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -1024,6 +1012,7 @@ class TestHistObj(unittest.TestCase):
         query = tempObj.find_Objetivo(idHistoria)
         self.assertEqual(query,[])
         
+    #test: Encontrar un objetivo con IdHistoria de tipo String
     def testfindObjetivoIdHistoriaStr(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -1045,6 +1034,7 @@ class TestHistObj(unittest.TestCase):
         query = tempObj.find_Objetivo(idHistoria)
         self.assertEqual(query,[])
         
+    #test: Encontrar un objetivo con IdHistoria Vacio
     def testfindObjetivoIdHistoriaEmpty(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -1065,7 +1055,8 @@ class TestHistObj(unittest.TestCase):
         
         query = tempObj.find_Objetivo(idHistoria)
         self.assertEqual(query,[])
-        
+    
+    #test: Encontrar un objetivo con IdHistoria de tipo List    
     def testfindObjetivoIdHistoriaList(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -1087,6 +1078,7 @@ class TestHistObj(unittest.TestCase):
         query = tempObj.find_Objetivo(idHistoria)
         self.assertEqual(query,[])
     
+    #test: Encontrar un objetivo con IdHistoria de tipo FLoat
     def testfindObjetivoIdHistoriaFLoat(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -1108,6 +1100,7 @@ class TestHistObj(unittest.TestCase):
         query = tempObj.find_Objetivo(idHistoria)
         self.assertEqual(query,[])
         
+    #test: Encontrar un objetivo con IdHistoria de tipo Numero Negativo
     def testfindObjetivoIdHistoriaNegNum(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
@@ -1129,6 +1122,7 @@ class TestHistObj(unittest.TestCase):
         query = tempObj.find_Objetivo(idHistoria)
         self.assertEqual(query,[])
         
+    #test: Encontrar un objetivo con IdHistoria que no se encuentra almacenado en la bases de datos
     def testfindObjetivoInvalid(self):
         self.vaciarBaseDeDatos()
         #Inserta tablas dependientes
