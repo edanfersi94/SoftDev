@@ -25,7 +25,7 @@ class clsHistoria():
     
     #-------------------------------------------------------------------------------
     
-    def insert_Historia(self, newIdProducto, newCodigoHistoria, newTipo, newAccion):
+    def insert_Historia(self, newIdProducto, newCodigoHistoria, newTipo, newAccion,NewSuper):
         
         """
             @brief Funcion que permite insertar un nueva historia en la base de datos.
@@ -54,9 +54,10 @@ class clsHistoria():
         # Booleanos que indican si el tipo es el correcto.
         idProductoIsInt = type(newIdProducto) == int
         codigoHistoriaIsStr = type(newCodigoHistoria) == str
+        idSuperIsInt = type(NewSuper) == int
     
 
-        if (codigoHistoriaIsStr and idProductoIsInt ):
+        if (codigoHistoriaIsStr and idProductoIsInt  and idSuperIsInt):
             
             # Booleano que indica si cumplen con los limites.
             codigoLenValid = 1<= len(newCodigoHistoria)<=13
@@ -66,7 +67,7 @@ class clsHistoria():
                     num_historias = 0
                 num_historias = num_historias + 1
 
-                newHistoriaUsuario = model.Historia_Usuario(num_historias, newCodigoHistoria, newIdProducto, newTipo, newAccion)
+                newHistoriaUsuario = model.Historia_Usuario(num_historias, newCodigoHistoria, newIdProducto, newTipo, newAccion,NewSuper)
                 model.db.session.add(newHistoriaUsuario)
                 model.db.session.commit()  
                 salida = (True, num_historias)
@@ -148,20 +149,20 @@ class clsHistoria():
 
     #-------------------------------------------------------------------------------
     
-    def existenciaCiclo(G):                
+    def existenciaCiclo(self,G):                
         color = { u : "blanco" for u in G  } 
         encontrarCiclo = [False]               
                                                                          
         for u in G:                          
             if color[u] == "blanco":
-                dfs_visit(G, u, color, encontrarCiclo)
+                self.dfs_visit(G, u, color, encontrarCiclo)
             if encontrarCiclo[0]:
                 break
         return encontrarCiclo[0]
      
     #-------
      
-    def dfs_visit(G, u, color, encontrarCiclo):
+    def dfs_visit(self,G, u, color, encontrarCiclo):
         if encontrarCiclo[0]:                         
             return
         color[u] = "gris"                          
@@ -170,7 +171,7 @@ class clsHistoria():
                 encontrarCiclo[0] = True       
                 return
             if color[v] == "blanco":                 
-                dfs_visit(G, v, color, encontrarCiclo)
+                self.dfs_visit(G, v, color, encontrarCiclo)
         color[u] = "negro"                         
 
     #-------------------------------------------------------------------------------
@@ -184,25 +185,28 @@ class clsHistoria():
         if (numNuevaHistoria == None):
             numNuevaHistoria = 0
         numNuevaHistoria = numNuevaHistoria + 1
+        
+        aux = {}
+        
+        if (idSuper == 0):
+            aux[idSuper] = []
+        
+        if not(idSuper in aux):
+            aux[idSuper] = []
 
         if not(numNuevaHistoria in listaEnlaces):
             listaEnlaces[numNuevaHistoria] = []
-            
-        print("list",listaEnlaces)
         
 
-        aux = listaEnlaces.copy()
+        #aux = listaEnlaces.copy()
 
-        # Se agrega el nuevo enlace.
-        #print("holaaa",type([numNuevaHistoria]))
-        print("super",idSuper)
-        aux[idSuper] += [numNuevaHistoria]
+        aux[idSuper] += listaEnlaces[numNuevaHistoria]
 
-        existCiclo = existenciaCiclo(aux)
+        existCiclo = self.existenciaCiclo(aux)
 
-        if not(existenciaCiclo):
+        if not(existCiclo):
             idSuper = aux.copy()
 
-        return(existenciaCiclo)
+        return(existCiclo)
 
     #-------------------------------------------------------------------------------

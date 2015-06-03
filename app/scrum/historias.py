@@ -21,7 +21,6 @@ def ACrearHistoria():
 
     # Se toma la lista de enlaces que se encuentra en la session.
     listaEnlace = session['enlaces']
-    print("enlace",listaEnlace)
 
     # Atributos de la historia a crear.
     tipoAsociar = params['tipo']
@@ -29,7 +28,7 @@ def ACrearHistoria():
     accionAsociar = params.get('accion', None) 
     objetivosAsociar = params.get('objetivos', None)
     actoresAsociar = params.get('actores', None)
-    superAsociar = params.get('actores', None)
+    superAsociar = params.get('super', None)
 
     idProductoActual = session['idPila']
     if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) and (superAsociar == None)):
@@ -43,7 +42,7 @@ def ACrearHistoria():
             existCiclo = nuevaHistoria.verificandoAgregacion(superAsociar, listaEnlace)
 
             if not( existCiclo ):
-                resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar) 
+                resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar,superAsociar) 
 
                 if ( resultInsert[0] ):
                     histObjetivo = clsHistoriaObj()
@@ -78,6 +77,8 @@ def AModifHistoria():
     params = request.get_json()
     results = [{'label':'/VHistorias', 'msg':['Historia modificada']}, {'label':'/VHistoria', 'msg':['Error al modificar historia']}, ]
     res = results[1]
+    
+    listaEnlace = session['enlaces']
 
     # Se obtiene el identificador del producto actual.
     idPila = int(session['idPila'])
@@ -89,6 +90,7 @@ def AModifHistoria():
     accionAsociar = params.get('accion', None) 
     objetivosAsociar = params.get('objetivos', None)
     actoresAsociar = params.get('actores', None)
+    superAsociar = params.get('super', None)
 
     nuevaHistoria = clsHistoria()
     nuevoObjetivo = clsHistoriaObj()
@@ -136,30 +138,34 @@ def AModifHistoria():
             
     #------------------------------------------------------------------------------------------
     idProductoActual = session['idPila']
-    if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) ):
+    if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) and (superAsociar == None)):
         accionQuery = model.Historia_Usuario.id_Acciones_Historia_Usuario == accionAsociar
         accionInHistory = model.db.session.query(model.Historia_Usuario).filter(accionQuery).all()
-
+                
         if (accionInHistory == []):
             nuevaHistoria = clsHistoria()
-            resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar) 
+            existCiclo = nuevaHistoria.verificandoAgregacion(superAsociar, listaEnlace)
+            
+            if not( existCiclo ):
+                    
+                resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar,superAsociar) 
 
-            if ( resultInsert[0] ):
-                histObjetivo = clsHistoriaObj()
-                histActores  = clsHistoriaActores()
+                if ( resultInsert[0] ):
+                    histObjetivo = clsHistoriaObj()
+                    histActores  = clsHistoriaActores()
 
-                # Se agregan los objetivos seleccionados en la base de datos.
-                for obj in objetivosAsociar:
-                    histObjetivo.insert_Objetivo(resultInsert[1], obj)
-
-                # Se agregan los actores seleccionados en la base de datos.
-                for act in actoresAsociar:
-                    print(act)
-                    histActores.insert_Actor(resultInsert[1], act)
-                
-
-                resu = True
-                res['idHistoria'] = resultInsert[1]
+                    # Se agregan los objetivos seleccionados en la base de datos.
+                    for obj in objetivosAsociar:
+                        histObjetivo.insert_Objetivo(resultInsert[1], obj)
+    
+                    # Se agregan los actores seleccionados en la base de datos.
+                    for act in actoresAsociar:
+                        print(act)
+                        histActores.insert_Actor(resultInsert[1], act)
+                    
+    
+                    resu = True
+                    res['idHistoria'] = resultInsert[1]
     
    
     if ( listaModify == [True,True,True] and resu ):
@@ -294,6 +300,7 @@ def VHistoria():
       {'key': hist.idHistoria_Usuario,'value':hist.codigoHistoria_Usuario}
       for hist in historias]
     res['fHistoria_opcionesHistorias'] += [{'key':0,'value':'Ninguna'}]
+    
 
     # Tipos de historias disponibles. 
     res['fHistoria_opcionesTiposHistoria'] = [

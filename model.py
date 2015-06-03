@@ -73,16 +73,18 @@ class Historia_Usuario(db.Model):
     tipoHistoria_Usuario     = db.Column(db.String(13), nullable = True)
     codigoHistoria_Usuario   = db.Column(db.String(10), primary_key=True,)
     id_Pila_Historia_Usuario = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
+    idSuper                  = db.Column(db.Integer, nullable= True)
     id_Acciones_Historia_Usuario = db.Column(db.Integer, db.ForeignKey('acciones.idacciones'))
     listaObjetivos = db.relationship('ObjHistorias',backref='historia',cascade = "all, delete, delete-orphan")
     listaActores = db.relationship('ActoresHistorias',backref='historia',cascade = "all, delete, delete-orphan")
 
-    def __init__(self, idHistoria,codigoHistoria,historiaIdPila, tipoHistoria_Usuario,id_Acciones_Historia_Usuario):
+    def __init__(self, idHistoria,codigoHistoria,historiaIdPila, tipoHistoria_Usuario,id_Acciones_Historia_Usuario, idSuper = None):
         self.idHistoria_Usuario  = idHistoria
         self.tipoHistoria_Usuario = tipoHistoria_Usuario
         self.codigoHistoria_Usuario = codigoHistoria
         self.id_Pila_Historia_Usuario = historiaIdPila
         self.id_Acciones_Historia_Usuario = id_Acciones_Historia_Usuario
+        self.idSuper = idSuper
 
 # Tabla Usuario.
 class User(db.Model):
