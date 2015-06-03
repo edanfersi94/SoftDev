@@ -159,13 +159,15 @@ class Objetivo(db.Model):
     idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     idObjetivo    = db.Column(db.Integer, primary_key = True)
     descripObjetivo = db.Column(db.String(500), nullable = False)
+    transversalidad = db.Column(db.Integer, nullable = True)
     historiaAsociada = db.relationship('ObjHistorias',backref='objetivo',cascade = "all, delete, delete-orphan")
 
-    def __init__(self, idPila, idObjetivo, descripObjetivo):
+    def __init__(self, idPila, idObjetivo, descripObjetivo,transversalidad):
         # Constructor del modelo Acciones.
         self.idProducto = idPila
         self.idObjetivo       = idObjetivo
         self.descripObjetivo  = descripObjetivo
+        self.transversalidad = transversalidad
 
 # Tabla Actores.
 class Actores(db.Model):

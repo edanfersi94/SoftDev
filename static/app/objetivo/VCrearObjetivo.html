@@ -18,6 +18,8 @@
 <li><a ng-click="VProducto1(idPila)"
        ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
     Regresar</a></li>
+<li><a ng-click="VLogin2()">
+    Salir</a></li>
 
             </ul>
         </div>
@@ -28,6 +30,7 @@
             <div class="form-group" ng-class="{ 'has-error' :  fObjetivoSubmitted && fObjetivoForm.descripcion.$invalid && fObjetivoForm.descripcion.$pristine && fObjetivoSubmitted}"><label for="fObjetivo_descripcion">Descripción</label><div id="fObjetivo_descripcion" text-angular="text-angular" name="descripcion" ng-model="fObjetivo.descripcion" ></div><p ng-show="fObjetivoSubmitted && fObjetivoForm.descripcion.$invalid" class="help-block">Error en campo Descripción.</p></div>
             <input id="fObjetivo_idObjetivo" type="hidden" name="idObjetivo" ng-model="fObjetivo.idObjetivo" />
             <input id="fObjetivo_idPila" type="hidden" name="idPila" ng-model="fObjetivo.idPila" />
+            <div class="form-group" ng-class="{ 'has-error' :  fObjetivoSubmitted && fObjetivoForm.transversal.$invalid && fObjetivoForm.transversal.$pristine && fObjetivoSubmitted}"><label for="fObjetivo_transversal">Es transversal</label>:&nbsp;<select id="fObjetivo_transversal" ng-model="fObjetivo.transversal" required ng-options="item.key as item.value for item in fObjetivo_opcionesTransversalidad"></select><p ng-show="fObjetivoSubmitted && fObjetivoForm.transversal.$invalid" class="help-block">Error en campo Es transversal.</p></div>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Crear
         </button>

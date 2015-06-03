@@ -11,6 +11,24 @@ import model
 historias = Blueprint('historias', __name__)
 
 #.----------------------------------------------------------------------------------------.
+@historias.route('/historias/ACambiarPrioridades', methods=['POST'])
+def ACambiarPrioridades():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VHistorias', 'msg':['Prioridades reasignadas']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+
+    res['label'] = res['label']+'/1'
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
 
 @historias.route('/historias/ACrearHistoria', methods=['POST'])
 def ACrearHistoria():
@@ -204,9 +222,7 @@ def VCrearHistoria():
                 filter(model.Actores.idProducto == idProductoActual).\
                 all()
     
-    objetivos = model.db.session.query(model.Objetivo).\
-                filter(model.Objetivo.idProducto == idProductoActual).\
-                all()
+    objetivos = model.db.session.query(model.Objetivo).filter_by(idProducto = idProductoActual,transversalidad=0).all()
 
     # Se muestra por pantalla los actores que pertenecen al producto.
     res['fHistoria_opcionesActores'] = [
@@ -233,6 +249,13 @@ def VCrearHistoria():
       {'key':1,'value':'Opcional'},
       {'key':2,'value':'Obligatoria'}]
 
+    #Escala dependiente del proyecto
+    res['fHistoria_opcionesPrioridad'] = [
+      {'key':1, 'value':'Alta'},
+      {'key':2, 'value':'Media'},
+      {'key':3, 'value':'Baja'},
+    ]
+    
     # Se almacena la información recibida.  
 
     res['idPila'] = session['idPila']
@@ -269,9 +292,8 @@ def VHistoria():
                 all()
     print(actores)
 
-    objetivos = model.db.session.query(model.Objetivo).\
-                filter(model.Objetivo.idProducto == idProducto).\
-                all()
+    objetivos = model.db.session.query(model.Objetivo).filter_by(idProducto = idProducto,transversalidad=0).all()
+
     
     # Se muestra por pantalla los actores que pertenecen al producto.
     res['fHistoria_opcionesActores'] = [
@@ -338,6 +360,14 @@ def VHistoria():
       {'key':1,'value':'Opcional'},
       {'key':2,'value':'Obligatoria'}]
     """
+
+    #Escala dependiente del proyecto
+    res['fHistoria_opcionesPrioridad'] = [
+      {'key':1, 'value':'Alta'},
+      {'key':2, 'value':'Media'},
+      {'key':3, 'value':'Baja'},
+    ]
+
     res['idPila'] = idProducto
     session['idHistoria'] = idHistoriaActual
 
@@ -362,5 +392,33 @@ def VHistorias():
       for his in historia]
     
     return json.dumps(res)
+
+
+@historias.route('/historias/VPrioridades')
+def VPrioridades():
+    #GET parameter
+    idPila = request.args['idPila']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    #Escala dependiente del proyecto
+    res['fPrioridades_opcionesPrioridad'] = [
+      {'key':1, 'value':'Alta'},
+      {'key':2, 'value':'Media'},
+      {'key':3, 'value':'Baja'},
+    ]
+    res['idPila'] = 1
+    res['fPrioridades'] = {'idPila':1,
+      'lista':[
+        {'idHistoria':1,'prioridad':2, 'enunciado':'En tanto que cocinero puedo preparar una ratatuya para cenar'},
+        {'idHistoria':2,'prioridad':2, 'enunciado':'En tanto que chef puedo hacer que los cocineros prepraren varios platos para cumplir con el munú'}
+        ]}
+
+
+    #Action code ends here
+    return json.dumps(res)
+
 
 #.----------------------------------------------------------------------------------------.

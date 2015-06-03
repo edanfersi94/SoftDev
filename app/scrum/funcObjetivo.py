@@ -8,7 +8,7 @@ class clsObjetivo():
 
 	#-------------------------------------------------------------------------------
 	
-	def insert_Objetivo(self, idProducto, newDescripObjetivo):
+	def insert_Objetivo(self, idProducto, newDescripObjetivo,newTransversalidad):
 		"""
 			@brief Funcion que permite insertar un nuevo objetivo en la base de datos.
 			
@@ -27,10 +27,11 @@ class clsObjetivo():
 		num_objetivos = int(tuplaResult[0] or 0)
 
 		# Booleano que indica si el tipo es el correcto.
+		isValidTransversalidad = (type(newTransversalidad) == int) and (newTransversalidad== 0 or newTransversalidad== 1)
 		descripIsStr = type(newDescripObjetivo) == str
 		idProdIsInt	 = type(idProducto) == int
 	
-		if ( descripIsStr and idProdIsInt):
+		if ( descripIsStr and idProdIsInt and isValidTransversalidad):
 
 			# Booleano que indica si cumplen con los limites.
 			descripLenValid = 1 <= len(newDescripObjetivo) <= 500
@@ -43,7 +44,7 @@ class clsObjetivo():
 					num_objetivos = 0
 				
 				num_objetivos = num_objetivos + 1
-				newObjetivo = model.Objetivo(idProducto, num_objetivos, newDescripObjetivo)
+				newObjetivo = model.Objetivo(idProducto, num_objetivos, newDescripObjetivo,newTransversalidad)
 				model.db.session.add(newObjetivo)
 				model.db.session.commit()
 				return( True )
@@ -76,7 +77,7 @@ class clsObjetivo():
 	
 	#-------------------------------------------------------------------------------
 
-	def modify_Objetivo(self, idProducto, idObjetivo, newDescripObjetivo):
+	def modify_Objetivo(self, idProducto, idObjetivo, newDescripObjetivo,newTransversalidad):
 		"""
 			@brief Funcion que modifica los datos del objetivo cuyo id sea "idObjetivo".
 	
@@ -88,11 +89,12 @@ class clsObjetivo():
 		"""
 		
 		# Booleanos que indican si el tipo es el correcto.
+		isValidTransversalidad = (type(newTransversalidad) == int) and (newTransversalidad== 0 or newTransversalidad== 1)
 		descripIsStr = type(newDescripObjetivo) == str
 		idIsInt 	 = type(idObjetivo) == int
 		idProdIsInt	 = type(idProducto) == int
 		
-		if ( idIsInt and descripIsStr and idProdIsInt):
+		if ( idIsInt and descripIsStr and idProdIsInt and isValidTransversalidad):
 			# Booleanos que indican si se cumplen los limites.
 			idIsPositive 	= idObjetivo > 0
 			idProducIsPosit = idProducto > 0
@@ -107,6 +109,11 @@ class clsObjetivo():
 					model.db.session.query(model.Objetivo).filter(objetivo, idProductoEsp).\
 						update({'descripObjetivo':(newDescripObjetivo)})
 					model.db.session.commit()
+
+					model.db.session.query(model.Objetivo).filter(objetivo, idProductoEsp).\
+						update({'transversalidad':(newTransversalidad)})
+					model.db.session.commit()
+					
 					return( True )
 					
 		return( False )

@@ -15,6 +15,9 @@
 <li><a ng-click="VCrearHistoria1(idPila)"
        ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
   Crear</a></li>
+<li><a ng-click="VPrioridades3(idPila)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+  Cambiar prioridades</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -22,6 +25,8 @@
 <li><a ng-click="VProducto2(idPila)"
        ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
     Regresar</a></li>
+<li><a ng-click="VLogin4()">
+    Salir</a></li>
 
             </ul>
         </div>
@@ -30,6 +35,7 @@
 
         <table ng-table="tableParams0" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
+                <td data-title="'Prioridad'">{{row['prioridad']}}</td>
                 <td data-title="'Enunciado'">{{row['enunciado']}}</td>
                 <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VHistoria0(row['idHistoria'])">Detalles</a></td>
             </tr>

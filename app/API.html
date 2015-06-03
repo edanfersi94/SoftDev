@@ -138,10 +138,16 @@ Requerido.
    <li>URL: '/prod/AModifProducto'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
-    <ul>     <li>descripcion -  
+    <ul>     <li>nombre -  
+Requerido. 
+     </li>     <li>descripcion -  
 Requerido. 
      </li>     <li>idPila -  
 Opcional. 
+     </li>     <li>opcionesEscala -  
+Opcional. 
+     </li>     <li>escala -  
+Requerido. 
      </li>
     </ul>
    </li>
@@ -172,13 +178,26 @@ Parámetros GET: idPila
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/prod/VCrearProducto'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: duenoProducto </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
    <li>URL: '/prod/ACrearProducto'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
-    <ul>     <li>descripcion -  
+    <ul>     <li>nombre -  
+Requerido. 
+     </li>     <li>descripcion -  
 Requerido. 
      </li>     <li>idPila -  
 Opcional. 
+     </li>     <li>opcionesEscala -  
+Opcional. 
+     </li>     <li>escala -  
+Requerido. 
      </li>
     </ul>
    </li>
@@ -204,13 +223,6 @@ Opcional.
 
     </ol>
    </li>
-  </ul>
- </li> <li>
-  <p></p>
-  <ul>
-   <li>URL: '/prod/VCrearProducto'</li>
-   <li>Método: GET</li><li>Formato de salida: JSON</li>
-   <li>Roles: duenoProducto </li>
   </ul>
  </li>
 </ol>
@@ -345,14 +357,6 @@ Parámetros GET: idPila
  <li>
   <p></p>
   <ul>
-   <li>URL: '/objetivo/VObjetivo'</li>
-   <li>Método: GET</li><li>Formato de salida: JSON</li>
-Parámetros GET: idObjetivo
-   <li>Roles: desarrollador duenoProducto maestroScrum </li>
-  </ul>
- </li> <li>
-  <p></p>
-  <ul>
    <li>URL: '/objetivo/AModifObjetivo'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -362,6 +366,10 @@ Opcional.
 Opcional. 
      </li>     <li>idPila -  
 Opcional. 
+     </li>     <li>opcionesTransversalidad -  
+Opcional. 
+     </li>     <li>transversal -  
+Requerido. 
      </li>
     </ul>
    </li>
@@ -391,10 +399,10 @@ Opcional.
  </li> <li>
   <p></p>
   <ul>
-   <li>URL: '/objetivo/VCrearObjetivo'</li>
+   <li>URL: '/objetivo/VObjetivo'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
-Parámetros GET: idPila
-   <li>Roles: duenoProducto </li>
+Parámetros GET: idObjetivo
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
   </ul>
  </li> <li>
   <p></p>
@@ -408,6 +416,10 @@ Opcional.
 Opcional. 
      </li>     <li>idPila -  
 Opcional. 
+     </li>     <li>opcionesTransversalidad -  
+Opcional. 
+     </li>     <li>transversal -  
+Requerido. 
      </li>
     </ul>
    </li>
@@ -433,6 +445,14 @@ Opcional.
 
     </ol>
    </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/objetivo/VCrearObjetivo'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: duenoProducto </li>
   </ul>
  </li>
 </ol>
@@ -576,6 +596,10 @@ Opcional.
 Opcional. 
      </li>     <li>idHistoria -  
 Opcional. 
+     </li>     <li>opcionesPrioridad -  
+Opcional. 
+     </li>     <li>prioridad -  
+Requerido. 
      </li>
     </ul>
    </li>
@@ -601,14 +625,6 @@ Opcional.
 
     </ol>
    </li>
-  </ul>
- </li> <li>
-  <p></p>
-  <ul>
-   <li>URL: '/historias/VCrearHistoria'</li>
-   <li>Método: GET</li><li>Formato de salida: JSON</li>
-Parámetros GET: idPila
-   <li>Roles: desarrollador duenoProducto maestroScrum </li>
   </ul>
  </li> <li>
   <p></p>
@@ -642,6 +658,10 @@ Opcional.
 Opcional. 
      </li>     <li>idHistoria -  
 Opcional. 
+     </li>     <li>opcionesPrioridad -  
+Opcional. 
+     </li>     <li>prioridad -  
+Requerido. 
      </li>
     </ul>
    </li>
@@ -671,9 +691,60 @@ Opcional.
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/historias/VCrearHistoria'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
    <li>URL: '/historias/VHistoria'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idHistoria
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/historias/ACambiarPrioridades'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>opcionesPrioridad -  
+Opcional. 
+     </li>     <li>idPila -  
+Opcional. 
+     </li>     <li>lista -  
+Opcional. 
+     </li>     <li>idHistoria -  
+Opcional. 
+     </li>     <li>prioridad -  
+Requerido. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VHistorias',</li>
+       <li> msg:"Prioridades reasignadas".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/historias/VPrioridades'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
    <li>Roles: desarrollador duenoProducto maestroScrum </li>
   </ul>
  </li>

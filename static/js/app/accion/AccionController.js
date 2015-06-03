@@ -9,8 +9,8 @@ scrumModule.config(function ($routeProvider) {
 });
 
 scrumModule.controller('VAccionController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'accionService', 'prodService',
-    function ($scope, $location, $route, flash, $routeParams, accionService, prodService) {
+   ['$scope', '$location', '$route', 'flash', '$routeParams', 'accionService', 'identService', 'prodService',
+    function ($scope, $location, $route, flash, $routeParams, accionService, identService, prodService) {
       $scope.msg = '';
       $scope.fAccion = {};
 
@@ -25,6 +25,9 @@ scrumModule.controller('VAccionController',
       });
       $scope.VProducto1 = function(idPila) {
         $location.path('/VProducto/'+idPila);
+      };
+      $scope.VLogin2 = function() {
+        $location.path('/VLogin');
       };
 
       $scope.fAccionSubmitted = false;
@@ -44,8 +47,8 @@ scrumModule.controller('VAccionController',
 
     }]);
 scrumModule.controller('VCrearAccionController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'accionService', 'prodService',
-    function ($scope, $location, $route, flash, $routeParams, accionService, prodService) {
+   ['$scope', '$location', '$route', 'flash', '$routeParams', 'accionService', 'identService', 'prodService',
+    function ($scope, $location, $route, flash, $routeParams, accionService, identService, prodService) {
       $scope.msg = '';
       $scope.fAccion = {};
 
@@ -60,6 +63,9 @@ scrumModule.controller('VCrearAccionController',
       });
       $scope.VProducto1 = function(idPila) {
         $location.path('/VProducto/'+idPila);
+      };
+      $scope.VLogin2 = function() {
+        $location.path('/VLogin');
       };
 
       $scope.fAccionSubmitted = false;

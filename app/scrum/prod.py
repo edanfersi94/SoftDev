@@ -79,6 +79,10 @@ def VCrearProducto():
                     'descripcion':request.args.get('descripcion')}
     res['idPila'] = idProducto
 
+    res['fPila_opcionesEscala'] = [
+      {'key':1,'value':'Alta/Media/Baja'},
+      {'key':2,'value':'Entre 1 y 20'}]
+    
     if "actor" in session:
         res['actor']=session['actor']
     return json.dumps(res)
@@ -90,6 +94,7 @@ def VProducto():
     res = {}
 
     idPila = int(request.args.get('idPila', 1))
+    zero=0;
 
     # Carga de los actores, objetivos y acciones a la base de datos.
     actores = model.db.session.query(model.Actores).filter_by(idProducto = idPila).all()
@@ -102,6 +107,10 @@ def VProducto():
     res['fPila'] = {'idPila':idPila, 
                     'descripcion':productoActual[0].descripProducto}
 
+    res['fPila_opcionesEscala'] = [
+      {'key':1,'value':'Alta/Media/Baja'},
+      {'key':2,'value':'Entre 1 y 20'}]
+      
     # Se muestran todos los actores asosiados al producto.
     res['data3'] = [
         {'idActor':act.id_actores, 
