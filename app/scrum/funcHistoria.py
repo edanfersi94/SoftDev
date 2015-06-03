@@ -148,20 +148,20 @@ class clsHistoria():
 
     #-------------------------------------------------------------------------------
     
-    def existenciaCiclo(G):                
+    def existenciaCiclo(self,G):                
         color = { u : "blanco" for u in G  } 
         encontrarCiclo = [False]               
                                                                          
         for u in G:                          
             if color[u] == "blanco":
-                dfs_visit(G, u, color, encontrarCiclo)
+                self.dfs_visit(G, u, color, encontrarCiclo)
             if encontrarCiclo[0]:
                 break
         return encontrarCiclo[0]
      
     #-------
      
-    def dfs_visit(G, u, color, encontrarCiclo):
+    def dfs_visit(self,G, u, color, encontrarCiclo):
         if encontrarCiclo[0]:                         
             return
         color[u] = "gris"                          
@@ -170,12 +170,12 @@ class clsHistoria():
                 encontrarCiclo[0] = True       
                 return
             if color[v] == "blanco":                 
-                dfs_visit(G, v, color, encontrarCiclo)
+                self.dfs_visit(G, v, color, encontrarCiclo)
         color[u] = "negro"                         
 
     #-------------------------------------------------------------------------------
 
-    def verificandoAgregacion(self, idSuper, listaEnlaces):
+    def verificandoAgregacion(self, idSuper):
 
         query = model.db.session.query(model.func.max(model.Historia_Usuario.idHistoria_Usuario)).all()
         # Se toma la tupla resultante
@@ -185,24 +185,35 @@ class clsHistoria():
             numNuevaHistoria = 0
         numNuevaHistoria = numNuevaHistoria + 1
 
-        if not(numNuevaHistoria in listaEnlaces):
-            listaEnlaces[numNuevaHistoria] = []
-            
-        print("list",listaEnlaces)
+        # Se genera el diccionario con todos los enlaces
         
 
-        aux = listaEnlaces.copy()
+        if not(numNuevaHistoria in listaEnlaces):
+            listaEnlaces[numNuevaHistoria] = []
+        
+        # Se crea una copia del diccionario utilizado y se agrega el posible nuevo enlace.
+        target = {}
+        for key in listaEnlaces:
+            print(key)
+            if key == idSuper:
+                print('AQUI')
+                target[key] = listaEnlaces[key] + [numNuevaHistoria]
+            else:
+                print('ALLA')
+                target[key] = listaEnlaces[key]
+
+        print(target)
 
         # Se agrega el nuevo enlace.
-        #print("holaaa",type([numNuevaHistoria]))
-        print("super",idSuper)
-        aux[idSuper] += [numNuevaHistoria]
+        #modifAux = aux[idSuper]
+        #modifAux += [numNuevaHistoria]
+        #print(modifAux)
+        existCiclo = self.existenciaCiclo(target)
 
-        existCiclo = existenciaCiclo(aux)
+        if not(existCiclo):
+            listaEnlaces = target
 
-        if not(existenciaCiclo):
-            idSuper = aux.copy()
-
-        return(existenciaCiclo)
+        salida = [existCiclo,listaEnlaces]
+        return(salida)
 
     #-------------------------------------------------------------------------------

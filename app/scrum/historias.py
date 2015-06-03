@@ -5,6 +5,7 @@ from app.scrum.funcObjetivo import clsObjetivo
 from app.scrum.funcActor    import clsActor
 from app.scrum.funcHistObjetivo import clsHistoriaObj
 from app.scrum.funcHistActores  import clsHistoriaActores
+from app.scrum.clsEnlace import clsEnlace
 
 import model
 
@@ -19,17 +20,13 @@ def ACrearHistoria():
     results = [{'label':'/VHistorias', 'msg':['Historia creada']}, {'label':'/VCrearHistoria', 'msg':['Error al crear historia']}, ]
     res = results[1]
 
-    # Se toma la lista de enlaces que se encuentra en la session.
-    listaEnlace = session['enlaces']
-    print("enlace",listaEnlace)
-
     # Atributos de la historia a crear.
     tipoAsociar = params['tipo']
     codigoHistoria = params.get('codigo', None)
     accionAsociar = params.get('accion', None) 
     objetivosAsociar = params.get('objetivos', None)
     actoresAsociar = params.get('actores', None)
-    superAsociar = params.get('actores', None)
+    superAsociar = params.get('super', None)
 
     idProductoActual = session['idPila']
     if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) and (superAsociar == None)):
@@ -38,11 +35,12 @@ def ACrearHistoria():
 
         if (accionInHistory == []):
 
-            nuevaHistoria = clsHistoria()
+            nuevoEnlace = clsEnlace()
 
-            existCiclo = nuevaHistoria.verificandoAgregacion(superAsociar, listaEnlace)
+            result = nuevoEnlace.insert_Enlace(idProductoActual, superAsociar)
 
-            if not( existCiclo ):
+            if (result):
+                nuevaHistoria = clsHistoria()
                 resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar) 
 
                 if ( resultInsert[0] ):
@@ -154,7 +152,7 @@ def AModifHistoria():
 
                 # Se agregan los actores seleccionados en la base de datos.
                 for act in actoresAsociar:
-                    print(act)
+      
                     histActores.insert_Actor(resultInsert[1], act)
                 
 
@@ -221,10 +219,11 @@ def VCrearHistoria():
         for obj in objetivos]
 
     # TEMPORAL.
-    res['fHistoria_opcionesHistorias'] = [
+    res['fHistoria_opcionesHistorias'] = [{'key':0,'value':'Ninguna'}]
+    res['fHistoria_opcionesHistorias'] += [
       {'key': hist.idHistoria_Usuario,'value':hist.codigoHistoria_Usuario}
       for hist in historias]
-    res['fHistoria_opcionesHistorias'] += [{'key':0,'value':'Ninguna'}]
+    
 
     # Tipos de historias disponibles. 
     res['fHistoria_opcionesTiposHistoria'] = [
@@ -322,8 +321,6 @@ def VHistoria():
                          'codigo': historiaActual.codigoHistoria_Usuario,
                          'tipo': int(historiaActual.tipoHistoria_Usuario)}
 
-    print(historiaActual.tipoHistoria_Usuario)
-
     res['idPila'] = idProducto
     session['idHistoria'] = idHistoriaActual
 
@@ -337,10 +334,6 @@ def VHistorias():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
-    
-    # Se verifica si no se han almacenado los enlaces en la session.
-    if not('enlace' in session):
-        session['enlaces'] = {}
 
     idProductoActual = int(session['idPila'])
     idProducto = model.Historia_Usuario.id_Pila_Historia_Usuario == idProductoActual
