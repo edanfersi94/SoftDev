@@ -186,21 +186,13 @@ class clsHistoria():
             numNuevaHistoria = 0
         numNuevaHistoria = numNuevaHistoria + 1
         
-        aux = {}
-        
-        if (idSuper == 0):
-            aux[idSuper] = []
-        
-        if not(idSuper in aux):
-            aux[idSuper] = []
 
         if not(numNuevaHistoria in listaEnlaces):
             listaEnlaces[numNuevaHistoria] = []
         
+        aux = listaEnlaces.copy()
 
-        #aux = listaEnlaces.copy()
-
-        aux[idSuper] += listaEnlaces[numNuevaHistoria]
+        aux[idSuper] += [numNuevaHistoria]
 
         existCiclo = self.existenciaCiclo(aux)
 
