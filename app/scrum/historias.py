@@ -19,39 +19,45 @@ def ACrearHistoria():
     results = [{'label':'/VHistorias', 'msg':['Historia creada']}, {'label':'/VCrearHistoria', 'msg':['Error al crear historia']}, ]
     res = results[1]
 
+    # Se toma la lista de enlaces que se encuentra en la session.
+    listaEnlace = session['enlaces']
+
     # Atributos de la historia a crear.
     tipoAsociar = params['tipo']
     codigoHistoria = params.get('codigo', None)
     accionAsociar = params.get('accion', None) 
     objetivosAsociar = params.get('objetivos', None)
     actoresAsociar = params.get('actores', None)
-
-    print(params)
+    superAsociar = params.get('actores', None)
 
     idProductoActual = session['idPila']
-    if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) ):
+    if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) and (superAsociar == None)):
         accionQuery = model.Historia_Usuario.id_Acciones_Historia_Usuario == accionAsociar
         accionInHistory = model.db.session.query(model.Historia_Usuario).filter(accionQuery).all()
 
         if (accionInHistory == []):
+
             nuevaHistoria = clsHistoria()
-            resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar) 
 
-            if ( resultInsert[0] ):
-                histObjetivo = clsHistoriaObj()
-                histActores  = clsHistoriaActores()
+            existCiclo = nuevaHistoria.verificandoAgregacion(superAsociar, listaEnlace)
 
-                # Se agregan los objetivos seleccionados en la base de datos.
-                for obj in objetivosAsociar:
-                    histObjetivo.insert_Objetivo(resultInsert[1], obj)
+            if not( existCiclo ):
+                resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar) 
 
-                # Se agregan los actores seleccionados en la base de datos.
-                for act in actoresAsociar:
-                    print(act)
-                    histActores.insert_Actor(resultInsert[1], act)
+                if ( resultInsert[0] ):
+                    histObjetivo = clsHistoriaObj()
+                    histActores  = clsHistoriaActores()
 
-                res = results[0]
-                res['idHistoria'] = resultInsert[1]
+                    # Se agregan los objetivos seleccionados en la base de datos.
+                    for obj in objetivosAsociar:
+                        histObjetivo.insert_Objetivo(resultInsert[1], obj)
+
+                    # Se agregan los actores seleccionados en la base de datos.
+                    for act in actoresAsociar:
+                        histActores.insert_Actor(resultInsert[1], act)
+
+                    res = results[0]
+                    res['idHistoria'] = resultInsert[1]
     
     res['idPila'] = idProductoActual 
     res['label'] = res['label'] + '/' + str(idProductoActual) 
@@ -84,10 +90,80 @@ def AModifHistoria():
     actoresAsociar = params.get('actores', None)
 
     nuevaHistoria = clsHistoria()
-    resultsModif = nuevaHistoria.modify_Historia(idPila, idHistoria, codigoHistoria, tipoAsociar, accionAsociar) 
+    nuevoObjetivo = clsHistoriaObj()
+    nuevoActor    = clsHistoriaActores()
+    listaModify   = []
+    
+    # BORRAR ACTORES ASOCIADOS A UNA HISTORIA. 
+    findActor = nuevoActor.find_Actores(idHistoria)
+    
+    resultModifActores = False
+    
+    if ( findActor != [] ):
+            resultModifActores = True
+            for find in findActor:
+                if ( resultModifActores == True ):
+                    resultModifActores = nuevoActor.modify_Actor(idHistoria,find)
+            listaModify.append(resultModifActores)
+            
+ 
+    #BORRAR OBJETIVOS ASOCIADOS A UNA HISTORIA.        
+    findObjetivo = nuevoObjetivo.find_Objetivo(idHistoria)
+    
+    resultModifObjetivo = False
+    
+    if ( findObjetivo != [] ):    
+              
+            resultModifObjetivo = True
+            for find in findObjetivo:
+                 if ( resultModifObjetivo == True ):
+                     resultModifObjetivo= nuevoObjetivo.modify_Objetivo(idHistoria,find)
+            listaModify.append(resultModifObjetivo)
+         
 
-    if ( resultsModif ):
+    # BORRAR UNA HISTORIA.         
+    findHistoria = nuevaHistoria.find_Historia(idHistoria)
+    resultModifHistoria = False
+        
+    if ( findHistoria != [] ):
+        
+            resultModifHistoria = True
+            for find in findHistoria:
+                if ( resultModifHistoria == True ):
+                    resultModifHistoria = nuevaHistoria.modify_Historia(idPila,idHistoria)
+            listaModify.append(resultModifHistoria)
+            
+    #------------------------------------------------------------------------------------------
+    idProductoActual = session['idPila']
+    if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) ):
+        accionQuery = model.Historia_Usuario.id_Acciones_Historia_Usuario == accionAsociar
+        accionInHistory = model.db.session.query(model.Historia_Usuario).filter(accionQuery).all()
+
+        if (accionInHistory == []):
+            nuevaHistoria = clsHistoria()
+            resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar) 
+
+            if ( resultInsert[0] ):
+                histObjetivo = clsHistoriaObj()
+                histActores  = clsHistoriaActores()
+
+                # Se agregan los objetivos seleccionados en la base de datos.
+                for obj in objetivosAsociar:
+                    histObjetivo.insert_Objetivo(resultInsert[1], obj)
+
+                # Se agregan los actores seleccionados en la base de datos.
+                for act in actoresAsociar:
+                    print(act)
+                    histActores.insert_Actor(resultInsert[1], act)
+                
+
+                resu = True
+                res['idHistoria'] = resultInsert[1]
+    
+   
+    if ( listaModify == [True,True,True] and resu ):
         res = results[0]
+    #----------------------------------------------------------------------------------------------------------------------------------------------
 
     res['idHistoria'] = idHistoria
     # Se actualiza el URL de la pág a donde se va a redirigir.
@@ -109,7 +185,6 @@ def VCrearHistoria():
         res['actor']=session['actor']
 
     idProductoActual = session['idPila']
-    print(idProductoActual)
 
     # Lista de acciones que están asociado al producto actual.
     acciones = model.db.session.query(model.Acciones).\
@@ -124,6 +199,10 @@ def VCrearHistoria():
     objetivos = model.db.session.query(model.Objetivo).\
                 filter(model.Objetivo.idProducto == idProductoActual).\
                 all()
+
+    historias = model.db.session.query(model.Historia_Usuario).\
+            filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProductoActual).\
+            all()
 
     # Se muestra por pantalla los actores que pertenecen al producto.
     res['fHistoria_opcionesActores'] = [
@@ -142,8 +221,9 @@ def VCrearHistoria():
 
     # TEMPORAL.
     res['fHistoria_opcionesHistorias'] = [
-      {'key':0,'value':'Ninguna'},
-      {'key':1,'value':'Historia1'}]
+      {'key': hist.idHistoria_Usuario,'value':hist.codigoHistoria_Usuario}
+      for hist in historias]
+    res['fHistoria_opcionesHistorias'] += [{'key':0,'value':'Ninguna'}]
 
     # Tipos de historias disponibles. 
     res['fHistoria_opcionesTiposHistoria'] = [
@@ -169,10 +249,10 @@ def VHistoria():
     idHistoriaActual = int(request.args.get('idHistoria',1))
 
     # Se obtiene la información de la historia actual.
-    historialActual = model.db.session.query(model.Historia_Usuario).\
+    historiaActual = model.db.session.query(model.Historia_Usuario).\
                         filter(model.Historia_Usuario.idHistoria_Usuario == idHistoriaActual).\
                         all()
-    historialActual = historialActual[0]
+    historiaActual = historiaActual[0]
 
 
      # Lista de acciones que están asociado al producto actual.
@@ -184,12 +264,15 @@ def VHistoria():
     actores = model.db.session.query(model.Actores).\
                 filter(model.Actores.idProducto == idProducto).\
                 all()
-    print(actores)
 
     objetivos = model.db.session.query(model.Objetivo).\
                 filter(model.Objetivo.idProducto == idProducto).\
                 all()
     
+    historias = model.db.session.query(model.Historia_Usuario).\
+                filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProducto).\
+                all()
+
     # Se muestra por pantalla los actores que pertenecen al producto.
     res['fHistoria_opcionesActores'] = [
       {'key':act.id_actores,'value':act.descripcion_actores}
@@ -207,54 +290,39 @@ def VHistoria():
 
     # TEMPORAL.
     res['fHistoria_opcionesHistorias'] = [
-      {'key':0,'value':'Ninguna'},
-      {'key':1,'value':'Historia1'}]
+      {'key': hist.idHistoria_Usuario,'value':hist.codigoHistoria_Usuario}
+      for hist in historias]
+    res['fHistoria_opcionesHistorias'] += [{'key':0,'value':'Ninguna'}]
 
     # Tipos de historias disponibles. 
     res['fHistoria_opcionesTiposHistoria'] = [
       {'key':1,'value':'Opcional'},
       {'key':2,'value':'Obligatoria'}]
 
-    #print(listaActores)
-    posicionActores = []
-    actores2 = model.db.session.query(model.Actores.id_actores).\
-            filter(model.Actores.idProducto == idProducto).\
+    # Lista de actores que fueron elegidos para la historia actual (antes de la modificación).
+    actoresHistoria = model.db.session.query(model.ActoresHistorias.idActores).\
+            filter(model.ActoresHistorias.idHistoria == idHistoriaActual).\
             all()
+    idActoresHistoria = [int(i[0]) for i in actoresHistoria]
+ 
+    # Lista de objetivos que fueron elegidos para la historia actual (antes de la modifación).
+    objetivosHistoria = model.db.session.query(model.ObjHistorias.idObjetivo).\
+            filter(model.ObjHistorias.idHistoria == idHistoriaActual).\
+            all()
+    idObjetivosHistoria = [int(i[0]) for i in objetivosHistoria]
 
-    for act, in model.db.session.query(model.ActoresHistorias.idActores).\
-                    filter(model.ActoresHistorias.idHistoria == idHistoriaActual):
-        indexAct = [x + 1 for x, y in enumerate(actores2) if y[0] == act]
-        posicionActores = posicionActores + indexAct
-    
-    res['fHistoria'] = { 'idHistoria': idHistoriaActual,
+
+    res['fHistoria'] = { 'super':0,
+                         'idHistoria': idHistoriaActual,
                          'idPila': idProducto,
-                         'actores': [1]}
-    """ 
-    # Se muestra por pantalla los actores que pertenecen al producto.
-    res['fHistoria.actores'] = [
-      {'key':act.id_actores,'value':act.descripcion_actores}
-        for act in actores]
+                         'objetivos':idObjetivosHistoria,
+                         'actores': idActoresHistoria,
+                         'accion': historiaActual.id_Acciones_Historia_Usuario,
+                         'codigo': historiaActual.codigoHistoria_Usuario,
+                         'tipo': int(historiaActual.tipoHistoria_Usuario)}
 
-    # Se muestra por pantalla las acciones que pertenecen al producto.
-    res['fHistoria.accion'] = [
-      {'key':acc.idacciones,'value':acc.descripAcciones}
-        for acc in acciones]
+    print(historiaActual.tipoHistoria_Usuario)
 
-    # Se muestra por pantalla los objetivos que pertenecen al producto.
-    res['fHistoria.objetivo'] = [
-      {'key':obj.idObjetivo,'value':obj.descripObjetivo}
-        for obj in objetivos]
-
-    # TEMPORAL.
-    res['fHistoria.super'] = [
-      {'key':0,'value':'Ninguna'},
-      {'key':1,'value':'Historia1'}]
-
-    # Tipos de historias disponibles. 
-    res['fHistoria.actores.tipo'] = [
-      {'key':1,'value':'Opcional'},
-      {'key':2,'value':'Obligatoria'}]
-    """
     res['idPila'] = idProducto
     session['idHistoria'] = idHistoriaActual
 
@@ -269,6 +337,10 @@ def VHistorias():
     if "actor" in session:
         res['actor']=session['actor']
     
+    # Se verifica si no se han almacenado los enlaces en la session.
+    if not('enlace' in session):
+        session['enlaces'] = {}
+
     idProductoActual = int(session['idPila'])
     idProducto = model.Historia_Usuario.id_Pila_Historia_Usuario == idProductoActual
     historia = model.db.session.query(model.Historia_Usuario).filter(idProducto).all()
