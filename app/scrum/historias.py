@@ -5,7 +5,7 @@ from app.scrum.funcObjetivo import clsObjetivo
 from app.scrum.funcActor    import clsActor
 from app.scrum.funcHistObjetivo import clsHistoriaObj
 from app.scrum.funcHistActores  import clsHistoriaActores
-from app.scrum.clsEnlace import clsEnlace
+from app.scrum.funcEnlace import clsEnlace
 
 import model
 
