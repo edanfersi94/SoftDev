@@ -44,9 +44,9 @@ class clsHistoriaActores():
 
 		return( False )
 
-		#-------------------------------------------------------------------------------
+	#-------------------------------------------------------------------------------
 
-	def modify_Actor (self,idHistoria,idActores):
+	def modify_Actor(self,idHistoria,idActores):
 		
 		idHistoriaIsInt = type(idHistoria) == int
 		idActoresIsInt = type(idActores) == int
@@ -59,8 +59,38 @@ class clsHistoriaActores():
 				actoresEsp   = model.ActoresHistorias.idActores == idActores
 				historiaEsp  = model.ActoresHistorias.idHistoria == idHistoria
 				query = model.db.session.query(model.ActoresHistorias).filter(actoresEsp, historiaEsp).all()
-				actores = query[0]
+				actores = query
 
-				model.db.session.delete(actores)
-				model.db.session.commit()
+				if (actores != []):
+					for act in actores:
+						model.db.session.delete(act)
+						model.db.session.commit()
+					return ( True )
+			
+		return ( False )
+	
+	#-------------------------------------------------------------------------------			
+	def find_Actores(self,idHistoria):
+		listaActores = []
+		
+		idHistoriaIsInt = type(idHistoria) == int
+		
+		if (idHistoriaIsInt):
+			idHistoriaIsPos = idHistoria >0
+			
+			if (idHistoriaIsPos):
+				historiaEsp  = model.ActoresHistorias.idHistoria == idHistoria
+				query = model.db.session.query(model.ActoresHistorias).filter(historiaEsp).all()
+				actores = query
+				
+				for act in actores:
+					idActores = act.idActores
+					listaActores.append(idActores)
+					
+				return (listaActores)
+			
+			return ([])
+		
+		return ([])
+					
 					
