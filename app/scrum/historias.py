@@ -330,7 +330,7 @@ def VHistoria():
                 all()
 
     objetivos = model.db.session.query(model.Objetivo).\
-                    filter_by(idProducto = idProductoActual,transversalidad=0).\
+                    filter_by(idProducto = idProducto,transversalidad=0).\
                     all()
     
     historias = model.db.session.query(model.Historia_Usuario).\
@@ -338,7 +338,7 @@ def VHistoria():
                 all()
 
     prioridad = model.db.session.query(model.Pila).\
-                filter(model.Pila.idPila == idProductoActual).all()
+                filter(model.Pila.idPila == idProducto).all()
                 
     if (prioridad[0].escalaProducto == 1):
         escalaP = 1
@@ -430,7 +430,7 @@ def VHistorias():
 
     res['idPila'] = idProductoActual
     res['data0'] = [
-      {'idHistoria':his.idHistoria_Usuario, 'enunciado':his.codigoHistoria_Usuario} 
+      {'idHistoria':his.idHistoria_Usuario, 'enunciado':his.codigoHistoria_Usuario, 'prioridad':his.idEscala} 
       for his in historia]
     
     return json.dumps(res)
@@ -471,13 +471,23 @@ def VPrioridades():
 
     historias = model.db.session.query(model.Historia_Usuario).\
             filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProductoActual).\
-            order_by(model.desc(model.Historia_Usuario.idEscala))
+            order_by(model.desc(model.Historia_Usuario.idEscala)).all()
+
+    listHistorias = {}
+    for i in historias:
+        listHistorias[i.idHistoria_Usuario] = {'id': i.idHistoria_Usuario,
+                                               'actor': i.listaActores.idActores,
+                                               'objetivo': i.listaObjetivos.idObjetivo,
+                                               'accion': i.id_Acciones_Historia_Usuario}
+
+
+    print(listHistorias)
 
     res['idPila'] = idProductoActual
-    res['fPrioridades'] = {'idPila':idProductoActual,
-      'lista':[
-        {'idHistoria':hist.idHistoria_Usuario,'prioridad':hist.idEscala, 'enunciado':'En tanto '+hist.listaActores + ' ' + hist.id_Acciones_Historia_Usuario + ' para '+ hist.listaObjetivos }
-          for hist in historias]}
+    #res['fPrioridades'] = {'idPila':idProductoActual,
+    #  'lista':[
+    #    {'idHistoria':hist.idHistoria_Usuario,'prioridad':hist.idEscala, 'enunciado':'En tanto '+str(hist[listaActores]) + ' ' + str(hist[id_Acciones_Historia_Usuario]) + ' para '+ str(hist[listaObjetivos]) }
+    #      for hist in historias]}
 
     #Action code ends here
     return json.dumps(res)
