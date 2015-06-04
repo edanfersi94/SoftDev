@@ -474,11 +474,11 @@ def VPrioridades():
             order_by(model.desc(model.Historia_Usuario.idEscala)).all()
 
     listHistorias = {}
-    for i in historias:
-        listHistorias[i.idHistoria_Usuario] = {'id': i.idHistoria_Usuario,
-                                               'actor': i.listaActores.idActores,
-                                               'objetivo': i.listaObjetivos.idObjetivo,
-                                               'accion': i.id_Acciones_Historia_Usuario}
+    #for i in historias:
+    #    listHistorias[i.idHistoria_Usuario] = {'id': i.idHistoria_Usuario,
+    #                                           'actor': i.listaActores.idActores,
+    #                                           'objetivo': i.listaObjetivos.idObjetivo,
+    #                                           'accion': i.id_Acciones_Historia_Usuario}
 
 
     print(listHistorias)
