@@ -62,7 +62,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion.insert_Accion(1,"Holaaa")
         
         historiaIdPila= newIdProducto 
-        newProducto = model.Historia_Usuario(idHistoria,newcodHistoria,historiaIdPila,newTipoHostoria,1)
+        newProducto = model.Historia_Usuario(idHistoria,newcodHistoria,historiaIdPila,newTipoHostoria,1,1)
         model.db.session.add(newProducto)
         model.db.session.commit()
 
@@ -118,7 +118,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insert_Accion(1,"Holaaa")
         tempHistoria = clsHistoria()
-        result = tempHistoria.insert_Historia(1,'codigo','Opcional',1)
+        result = tempHistoria.insert_Historia(1,'codigo','Opcional',1,1)
         self.assertTrue(result)
         
         
@@ -133,7 +133,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insert_Accion(1,"Holaaa")
         tempHistoria = clsHistoria()
-        result = tempHistoria.insert_Historia(1,12.0,'Opcional',1)
+        result = tempHistoria.insert_Historia(1,12.0,'Opcional',1,1)
         self.assertFalse(result[0])
                 
     ### CASOS INVALIDOS( Casos Malicia ):    
@@ -149,7 +149,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insert_Accion(1,"Holaaa")
         tempHistoria = clsHistoria()
-        result = tempHistoria.insert_Historia(salida[1],12,'tipoDistinto',1)
+        result = tempHistoria.insert_Historia(salida[1],12,'tipoDistinto',1,1)
         self.assertFalse(result[0])
 
     # Test 12:  Se insertara una historia con tipo distinto y codigo float.
@@ -163,7 +163,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insert_Accion(1,"Holaaa")
         tempHistoria = clsHistoria()
-        result = tempHistoria.insert_Historia(salida[1],12.34,'tipoDistinto',1)
+        result = tempHistoria.insert_Historia(salida[1],12.34,'tipoDistinto',1,1)
         self.assertFalse(result[0])
 
     #Test 13: Se insertara una historia con codigo None.
@@ -177,7 +177,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insert_Accion(1,"Holaaa")
         tempHistoria = clsHistoria()
-        result = tempHistoria.insert_Historia(salida[1], None, 'Obligatorio',1)
+        result = tempHistoria.insert_Historia(salida[1], None, 'Obligatorio',1,1)
         self.assertFalse(result[0])
         
     # FUNCION MODIFICAR
@@ -194,7 +194,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insert_Accion(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
+        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
