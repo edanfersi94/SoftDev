@@ -27,8 +27,15 @@ class clsEnlace():
 		for elem in query:
 			if (elem.id_clave in listaEnlace):
 				listaEnlace[elem.id_clave] += [elem.id_valor]
+				if not(elem.id_valor in listaEnlace):
+ 						listaEnlace[elem.id_valor] =[] 
 			else:
 				listaEnlace[elem.id_clave] = [elem.id_valor]
+				if not(elem.id_valor in listaEnlace):
+ 						listaEnlace[elem.id_valor] =[]
+
+			if not(elem.id_valor in listaEnlace):
+				listaEnlace[elem.id_valor] =[]
 		print(listaEnlace)
 
 		target = {}
@@ -69,16 +76,24 @@ class clsEnlace():
  			if (elem.id_clave != viejoSuper or (elem.id_clave == viejoSuper and elem.id_valor != idValor)):
  				if (elem.id_clave in listaEnlace):
  					listaEnlace[elem.id_clave] += [elem.id_valor]
+ 					if not(elem.id_valor in listaEnlace):
+ 						listaEnlace[elem.id_valor] =[] 
  				else:
  					listaEnlace[elem.id_clave] = [elem.id_valor]
+ 					if not(elem.id_valor in listaEnlace):
+ 						listaEnlace[elem.id_valor] =[]
  			elif(elem.id_clave == viejoSuper and elem.id_valor == idValor):
  				listaEnlace[viejoSuper] = []
 
+ 			if not(elem.id_valor in listaEnlace):
+ 				listaEnlace[elem.id_valor] =[]
+
+ 		print(listaEnlace)
  		target = {}
  		for key in listaEnlace:
  			print(key)
  			if key == newSuper:
- 				target[key] = listaEnlaces[key] + [idValor]
+ 				target[key] = listaEnlace[key] + [idValor]
  			else:
  				target[key] = listaEnlace[key]
 
