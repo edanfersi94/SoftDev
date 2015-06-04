@@ -55,7 +55,7 @@ def AModifProducto():
     res = results[1]
 
     # Se obtiene el identificador del producto actual.
-    idProductoModif = int(session['idPila'])
+    idProductoModif = session['idPila']
     
     nuevoNombre = params.get('nombre', None)
     nuevaDescripcionProducto = params.get('descripcion', None)
@@ -131,6 +131,7 @@ def VProducto():
     res['data7'] = [
         {'idObjetivo':obj.idObjetivo, 'descripcion':obj.descripObjetivo}
          for obj in objetivos]   
+
 
     res['fPila_opcionesEscala'] = [
       {'key':1,'value':'Alta/Media/Baja'},

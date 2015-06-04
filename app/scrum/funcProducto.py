@@ -111,9 +111,9 @@ class clsProducto():
 			escalaLenValid  = 0 < nuevaEscala < 3
 
 			if ( idIsPositive and descripLenValid and nombreLenValid and escalaLenValid):
-				queryHistoria = model.db.session(model.Historia_Usuario).\
-									filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProducto).\
-									all()
+	
+				queryHistoria = model.db.session.query(model.Historia_Usuario).filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProducto).all()
+				
 				query = self.find_idProducto(idProducto)
 
 				if ((query[0].escalaProducto == nuevaEscala ) or (query[0].escalaProducto != nuevaEscala and queryHistoria == [])):
@@ -129,12 +129,15 @@ class clsProducto():
 						model.db.session.query(model.Pila).filter(producto).\
 							update({'nombreProducto': nuevoNombre,'descripProducto':(newDescripProducto), 'escalaProducto':nuevaEscala})
 						model.db.session.commit()
+				
 						return( True )
 					elif (queryNombre != [] and query[0].nombreProducto == nuevoNombre):
 						producto = model.Pila.idPila == idProducto
 						model.db.session.query(model.Pila).filter(producto).\
 							update({'descripProducto':(newDescripProducto), 'escalaProducto':nuevaEscala})
 						model.db.session.commit()
+						return (True)
+						
 		return( False )
 	
 	#--------------------------------------------------------------------------------	
