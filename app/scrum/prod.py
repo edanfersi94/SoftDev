@@ -51,20 +51,21 @@ def ACrearProducto():
 def AModifProducto():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VProductos', 'msg':['Producto actualizado']}, ]
-    res = results[0]
+    results = [{'label':'/VProductos', 'msg':['Producto actualizado']}, {'label':'/VProductos', 'msg':['Error al modificar el producto']},]
+    res = results[1]
 
     # Se obtiene el identificador del producto actual.
     idProductoModif = int(session['idPila'])
     
-    # Se obtiene el nuevo nombre.
-    nuevoNombre = params.get('nombre',None)
-
-    # Se obtiene la nueva descripción.
+    nuevoNombre = params.get('nombre', None)
     nuevaDescripcionProducto = params.get('descripcion', None)
+    nuevaEscala = params.get('escala', None)
 
     productoModif = clsProducto()
-    resultsModif = productoModif.modify_Producto(idProductoModif, nuevoNombre, nuevaDescripcionProducto)
+    resultsModif = productoModif.modify_Producto(idProductoModif, nuevoNombre, nuevaDescripcionProducto, nuevaEscala)
+
+    if ( resultsModif ):
+        res = results[0]
 
     if "actor" in res:
         if res['actor'] is None:
