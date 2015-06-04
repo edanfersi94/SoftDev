@@ -19,11 +19,20 @@ def ACambiarPrioridades():
     params = request.get_json()
     results = [{'label':'/VHistorias', 'msg':['Prioridades reasignadas']}, ]
     res = results[0]
-    #Action code goes here, res should be a list with a label and a message
 
-    res['label'] = res['label']+'/1'
+    print(params)
+    nuevaPrioridad = params.get('prioridad')
+    idHistoria = int(session['idHistoria'])
 
-    #Action code ends here
+    historiaModif = clsHistoria()
+    resultModif = historiaModif.cambiar_Prioridad( idHistoria, nuevaPrioridad )
+
+    if ( resultModif ):
+        res = results[0]
+
+
+    res['label'] = res['label']+'/' + str(idHistoria)
+
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -45,9 +54,10 @@ def ACrearHistoria():
     objetivosAsociar = params.get('objetivos', None)
     actoresAsociar = params.get('actores', None)
     superAsociar = params.get('super', None)
+    prioridadAsociar = params.get('prioridad', None)
 
     idProductoActual = session['idPila']
-    if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) and (superAsociar == None)):
+    if not(( codigoHistoria == None ) and ( accionAsociar == None ) and ( objetivosAsociar == None ) and ( actoresAsociar == None) and (superAsociar == None) and (prioridadAsociar == None)):
         accionQuery = model.Historia_Usuario.id_Acciones_Historia_Usuario == accionAsociar
         accionInHistory = model.db.session.query(model.Historia_Usuario).filter(accionQuery).all()
 
@@ -59,7 +69,7 @@ def ACrearHistoria():
 
             if (result):
                 nuevaHistoria = clsHistoria()
-                resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar, superAsociar) 
+                resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar, superAsociar, prioridadAsociar) 
 
                 if ( resultInsert[0] ):
                     histObjetivo = clsHistoriaObj()
@@ -106,6 +116,7 @@ def AModifHistoria():
     objetivosAsociar = params.get('objetivos', None)
     actoresAsociar = params.get('actores', None)
     superAsociar = params.get('super', None)
+
     #print("tipoAsociar",tipoAsociar,"codigo",codigoHistoria,"accion",accionAsociar,"obj",objetivosAsociar,"act",actoresAsociar,"super",superAsociar)
 
     nuevaHistoria = clsHistoria()
@@ -171,7 +182,7 @@ def AModifHistoria():
 
             if (accionInHistory == []):
                 nuevaHistoria = clsHistoria()
-                resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar, superAsociar) 
+                resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar, superAsociar, prioridadAsociar) 
 
                 if ( resultInsert[0] ):
                     histObjetivo = clsHistoriaObj()
@@ -232,6 +243,17 @@ def VCrearHistoria():
             filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProductoActual).\
             all()
 
+    prioridad = model.db.session.query(model.Pila).\
+                filter(model.Pila.idPila == idProductoActual).all()
+                
+    print("hola",prioridad)
+                
+    if (prioridad[0].escalaProducto == 1):
+        escalaP = 1
+        
+    if (prioridad[0].escalaProducto == 2):
+        escalaP = 2
+
     # Se muestra por pantalla los actores que pertenecen al producto.
     res['fHistoria_opcionesActores'] = [
       {'key':act.id_actores,'value':act.nombre_actores}
@@ -259,11 +281,18 @@ def VCrearHistoria():
       {'key':1,'value':'Opcional'},
       {'key':2,'value':'Obligatoria'}]
     
-    res['fHistoria_opcionesPrioridad'] = [
-      {'key':1, 'value':'Alta'},
-      {'key':2, 'value':'Media'},
-      {'key':3, 'value':'Baja'},
-    ]
+    if (escalaP == 1):
+        res['fHistoria_opcionesPrioridad'] = [
+            {'key':1, 'value':'Alta'},
+            {'key':2, 'value':'Media'},
+            {'key':3, 'value':'Baja'},
+        ]
+        
+    if (escalaP == 2):
+        res['fHistoria_opcionesPrioridad'] = [
+            {'key':i, 'value':i}
+            for i in range(1,21)]        
+
 
     # Se almacena la información recibida.  
 
@@ -300,10 +329,6 @@ def VHistoria():
                 filter(model.Actores.idProducto == idProducto).\
                 all()
 
-    #objetivos = model.db.session.query(model.Objetivo).\
-    #            filter(model.Objetivo.idProducto == idProducto).\
-    #            all()
-    
     objetivos = model.db.session.query(model.Objetivo).\
                     filter_by(idProducto = idProductoActual,transversalidad=0).\
                     all()
@@ -311,6 +336,15 @@ def VHistoria():
     historias = model.db.session.query(model.Historia_Usuario).\
                 filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProducto).\
                 all()
+
+    prioridad = model.db.session.query(model.Pila).\
+                filter(model.Pila.idPila == idProductoActual).all()
+                
+    if (prioridad[0].escalaProducto == 1):
+        escalaP = 1
+        
+    if (prioridad[0].escalaProducto == 2):
+        escalaP = 2
 
     # Se muestra por pantalla los actores que pertenecen al producto.
     res['fHistoria_opcionesActores'] = [
@@ -337,13 +371,19 @@ def VHistoria():
     res['fHistoria_opcionesTiposHistoria'] = [
       {'key':1,'value':'Opcional'},
       {'key':2,'value':'Obligatoria'}]
+
+    if (escalaP == 1):
+        res['fHistoria_opcionesPrioridad'] = [
+            {'key':1, 'value':'Alta'},
+            {'key':2, 'value':'Media'},
+            {'key':3, 'value':'Baja'},
+        ]
+        
     
-    #Escala dependiente del proyecto
-    res['fHistoria_opcionesPrioridad'] = [
-      {'key':1, 'value':'Alta'},
-      {'key':2, 'value':'Media'},
-      {'key':3, 'value':'Baja'},
-    ]
+    if (escalaP == 2):
+        res['fHistoria_opcionesPrioridad'] = [
+            {'key':i, 'value':i}
+            for i in range(1,21)]       
 
     # Lista de actores que fueron elegidos para la historia actual (antes de la modificación).
     actoresHistoria = model.db.session.query(model.ActoresHistorias.idActores).\
@@ -367,7 +407,8 @@ def VHistoria():
                          'actores': idActoresHistoria,
                          'accion': historiaActual.id_Acciones_Historia_Usuario,
                          'codigo': historiaActual.codigoHistoria_Usuario,
-                         'tipo': int(historiaActual.tipoHistoria_Usuario)}
+                         'tipo': int(historiaActual.tipoHistoria_Usuario),
+                         'prioridad':historiaActual.idEscala}
 
     res['idPila'] = idProducto
     session['idHistoria'] = idHistoriaActual
@@ -399,25 +440,44 @@ def VHistorias():
 @historias.route('/historias/VPrioridades')
 def VPrioridades():
     #GET parameter
-    idPila = request.args['idPila']
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
+
+    idProductoActual = session['idPila']
+
+    prioridad = model.db.session.query(model.Pila).\
+                filter(model.Pila.idPila == idProductoActual).all()
 
     #Escala dependiente del proyecto
-    res['fPrioridades_opcionesPrioridad'] = [
-      {'key':1, 'value':'Alta'},
-      {'key':2, 'value':'Media'},
-      {'key':3, 'value':'Baja'},
-    ]
-    res['idPila'] = 1
-    res['fPrioridades'] = {'idPila':1,
-      'lista':[
-        {'idHistoria':1,'prioridad':2, 'enunciado':'En tanto que cocinero puedo preparar una ratatuya para cenar'},
-        {'idHistoria':2,'prioridad':2, 'enunciado':'En tanto que chef puedo hacer que los cocineros prepraren varios platos para cumplir con el munú'}
-        ]}
+    if (prioridad[0].escalaProducto == 1):
+        escalaP = 1
+        
+    if (prioridad[0].escalaProducto == 2):
+        escalaP = 2
+        
+    if (escalaP == 1):
+        res['Prioridades_opcionesPrioridad'] = [
+            {'key':1, 'value':'Alta'},
+            {'key':2, 'value':'Media'},
+            {'key':3, 'value':'Baja'},
+        ]
+        
+    
+    if (escalaP == 2):
+        res['Prioridades_opcionesPrioridad'] = [
+            {'key':i, 'value':i}
+            for i in range(1,21)]      
 
+    historias = model.db.session.query(model.Historia_Usuario).\
+            filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProductoActual).\
+            order_by(model.desc(model.Historia_Usuario.idEscala))
+
+    res['idPila'] = idProductoActual
+    res['fPrioridades'] = {'idPila':idProductoActual,
+      'lista':[
+        {'idHistoria':hist.idHistoria_Usuario,'prioridad':hist.idEscala, 'enunciado':'En tanto '+hist.listaActores + ' ' + hist.id_Acciones_Historia_Usuario + ' para '+ hist.listaObjetivos }
+          for hist in historias]}
 
     #Action code ends here
     return json.dumps(res)

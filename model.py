@@ -18,7 +18,7 @@ from flask                  import Flask
 from flask.ext.migrate      import Migrate, MigrateCommand
 from flask.ext.sqlalchemy   import SQLAlchemy
 from flask.ext.script       import Manager
-from sqlalchemy             import CheckConstraint, func 
+from sqlalchemy             import CheckConstraint, func, desc 
 
 #-------------------------------------------------------------------------------
 

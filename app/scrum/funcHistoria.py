@@ -25,7 +25,7 @@ class clsHistoria():
     
     #-------------------------------------------------------------------------------
     
-    def insert_Historia(self, newIdProducto, newCodigoHistoria, newTipo, newAccion, idSuper):
+    def insert_Historia(self, newIdProducto, newCodigoHistoria, newTipo, newAccion, idSuper, idEscala):
         
         """
             @brief Funcion que permite insertar un nueva historia en la base de datos.
@@ -66,7 +66,7 @@ class clsHistoria():
                     num_historias = 0
                 num_historias = num_historias + 1
 
-                newHistoriaUsuario = model.Historia_Usuario(num_historias, newCodigoHistoria, newIdProducto, newTipo, newAccion, idSuper)
+                newHistoriaUsuario = model.Historia_Usuario(num_historias, newCodigoHistoria, newIdProducto, newTipo, newAccion, idSuper, idEscala)
                 model.db.session.add(newHistoriaUsuario)
                 model.db.session.commit()  
                 salida = (True, num_historias)
@@ -215,5 +215,35 @@ class clsHistoria():
 
         salida = [existCiclo,listaEnlaces]
         return(salida)
+
+    #-------------------------------------------------------------------------------
+
+
+    def cambiar_Prioridad(self, idHistoria, newPrioridad):
+        """
+            @brief Funcion que modifica la escala de una Historia cuyo id sea "idHistoria".
+    
+            @param idHistoria        : Historia a actualizar       
+            @param newPrioridad      : Valor de escala a actualizar
+            
+            @return True si se modifico la historia dada. De lo contrario False.
+        """
+        
+        # Booleanos que indican si el tipo es el correcto.
+       
+        idHistIsInt  = type(idHistoria) == int
+        idHistIsPos  = idHistoria > 0
+        
+        if ( idHistIsInt and idHistIsPos):
+            query = self.find_Historia( idHistoria)
+                
+            if ( query != [] ):
+                historia = model.Historia_Usuario.idHistoria_Usuario == idHistoria
+                model.db.session.query(model.Historia_Usuario).filter(historia).\
+                    update({'idEscala':(newPrioridad)})
+                model.db.session.commit()
+                return( True )
+                    
+        return( False )
 
     #-------------------------------------------------------------------------------
