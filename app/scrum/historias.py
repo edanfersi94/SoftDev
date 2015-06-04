@@ -57,7 +57,7 @@ def ACrearHistoria():
     prioridadAsociar = params.get('prioridad', None)
 
     idProductoActual = session['idPila']
-    if not(( codigoHistoria == None ) and ( accionAsociar == None ) and ( objetivosAsociar == None ) and ( actoresAsociar == None) and (superAsociar == None) and (prioridadAsociar == None)):
+    if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) and (superAsociar == None) or (prioridadAsociar == None)):
         accionQuery = model.Historia_Usuario.id_Acciones_Historia_Usuario == accionAsociar
         accionInHistory = model.db.session.query(model.Historia_Usuario).filter(accionQuery).all()
 
@@ -117,7 +117,6 @@ def AModifHistoria():
     actoresAsociar = params.get('actores', None)
     superAsociar = params.get('super', None)
     prioridadAsociar = params.get('prioridad', None)
-
     #print("tipoAsociar",tipoAsociar,"codigo",codigoHistoria,"accion",accionAsociar,"obj",objetivosAsociar,"act",actoresAsociar,"super",superAsociar)
 
     nuevaHistoria = clsHistoria()
@@ -177,7 +176,7 @@ def AModifHistoria():
                 
         #------------------------------------------------------------------------------------------
         idProductoActual = session['idPila']
-        if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) ):
+        if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) or (prioridadAsociar == None)):
             accionQuery = model.Historia_Usuario.id_Acciones_Historia_Usuario == accionAsociar
             accionInHistory = model.db.session.query(model.Historia_Usuario).filter(accionQuery).all()
 
