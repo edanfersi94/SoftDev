@@ -215,7 +215,7 @@ def VCrearHistoria():
     if "actor" in session:
         res['actor']=session['actor']
 
-    idProductoActual = session['idPila']
+    idProductoActual = int(session['idPila'])
 
     # Lista de acciones que están asociado al producto actual.
     acciones = model.db.session.query(model.Acciones).\
@@ -235,6 +235,8 @@ def VCrearHistoria():
             
     prioridad = model.db.session.query(model.Pila).\
                 filter(model.Pila.idPila == idProductoActual).all()
+                
+    print("hola",prioridad)
                 
     if (prioridad[0].escalaProducto == 1):
         escalaP = 1
@@ -277,12 +279,11 @@ def VCrearHistoria():
             {'key':3, 'value':'Baja'},
         ]
         
-    num = 20   
-    i =1 
+    
     if (escalaP == 2):
         res['fHistoria_opcionesPrioridad'] = [
             {'key':i, 'value':i}
-            for i in num]
+            for i in range(1,21)]
 
     # Se almacena la información recibida.  
 
