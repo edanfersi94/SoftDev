@@ -258,6 +258,12 @@ def VCrearHistoria():
     res['fHistoria_opcionesTiposHistoria'] = [
       {'key':1,'value':'Opcional'},
       {'key':2,'value':'Obligatoria'}]
+    
+    res['fHistoria_opcionesPrioridad'] = [
+      {'key':1, 'value':'Alta'},
+      {'key':2, 'value':'Media'},
+      {'key':3, 'value':'Baja'},
+    ]
 
     # Se almacena la información recibida.  
 
@@ -345,7 +351,6 @@ def VHistoria():
  
     # Lista de objetivos que fueron elegidos para la historia actual (antes de la modifación).
     
-    
     objetivosHistoria = model.db.session.query(model.ObjHistorias.idObjetivo).\
             filter(model.ObjHistorias.idHistoria == idHistoriaActual).\
             all()
@@ -388,3 +393,29 @@ def VHistorias():
     return json.dumps(res)
 
 #.----------------------------------------------------------------------------------------.
+
+@historias.route('/historias/VPrioridades')
+def VPrioridades():
+    #GET parameter
+    idPila = request.args['idPila']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    #Escala dependiente del proyecto
+    res['fPrioridades_opcionesPrioridad'] = [
+      {'key':1, 'value':'Alta'},
+      {'key':2, 'value':'Media'},
+      {'key':3, 'value':'Baja'},
+    ]
+    res['idPila'] = 1
+    res['fPrioridades'] = {'idPila':1,
+      'lista':[
+        {'idHistoria':1,'prioridad':2, 'enunciado':'En tanto que cocinero puedo preparar una ratatuya para cenar'},
+        {'idHistoria':2,'prioridad':2, 'enunciado':'En tanto que chef puedo hacer que los cocineros prepraren varios platos para cumplir con el munú'}
+        ]}
+
+
+    #Action code ends here
+    return json.dumps(res)

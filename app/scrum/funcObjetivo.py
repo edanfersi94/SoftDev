@@ -8,7 +8,7 @@ class clsObjetivo():
 
 	#-------------------------------------------------------------------------------
 	
-	def insert_Objetivo(self, idProducto, newDescripObjetivo):
+	def insert_Objetivo(self, idProducto, newDescripObjetivo,newTransversalidad):
 		"""
 			@brief Funcion que permite insertar un nuevo objetivo en la base de datos.
 			
@@ -44,7 +44,7 @@ class clsObjetivo():
 					num_objetivos = 0
 				
 				num_objetivos = num_objetivos + 1
-				newObjetivo = model.Objetivo(idProducto, num_objetivos, newDescripObjetivo)
+				newObjetivo = model.Objetivo(idProducto, num_objetivos, newDescripObjetivo,newTransversalidad)
 				model.db.session.add(newObjetivo)
 				model.db.session.commit()
 				return( True )
@@ -78,7 +78,7 @@ class clsObjetivo():
 	
 	#-------------------------------------------------------------------------------
 
-	def modify_Objetivo(self, idProducto, idObjetivo, newDescripObjetivo):
+	def modify_Objetivo(self, idProducto, idObjetivo, newDescripObjetivo,newTransversalidad):
 		"""
 			@brief Funcion que modifica los datos del objetivo cuyo id sea "idObjetivo".
 	

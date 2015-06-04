@@ -20,6 +20,12 @@ def ACrearObjetivo():
 
     # Se obtiene el identificador del producto actual.
     idProducto = int(session['idPila'])
+    nueva_transversalidad = params['transversal']
+    
+    if (nueva_transversalidad==True):
+        nueva_transversalidad=1
+    else:
+        nueva_transversalidad=0
 
     if ( nueva_descripcion_objetivo != None ):
         accessControl = clsAccessControl()
@@ -27,7 +33,7 @@ def ACrearObjetivo():
 
         if ( resultCheck ):
             nuevoObjetivo = clsObjetivo()
-            resultInset = nuevoObjetivo.insert_Objetivo( idProducto, nueva_descripcion_objetivo)
+            resultInset = nuevoObjetivo.insert_Objetivo( idProducto, nueva_descripcion_objetivo,nueva_transversalidad)
 
             if ( resultInset ):
                 res = results[0]  
