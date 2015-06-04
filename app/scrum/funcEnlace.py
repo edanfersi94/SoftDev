@@ -29,16 +29,21 @@ class clsEnlace():
 				listaEnlace[elem.id_clave] += [elem.id_valor]
 			else:
 				listaEnlace[elem.id_clave] = [elem.id_valor]
+		print(listaEnlace)
 
 		target = {}
 		for key in listaEnlace:
 			print(key)
 			if key == idSuper:
-				target[key] = listaEnlaces[key] + [idHistoria]
+				target[key] = listaEnlace[key] + [idHistoria]
 			else:
 				target[key] = listaEnlace[key]
 
-		target[elem.id_valor] = []
+		if not(idSuper in target):
+			target[idSuper] = [idHistoria]
+
+		print(idHistoria)
+		target[idHistoria] = []
 		print(target)
 
 		existCiclo = self.existenciaCiclo(target)
@@ -51,7 +56,46 @@ class clsEnlace():
 		return(salida)
 
    #-------------------------------------------------------------------------------
-    
+
+	def modify_Enlace(self, idProductoActual, viejoSuper, newSuper, idValor):
+
+ 		query = model.db.session.query(model.Enlaces).all()
+
+ 		listaEnlace = {}
+ 		salida = False
+
+ 		# Se genera la lista.
+ 		for elem in query:
+ 			if (elem.id_clave != viejoSuper or (elem.id_clave == viejoSuper and elem.id_valor != idValor)):
+ 				if (elem.id_clave in listaEnlace):
+ 					listaEnlace[elem.id_clave] += [elem.id_valor]
+ 				else:
+ 					listaEnlace[elem.id_clave] = [elem.id_valor]
+ 			elif(elem.id_clave == viejoSuper and elem.id_valor == idValor):
+ 				listaEnlace[viejoSuper] = []
+
+ 		target = {}
+ 		for key in listaEnlace:
+ 			print(key)
+ 			if key == newSuper:
+ 				target[key] = listaEnlaces[key] + [idValor]
+ 			else:
+ 				target[key] = listaEnlace[key]
+
+ 		target[newSuper] = [idValor]
+ 		print(target)
+ 		existCiclo = self.existenciaCiclo(target)
+ 		print(existCiclo)
+ 		if not(existCiclo):
+ 			model.db.session.query(model.Enlaces).\
+ 				filter(model.Enlaces.id_clave == viejoSuper,model.Enlaces.id_valor == idValor).\
+ 				update({'id_clave':(newSuper)})
+ 			model.db.session.commit()
+ 			salida = True
+ 		return(salida)  	
+
+   #-------------------------------------------------------------------------------
+
 	def existenciaCiclo(self,G):
 		color = { u : "blanco" for u in G  } 
 		encontrarCiclo = [False]
@@ -61,7 +105,7 @@ class clsEnlace():
 				self.dfs_visit(G, u, color, encontrarCiclo)
 			if encontrarCiclo[0]:
 				break
-			return encontrarCiclo[0]
+		return encontrarCiclo[0]
      
     #-------
 
