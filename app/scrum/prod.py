@@ -16,7 +16,7 @@ def ACrearProducto():
     res = results[1]
 
     # Descripción del producto a crear.
-    nuevoNombre = params('nombre', None)
+    nuevoNombre = params.get('nombre', None)
     nuevaDescripcionProducto = params.get('descripcion', None)
 
     if (nuevoNombre != None ):
@@ -82,6 +82,10 @@ def VCrearProducto():
                     'descripcion':request.args.get('descripcion')}
     res['idPila'] = idProducto
 
+    res['fPila_opcionesEscala'] = [
+      {'key':1,'value':'Alta/Media/Baja'},
+      {'key':2,'value':'Entre 1 y 20'}]
+
     if "actor" in session:
         res['actor']=session['actor']
     return json.dumps(res)
@@ -121,6 +125,11 @@ def VProducto():
     res['data7'] = [
         {'idObjetivo':obj.idObjetivo, 'descripcion':obj.descripObjetivo}
          for obj in objetivos]   
+
+    res['fPila_opcionesEscala'] = [
+      {'key':1,'value':'Alta/Media/Baja'},
+      {'key':2,'value':'Entre 1 y 20'}]
+
 
     print(idPila)
     session['idPila'] = idPila
