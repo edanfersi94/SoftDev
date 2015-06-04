@@ -24,11 +24,11 @@ from sqlalchemy             import CheckConstraint, func
 
 # Construcción de la base de datos.
 
-SQLALCHEMY_DATABASE_URI = "postgresql://BMO:@localhost/newapmwsc"
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:1234@localhost/prueba1"
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
-db_dir = 'postgresql+psycopg2://BMO:@localhost/newapmwsc'
+db_dir = 'postgresql+psycopg2://postgres:1234@localhost/prueba1'
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
@@ -120,13 +120,15 @@ class Objetivo(db.Model):
     idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     idObjetivo    = db.Column(db.Integer, primary_key = True)
     descripObjetivo = db.Column(db.String(500), nullable = False)
+    transversalidad = db.Column(db.Integer, nullable = True)
     historiaAsociada = db.relationship('ObjHistorias',backref='objetivo',cascade = "all, delete, delete-orphan")
 
-    def __init__(self, idPila, idObjetivo, descripObjetivo):
+    def __init__(self, idPila, idObjetivo, descripObjetivo,transversalidad):
         # Constructor del modelo Acciones.
         self.idProducto = idPila
         self.idObjetivo       = idObjetivo
         self.descripObjetivo  = descripObjetivo
+        self.transversalidad = transversalidad
 
 # Tabla Actores.
 class Actores(db.Model):

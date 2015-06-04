@@ -27,10 +27,11 @@ class clsObjetivo():
 		num_objetivos = int(tuplaResult[0] or 0)
 
 		# Booleano que indica si el tipo es el correcto.
+		isValidTransversalidad = (type(newTransversalidad) == int) and (newTransversalidad== 0 or newTransversalidad== 1)
 		descripIsStr = type(newDescripObjetivo) == str
 		idProdIsInt	 = type(idProducto) == int
 	
-		if ( descripIsStr and idProdIsInt):
+		if ( descripIsStr and idProdIsInt and isValidTransversalidad):
 
 			# Booleano que indica si cumplen con los limites.
 			descripLenValid = 1 <= len(newDescripObjetivo) <= 500
@@ -67,6 +68,7 @@ class clsObjetivo():
 		idIsInt = type(idObjetivo) == int
 		idProdIsInt	 = type(idProducto) == int
 		
+		
 		if ( idIsInt and idProdIsInt ):
 			objetivoEsp = model.Objetivo.idObjetivo == idObjetivo 
 			idProductoEsp =  model.Objetivo.idProducto == idProducto
@@ -88,11 +90,12 @@ class clsObjetivo():
 		"""
 		
 		# Booleanos que indican si el tipo es el correcto.
+		isValidTransversalidad = (type(newTransversalidad) == int) and (newTransversalidad== 0 or newTransversalidad== 1)
 		descripIsStr = type(newDescripObjetivo) == str
 		idIsInt 	 = type(idObjetivo) == int
 		idProdIsInt	 = type(idProducto) == int
 		
-		if ( idIsInt and descripIsStr and idProdIsInt):
+		if ( idIsInt and descripIsStr and idProdIsInt and isValidTransversalidad):
 			# Booleanos que indican si se cumplen los limites.
 			idIsPositive 	= idObjetivo > 0
 			idProducIsPosit = idProducto > 0
@@ -107,6 +110,12 @@ class clsObjetivo():
 					model.db.session.query(model.Objetivo).filter(objetivo, idProductoEsp).\
 						update({'descripObjetivo':(newDescripObjetivo)})
 					model.db.session.commit()
+					return( True )
+				
+					model.db.session.query(model.Objetivo).filter(objetivo, idProductoEsp).\
+						update({'transversalidad':(newTransversalidad)})
+					model.db.session.commit()
+					
 					return( True )
 					
 		return( False )

@@ -97,7 +97,8 @@ class Pila(db.Model):
     pilaObjetivos   = db.relationship('Objetivo', backref = 'pila_objetivos', cascade="all, delete, delete-orphan")
     pilaActores     = db.relationship('Actores', backref = 'pila_actores', cascade="all, delete, delete-orphan")
     pilaHistoria    = db.relationship('Historia_Usuario',backref='pila_historia',cascade = "all, delete, delete-orphan")
-    
+    pilaEnlaces     = db.relationship('Enlaces', backref = 'pila_enlaces', cascade="all, delete, delete-orphan")
+
     def __init__(self, idPila, descripProducto):
         self.idPila  = idPila
         self.descripProducto = descripProducto
@@ -159,13 +160,15 @@ class Objetivo(db.Model):
     idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
     idObjetivo    = db.Column(db.Integer, primary_key = True)
     descripObjetivo = db.Column(db.String(500), nullable = False)
+    transversalidad = db.Column(db.Integer, nullable = True)
     historiaAsociada = db.relationship('ObjHistorias',backref='objetivo',cascade = "all, delete, delete-orphan")
 
-    def __init__(self, idPila, idObjetivo, descripObjetivo):
+    def __init__(self, idPila, idObjetivo, descripObjetivo,transversalidad):
         # Constructor del modelo Acciones.
         self.idProducto = idPila
         self.idObjetivo       = idObjetivo
         self.descripObjetivo  = descripObjetivo
+        self.transversalidad = transversalidad
 
 # Tabla Actores.
 class Actores(db.Model):
@@ -206,7 +209,7 @@ class ActoresHistorias(db.Model):
         self.idHistoria = idHistoria
         self.idActores = idActor
 
-class EstadoActual(db.Model):
+"""class EstadoActual(db.Model):
     __tablename__ = 'estados'
     id_producto_actual = db.Column(db.Integer, primary_key = True)
     id_actor_actual = db.Column(db.Integer, nullable = True)
@@ -217,7 +220,21 @@ class EstadoActual(db.Model):
         self.id_producto_actual  = id_producto_actual
         self.id_actor_actual     = id_actor_actual
         self.id_accion_actual    = id_accion_actual
-        self.id_objetivos_actual = id_objetivos_actual
+        self.id_objetivos_actual = id_objetivos_actual"""
+        
+class Enlaces(db.Model):
+    __tablename__ = 'enlaces'
+    id_enlace = db.Column(db.Integer, primary_key = True)
+    id_producto_actual = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
+    id_clave = db.Column(db.Integer, nullable = True)
+    id_valor = db.Column(db.Integer, nullable = True)
+
+    def __init__(self, id_enlace, id_producto_actual, id_clave, id_valor = None):
+        self.id_enlace = id_enlace
+        self.id_producto_actual  = id_producto_actual
+        self.id_clave     = id_clave
+        self.id_valor    = id_valor
+        
 
 #-------------------------------------------------------------------------------
 

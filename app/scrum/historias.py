@@ -13,6 +13,24 @@ historias = Blueprint('historias', __name__)
 
 #.----------------------------------------------------------------------------------------.
 
+@historias.route('/historias/ACambiarPrioridades', methods=['POST'])
+def ACambiarPrioridades():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [{'label':'/VHistorias', 'msg':['Prioridades reasignadas']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+
+    res['label'] = res['label']+'/1'
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
 @historias.route('/historias/ACrearHistoria', methods=['POST'])
 def ACrearHistoria():
     #POST/PUT parameters
@@ -208,9 +226,7 @@ def VCrearHistoria():
                 filter(model.Actores.idProducto == idProductoActual).\
                 all()
     
-    objetivos = model.db.session.query(model.Objetivo).\
-                filter(model.Objetivo.idProducto == idProductoActual).\
-                all()
+    objetivos = model.db.session.query(model.Objetivo).filter_by(idProducto = idProductoActual,transversalidad=0).all()
 
     historias = model.db.session.query(model.Historia_Usuario).\
             filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProductoActual).\
@@ -278,9 +294,11 @@ def VHistoria():
                 filter(model.Actores.idProducto == idProducto).\
                 all()
 
-    objetivos = model.db.session.query(model.Objetivo).\
-                filter(model.Objetivo.idProducto == idProducto).\
-                all()
+    #objetivos = model.db.session.query(model.Objetivo).\
+    #            filter(model.Objetivo.idProducto == idProducto).\
+    #            all()
+    
+    objetivos = model.db.session.query(model.Objetivo).filter_by(idProducto = idProductoActual,transversalidad=0).all()
     
     historias = model.db.session.query(model.Historia_Usuario).\
                 filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProducto).\
@@ -311,6 +329,13 @@ def VHistoria():
     res['fHistoria_opcionesTiposHistoria'] = [
       {'key':1,'value':'Opcional'},
       {'key':2,'value':'Obligatoria'}]
+    
+    #Escala dependiente del proyecto
+    res['fHistoria_opcionesPrioridad'] = [
+      {'key':1, 'value':'Alta'},
+      {'key':2, 'value':'Media'},
+      {'key':3, 'value':'Baja'},
+    ]
 
     # Lista de actores que fueron elegidos para la historia actual (antes de la modificación).
     actoresHistoria = model.db.session.query(model.ActoresHistorias.idActores).\
@@ -319,11 +344,14 @@ def VHistoria():
     idActoresHistoria = [int(i[0]) for i in actoresHistoria]
  
     # Lista de objetivos que fueron elegidos para la historia actual (antes de la modifación).
+    
+    
     objetivosHistoria = model.db.session.query(model.ObjHistorias.idObjetivo).\
             filter(model.ObjHistorias.idHistoria == idHistoriaActual).\
             all()
     idObjetivosHistoria = [int(i[0]) for i in objetivosHistoria]
 
+    #objetivos = model.db.session.query(model.Objetivo).filter_by(idProducto = idProducto,transversalidad=0).all()
 
     res['fHistoria'] = { 'super':0,
                          'idHistoria': idHistoriaActual,
