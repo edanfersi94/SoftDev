@@ -38,7 +38,7 @@ class TestEnlace(unittest.TestCase):
         NewdescripProducto = "PruebaPila1"
         
         #Se ingresa manualmente los datos a la tabla pila
-        newPila = model.Pila(NewIdPila, NewdescripProducto)
+        newPila = model.Pila(NewIdPila, NewdescripProducto,"hola",1)
         model.db.session.add(newPila)
         model.db.session.commit()
         
