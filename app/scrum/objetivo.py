@@ -20,14 +20,14 @@ def ACrearObjetivo():
 
     # Se obtiene el identificador del producto actual.
     idProducto = int(session['idPila'])
-    nueva_transversalidad = params['transversal']
+    nueva_transversalidad = params.get('transversal', None)
     
-    if (nueva_transversalidad==True):
-        nueva_transversalidad=1
+    if (nueva_transversalidad):
+        nueva_transversalidad = 1
     else:
-        nueva_transversalidad=0
+        nueva_transversalidad = 0
 
-    if ( nueva_descripcion_objetivo != None ):
+    if ( nueva_transversalidad != None and nueva_descripcion_objetivo != None):
         accessControl = clsAccessControl()
         resultCheck = accessControl.check_descripcion( nueva_descripcion_objetivo )
 
@@ -65,13 +65,21 @@ def AModifObjetivo():
     # Se obtiene los atributos del objetivo a modificar.
     id_objetivo = int(session['idObjetivo'])
     nueva_descripcion_objetivo = params['descripcion']
+    nueva_transversalidad = params.get('transversal', None)
 
-    objetivoModif = clsObjetivo()
-    resultsModif  = objetivoModif.modify_Objetivo(idPila, id_objetivo, nueva_descripcion_objetivo)
 
-    if ( resultsModif ):
-        res = results[0]
-    
+    if (nueva_transversalidad):
+        nueva_transversalidad = 1
+    else:
+        nueva_transversalidad = 0
+
+    if (nueva_transversalidad != None):
+        objetivoModif = clsObjetivo()
+        resultsModif  = objetivoModif.modify_Objetivo(idPila, id_objetivo, nueva_descripcion_objetivo, nueva_transversalidad)
+
+        if ( resultsModif ):
+            res = results[0]
+        
     # Se actualiza el URL de la pág a donde se va a redirigir.
     res['label'] = res['label'] + '/' + str(id_objetivo)
 
@@ -91,10 +99,15 @@ def VCrearObjetivo():
     # Producto actual.
     idProducto = session['idPila']
 
+    res['fObjetivo_opcionesTransversalidad'] = [
+      {'key':True, 'value':'Si'},{'key':False, 'value':'No'},
+    ]
+
     # Se almacena la información recibida.
     res['fObjetivo'] = {'idPila': idProducto,
                         'idObjetivo':request.args.get('idObjetivo',1),
-                        'descripcion':request.args.get('descripcion')}
+                        'descripcion':request.args.get('descripcion',''),
+                        'transversal':request.args.get('transversal',False)}
     res['idPila'] = idProducto
 
     if "actor" in session:
@@ -113,6 +126,9 @@ def VObjetivo():
 
     # Se envía el identificador del producto al que pertenece el producto actual.
     res['idPila'] = idProducto
+    res['fObjetivo_opcionesTransversalidad'] = [
+      {'key':True, 'value':'Si'},{'key':False, 'value':'No'},
+    ]
 
     # Se obtiene el identificador del objetivo actual.
     idObjetivoActual = int(request.args.get('idObjetivo',1))
@@ -121,11 +137,13 @@ def VObjetivo():
     # Se obtiene la información del objetivo a modificar.
     infoObjActual = model.db.session.query(model.Objetivo).filter_by(idObjetivo = idObjetivoActual)
     descripcionObjetivoActual = infoObjActual[0].descripObjetivo
+    transversalidadObjetivo = infoObjActual[0].transversalidad
 
     # Se almacena la información a enviar.
     res['fObjetivo'] = {'idPila': idProducto,
                         'idObjetivo':idObjetivoActual,
-                        'descripcion':descripcionObjetivoActual}
+                        'descripcion':descripcionObjetivoActual,
+                        'transversal':transversalidadObjetivo}
 
 
     return json.dumps(res)

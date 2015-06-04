@@ -68,7 +68,6 @@ class clsObjetivo():
 		idIsInt = type(idObjetivo) == int
 		idProdIsInt	 = type(idProducto) == int
 		
-		
 		if ( idIsInt and idProdIsInt ):
 			objetivoEsp = model.Objetivo.idObjetivo == idObjetivo 
 			idProductoEsp =  model.Objetivo.idProducto == idProducto
@@ -110,8 +109,7 @@ class clsObjetivo():
 					model.db.session.query(model.Objetivo).filter(objetivo, idProductoEsp).\
 						update({'descripObjetivo':(newDescripObjetivo)})
 					model.db.session.commit()
-					return( True )
-				
+
 					model.db.session.query(model.Objetivo).filter(objetivo, idProductoEsp).\
 						update({'transversalidad':(newTransversalidad)})
 					model.db.session.commit()

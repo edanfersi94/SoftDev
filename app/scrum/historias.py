@@ -214,7 +214,7 @@ def VCrearHistoria():
     if "actor" in session:
         res['actor']=session['actor']
 
-    idProductoActual = session['idPila']
+    idProductoActual = int(session['idPila'])
 
     # Lista de acciones que están asociado al producto actual.
     acciones = model.db.session.query(model.Acciones).\
@@ -304,7 +304,9 @@ def VHistoria():
     #            filter(model.Objetivo.idProducto == idProducto).\
     #            all()
     
-    objetivos = model.db.session.query(model.Objetivo).filter_by(idProducto = idProductoActual,transversalidad=0).all()
+    objetivos = model.db.session.query(model.Objetivo).\
+                    filter_by(idProducto = idProductoActual,transversalidad=0).\
+                    all()
     
     historias = model.db.session.query(model.Historia_Usuario).\
                 filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProducto).\

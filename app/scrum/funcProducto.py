@@ -112,7 +112,9 @@ class clsProducto():
 
 			if ( idIsPositive and descripLenValid and nombreLenValid and escalaLenValid):
 	
-				queryHistoria = model.db.session.query(model.Historia_Usuario).filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProducto).all()
+				queryHistoria = model.db.session.query(model.Historia_Usuario).\
+									filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProducto).\
+									all()
 				
 				query = self.find_idProducto(idProducto)
 
@@ -121,8 +123,6 @@ class clsProducto():
 					queryNombre = model.db.session.query(model.Pila).\
 									filter(model.Pila.nombreProducto == nuevoNombre, model.Pila.idPila == idProducto).\
 									all()
-					
-
 
 					if ( query != [] and queryNombre == [] ):
 						producto = model.Pila.idPila == idProducto

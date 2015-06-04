@@ -84,7 +84,8 @@ def VCrearProducto():
 
     # Se almacena la información recibida.
     res['fPila'] = {'idPila': idProducto,
-                    'descripcion':request.args.get('descripcion')}
+                    'descripcion':request.args.get('descripcion'),
+                    'escala':request.args.get('escala',None)}
     res['idPila'] = idProducto
 
     res['fPila_opcionesEscala'] = [
@@ -113,7 +114,8 @@ def VProducto():
     # Se envía la información del producto.
     res['fPila'] = {'idPila':idPila, 
                     'nombre':productoActual[0].nombreProducto,
-                    'descripcion':productoActual[0].descripProducto}
+                    'descripcion':productoActual[0].descripProducto,
+                    'escala': productoActual[0].escalaProducto}
 
     # Se muestran todos los actores asosiados al producto.
     res['data3'] = [
