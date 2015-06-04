@@ -116,6 +116,7 @@ def AModifHistoria():
     objetivosAsociar = params.get('objetivos', None)
     actoresAsociar = params.get('actores', None)
     superAsociar = params.get('super', None)
+    prioridadAsociar = params.get('prioridad', None)
 
     #print("tipoAsociar",tipoAsociar,"codigo",codigoHistoria,"accion",accionAsociar,"obj",objetivosAsociar,"act",actoresAsociar,"super",superAsociar)
 
