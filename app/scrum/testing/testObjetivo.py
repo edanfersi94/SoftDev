@@ -53,7 +53,7 @@ class TestObjetivo(unittest.TestCase):
 
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -62,7 +62,7 @@ class TestObjetivo(unittest.TestCase):
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo ) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 ) 
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
         
@@ -77,7 +77,7 @@ class TestObjetivo(unittest.TestCase):
         self.vaciarBaseDeDatos()
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -95,7 +95,7 @@ class TestObjetivo(unittest.TestCase):
         self.vaciarBaseDeDatos()
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -104,7 +104,7 @@ class TestObjetivo(unittest.TestCase):
         
         newIdObjetivo = 2
         newDescripObjetivo = 'Esto es una prueba'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo ) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 ) 
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
         
@@ -119,7 +119,7 @@ class TestObjetivo(unittest.TestCase):
         self.vaciarBaseDeDatos()    
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -128,7 +128,7 @@ class TestObjetivo(unittest.TestCase):
         for indice in range(1,4,1):
             newIdObjetivo = indice
             newDescripObjetivo = 'Descripcion ' + str(indice)
-            newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo ) 
+            newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 ) 
             model.db.session.add(newObjetivo)
             model.db.session.commit()   
         
@@ -143,7 +143,7 @@ class TestObjetivo(unittest.TestCase):
         self.vaciarBaseDeDatos()  
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -152,7 +152,7 @@ class TestObjetivo(unittest.TestCase):
         for indice in range(1,4,1):
             newIdObjetivo = indice
             newDescripObjetivo = 'Descripcion ' + str(indice)
-            newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo ) 
+            newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 ) 
             model.db.session.add(newObjetivo)
             model.db.session.commit()   
         
@@ -168,7 +168,7 @@ class TestObjetivo(unittest.TestCase):
         self.vaciarBaseDeDatos()
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -185,7 +185,7 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -201,7 +201,7 @@ class TestObjetivo(unittest.TestCase):
 
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -217,7 +217,7 @@ class TestObjetivo(unittest.TestCase):
 
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -237,20 +237,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         newIdObjetivo = 3
         newDescripObjetivo = 'Esto es una prueba'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo ) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 ) 
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
         
 
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'Objetivo 2.0'
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
@@ -261,14 +261,14 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
 
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'Objetivo 2.0'
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -278,20 +278,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         for indice in range(5,10,1):
             newIdObjetivo = indice
             newDescripObjetivo = 'Descripcion ' + str(indice)
-            newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo ) 
+            newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 ) 
             model.db.session.add(newObjetivo)
             model.db.session.commit()   
             
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'Objetivo 2.0'
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -304,13 +304,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = '1'
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -320,13 +320,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
                 
@@ -337,13 +337,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = ''
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -353,13 +353,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,'
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -369,13 +369,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 501
-        result = tempObjetivo.insert_Objetivo(newIdProducto, newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo(newIdProducto, newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -385,13 +385,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = None
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -401,29 +401,109 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 0.54
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
+        self.assertFalse(result)
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+    # Se insertara un Objetivo cuya escala dada es Float.
+    def testinsert_ObjetivoEscalaFloat(self):
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+        newIdProducto = 1
+        newDescripProducto=' Descripcion Producto.. '
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
+        model.db.session.add(newProducto)
+        model.db.session.commit() 
+        
+        tempObjetivo = clsObjetivo()
+        newDescripObjetivo = "descripcion"
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0.3)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
+    # Se insertara un Objetivo cuya escala dada es None
+    def testinsert_ObjetivoEscalaNone(self):
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+        newIdProducto = 1
+        newDescripProducto=' Descripcion Producto.. '
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
+        model.db.session.add(newProducto)
+        model.db.session.commit() 
+        
+        tempObjetivo = clsObjetivo()
+        newDescripObjetivo = "descripcion"
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,None)
+        self.assertFalse(result)
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+
+    # Se insertara un Objetivo cuya escala dada es String
+    def testinsert_ObjetivoEscalaString(self):
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+        newIdProducto = 1
+        newDescripProducto=' Descripcion Producto.. '
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
+        model.db.session.add(newProducto)
+        model.db.session.commit() 
+        
+        tempObjetivo = clsObjetivo()
+        newDescripObjetivo = "descripcion"
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,"None")
+        self.assertFalse(result)
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+    # Se insertara un Objetivo cuya escala dada es negativa
+    def testinsert_ObjetivoEscalaNegative(self):
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+        newIdProducto = 1
+        newDescripProducto=' Descripcion Producto.. '
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
+        model.db.session.add(newProducto)
+        model.db.session.commit() 
+        
+        tempObjetivo = clsObjetivo()
+        newDescripObjetivo = "descripcion"
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,-3)
+        self.assertFalse(result)
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+
+    # Se insertara un Objetivo cuya escala dada es 3
+    def testinsert_ObjetivoEscalaIsTres(self):
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+        newIdProducto = 1
+        newDescripProducto=' Descripcion Producto.. '
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
+        model.db.session.add(newProducto)
+        model.db.session.commit() 
+        
+        tempObjetivo = clsObjetivo()
+        newDescripObjetivo = "descripcion"
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,3)
+        self.assertFalse(result)
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
     #Se insertara un objetivo con id string
     def testinsert_ObjetivoIdString(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'ola k ase'
-        result = tempObjetivo.insert_Objetivo( 'error',newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( 'error',newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -433,13 +513,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
-        result = tempObjetivo.insert_Objetivo(1.32,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo(1.32,newDescripObjetivo,0 )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
                 
@@ -450,13 +530,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'None.. uff caiste'
-        result = tempObjetivo.insert_Objetivo( None,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( None,newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -466,13 +546,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'None.. uff caiste'
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -482,13 +562,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'None.. uff caiste'
-        result = tempObjetivo.insert_Objetivo(-3,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( -3,newDescripObjetivo,0 )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -498,13 +578,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 123
-        result = tempObjetivo.insert_Objetivo( 'newIdProducto',newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( 'newIdProducto',newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -514,13 +594,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 23.23
-        result = tempObjetivo.insert_Objetivo( 'newIdProducto',newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( 'newIdProducto',newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -530,13 +610,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = None
-        result = tempObjetivo.insert_Objetivo( 'newIdProducto',newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( 'newIdProducto',newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -546,13 +626,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'y'*500
-        result = tempObjetivo.insert_Objetivo( 'newIdProducto',newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( 'newIdProducto',newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -562,13 +642,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'y'*501
-        result = tempObjetivo.insert_Objetivo( 'newIdProducto',newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( 'newIdProducto',newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -578,13 +658,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 32
-        result = tempObjetivo.insert_Objetivo( 43.32,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( 43.32,newDescripObjetivo,0 )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -594,13 +674,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 32.323
-        result = tempObjetivo.insert_Objetivo( 43.32,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( 43.32,newDescripObjetivo,0 )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -610,13 +690,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = None
-        result = tempObjetivo.insert_Objetivo( 43.32,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( 43.32,newDescripObjetivo,0 )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -626,13 +706,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'y'*500
-        result = tempObjetivo.insert_Objetivo( 43.32,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( 43.32,newDescripObjetivo,0 )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -642,13 +722,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'y'*501
-        result = tempObjetivo.insert_Objetivo( 43.32,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( 43.32,newDescripObjetivo,0 )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -658,13 +738,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 34
-        result = tempObjetivo.insert_Objetivo( None,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( None,newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -674,13 +754,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 34.23
-        result = tempObjetivo.insert_Objetivo( None,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( None,newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -690,13 +770,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = None
-        result = tempObjetivo.insert_Objetivo( None,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( None,newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -706,13 +786,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'y'*500
-        result = tempObjetivo.insert_Objetivo( None,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( None,newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -722,13 +802,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'y'*501
-        result = tempObjetivo.insert_Objetivo( None,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( None,newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -738,13 +818,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 34
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -754,13 +834,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 34.32
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -770,13 +850,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = None
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -786,13 +866,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'y'*500
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -802,13 +882,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'y'*501
-        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( newIdProducto,newDescripObjetivo ,0)
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
  
@@ -818,13 +898,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 34
-        result = tempObjetivo.insert_Objetivo( -3,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( -3,newDescripObjetivo,0 )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -834,13 +914,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 34.32
-        result = tempObjetivo.insert_Objetivo( -3,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( -3,newDescripObjetivo,0 )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -850,13 +930,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = None
-        result = tempObjetivo.insert_Objetivo( -3,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( -3,newDescripObjetivo,0 )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -866,13 +946,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'y'*500
-        result = tempObjetivo.insert_Objetivo(-3,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( -3,newDescripObjetivo,0 )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -882,13 +962,13 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         newDescripObjetivo = 'y'*501
-        result = tempObjetivo.insert_Objetivo( -3 ,newDescripObjetivo )
+        result = tempObjetivo.insert_Objetivo( -3 ,newDescripObjetivo,0 )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos.        
     #.-------------------------------------------------------------------.  
@@ -901,7 +981,7 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -909,14 +989,14 @@ class TestObjetivo(unittest.TestCase):
         # que es valida.
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         idObjetivo = 1
         newDescripObjetivo = 'ObjetivoX'
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertTrue( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.      
 
@@ -926,14 +1006,14 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         idObjetivo = 20
         newDescripObjetivo = 'Esto sigue siendo una prueba'
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
     ### CASOS VALIDOS( Casos Fronteras )
@@ -943,21 +1023,21 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         for indice in range(1,10,1):
             newIdObjetivo = indice
             newDescripObjetivo = 'Descripcion ' + str(indice)
-            newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo ) 
+            newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 ) 
             model.db.session.add(newObjetivo)
             model.db.session.commit()   
             
         tempObjetivo = clsObjetivo()
         idObjetivo = 1
         newDescripObjetivo = 'esto sigue siendo una prueva V2'
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertTrue( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.  
     
@@ -967,21 +1047,21 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         for indice in range(2,10,1):
             newIdObjetivo = indice
             newDescripObjetivo = 'Descripcion ' + str(indice)
-            newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo ) 
+            newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 ) 
             model.db.session.add(newObjetivo)
             model.db.session.commit()   
             
         tempObjetivo = clsObjetivo()
         idObjetivo = 1
         newDescripObjetivo = 'esto sigue siendo una prueva V2'
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.  
 
@@ -993,7 +1073,7 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -1001,14 +1081,14 @@ class TestObjetivo(unittest.TestCase):
         # que es valida.
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         idObjetivo = 1
         newDescripObjetivo = 'l'
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos.    
     
@@ -1019,20 +1099,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit() 
         
         tempObjetivo = clsObjetivo()
         idObjetivo = 1
         newDescripObjetivo = 'y'*500
-        result = tempObjetivo.modify_Objetivo(newIdProducto, idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo(newIdProducto, idObjetivo, newDescripObjetivo,0 )
         model.db.session.query(model.Objetivo).delete()  # Se limpia la base de datos.
         self.assertTrue( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
@@ -1047,20 +1127,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         newIdObjetivo = 1
         newDescripObjetivo = 'z'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()
         
         tempObjetivo = clsObjetivo()
         idObjetivo = 1
         newDescripObjetivo = 'z'
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertTrue( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
@@ -1071,20 +1151,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
         newIdObjetivo = 1
         newDescripObjetivo = 'x'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()
         
         tempObjetivo = clsObjetivo()
         idObjetivo = 1
         newDescripObjetivo ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertTrue( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1095,14 +1175,14 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
             
         tempObjetivo = clsObjetivo()
         idObjetivo = '1'
         newDescripObjetivo = 'Axx'
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.   
         
@@ -1112,14 +1192,14 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
            
         tempObjetivo = clsObjetivo()
         idObjetivo = -1
         newDescripObjetivo = 'Objetivo de prueba'
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
                 
@@ -1129,14 +1209,14 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 1.0
         newDescripObjetivo = 'Objetivo de prueba'
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1146,14 +1226,99 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
              
         tempObjetivo = clsObjetivo()
         idObjetivo = None
         newDescripObjetivo = 'ObjetivoPrueba'
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
+        self.assertFalse( result )   
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+    # La escala dada del objetivo a modificar es None.         
+    def testmodify_ObjetivoEscalaNone(self):   
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+        newIdProducto = 1
+        newDescripProducto=' Descripcion Producto.. '
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
+        model.db.session.add(newProducto)
+        model.db.session.commit() 
+             
+        tempObjetivo = clsObjetivo()
+        idObjetivo = 1
+        newDescripObjetivo = 'ObjetivoPrueba'
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,None )
+        self.assertFalse( result )   
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+    # La escala dada del objetivo a modificar es String         
+    def testmodify_ObjetivoEscalaString(self):   
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+        newIdProducto = 1
+        newDescripProducto=' Descripcion Producto.. '
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
+        model.db.session.add(newProducto)
+        model.db.session.commit() 
+             
+        tempObjetivo = clsObjetivo()
+        idObjetivo = 1
+        newDescripObjetivo = 'ObjetivoPrueba'
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,"None" )
+        self.assertFalse( result )   
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+
+    # La escala dada del objetivo a modificar es float        
+    def testmodify_ObjetivoEscalaFloat(self):   
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+        newIdProducto = 1
+        newDescripProducto=' Descripcion Producto.. '
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
+        model.db.session.add(newProducto)
+        model.db.session.commit() 
+             
+        tempObjetivo = clsObjetivo()
+        idObjetivo = 1
+        newDescripObjetivo = 'ObjetivoPrueba'
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0.3 )
+        self.assertFalse( result )   
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+    # La escala dada del objetivo a modificar es negativa       
+    def testmodify_ObjetivoEscalaNegative(self):   
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+        newIdProducto = 1
+        newDescripProducto=' Descripcion Producto.. '
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
+        model.db.session.add(newProducto)
+        model.db.session.commit() 
+             
+        tempObjetivo = clsObjetivo()
+        idObjetivo = 1
+        newDescripObjetivo = 'ObjetivoPrueba'
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,-3 )
+        self.assertFalse( result )   
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+    # La escala dada del objetivo a modificar es tres      
+    def testmodify_ObjetivoEscalaIsTres(self):   
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+        newIdProducto = 1
+        newDescripProducto=' Descripcion Producto.. '
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
+        model.db.session.add(newProducto)
+        model.db.session.commit() 
+             
+        tempObjetivo = clsObjetivo()
+        idObjetivo = 1
+        newDescripObjetivo = 'ObjetivoPrueba'
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,3 )
         self.assertFalse( result )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
@@ -1163,20 +1328,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()   
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()
              
         tempObjetivo = clsObjetivo()
         idObjetivo = 1
         newDescripObjetivo = ''
-        result = tempObjetivo.modify_Objetivo(newIdProducto, idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo(newIdProducto, idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1186,21 +1351,21 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
            
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()
            
         tempObjetivo = clsObjetivo()
         idObjetivo = 1
         newDescripObjetivo = 'r'*501
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos.    
 
@@ -1210,20 +1375,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit() 
             
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()
         
         tempObjetivo = clsObjetivo()
         idObjetivo = 1
         newDescripObjetivo = 12345
-        result = tempObjetivo.modify_Objetivo(newIdProducto, idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo(newIdProducto, idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos.   
         
@@ -1233,20 +1398,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 1
         newDescripObjetivo = None
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1256,20 +1421,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 'malo'
         newDescripObjetivo = 1212
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1279,20 +1444,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 'malo'
         newDescripObjetivo = 1212.23
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1302,20 +1467,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 'malo'
         newDescripObjetivo = None
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1325,20 +1490,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 'malo'
         newDescripObjetivo = 'y'*500
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1348,20 +1513,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 'malo'
         newDescripObjetivo = 'y'*501
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1371,20 +1536,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 23.23
         newDescripObjetivo = 23
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1394,20 +1559,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 23.23
         newDescripObjetivo = 23.23
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1417,20 +1582,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 23.23
         newDescripObjetivo = None
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -1440,20 +1605,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 23.23
         newDescripObjetivo = 'y'*500
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1463,20 +1628,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 23.23
         newDescripObjetivo = 'y'*501
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1486,20 +1651,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = None
         newDescripObjetivo = 23
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1509,20 +1674,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = None
         newDescripObjetivo = 23.23
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1532,20 +1697,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = None
         newDescripObjetivo = None
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1555,20 +1720,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = None
         newDescripObjetivo = 'y'*500
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1578,20 +1743,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = None
         newDescripObjetivo = 'y'*501
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -1601,20 +1766,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 2**31 -1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 2**31 -1
         newDescripObjetivo = 43
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1624,20 +1789,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 2**31 -1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 2**31 -1
         newDescripObjetivo = 43.323
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1647,20 +1812,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 2**31 -1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 2**31 -1
         newDescripObjetivo = None
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1670,20 +1835,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 2**31 -1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 2**31 -1
         newDescripObjetivo = 'y'*500
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertTrue( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -1693,20 +1858,20 @@ class TestObjetivo(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        newProducto=model.Pila(newIdProducto,"producto",newDescripProducto,1) 
         model.db.session.add(newProducto)
         model.db.session.commit()  
         
         newIdObjetivo = 2**31 -1
         newDescripObjetivo = 'Esto es una prueba.'
-        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo) 
+        newObjetivo = model.Objetivo( newIdProducto,newIdObjetivo, newDescripObjetivo,0 )  
         model.db.session.add(newObjetivo)
         model.db.session.commit()   
           
         tempObjetivo = clsObjetivo()
         idObjetivo = 2**31 -1
         newDescripObjetivo = 'y'*501
-        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo )
+        result = tempObjetivo.modify_Objetivo( newIdProducto,idObjetivo, newDescripObjetivo,0 )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         

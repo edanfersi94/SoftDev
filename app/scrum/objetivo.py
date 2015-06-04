@@ -96,6 +96,9 @@ def VCrearObjetivo():
                         'idObjetivo':request.args.get('idObjetivo',1),
                         'descripcion':request.args.get('descripcion')}
     res['idPila'] = idProducto
+    res['fObjetivo_opcionesTransversalidad'] = [
+      {'key':True, 'value':'Si'},{'key':False, 'value':'No'},
+    ]
 
     if "actor" in session:
         res['actor']=session['actor']
@@ -126,7 +129,9 @@ def VObjetivo():
     res['fObjetivo'] = {'idPila': idProducto,
                         'idObjetivo':idObjetivoActual,
                         'descripcion':descripcionObjetivoActual}
-
+    res['fObjetivo_opcionesTransversalidad'] = [
+      {'key':True, 'value':'Si'},{'key':False, 'value':'No'},
+    ]
 
     return json.dumps(res)
 

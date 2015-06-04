@@ -13,12 +13,9 @@ class clsProducto():
 			@brief Funcion que permite insertar un nuevo producto en la base de datos.
 			
 			@param newDescripProducto : Descripcion del producto a insertar.
-
 			@return Tupla que contiene un booleano y un numero.
-
 					*(True, num_productos) si se inserta correctamente el producto.
 					*(False, 0) en caso contrario.
-
 		"""
 
 		# Búsqueda del identificador más alto.	
@@ -87,7 +84,7 @@ class clsProducto():
 
 	#-------------------------------------------------------------------------------
 
-	def modify_Producto(self, idProducto, nuevoNombre, newDescripProducto):
+	def modify_Producto(self, idProducto, nuevoNombre, newDescripProducto, nuevaEscala):
 		"""
 			@brief Funcion que modifica los datos del producto cuyo id sea "idProducto".
 			
@@ -101,30 +98,44 @@ class clsProducto():
 		nombreIsStr  = type(nuevoNombre) == str
 		descripIsStr = type(newDescripProducto) == str
 		idIsInt 	 = type(idProducto) == int
+		escalaIsInt  = type(nuevaEscala) == int 
 		
-		if ( idIsInt and descripIsStr and nombreIsStr ):
+		if ( idIsInt and descripIsStr and nombreIsStr and escalaIsInt):
 			# Booleanos que indican si se cumplen los limites.
 			idIsPositive 	= idProducto > 0
 			descripLenValid = 1 <= len(newDescripProducto) <= 500
 			nombreLenValid  = 1 <= len(nuevoNombre) <= 50
+			escalaLenValid  = 0 < nuevaEscala < 3
 
-			if ( idIsPositive and descripLenValid and nombreLenValid ):
-				query = self.find_idProducto(idProducto)
-				queryNombre = model.db.session.query(model.Pila).\
-								filter(model.Pila.nombreProducto == nuevoNombre, model.Pila.idPila == idProducto).\
-								all()
+			if ( idIsPositive and descripLenValid and nombreLenValid and escalaLenValid):
+	
+				queryHistoria = model.db.session.query(model.Historia_Usuario).filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProducto).all()
 				
-				if ( query != [] and queryNombre == [] ):
-					producto = model.Pila.idPila == idProducto
-					model.db.session.query(model.Pila).filter(producto).\
-						update({'nombreProducto': nuevoNombre,'descripProducto':(newDescripProducto)})
-					model.db.session.commit()
-					return( True )
-				elif (queryNombre != [] and query[0].nombreProducto == nuevoNombre):
-					producto = model.Pila.idPila == idProducto
-					model.db.session.query(model.Pila).filter(producto).\
-						update({'descripProducto':(newDescripProducto)})
-					model.db.session.commit()
+				query = self.find_idProducto(idProducto)
+				if not(query == []):
+
+					if ((query[0].escalaProducto == nuevaEscala ) or (query[0].escalaProducto != nuevaEscala and queryHistoria == [])):
+						
+						queryNombre = model.db.session.query(model.Pila).\
+										filter(model.Pila.nombreProducto == nuevoNombre, model.Pila.idPila == idProducto).\
+										all()
+						
+	
+	
+						if ( query != [] and queryNombre == [] ):
+							producto = model.Pila.idPila == idProducto
+							model.db.session.query(model.Pila).filter(producto).\
+								update({'nombreProducto': nuevoNombre,'descripProducto':(newDescripProducto), 'escalaProducto':nuevaEscala})
+							model.db.session.commit()
+					
+							return( True )
+						elif (queryNombre != [] and query[0].nombreProducto == nuevoNombre):
+							producto = model.Pila.idPila == idProducto
+							model.db.session.query(model.Pila).filter(producto).\
+								update({'descripProducto':(newDescripProducto), 'escalaProducto':nuevaEscala})
+							model.db.session.commit()
+							return (True)
+						
 		return( False )
 	
 	#--------------------------------------------------------------------------------	
