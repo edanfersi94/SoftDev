@@ -8,7 +8,7 @@ class clsProducto():
 
 	#-------------------------------------------------------------------------------
 	
-	def insert_Producto(self, nuevoNombre, newDescripProducto):
+	def insert_Producto(self, nuevoNombre, newDescripProducto, nuevaEscala):
 		"""
 			@brief Funcion que permite insertar un nuevo producto en la base de datos.
 			
@@ -34,14 +34,16 @@ class clsProducto():
 		# Booleano que indica si el tipo es el correcto.
 		descripIsStr = type(newDescripProducto) == str
 		nombreIsStr = type(nuevoNombre) == str
+		escalaIsInt = type(nuevaEscala) == int
 
-		if ( descripIsStr and nombreIsStr):
+		if ( descripIsStr and nombreIsStr and escalaIsInt ):
 
 			# Booleano que indica si cumplen con los limites.
 			descripLenValid = 1 <= len(newDescripProducto) <= 500
 			nombreLenValid = 1 <= len(nuevoNombre) <= 50
+			escalaLenValid = 0 < nuevaEscala < 3
 
-			if ( descripLenValid and nombreLenValid):
+			if ( descripLenValid and nombreLenValid and escalaLenValid):
 
 				queryNombre = model.db.session.query(model.Pila).\
 								filter(model.Pila.nombreProducto == nuevoNombre).\
@@ -53,7 +55,7 @@ class clsProducto():
 						num_productos = 0
 						
 					num_productos = num_productos + 1
-					newProducto = model.Pila(num_productos, nuevoNombre, newDescripProducto)
+					newProducto = model.Pila(num_productos, nuevoNombre, newDescripProducto, nuevaEscala)
 					model.db.session.add(newProducto)
 					model.db.session.commit()
 					salida = (True, num_productos)
@@ -115,10 +117,14 @@ class clsProducto():
 				if ( query != [] and queryNombre == [] ):
 					producto = model.Pila.idPila == idProducto
 					model.db.session.query(model.Pila).filter(producto).\
-						update({'descripProducto':(newDescripProducto)})
+						update({'nombreProducto': nuevoNombre,'descripProducto':(newDescripProducto)})
 					model.db.session.commit()
 					return( True )
-					
+				elif (queryNombre != [] and query[0].nombreProducto == nuevoNombre):
+					producto = model.Pila.idPila == idProducto
+					model.db.session.query(model.Pila).filter(producto).\
+						update({'descripProducto':(newDescripProducto)})
+					model.db.session.commit()
 		return( False )
 	
 	#--------------------------------------------------------------------------------	

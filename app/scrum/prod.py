@@ -18,11 +18,12 @@ def ACrearProducto():
     # Descripción del producto a crear.
     nuevoNombre = params.get('nombre', None)
     nuevaDescripcionProducto = params.get('descripcion', None)
+    nuevaEscala = params.get('escala', None)
 
-    if (nuevoNombre != None ):
+    if (nuevoNombre != None and nuevaEscala != None):
         nuevoProducto = clsProducto()
 
-        resultInsert = nuevoProducto.insert_Producto(nuevoNombre, nuevaDescripcionProducto)
+        resultInsert = nuevoProducto.insert_Producto(nuevoNombre, nuevaDescripcionProducto, nuevaEscala)
 
         nuevoActor = clsActor()   
         idProductActual = resultInsert[1]
@@ -56,8 +57,11 @@ def AModifProducto():
     # Se obtiene el identificador del producto actual.
     idProductoModif = int(session['idPila'])
     
+    # Se obtiene el nuevo nombre.
+    nuevoNombre = params.get('nombre',None)
+
     # Se obtiene la nueva descripción.
-    nuevaDescripcionProducto = params['descripcion']
+    nuevaDescripcionProducto = params.get('descripcion', None)
 
     productoModif = clsProducto()
     resultsModif = productoModif.modify_Producto(idProductoModif, nuevaDescripcionProducto)
