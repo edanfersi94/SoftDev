@@ -127,7 +127,7 @@ def AModifHistoria():
     querySuperHistoriaActual = model.db.session.query(model.Enlaces).\
                                 filter(model.Enlaces.id_valor == idHistoria).\
                                 all()
-
+    print(1)
     enlaceEncontrado = querySuperHistoriaActual[0]
     viejoSuper = enlaceEncontrado.id_clave
 
@@ -135,6 +135,7 @@ def AModifHistoria():
     result = modifEnlace.modify_Enlace(idPila, viejoSuper, superAsociar, idHistoria)
 
     if (result):
+        print(2)
         # BORRAR ACTORES ASOCIADOS A UNA HISTORIA. 
         findActor = nuevoActor.find_Actores(idHistoria)
         
@@ -173,13 +174,13 @@ def AModifHistoria():
                     if ( resultModifHistoria == True ):
                         resultModifHistoria = nuevaHistoria.modify_Historia(idPila,idHistoria)
                 listaModify.append(resultModifHistoria)
-                
+        print(3)        
         #------------------------------------------------------------------------------------------
         idProductoActual = session['idPila']
         if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) or (prioridadAsociar == None)):
             accionQuery = model.Historia_Usuario.id_Acciones_Historia_Usuario == accionAsociar
             accionInHistory = model.db.session.query(model.Historia_Usuario).filter(accionQuery).all()
-
+            print(4)
             if (accionInHistory == []):
                 nuevaHistoria = clsHistoria()
                 resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar, superAsociar, prioridadAsociar) 
@@ -204,6 +205,7 @@ def AModifHistoria():
        
         if ( listaModify == [True,True,True] and resu ):
             res = results[0]
+            print(5)
     #----------------------------------------------------------------------------------------------------------------------------------------------
 
     res['idHistoria'] = idHistoria
