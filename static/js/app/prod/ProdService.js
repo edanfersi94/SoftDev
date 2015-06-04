@@ -39,19 +39,6 @@ scrumModule.service('prodService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
-    this.ACrearProducto = function(fPila) {
-        return  $http({
-          url: "prod/ACrearProducto",
-          data: fPila,
-          method: 'POST',
-        });
-    //    var labels = ["/VProductos", "/VCrearProducto", ];
-    //    var res = labels[0];
-    //    var deferred = $q.defer();
-    //    deferred.resolve(res);
-    //    return deferred.promise;
-    };
-
     this.VCrearProducto = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
@@ -60,6 +47,19 @@ scrumModule.service('prodService', ['$q', '$http', function($q, $http) {
           params: args
         });
     //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
+    this.ACrearProducto = function(fPila) {
+        return  $http({
+          url: "prod/ACrearProducto",
+          data: fPila,
+          method: 'POST',
+        });
+    //    var labels = ["/VProductos", "/VCrearProducto", ];
+    //    var res = labels[0];
     //    var deferred = $q.defer();
     //    deferred.resolve(res);
     //    return deferred.promise;

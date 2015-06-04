@@ -8,7 +8,7 @@ class clsProducto():
 
 	#-------------------------------------------------------------------------------
 	
-	def insert_Producto(self, newDescripProducto):
+	def insert_Producto(self, nuevoNombre, newDescripProducto):
 		"""
 			@brief Funcion que permite insertar un nuevo producto en la base de datos.
 			
@@ -33,23 +33,30 @@ class clsProducto():
 
 		# Booleano que indica si el tipo es el correcto.
 		descripIsStr = type(newDescripProducto) == str
-	
-		if ( descripIsStr ):
+		nombreIsStr = type(nuevoNombre) == str
+
+		if ( descripIsStr and nombreIsStr):
 
 			# Booleano que indica si cumplen con los limites.
 			descripLenValid = 1 <= len(newDescripProducto) <= 500
-		
-			if ( descripLenValid ):
+			nombreLenValid = 1 <= len(nuevoNombre) <= 50
 
-				# Si no hay productos en la base de datos, entonces se inicializa el contador.
-				if num_productos == None:
-					num_productos = 0
-					
-				num_productos = num_productos + 1
-				newProducto = model.Pila(num_productos, newDescripProducto)
-				model.db.session.add(newProducto)
-				model.db.session.commit()
-				salida = (True, num_productos)
+			if ( descripLenValid and nombreLenValid):
+
+				queryNombre = model.db.session.query(model.Pila).\
+								filter(model.Pila.nombreProducto == nuevoNombre).\
+								all()
+
+				if (queryNombre == []):
+					# Si no hay productos en la base de datos, entonces se inicializa el contador.
+					if num_productos == None:
+						num_productos = 0
+						
+					num_productos = num_productos + 1
+					newProducto = model.Pila(num_productos, nuevoNombre, newDescripProducto)
+					model.db.session.add(newProducto)
+					model.db.session.commit()
+					salida = (True, num_productos)
 		
 		return( salida )
 	
@@ -78,7 +85,7 @@ class clsProducto():
 
 	#-------------------------------------------------------------------------------
 
-	def modify_Producto(self, idProducto, newDescripProducto):
+	def modify_Producto(self, idProducto, nuevoNombre, newDescripProducto):
 		"""
 			@brief Funcion que modifica los datos del producto cuyo id sea "idProducto".
 			
@@ -89,18 +96,23 @@ class clsProducto():
 		"""
 		
 		# Booleanos que indican si el tipo es el correcto.
+		nombreIsStr  = type(nuevoNombre) == str
 		descripIsStr = type(newDescripProducto) == str
 		idIsInt 	 = type(idProducto) == int
 		
-		if ( idIsInt and descripIsStr ):
+		if ( idIsInt and descripIsStr and nombreIsStr ):
 			# Booleanos que indican si se cumplen los limites.
 			idIsPositive 	= idProducto > 0
 			descripLenValid = 1 <= len(newDescripProducto) <= 500
-			
-			if ( idIsPositive and descripLenValid ):
+			nombreLenValid  = 1 <= len(nuevoNombre) <= 50
+
+			if ( idIsPositive and descripLenValid and nombreLenValid ):
 				query = self.find_idProducto(idProducto)
+				queryNombre = model.db.session.query(model.Pila).\
+								filter(model.Pila.nombreProducto == nuevoNombre, model.Pila.idPila == idProducto).\
+								all()
 				
-				if ( query != [] ):
+				if ( query != [] and queryNombre == [] ):
 					producto = model.Pila.idPila == idProducto
 					model.db.session.query(model.Pila).filter(producto).\
 						update({'descripProducto':(newDescripProducto)})

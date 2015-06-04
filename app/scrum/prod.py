@@ -16,23 +16,26 @@ def ACrearProducto():
     res = results[1]
 
     # Descripción del producto a crear.
-    nuevaDescripcionProducto = params['descripcion']
+    nuevoNombre = params('nombre', None)
+    nuevaDescripcionProducto = params.get('descripcion', None)
 
-    nuevoProducto = clsProducto()
-    resultInsert = nuevoProducto.insert_Producto(nuevaDescripcionProducto)
+    if (nuevoNombre != None ):
+        nuevoProducto = clsProducto()
 
-    nuevoActor = clsActor()   
-    idProductActual = resultInsert[1]
+        resultInsert = nuevoProducto.insert_Producto(nuevoNombre, nuevaDescripcionProducto)
 
-    # Se añaden los tres actores por defecto.
-    check1 = nuevoActor.insert_Actor(idProductActual, 'Product Owner','Es el dueño del producto')
-    check2 = nuevoActor.insert_Actor(idProductActual, 'Scrum Master','Es el maestro Scrum del producto')
-    check3 = nuevoActor.insert_Actor(idProductActual, 'Developer','Es el desarrollador del producto')    
+        nuevoActor = clsActor()   
+        idProductActual = resultInsert[1]
 
-    res['idPila'] = idProductActual
+        # Se añaden los tres actores por defecto.
+        check1 = nuevoActor.insert_Actor(idProductActual, 'Product Owner','Es el dueño del producto')
+        check2 = nuevoActor.insert_Actor(idProductActual, 'Scrum Master','Es el maestro Scrum del producto')
+        check3 = nuevoActor.insert_Actor(idProductActual, 'Developer','Es el desarrollador del producto')    
 
-    if (resultInsert[0] and check1 and check2 and check3):
-        res = results[0]  
+        res['idPila'] = idProductActual
+
+        if (resultInsert[0] and check1 and check2 and check3):
+            res = results[0]  
 
     if "actor" in res:
         if res['actor'] is None:

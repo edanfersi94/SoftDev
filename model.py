@@ -24,11 +24,11 @@ from sqlalchemy             import CheckConstraint, func
 
 # Construcción de la base de datos.
 
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres:1234@localhost/prueba1"
+SQLALCHEMY_DATABASE_URI = "postgresql://BMO:@localhost/newapmwsc"
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
-db_dir = 'postgresql+psycopg2://postgres:1234@localhost/prueba1'
+db_dir = 'postgresql+psycopg2://BMO:@localhost/newapmwsc'
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
@@ -53,14 +53,16 @@ manager.add_command('db', MigrateCommand)
 class Pila(db.Model):
     __tablename__   = 'pila'
     idPila          = db.Column(db.Integer, primary_key = True)
-    descripProducto = db.Column(db.String(50), nullable = True)
+    nombreProducto  = db.Column(db.String(50), nullable = False)
+    descripProducto = db.Column(db.String(500), nullable = True)
     pilaAcciones    = db.relationship('Acciones', backref = 'pila_acciones', cascade="all, delete, delete-orphan")
     pilaObjetivos   = db.relationship('Objetivo', backref = 'pila_objetivos', cascade="all, delete, delete-orphan")
     pilaActores     = db.relationship('Actores', backref = 'pila_actores', cascade="all, delete, delete-orphan")
     pilaHistoria    = db.relationship('Historia_Usuario',backref='pila_historia',cascade = "all, delete, delete-orphan")
     pilaEnlaces     = db.relationship('Enlaces', backref = 'pila_enlaces', cascade="all, delete, delete-orphan")
-    def __init__(self, idPila, descripProducto):
+    def __init__(self, idPila, nombreProducto, descripProducto):
         self.idPila  = idPila
+        self.nombreProducto = nombreProducto
         self.descripProducto = descripProducto
         
 

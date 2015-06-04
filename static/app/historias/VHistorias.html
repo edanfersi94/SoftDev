@@ -19,7 +19,6 @@
        ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
   Cambiar prioridades</a></li>
 
-
             </ul>
             <ul class="nav navbar-nav navbar-right">
 <li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
@@ -36,7 +35,7 @@
 
         <table ng-table="tableParams0" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
-            	<td data-title="'Prioridad'">{{row['prioridad']}}</td>
+                <td data-title="'Prioridad'">{{row['prioridad']}}</td>
                 <td data-title="'Enunciado'">{{row['enunciado']}}</td>
                 <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VHistoria0(row['idHistoria'])">Detalles</a></td>
             </tr>
