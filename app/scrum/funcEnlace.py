@@ -73,7 +73,7 @@ class clsEnlace():
 					model.db.session.add(newEnlace)
 					model.db.session.commit()
 					salida = True
-				return(salida)
+		return(salida)
 
    #-------------------------------------------------------------------------------
 
@@ -137,7 +137,7 @@ class clsEnlace():
 		 				update({'id_clave':(newSuper)})
 		 			model.db.session.commit()
 		 			salida = True
-		 		return(salida)  	
+ 		return(salida)
 
    #-------------------------------------------------------------------------------
 
