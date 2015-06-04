@@ -43,11 +43,9 @@ class clsEnlace():
 						listaEnlace[elem.id_clave] += [elem.id_valor]
 					else:
 						listaEnlace[elem.id_clave] = [elem.id_valor]
-				print(listaEnlace)
 		
 				target = {}
 				for key in listaEnlace:
-					print(key)
 					if key == idSuper:
 						target[key] = listaEnlace[key] + [idHistoria]
 					else:
@@ -56,9 +54,7 @@ class clsEnlace():
 				if not(idSuper in target):
 					target[idSuper] = [idHistoria]
 		
-				print(idHistoria)
 				target[idHistoria] = []
-				print(target)
 		
 				existCiclo = self.existenciaCiclo(target)
 		
@@ -79,36 +75,50 @@ class clsEnlace():
 
  		listaEnlace = {}
  		salida = False
-
- 		# Se genera la lista.
- 		for elem in query:
- 			if (elem.id_clave != viejoSuper or (elem.id_clave == viejoSuper and elem.id_valor != idValor)):
- 				if (elem.id_clave in listaEnlace):
- 					listaEnlace[elem.id_clave] += [elem.id_valor]
- 				else:
- 					listaEnlace[elem.id_clave] = [elem.id_valor]
- 			elif(elem.id_clave == viejoSuper and elem.id_valor == idValor):
- 				listaEnlace[viejoSuper] = []
-
- 		target = {}
- 		for key in listaEnlace:
- 			print(key)
- 			if key == newSuper:
- 				target[key] = listaEnlaces[key] + [idValor]
- 			else:
- 				target[key] = listaEnlace[key]
-
- 		target[newSuper] = [idValor]
- 		print(target)
- 		existCiclo = self.existenciaCiclo(target)
- 		print(existCiclo)
- 		if not(existCiclo):
- 			model.db.session.query(model.Enlaces).\
- 				filter(model.Enlaces.id_clave == viejoSuper,model.Enlaces.id_valor == idValor).\
- 				update({'id_clave':(newSuper)})
- 			model.db.session.commit()
- 			salida = True
- 		return(salida)  	
+ 	
+ 		idProductIsInt = type(idProductoActual) == int
+ 		idviejoSuperIsInt = type(viejoSuper) == int
+ 		idnuevoSuperIsInt = type(newSuper) == int
+ 		idValorIsInt = type(idValor) == int
+ 		
+ 		if (idProductIsInt and idviejoSuperIsInt and idnuevoSuperIsInt and idValorIsInt):
+ 			
+ 			producto = model.db.session.query(model.Pila.idPila).filter(model.Pila.idPila == idProductoActual).all()
+ 			idProducto= [int(i[0]) for i in producto]
+ 			idProductoIsEsta = idProductoActual in idProducto
+ 			
+ 			superv = model.db.session.query(model.Enlaces.id_enlace).filter(model.Enlaces.id_enlace == viejoSuper).all()
+ 			idsuperv= [int(i[0]) for i in superv]
+ 			idsupervEsta = viejoSuper in idsuperv
+ 			
+ 			if (idProductoIsEsta and idsupervEsta):
+		 		# Se genera la lista.
+		 		for elem in query:
+		 			if (elem.id_clave != viejoSuper or (elem.id_clave == viejoSuper and elem.id_valor != idValor)):
+		 				if (elem.id_clave in listaEnlace):
+		 					listaEnlace[elem.id_clave] += [elem.id_valor]
+		 				else:
+		 					listaEnlace[elem.id_clave] = [elem.id_valor]
+		 			elif(elem.id_clave == viejoSuper and elem.id_valor == idValor):
+		 				listaEnlace[viejoSuper] = []
+		
+		 		target = {}
+		 		for key in listaEnlace:
+		 			if key == newSuper:
+		 				target[key] = listaEnlace[key] + [idValor]
+		 			else:
+		 				target[key] = listaEnlace[key]
+		
+		 		target[newSuper] = [idValor]
+		 		existCiclo = self.existenciaCiclo(target)
+		 		
+		 		if not(existCiclo):
+		 			model.db.session.query(model.Enlaces).\
+		 				filter(model.Enlaces.id_clave == viejoSuper,model.Enlaces.id_valor == idValor).\
+		 				update({'id_clave':(newSuper)})
+		 			model.db.session.commit()
+		 			salida = True
+		 		return(salida)
 
    #-------------------------------------------------------------------------------
 
