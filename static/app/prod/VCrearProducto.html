@@ -27,8 +27,10 @@
 </nav>
 
     <form name="fPilaForm" ng-submit="ACrearProducto0(fPilaForm.$valid)" novalidate>
+            <div class="form-group" ng-class="{ 'has-error' :  fPilaSubmitted && fPilaForm.nombre.$invalid && fPilaForm.nombre.$pristine && fPilaSubmitted}"><label for="fPila_nombre">Nombre</label><input id="fPila_nombre" type="text" name="nombre" class="form-control" ng-model="fPila.nombre" placeholder="Nombre" required/><p ng-show="fPilaSubmitted && fPilaForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p></div>
             <div class="form-group" ng-class="{ 'has-error' :  fPilaSubmitted && fPilaForm.descripcion.$invalid && fPilaForm.descripcion.$pristine && fPilaSubmitted}"><label for="fPila_descripcion">Descripción</label><textarea id="fPila_descripcion" name="descripcion" class="form-control" ng-model="fPila.descripcion" placeholder="Descripción" required></textarea><p ng-show="fPilaSubmitted && fPilaForm.descripcion.$invalid" class="help-block">Error en campo Descripción.</p></div>
             <input id="fPila_idPila" type="hidden" name="idPila" ng-model="fPila.idPila" />
+            <div class="form-group" ng-class="{ 'has-error' :  fPilaSubmitted && fPilaForm.escala.$invalid && fPilaForm.escala.$pristine && fPilaSubmitted}"><label for="fPila_escala">Escala de prioridad para las historias</label>:&nbsp;<select id="fPila_escala" ng-model="fPila.escala" required ng-options="item.key as item.value for item in fPila_opcionesEscala"></select><p ng-show="fPilaSubmitted && fPilaForm.escala.$invalid" class="help-block">Error en campo Escala de prioridad para las historias.</p></div>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Crear
         </button>

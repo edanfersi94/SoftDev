@@ -1,0 +1,41 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Prioridades de las historias</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VHistorias1(idPila)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+<li><a ng-click="VLogin2()">
+    Salir</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <form name="fPrioridadesForm" ng-submit="ACambiarPrioridades0(fPrioridadesForm.$valid)" novalidate>
+            <input id="fPrioridades_idPila" type="hidden" name="idPila" ng-model="fPrioridades.idPila" />
+            <div ng-repeat="lista_item_fPrioridades in fPrioridades.lista"><ng-form name="fPrioridades_lista_form">
+            <input id="fPrioridades_idHistoria" type="hidden" name="idHistoria" ng-model="lista_item_fPrioridades.idHistoria" />
+            <div class="form-group" ng-class="{ 'has-error' :  fPrioridadesSubmitted && fPrioridadesForm.prioridad.$invalid && fPrioridadesForm.prioridad.$pristine && fPrioridadesSubmitted}"><label for="fPrioridades_prioridad">{{lista_item_fPrioridades.enunciado}}</label>:&nbsp;<select id="fPrioridades_prioridad" ng-model="lista_item_fPrioridades.prioridad" required ng-options="item.key as item.value for item in fPrioridades_opcionesPrioridad"></select><p ng-show="fPrioridadesSubmitted && fPrioridadesForm.prioridad.$invalid" class="help-block">Error en campo {{lista_item_fPrioridades.enunciado}}.</p></div></ng-form></div>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Cambiar
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>
