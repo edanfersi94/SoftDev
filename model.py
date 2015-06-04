@@ -55,15 +55,17 @@ class Pila(db.Model):
     idPila          = db.Column(db.Integer, primary_key = True)
     nombreProducto  = db.Column(db.String(50), nullable = False)
     descripProducto = db.Column(db.String(500), nullable = True)
+    escalaProducto  = db.Column(db.Integer, nullable = False)
     pilaAcciones    = db.relationship('Acciones', backref = 'pila_acciones', cascade="all, delete, delete-orphan")
     pilaObjetivos   = db.relationship('Objetivo', backref = 'pila_objetivos', cascade="all, delete, delete-orphan")
     pilaActores     = db.relationship('Actores', backref = 'pila_actores', cascade="all, delete, delete-orphan")
     pilaHistoria    = db.relationship('Historia_Usuario',backref='pila_historia',cascade = "all, delete, delete-orphan")
     pilaEnlaces     = db.relationship('Enlaces', backref = 'pila_enlaces', cascade="all, delete, delete-orphan")
-    def __init__(self, idPila, nombreProducto, descripProducto):
+    def __init__(self, idPila, nombreProducto, descripProducto, escalaProducto):
         self.idPila  = idPila
         self.nombreProducto = nombreProducto
         self.descripProducto = descripProducto
+        self.escalaProducto = escalaProducto
         
 
 # Tabla Historia:        
