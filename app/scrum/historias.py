@@ -59,7 +59,7 @@ def ACrearHistoria():
 
             if (result):
                 nuevaHistoria = clsHistoria()
-                resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar) 
+                resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar, superAsociar) 
 
                 if ( resultInsert[0] ):
                     histObjetivo = clsHistoriaObj()
@@ -171,7 +171,7 @@ def AModifHistoria():
 
             if (accionInHistory == []):
                 nuevaHistoria = clsHistoria()
-                resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar) 
+                resultInsert = nuevaHistoria.insert_Historia(idProductoActual, codigoHistoria, tipoAsociar, accionAsociar, superAsociar) 
 
                 if ( resultInsert[0] ):
                     histObjetivo = clsHistoriaObj()
