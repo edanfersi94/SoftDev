@@ -9,7 +9,7 @@ class clsEnlace():
 
 		idProductoIsInt = type(idProductoActual) == int
 		idSuperIsInt = type(idSuper) == int  
-		
+		salida = False
 		
 		if (idProductoIsInt and idSuperIsInt):
 			
