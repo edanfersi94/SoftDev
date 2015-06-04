@@ -64,7 +64,7 @@ def AModifProducto():
     nuevaDescripcionProducto = params.get('descripcion', None)
 
     productoModif = clsProducto()
-    resultsModif = productoModif.modify_Producto(idProductoModif, nuevaDescripcionProducto)
+    resultsModif = productoModif.modify_Producto(idProductoModif, nuevoNombre, nuevaDescripcionProducto)
 
     if "actor" in res:
         if res['actor'] is None:
