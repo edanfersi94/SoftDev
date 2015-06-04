@@ -45,6 +45,7 @@ def ACrearHistoria():
     objetivosAsociar = params.get('objetivos', None)
     actoresAsociar = params.get('actores', None)
     superAsociar = params.get('super', None)
+    prioridadAsociar = params.get('prioridad',None)
 
     idProductoActual = session['idPila']
     if not(( codigoHistoria == None ) or ( accionAsociar == None ) or ( objetivosAsociar == None ) or ( actoresAsociar == None) and (superAsociar == None)):
@@ -231,6 +232,16 @@ def VCrearHistoria():
     historias = model.db.session.query(model.Historia_Usuario).\
             filter(model.Historia_Usuario.id_Pila_Historia_Usuario == idProductoActual).\
             all()
+            
+    prioridad = model.db.session.query(model.Pila).\
+                filter(model.Pila.idPila == idProductoActual).all()
+                
+    if (prioridad[0].escalaProducto == 1):
+        escalaP = 1
+        
+    if (prioridad[0].escalaProducto == 2):
+        escalaP = 2
+        
 
     # Se muestra por pantalla los actores que pertenecen al producto.
     res['fHistoria_opcionesActores'] = [
@@ -259,11 +270,19 @@ def VCrearHistoria():
       {'key':1,'value':'Opcional'},
       {'key':2,'value':'Obligatoria'}]
     
-    res['fHistoria_opcionesPrioridad'] = [
-      {'key':1, 'value':'Alta'},
-      {'key':2, 'value':'Media'},
-      {'key':3, 'value':'Baja'},
-    ]
+    if (escalaP == 1):
+        res['fHistoria_opcionesPrioridad'] = [
+            {'key':1, 'value':'Alta'},
+            {'key':2, 'value':'Media'},
+            {'key':3, 'value':'Baja'},
+        ]
+        
+    num = 20   
+    i =1 
+    if (escalaP == 2):
+        res['fHistoria_opcionesPrioridad'] = [
+            {'key':i, 'value':i}
+            for i in num]
 
     # Se almacena la información recibida.  
 
