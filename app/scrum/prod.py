@@ -107,6 +107,7 @@ def VProducto():
 
     # Se envía la información del producto.
     res['fPila'] = {'idPila':idPila, 
+                    'nombre':productoActual[0].nombreProducto,
                     'descripcion':productoActual[0].descripProducto}
 
     # Se muestran todos los actores asosiados al producto.
@@ -150,7 +151,7 @@ def VProductos():
     # Se muestra la lista de productos.
     producto = model.Pila.query.all()
     res['data0'] = [
-        {'idPila':product.idPila, 'nombre':product.descripProducto}
+        {'idPila':product.idPila, 'nombre':product.nombreProducto}
         for product in producto ]
 
     return json.dumps(res)
