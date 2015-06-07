@@ -127,13 +127,13 @@ def AModifHistoria():
     querySuperHistoriaActual = model.db.session.query(model.Enlaces).\
                                 filter(model.Enlaces.id_valor == idHistoria).\
                                 all()
-    print(1)
+    print("dhfjkdhfkdhfkd")
     enlaceEncontrado = querySuperHistoriaActual[0]
     viejoSuper = enlaceEncontrado.id_clave
 
     modifEnlace = clsEnlace()
     result = modifEnlace.modify_Enlace(idPila, viejoSuper, superAsociar, idHistoria)
-
+    print("result",result)
     if (result):
         print(2)
         # BORRAR ACTORES ASOCIADOS A UNA HISTORIA. 

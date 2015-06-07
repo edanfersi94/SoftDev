@@ -8,8 +8,9 @@ class clsEnlace():
 		queryNumHistorias = model.db.session.query(model.func.max(model.Historia_Usuario.idHistoria_Usuario)).all()
 
 		idProductoIsInt = type(idProductoActual) == int
-		idSuperIsInt = type(idSuper) == int  
-		salida = False
+		idSuperIsInt = type(idSuper) == int
+		salida = False  
+		
 		
 		if (idProductoIsInt and idSuperIsInt):
 			
@@ -97,9 +98,9 @@ class clsEnlace():
  			
  			superv = model.db.session.query(model.Enlaces.id_enlace).filter(model.Enlaces.id_enlace == viejoSuper).all()
  			idsuperv= [int(i[0]) for i in superv]
- 			idsupervEsta = viejoSuper in idsuperv
+
  			
- 			if (idProductoIsEsta and idsupervEsta):
+ 			if (idProductoIsEsta):
 
 		 		# Se genera la lista.
 		 		for elem in query:
@@ -137,8 +138,7 @@ class clsEnlace():
 		 				update({'id_clave':(newSuper)})
 		 			model.db.session.commit()
 		 			salida = True
-
- 		return(salida)  	
+ 		return(salida)
 
    #-------------------------------------------------------------------------------
 
@@ -170,4 +170,4 @@ class clsEnlace():
     #-------------------------------------------------------------------------------
 
 
-    #-------------------------------------------------------------------------------
+    #-------------------------------------------------------------------------------    #-------------------------------------------------------------------------------

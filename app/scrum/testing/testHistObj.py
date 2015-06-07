@@ -46,7 +46,7 @@ class TestHistObj(unittest.TestCase):
         NewdescripProducto = "PruebaPila1"
         
         #Se ingresa manualmente los datos a la tabla pila
-        newPila = model.Pila(NewIdPila, NewdescripProducto)
+        newPila = model.Pila(NewIdPila, NewdescripProducto,"hola",1)
         model.db.session.add(newPila)
         model.db.session.commit()
         
@@ -57,7 +57,7 @@ class TestHistObj(unittest.TestCase):
         NewidProducto = 1
         
         #Se ingresa manualmente los datos a la tabla objetivos
-        newObjetivo = model.Objetivo(NewidProducto, NewidObjetivo,NewdescripObjetivo)
+        newObjetivo = model.Objetivo(NewidProducto, NewidObjetivo,NewdescripObjetivo,0)
         model.db.session.add(newObjetivo)
         model.db.session.commit()
         
@@ -83,7 +83,7 @@ class TestHistObj(unittest.TestCase):
         NewSuper = 1
         
         #Se ingresa manualmente los datos a la tabla historia
-        newHistoria = model.Historia_Usuario(NewIdHistoria,NewCodigoHistoria_Usuario, NewId_Pila_Historia_Usuario, NewtipoHistoria_Usuario,NewId_Acciones_Historia_Usuario,NewSuper)
+        newHistoria = model.Historia_Usuario(NewIdHistoria,NewCodigoHistoria_Usuario, NewId_Pila_Historia_Usuario, NewtipoHistoria_Usuario,NewId_Acciones_Historia_Usuario,NewSuper,1)
         model.db.session.add(newHistoria)
         model.db.session.commit()
         
