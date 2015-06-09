@@ -9,311 +9,100 @@
         Nicolas Manan.      Carnet: 06-39883
         Edward Fernandez.   Carnet: 10-11121
 
-	DESCRIPCION: Script que contiene los metodos requeridos para trabajar con la tabla
-			     "User" de la base de datos dada.
-	
+	DESCRIPCION: Script que contiene los metodos requeridos para trabajar con la
+                 tabla "User" de la base de datos dada.
 """
 
 #------------------------------------------------------------------------------------
 
 # Librerias a utilizar.
 
-from model import *
+from model import db, Users
 
 #-------------------------------------------------------------------------------
 
-# Se realiza la conexion con la bases de datos para realizar cambios en ella.
-
+# Clase que tendrá las diferentes funcionalidades de la tabla "Users".
 class clsUser():
 
-    def insert_user(self, newFullname, newUsername, newPassword, newEmail):
+    def insertar(self, nombre, username, clave, correo):
         """
-            @brief Funcion que permite insertar un nuevo usuario a la base de datos.
+            @brief Función que permite insertar un nuevo usuario en la base de 
+                   datos.
             
-            @param newFullname: Nombre del usuario a insertar.
-            @param newUsername: Username del usuario a insertar.
-            @param newPassword: Password del usuario a insertar.
-            @param newEmail: Email del usuario a insertar.
+            @param nombre: nombre completo del usuario a crear.
+            @param username: username del usuario a crear.
+            @param clave: contraseña del usuario a crear.
+            @param correo: email del usuario a crear.
 
-            @return True si se inserto el usuario dado. De lo contrario False.
+            @return True si se inserto correctamente el usuario deseado. En caso
+                    contrario retorna False.
         """	
          
-        # Verificación de tipo.
-        fullnameIsStr = type(newFullname) == str
-        usernameIsStr = type(newUsername) == str
-        emailIsStr    = type(newEmail) == str
+        # Booleanos que indican si los parámetros son del tipo correspondiente.
+        nombreStr = type(nombre) == str
+        usernameStr = type(username) == str
+        correoStr = type(correo) == str
+        claveStr  = type(clave) == str
 
-        if (fullnameIsStr and usernameIsStr and emailIsStr):
-            # Verificación los limites.
-            usernameLenValid = 1 <= len(newUsername) <= 16
-            fullnameLenValid = 1 <= len(newFullname) <= 50
-            passwordLenValid = 1 <= len(newPassword) <= 16
-            emailLenValid = 1 <= len(newFullname) <= 30
+        if ( nombreStr and usernameStr and claveStr ):
+            # Booleanos que indican si los parámetros tienen el tamaño válido.
+            usernameLongitud = 1 <= len(username) <= 16
+            nombreLongitud   = 1 <= len(nombre) <= 50
+            claveLongitud  = 1 <= len(clave)  <= 16
+            correoLongitud = 1 <= len(correo) <= 30
 
-            if (usernameLenValid and fullnameLenValid and passwordLenValid and emailLenValid):
-                query1 = self.find_username(newUsername)
-                query2 = self.find_email(newEmail)
+            if (usernameLongitud and nombreLongitud and claveLongitud and 
+                correoLongitud):
+                
+                usernameExiste = self.buscarUsername(username)
+                correoExiste = self.buscarCorreo(correo)
 
-                if (query1 == [] and query2 == []):
-                    newUser = User(newFullname, newUsername, newPassword, newEmail)
-                    db.session.add(newUser)
+                if (usernameExiste == None and correoExiste == None):
+                    usuarioNuevo = Users(nombre, username, clave, correo)
+                    db.session.add(usuarioNuevo)
                     db.session.commit()
                     return( True )
-
         return( False )
-
-    #-----------------------------------------------------------------------
-    
-    def find_fullname(self, fullname):
-        """
-            @brief Funcion que realiza la busqueda de los usuarios cuyo nombre sea
-                   "fullname"
-            
-            @param fullname: Nombre de los usuarios a buscar.
-            
-            @return lista con la consulta solicitada.
-        """
         
-        fullnameIsStr = type(fullname) == str
-        if (fullnameIsStr):
-            result = db.session.query(User).filter(User.fullname==fullname).all()
-            return(result)
-            
-        return ([])
-        
-    #--------------------------------------------------------------------
+    #.-------------------------------------------------------------------------.
     
-    def find_username(self, username):
+    def buscarUsername(self, username):
         """
             @brief Funcion que realiza la busqueda del usuario cuyo username sea
                    "username"
             
-            @param username: Username del usuario a buscar.
+            @param username: username del usuario a buscar.
             
-            @return lista con la consulta solicitada.
+            @return tupla con la información del usuario solicitado. En caso 
+                    contrario retorna None.
         """        
-        userIsStr = type(username) == str
-        if(userIsStr):
-            result = db.session.query(User).filter(User.username==username).all()
-            return(result)
-            
-        return([])
         
-    #--------------------------------------------------------------------
+        usernameStr = type(username) == str
+        if( usernameStr ):
+            usuarioBuscado = db.session.query(Users).\
+                                filter(Users.username == username).first()
+            return( usuarioBuscado )
+            
+        return( None )
+        
+    #.-------------------------------------------------------------------------.
     
-    def find_email(self, email):
+    def buscarCorreo(self, correo):
         """
-            @brief Funcion que realiza la busqueda del usuario cuyo email sea
-                   "email"
+            @brief Función que realiza la busqueda del usuario cuyo email sea
+                   "correo"
             
-            @param email: Correo del usuario a buscar.
+            @param correo: email del usuario a buscar.
             
-            @return lista con la consulta solicitada.
+            @return tupla con la información del usuario solicitado. En caso 
+                    contrario retorna None.
         """
-        emailIsStr = type(email) == str
-        if(emailIsStr):
-            result = db.session.query(User).filter(User.email==email).all()
-            return(result)
-            
-        return([])
-        
-    #--------------------------------------------------------------------   
-        
-    def find_idDpt(self, idDpt):
-        """
-            @brief Funcion que realiza la busqueda de los usuarios cuyo id del dpt sea
-                   "idDpt"
-            
-            @param idDpt: Id del departamento de los usuarios a buscar.
-            
-            @return lista con la consulta solicitada.
-        """        
-        idDptIsInt = type(idDpt) == int
-        if(idDptIsInt):
-            result = db.session.query(User).filter(User.iddpt==idDpt).all()
-            return(result)
-            
-        return([])
-        
-    #--------------------------------------------------------------------
-        
-    def find_idRole(self, idRole):
-        """
-            @brief Funcion que realiza la busqueda de los usuarios cuyo id del rol sea
-                   "idRol"
-            
-            @param idRol: Id del rol de los usuarios a buscar.
-            
-            @return lista con la consulta solicitada.
-        """     
-                   
-        idRoleIsInt = type(idRole) == int
-        if(idRoleIsInt):
-            result = db.session.query(User).filter(User.idrole==idRole).all()
-            return(result)
-            
-        return ([])
-        
-    #--------------------------------------------------------------------
 
-    def modify_fullname(self, username, newFullname):
-        """
-			@brief Funcion que modifica el nombre de un usuario dado 
-                   por "newFullname".
-			
-			@param username	  : username del usuario a modificar.
-			@param newFullname: nuevo nombre para el usuario.
-			
-			@return True si se modifico el rol dado. De lo contrario False.
-		"""
-        # Booleanos que indican si el tipo es el correcto.
-        usernameIsStr = type(username) == str
-        newFullnameIsStr = type(newFullname) == str        
-        
-        if ( usernameIsStr and  newFullnameIsStr ):
-            # Booleanos que indican si cumplen con los limites.
-            usernameLenValid = 1 <= len(username) <= 16
-            newFullnameLenValid = 1 <= len(newFullname) <= 50
+        correoStr = type(correo) == str
+        if( correoStr ):
+            usuarioBuscado = db.session.query(Users).\
+                                filter(Users.correo == correo).first()
+            return(usuarioBuscado)
+        return( None )
 
-            if ( usernameLenValid and newFullnameLenValid ):
-                query = self.find_username(username)
-                
-                if (query != []) :	
-                    db.session.query(User).filter(User.username==username).\
-                    update({'fullname':(newFullname)})
-                    db.session.commit()
-                    return( True )
-                    
-        return( False )     
-
-    #--------------------------------------------------------------------
-
-    def modify_username(self, oldUsername, newUsername):
-        """
-			@brief Funcion que modifica el username de un usuario dado 
-                   por "newUsername".
-			
-			@param oldUsername	: username del usuario a modificar.
-			@param newNameRole  : nuevo username para el usuario.
-			
-			@return True si se modifico el rol dado. De lo contrario False.
-		"""
-		# Booleanos que indican si el tipo es el correcto.
-        usernameIsStr = type(username) == str
-        newUsernameIsStr = type(newFullname) == str        
-        
-        if ( usernameIsStr and  newUsernameIsStr ):
-            # Booleanos que indican si cumplen con los limites.
-            usernameLenValid = 1 <= len(username) <= 16
-            newUsernameLenValid = 1 <= len(newFullname) <= 16
-            
-            if ( usernameLenValid and newUsernameLenValid ):
-                query = self.find_username(newUsername)
-                
-                if (query != []) :	
-                    db.session.query(User).filter(User.username==oldUsername).\
-                    update({'username':(newUsername)})
-                    db.session.commit()
-                    return( True )
-
-        return( False )      
-
-    #--------------------------------------------------------------------
-        
-    def modify_password(self, username, newPassword):
-        """
-			@brief Funcion que modifica el password de un usuario dado 
-                   por "newPassword".
-			
-			@param username	  : username del usuario a modificar.
-			@param newPassword: nueva contraseña para el usuario.
-			
-			@return True si se modifico el rol dado. De lo contrario False.
-		"""
-        # Booleanos que indican si el tipo es el correcto.
-        usernameIsStr = type(username) == str
-        newPasswordIsStr = type(newFullname) == str        
-        
-        if ( usernameIsStr and  newPasswordIsStr ):
-            # Booleanos que indican si cumplen con los limites.
-            usernameLenValid = 1 <= len(username) <= 16
-            newPasswordLenValid = 1 <= len(newPassword) <= 16
-            
-            if ( usernameLenValid and newPasswordLenValid ):
-                query = self.find_username(username)
-                
-                if (query != []) :	
-                    db.session.query(User).filter(User.username==username).\
-                    update({'password':(newPassword)})
-                    db.session.commit()
-                    return( True )
-                    
-        return( False )       
-
-    #--------------------------------------------------------------------
-    
-    def modify_email(self, username, newEmail):
-        """
-			@brief Funcion que modifica el email de un usuario dado 
-                   por "newEmail".
-			
-			@param username	: username del usuario a modificar.
-			@param newEmail : nuevo email para el usuario.
-			
-			@return True si se modifico el rol dado. De lo contrario False.
-		"""
-		# Booleanos que indican si el tipo es el correcto.
-        usernameIsStr = type(username) == str
-        newEmailIsStr = type(newFullname) == str        
-        
-        if ( usernameIsStr and  newEmailIsStr ):
-            # Booleanos que indican si cumplen con los limites.
-            usernameLenValid = 1 <= len(username) <= 16
-            newEmailLenValid = 1 <= len(newFullname) <= 30
-            
-            if ( usernameLenValid and newEmailLenValid ):
-                query = self.find_email(newEmail)
-                
-                if (query != []) :	
-                    db.session.query(User).filter(User.username==username).\
-                    update({'email':(newEmail)})
-                    db.session.commit()
-                    return( True )
-
-        return( False )     
-        
-
-    #--------------------------------------------------------------------    
-    
-    def modify_idRole(self, username, newIdRole):
-        """
-			@brief Funcion que modifica el id del role de un usuario dado 
-                   por "newIdRole".
-			
-			@param username	  : username del usuario a modificar.
-			@param newIdRole  : nuevo id del rol para el usuario.
-			
-			@return True si se modifico el rol dado. De lo contrario False.
-		"""
- 		# Booleanos que indican si el tipo es el correcto.
-        usernameIsStr = type(username) == str
-        newIdRoleIsInt = type(newFullname) == int        
-        
-        if ( usernameIsStr and  newFullnameIsStr ):
-            # Booleanos que indican si cumplen con los limites.
-            usernameLenValid = 1 <= len(username) <= 16
-            newIdRoleIsPositive = newIdRole > 0
-            
-            if ( usernameLenValid and newIdRoleIsPositive ):
-                query1 = self.find_username(username)
-                query2 = self.find_idRole(newIdRole)
-                
-                if (query1 != [] and query2 != []) :	
-                    db.session.query(User).filter(User.username==username).\
-                    update({'idrole':(newIdRole)})
-                    db.session.commit()
-                    return( True )
-        
-        return( False )                    
-
-    #--------------------------------------------------------------------
+   #.--------------------------------------------------------------------------.

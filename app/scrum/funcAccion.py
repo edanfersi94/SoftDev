@@ -1,116 +1,156 @@
 # -*- coding: utf-8 -*-
 
-# Función a importar.
-import model
+"""
+    UNIVERSIDAD SIMÓN BOLÍVAR
+    Departamento de Computación y Tecnología de la Información.
+    CI-3715 - Ingeniería de Software I (CI-3715)
+    Abril - Julio 2015
+
+    AUTORES:
+        Equipo SoftDev
+
+    DESCRIPCION: 
+		Módulo que contiene los métodos que permitirán insertar, modificar y
+		eliminar acciones.
+"""
 
 
-# Clase que tendra las diferentes funcionalidades de la tabla "Actores".
+#.-----------------------------------------------------------------------------.
+
+# Funciones a importar:
+from model import db, func, Acciones
+
+#.-----------------------------------------------------------------------------.
+
+
+# Clase que tendrá las diferentes funcionalidades de la tabla "Acciones".
 class clsAccion():
 
-	#-------------------------------------------------------------------------------
+	#.-------------------------------------------------------------------------.
 	
-	def insert_Accion(self, idProducto, newDescripAccion):
+	def insertar(self, idProducto, descripcion):
 		"""
-			@brief Funcion que permite insertar una nuevo acción en la base de datos.
+			@brief Función que permite insertar una nueva acción en la base de 
+				   datos.
 			
-			@param idProducto 		: Producto al que pertenecerá la acción.
-			@param newDescripAccion : Descripcion de la acción a insertar.
+			@param idProducto : identificador del producto al que pertenecerá la 
+								acción.
+			@param descripcion: especificación de la acción a insertar.
 
-			@return True si se insertó la acción dada. De lo contrario False.
+			@return True si se insertó correctamente la acción deseada. En caso
+					contrario retorna False.
 		"""
 
-		# Búsqueda del identificador más alto.	
-		query = model.db.session.query(model.func.max(model.Acciones.idacciones)).all()
-		
-		# Se toma la tupla resultante
-		tuplaResult = query[0]
-		
-		num_acciones = int(tuplaResult[0] or 0)
+		# Booleanos que indican si los parámetros son del tipo correspondiente.
+		descripcionStr = type(descripcion) == str
+		idProductoInt  = type(idProducto)  == int
 
-		# Booleano que indica si el tipo es el correcto.
-		descripIsStr = type(newDescripAccion) == str
-		idProdIsInt	 = type(idProducto) == int
+		if ( descripcionStr and idProductoInt ):
+			# Booleanos que indican si los parámetros tienen el tamaño válido.
+			descripcionLongitud = 1 <= len(descripcion) <= 500
+			idProductoPositivo  = idProducto > 0
 
-		if ( descripIsStr and idProdIsInt ):
+			if ( descripcionLongitud and idProductoPositivo ):
 
-			# Booleano que indica si cumplen con los limites.
-			descripLenValid = 1 <= len(newDescripAccion) <= 500
-			idProducIsPosit = idProducto > 0
+				# Búsqueda del último id en la base de datos correspondiente.	
+				ultimoId = db.session.query(func.max(Acciones.identificador)).\
+								first()
+				identificador  = ultimoId[0]
 
-			if ( descripLenValid and idProducIsPosit ):
+				# Si no hay acciones en la base de datos, entonces se inicializa 
+				# el contador.
+				identificador = 1 if identificador == None else identificador + 1
 
-				# Si no hay acciones en la base de datos, entonces se inicializa el contador.
-				if num_acciones == None:
-					num_acciones = 0				
-				num_acciones = num_acciones + 1
-
-				newAccion = model.Acciones(idProducto, num_acciones, newDescripAccion)
-				model.db.session.add(newAccion)
-				model.db.session.commit()
+				accionNueva = Acciones(idProducto, identificador, descripcion)
+				db.session.add(accionNueva)
+				db.session.commit()
 				return( True )
 		
 		return( False )
 	
-	#-------------------------------------------------------------------------------
+	#.-------------------------------------------------------------------------.
 	
-	def find_idAccion(self, idProducto, idAccion):
+	def buscarId(self, identificador):
 		"""
-			@brief Funcion que realiza la busqueda de la acción cuyo identificador
-				   sea "idAccion".
+			@brief Función que realiza la búsqueda de la acción cuyo id sea
+				   "identificador".
 			
-			@param idProducto : Producto al que pertenece la acción.
-			@param idAccion   : Identificador de la acción a buscar.
+			@param identificador: identificador de la acción a buscar.
 			
-			@return lista que contiene las tuplas obtenidas del subquery. De lo 
-					contrario retorna la lista vacia.
+			@return identificador de la acción buscada. Si no existe retorna None
+					o si los parámetros fueron incorrectos retorna -1.
 		"""
-		
-		idIsInt = type(idAccion) == int
-		idProdIsInt	 = type(idProducto) == int
-		
-		if ( idIsInt and idProdIsInt ):
-			accionesEsp = model.Acciones.idacciones == idAccion 
-			idProductoEsp =  model.Acciones.idProducto == idProducto
-			query = model.db.session.query(model.Acciones).filter(accionesEsp, idProductoEsp).all()
-			return( query )
-		return( [] )
 	
-	#-------------------------------------------------------------------------------
+		# Booleano que indica si el parámetro ES del tipo correspondiente.
+		idInt = type(identificador) == int
+		
+		if ( idInt ):
+			idBuscado = db.session.query(Acciones).\
+							filter(Acciones.identificador == identificador).\
+							first()
+			return( idBuscado )
+		return( None )
+	
+	#.-------------------------------------------------------------------------.
 
-	def modify_Accion(self, idProducto, idAccion, newDescripAccion):
+	def modificar(self, identificador, descripcion):
 		"""
-			@brief Funcion que modifica los datos de la acción cuyo id sea "idAccion".
+			@brief Función que permite modificar los datos de la acción cuyo id
+				   sea "identificador".
+		
+			@param identificador: identificador de la accion a modificar.
+			@param descripcion  : nueva descripción para la acción dada.
 			
-			@param idProducto 		: Producto al que pertenece la acción.
-			@param idAccion	  	    : id de la accion a modificar.
-			@param newDescripAccion : nueva descripcion para la acción dada.
-			
-			@return True si se modifico la acción dada. De lo contrario False.
+			@return True si se modificó la acción dada. De lo contrario retorna
+					False.
 		"""
 		
-		# Booleanos que indican si el tipo es el correcto.
-		descripIsStr = type(newDescripAccion) == str
-		idIsInt 	 = type(idAccion) == int
-		idProdIsInt	 = type(idProducto) == int
+		# Booleanos que indican si los parámetros son del tipo correspondiente.
+		idInt = type(identificador) == int
+		descripcionStr = type(descripcion) == str
 		
-		if ( idIsInt and descripIsStr ):
-			# Booleanos que indican si se cumplen los limites.
-			idProducIsPosit = idProducto > 0	
-			idIsPositive 	= idAccion > 0
-			descripLenValid = 1 <= len(newDescripAccion) <= 500
+		if ( idInt and descripcionStr ):
+			# Booleanos que indican si los parámetros tienen el tamaño válido.
+			idPositivo 	= identificador > 0
+			descripcionLongitud = 1 <= len(descripcion) <= 500
 			
-
-			if ( idIsPositive and descripLenValid and idProducIsPosit):
-				query = self.find_idAccion( idProducto, idAccion)
+			if ( idPositivo and descripcionLongitud ):
+				idBuscado = self.buscarId(identificador)
 				
-				if ( query != [] ):
-					acciones = model.Acciones.idacciones == idAccion 
-					idProductoEsp =  model.Acciones.idProducto == idProducto
-					model.db.session.query(model.Acciones).filter(acciones, idProductoEsp).\
-						update({'descripAcciones':(newDescripAccion)})
-					model.db.session.commit()
+				if ( idBuscado != None ):
+					db.session.query(Acciones).\
+						filter(Acciones.identificador == identificador).\
+						update({'descripcion':descripcion})
+					db.session.commit()
 					return( True )
 					
 		return( False )
 	
-	#--------------------------------------------------------------------------------	
+	#.-------------------------------------------------------------------------.
+
+	def eliminar(self, identificador):
+		"""
+			@brief Función que permite eliminar una acción cuyo id
+				   sea "identificador".
+			
+			@return True si se eliminó la acción dada. De lo contrario retorna
+					False.
+		"""
+
+		idInt = type(identificador) == int
+		
+		if (idInt):
+			idPositivo = identificador >0
+			
+			if ( idPositivo ):
+				accionBuscada = db.session.query(Acciones).\
+						filter(Acciones.identificador == identificador).\
+						first()
+
+				if ( accionBuscada != []):
+					print("holaa")
+					db.session.delete(accionBuscada[0])
+					db.session.commit()
+					return ( True )
+			
+		return ( False )

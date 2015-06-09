@@ -1,46 +1,59 @@
 # -*- coding: utf-8 -*-
-from flask import request, session, Blueprint, json
+
+"""
+    UNIVERSIDAD SIMÓN BOLÍVAR
+    Departamento de Computación y Tecnología de la Información.
+    CI-3715 - Ingeniería de Software I (CI-3715)
+    Abril - Julio 2015
+
+    AUTORES:
+        Equipo SoftDev
+
+    DESCRIPCION: 
+        Módulo que contiene los métodos que permitirán insertar, modificar y
+        eliminar acciones.
+"""
+
+#.-----------------------------------------------------------------------------.
+
 from app.scrum.user import clsUser
-from app.scrum.mdlaccesscontrol import clsAccessControl
+from flask import request, session, Blueprint, json
+from app.scrum.controlDeAcceso import clsControlDeAcceso
 
 ident = Blueprint('ident', __name__)
 
-#.------------------------------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.
 
 @ident.route('/ident/AIdentificar', methods=['POST'])
 def AIdentificar():
-    #POST/PUT parameters
+
     params = request.get_json()
-    results = [{'label':'/VProductos', 'msg':['Bienvenido dueño de producto'], "actor":"duenoProducto"}, {'label':'/VMaestroScrum', 'msg':['Bienvenido Maestro Scrum'], "actor":"maestroScrum"}, {'label':'/VDesarrollador', 'msg':['Bienvenido Desarrollador'], "actor":"desarrollador"}, {'label':'/VLogin', 'msg':['Datos de identificación incorrectos']}, ]
-    res = results[0]
-
-    userInput   = clsUser()
-    usuarioReq  = params['usuario']
-    passwordReq = params['clave']
+    results = [{'label':'/VProductos', 'msg':['Bienvenido dueño de producto'], "actor":"duenoProducto"}, 
+               {'label':'/VMaestroScrum', 'msg':['Bienvenido Maestro Scrum'],  "actor":"maestroScrum"}, 
+               {'label':'/VDesarrollador','msg':['Bienvenido Desarrollador'], "actor":"desarrollador"}, 
+               {'label':'/VLogin', 'msg':['Datos de identificación incorrectos']}, ]
+    # Resultado de la autenticación del usuario.
     lastResult  = len(results) - 1
+    res = results[lastResult]
 
-    checkUsername = userInput.find_username(usuarioReq)
+    # Parámetros para autenticar al usuario.
+    usuarioSolicitado  = params.get('usuario', None)
+    claveSolicitada = params.get('clave', None)
     
-    if (checkUsername != []):
-        checkPassword = checkUsername[0].password   
-        accessControl = clsAccessControl()
-        passwEncript  = accessControl.encript(passwordReq)
-        resultCheck   = accessControl.check_password(passwEncript, checkPassword)
+    if ( usuarioSolicitado != None and claveSolicitada != None ):
 
-        if ( resultCheck ):
-            userActor = 1
+        usuario = clsUser()
+        usuarioExiste = usuario.buscarUsername(usuarioSolicitado)
 
-            # Puesto que los id de los actores comienzan desde el 1 entonces se resta una posicion.
-            # para obtener el correspondiente.
-            res = results[userActor - 1]
+        if (usuarioExiste != None):
+            claveAsociada = usuarioExiste.clave   
+            controlDeAcceso = clsControlDeAcceso()
+            claveEncriptada = controlDeAcceso.encriptar(claveAsociada)
+            resultadoVerificacion = controlDeAcceso.verificarPassword(claveEncriptada, 
+                                                                      claveSolicitada)
+            if ( resultadoVerificacion ):
+                res = results[0]
 
-        else:
-            res = results[lastResult]
-
-    else:
-        res = results[lastResult]
-
-    #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -48,34 +61,36 @@ def AIdentificar():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-#.------------------------------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.
 
 @ident.route('/ident/ARegistrar', methods=['POST'])
 def ARegistrar():
-    #POST/PUT parameters
+
     params = request.get_json()
-    results = [{'label':'/VLogin', 'msg':['Felicitaciones, Ya estás registrado en la aplicación']}, {'label':'/VRegistro', 'msg':['Error al tratar de registrarse']}, ]
+    results = [{'label':'/VLogin', 'msg':['Felicitaciones, Ya estás registrado en la aplicación']},
+               {'label':'/VRegistro', 'msg':['Error al tratar de registrarse']}, ]
     res = results[1]
 
-    userInput = clsUser()
-    nombreReq   = params['nombre']
-    usuarioReq  = params['usuario']
-    claveReq    = params['clave']
-    clave2Req   = params['clave2']
-    correoReq   = params['correo']
+    # Campos correspondiente a la registración del usuario.
+    nombreUsuario = params['nombre']
+    username = params['usuario']
+    clave = params['clave']
+    claveRepetida = params['clave2']
+    correo = params['correo']
 
-    checkUsername = userInput.find_username(usuarioReq)
-    checkCorreo   = userInput.find_email(usuarioReq)
+    usuario = clsUser()
+    verificarUsuario = usuario.buscarUsername(nombreUsuario)
+    verificarCorreo  = usuario.buscarCorreo(correo)
 
-    accessControl = clsAccessControl()
-    passwEncript  = accessControl.encript(claveReq)
-    resultCheck   = accessControl.check_password(passwEncript, clave2Req)
+    controlDeAcceso = clsControlDeAcceso()
+    claveEncriptada = controlDeAcceso.encriptar(clave)
+    resultadoVerificacion = controlDeAcceso.verificarPassword(claveEncriptada, 
+                                                            claveRepetida)
 
-    if (checkUsername == [] and checkCorreo == [] and resultCheck):
-        # El actor es 1 porque sera un desarrollador.
-        # actorUsuario = 1
-        resultInsert = userInput.insert_user(nombreReq,usuarioReq,claveReq,correoReq)
-        if (resultInsert):
+    if ( verificarUsuario == None and verificarCorreo == None and resultadoVerificacion):
+        resultadoCreacion = usuario.insertar(nombreUsuario, username, 
+                                                    clave, correo)
+        if ( resultadoCreacion ):
             res = results[0]
 
     if "actor" in res:
@@ -85,7 +100,7 @@ def ARegistrar():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-#.------------------------------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.
 
 @ident.route('/ident/VLogin')
 def VLogin():
@@ -94,7 +109,7 @@ def VLogin():
         res['actor']=session['actor']
     return json.dumps(res)
 
-#.------------------------------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.
 
 @ident.route('/ident/VRegistro')
 def VRegistro():
@@ -103,4 +118,4 @@ def VRegistro():
         res['actor']=session['actor']
     return json.dumps(res)
 
-#.------------------------------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.

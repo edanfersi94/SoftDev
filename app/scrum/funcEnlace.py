@@ -1,172 +1,215 @@
-import model
+# -*- coding: utf-8 -*-
 
+"""
+    UNIVERSIDAD SIMÓN BOLÍVAR
+    Departamento de Computación y Tecnología de la Información.
+    CI-3715 - Ingeniería de Software I (CI-3715)
+    Abril - Julio 2015
+
+    AUTORES:
+        Equipo SoftDev
+
+    DESCRIPCION: 
+		Módulo que contiene los métodos que permitirán insertar y modificar
+		enlaces.
+"""
+
+#.-----------------------------------------------------------------------------.
+
+# Funciones a importar:
+from model import db, func, Enlaces, Productos,Historias
+
+#.-----------------------------------------------------------------------------.
+
+# Clase que tendrá las diferentes funcionalidades de la tabla "Enlaces"
 class clsEnlace():
 
-	def insert_Enlace(self, idProductoActual, idSuper):
-		query = model.db.session.query(model.Enlaces).all()
-		queryNumEnlaces = model.db.session.query(model.func.max(model.Enlaces.id_enlace)).all()
-		queryNumHistorias = model.db.session.query(model.func.max(model.Historia_Usuario.idHistoria_Usuario)).all()
+	#.-------------------------------------------------------------------------.
+	
+	def insertar(self, idProducto, idEpica):
+		"""
+			@brief Función que permite crear un nuevo enlace entre dos historias
+				   en la base de datos.
 
-		idProductoIsInt = type(idProductoActual) == int
-		idSuperIsInt = type(idSuper) == int  
+			@param idProducto: identificador del producto en donde se creará el 
+							   enlace.
+			@param idEpica: identificador de la historia que será épica de la 
+							actual.
+
+			@return True si se creó correctamente el enlace deseado. En caso 
+					contrario retorna False.
+		"""
+
+		# Booleanos que indican si los parámetros son del tipo correspondiente.
+		idProductoInt = type(idProducto) == int
+		idEpicaInt = type(idEpica) == int  
 		
-		
-		if (idProductoIsInt and idSuperIsInt):
+		if ( idProductoInt and idEpicaInt ):
 			
-			producto = model.db.session.query(model.Pila.idPila).filter(model.Pila.idPila == idProductoActual).all()
-
-			idProducto= [int(i[0]) for i in producto]
-
-			idProductoIsEsta = idProductoActual in idProducto
+			idBuscado = db.session.query(Productos.identificador).\
+							filter(Productos.identificador == idProducto).first()
+			# Como idBuscado es una tupla entonces se accede al idValor deseado.
+			idProductoBuscado = idBuscado[0]
 			
-			if (idProductoIsEsta):		
-				tuplaResult = queryNumHistorias[0]
-				idHistoria = tuplaResult[0]
+			if (idProductoBuscado != None):		
+
+				# Se busca el id de la última historia creada.
+				idHistoriaUltima = db.session.query(func.max(Historias.identificador))
+				idHistoria = idHistoriaUltima[0]
+				idHistoria = idHistoria[0]
 		
-				if (idHistoria == None):
-					idHistoria = 0
-				idHistoria += 1
+				idHistoria = 1 if idHistoria == None else idHistoria + 1
 		
-				tuplaResult = queryNumEnlaces[0]
-				num_enlaces = tuplaResult[0]
+				# Se busca el id del último enlace creado.
+				idEnlaceUltimo = db.session.query(func.max(Enlaces.identificador))
+				identificador = idEnlaceUltimo[0]
+				identificador = identificador[0]
 		
-				if (num_enlaces == None):
-					num_enlaces = 0
-				num_enlaces += 1
+				identificador = 1 if identificador == None else identificador + 1
 		
+				# Se procede a generar la lista de enlaces.
+				enlacesActuales = db.session.query(Enlaces).all()
 				listaEnlace = {}
-				salida = False
-				# Se genera la lista.
-				for elem in query:
-					if (elem.id_clave in listaEnlace):
-						listaEnlace[elem.id_clave] += [elem.id_valor]
-						if not(elem.id_valor in listaEnlace):
-		 						listaEnlace[elem.id_valor] =[] 
+
+				for enlace in enlacesActuales:
+					if (enlace.idClave in listaEnlace):
+						listaEnlace[enlace.idClave] += [enlace.idValor]		
 					else:
-						listaEnlace[elem.id_clave] = [elem.id_valor]
-						if not(elem.id_valor in listaEnlace):
-		 						listaEnlace[elem.id_valor] =[]
-		
-					if not(elem.id_valor in listaEnlace):
-						listaEnlace[elem.id_valor] =[]
-				print(listaEnlace)
-		
-				target = {}
-				for key in listaEnlace:
-					print(key)
-					if key == idSuper:
-						target[key] = listaEnlace[key] + [idHistoria]
-					else:
-						target[key] = listaEnlace[key]
-		
-				if not(idSuper in target):
-					target[idSuper] = [idHistoria]
-		
-				print(idHistoria)
-				target[idHistoria] = []
-				print(target)
-		
-				existCiclo = self.existenciaCiclo(target)
-		
-				if not(existCiclo):
-					newEnlace = model.Enlaces(num_enlaces, idProductoActual, idSuper, idHistoria)
-					model.db.session.add(newEnlace)
-					model.db.session.commit()
-					salida = True
-				return(salida)
+						listaEnlace[enlace.idClave] = [enlace.idValor]
+			
+					if not(enlace.idValor in listaEnlace):
+						listaEnlace[enlace.idValor] =[]
+					
+					if (enlace.idClave == idEpica):
+						if not(idHistoria in listaEnlace[enlace.idClave]):
+							listaEnlace[enlace.idClave] += [idHistoria]
 
-   #-------------------------------------------------------------------------------
-
-	def modify_Enlace(self, idProductoActual, viejoSuper, newSuper, idValor):
-
- 		query = model.db.session.query(model.Enlaces).all()
-
- 		listaEnlace = {}
- 		salida = False
- 		
- 		idProductIsInt = type(idProductoActual) == int
- 		idviejoSuperIsInt = type(viejoSuper) == int
- 		idnuevoSuperIsInt = type(newSuper) == int
- 		idValorIsInt = type(idValor) == int
- 		
- 		if (idProductIsInt and idviejoSuperIsInt and idnuevoSuperIsInt and idValorIsInt):
- 			
- 			producto = model.db.session.query(model.Pila.idPila).filter(model.Pila.idPila == idProductoActual).all()
- 			idProducto= [int(i[0]) for i in producto]
- 			idProductoIsEsta = idProductoActual in idProducto
- 			
- 			superv = model.db.session.query(model.Enlaces.id_enlace).filter(model.Enlaces.id_enlace == viejoSuper).all()
- 			idsuperv= [int(i[0]) for i in superv]
- 			idsupervEsta = viejoSuper in idsuperv
- 			
- 			if (idProductoIsEsta and idsupervEsta):
-
-		 		# Se genera la lista.
-		 		for elem in query:
-		 			if (elem.id_clave != viejoSuper or (elem.id_clave == viejoSuper and elem.id_valor != idValor)):
-		 				if (elem.id_clave in listaEnlace):
-		 					listaEnlace[elem.id_clave] += [elem.id_valor]
-		 					if not(elem.id_valor in listaEnlace):
-		 						listaEnlace[elem.id_valor] =[] 
-		 				else:
-		 					listaEnlace[elem.id_clave] = [elem.id_valor]
-		 					if not(elem.id_valor in listaEnlace):
-		 						listaEnlace[elem.id_valor] =[]
-		 			elif(elem.id_clave == viejoSuper and elem.id_valor == idValor):
-		 				listaEnlace[viejoSuper] = []
+						if not( idHistoria in listaEnlace):
+							listaEnlace[idHistoria] = []
+			
+				existeCiclo = self.existenciaCiclo(listaEnlace)
 		
-		 			if not(elem.id_valor in listaEnlace):
-		 				listaEnlace[elem.id_valor] =[]
-		
-		 		print(listaEnlace)
-		 		target = {}
-		 		for key in listaEnlace:
-		 			print(key)
-		 			if key == newSuper:
-		 				target[key] = listaEnlace[key] + [idValor]
-		 			else:
-		 				target[key] = listaEnlace[key]
-		
-		 		target[newSuper] = [idValor]
-		 		print(target)
-		 		existCiclo = self.existenciaCiclo(target)
-		 		print(existCiclo)
-		 		if not(existCiclo):
-		 			model.db.session.query(model.Enlaces).\
-		 				filter(model.Enlaces.id_clave == viejoSuper,model.Enlaces.id_valor == idValor).\
-		 				update({'id_clave':(newSuper)})
-		 			model.db.session.commit()
-		 			salida = True
-		 		return(salida)  	
+				if not(existeCiclo):
+					enlaceNuevo = Enlaces(identificador, idProducto, idEpica, 
+											idHistoria)
+					db.session.add(enlaceNuevo)
+					db.session.commit()
+					return( True )
+		return( False )
 
-   #-------------------------------------------------------------------------------
+   #.--------------------------------------------------------------------------.
 
-	def existenciaCiclo(self,G):
-		color = { u : "blanco" for u in G  } 
+	def modificar(self, idViejaEpica, idNuevaEpica, idHistoria):
+		"""
+			@brief Función que permite modificar un enlace dado.
+
+			@param idViejaEpica: identificador de la épica actual.
+			@param idNuevaEpica: identificador de la nueva épica.
+			@param idHistoria: identificador de la historia a modificar. 
+
+			@return True si se modificó correctamente el enlace deseado. En caso 
+					contrario retorna False.
+		"""
+
+ 		# Booleanos que indican si los parámetros son del tipo correspondiente.
+		idViejaEpicaInt = type(idViejaEpica) == int
+		idNuevaEpicaInt = type(idNuevaEpica) == int
+		idHistoriaInt   = type(idHistoria)   == int
+
+		if ( idViejaEpicaInt and idNuevaEpicaInt and idHistoriaInt ):
+
+			# Se procede a generar la lista de enlaces.
+ 			enlacesActuales = db.session.query(Enlaces).all()
+ 			listaEnlace = {}
+
+ 			for enlace in enlacesActuales:
+
+ 				if (( enlace.idClave != idViejaEpica ) or 
+					( enlace.idClave == idViejaEpica and enlace.idValor != idHistoria)):
+
+ 					if (enlace.idClave in listaEnlace):
+ 						listaEnlace[enlace.idClave] += [enlace.idValor]
+ 					else:
+ 						listaEnlace[enlace.idClave] = [enlace.idValor]
+
+ 					if not(enlace.idValor in listaEnlace):
+ 						listaEnlace[enlace.idValor] =[]
+
+ 					if (enlace.idClave == idNuevaEpica):
+ 						if not(idHistoria in listaEnlace[enlace.idClave]):
+ 							listaEnlace[enlace.idClave] += [idHistoria]
+
+ 						if not( idHistoria in listaEnlace):
+ 							listaEnlace[idHistoria] = []
+
+
+ 				elif (enlace.idClave == idViejaEpica and enlace.idValor == idHistoria):
+ 					listaEnlace[idHistoria] = []
+		
+		
+
+		 	existeCiclo = self.existenciaCiclo(listaEnlace)
+		 		
+	 		if not(existeCiclo):
+	 			db.session.query(Enlaces).\
+	 				filter(Enlaces.idClave == idViejaEpica, Enlaces.idValor == idHistoria).\
+	 				update({'idClave':(idNuevaEpica)})
+	 			db.session.commit()
+	 			return( True )
+
+		return( False )  	
+
+   #.--------------------------------------------------------------------------.
+
+	def existenciaCiclo(self, grafo):
+		"""
+			@brief Función que permite verificar si existe un ciclo en un grafo
+				   dado.
+
+			@param grafo: estructura en donde se verificará la existencia del 
+						  ciclo.
+
+			@return True si existe un ciclo en el grafo. En caso contrario 
+					retorna False.
+		"""
+		
+		# Se inician todos los "vertices" con el color blanco.
+		color = { u : "blanco" for u in grafo  } 
 		encontrarCiclo = [False]
 
-		for u in G:
-			if color[u] == "blanco":
-				self.dfs_visit(G, u, color, encontrarCiclo)
+		for vertice in grafo:
+			if color[vertice] == "blanco":
+				self.dfs_visit(grafo, vertice, color, encontrarCiclo)
 			if encontrarCiclo[0]:
 				break
 		return encontrarCiclo[0]
      
     #-------
 
-	def dfs_visit(self,G, u, color, encontrarCiclo):
+	def dfs_visit(self, grafo, vertice, color, encontrarCiclo):
+		"""
+			@brief Función que realiza la busqueda en profundidad en un grafo 
+					dado.
+
+			@param grafo: estructura a la que se le aplicará DFS.
+			@param vertice: vertice en donde se iniciará el DFS.
+			@param color: diccionario que tiene almacenado los colores actuales 
+						  de los vertices.
+			@param encontrarCiclo: resultado actual de la busqueda del ciclo. 
+
+			@return True si existe un ciclo en el grafo. En caso contrario 
+					retorna False.
+		"""
+
 		if encontrarCiclo[0]:                         
 			return
-		color[u] = "gris"
-		for v in G[u]:
-			if color[v] == "gris":                 
+		color[vertice] = "gris"
+		for adyacente in grafo[vertice]:
+			if color[adyacente] == "gris":                 
 				encontrarCiclo[0] = True       
 				return
-			if color[v] == "blanco":                 
-				self.dfs_visit(G, v, color, encontrarCiclo)
-		color[u] = "negro"                         
+			if color[adyacente] == "blanco":                 
+				self.dfs_visit(grafo, adyacente, color, encontrarCiclo)
+		color[vertice] = "negro"                         
 
-    #-------------------------------------------------------------------------------
-
-
-    #-------------------------------------------------------------------------------
+    #.-------------------------------------------------------------------------.

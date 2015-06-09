@@ -12,23 +12,29 @@
         </div>
         <div class="collapse navbar-collapse" id="contenido-plegable">
             <ul class="nav navbar-nav navbar-left">
-<li><a ng-click="VCrearActor2(idPila)"
+<li><a ng-click="VCrearTarea5(idHistoria)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+  +tarea</a></li>
+<li><a ng-click="VCrearActor6(idPila)"
        ng-show="actor=='duenoProducto' || false">
   +actor</a></li>
-<li><a ng-click="VCrearAccion3(idPila)"
+<li><a ng-click="VCrearAccion7(idPila)"
        ng-show="actor=='duenoProducto' || false">
   +accion</a></li>
-<li><a ng-click="VCrearObjetivo4(idPila)"
+<li><a ng-click="VCrearObjetivo8(idPila)"
        ng-show="actor=='duenoProducto' || false">
   +objetivo</a></li>
+<li><a ng-click="AElimHistoria9(idHistoria)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+  -historia</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
 <li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
-<li><a ng-click="VHistorias0(idPila)"
+<li><a ng-click="VHistorias3(idPila)"
        ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
     Regresar</a></li>
-<li><a ng-click="VLogin5()">
+<li><a ng-click="VLogin4()">
     Salir</a></li>
 
             </ul>
@@ -36,7 +42,7 @@
     </div>
 </nav>
 
-    <form name="fHistoriaForm" ng-submit="AModifHistoria1(fHistoriaForm.$valid)" novalidate>
+    <form name="fHistoriaForm" ng-submit="AModifHistoria0(fHistoriaForm.$valid)" novalidate>
             <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.codigo.$invalid && fHistoriaForm.codigo.$pristine && fHistoriaSubmitted}"><label for="fHistoria_codigo">Código de la historia</label><input id="fHistoria_codigo" type="text" name="codigo" class="form-control" ng-model="fHistoria.codigo" placeholder="Código de la historia" required/><p ng-show="fHistoriaSubmitted && fHistoriaForm.codigo.$invalid" class="help-block">Error en campo Código de la historia.</p></div>
             <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.super.$invalid && fHistoriaForm.super.$pristine && fHistoriaSubmitted}"><label for="fHistoria_super">Historia más general</label>:&nbsp;<select id="fHistoria_super" ng-model="fHistoria.super"  ng-options="item.key as item.value for item in fHistoria_opcionesHistorias"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.super.$invalid" class="help-block">Error en campo Historia más general.</p></div>
             <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.actores.$invalid && fHistoriaForm.actores.$pristine && fHistoriaSubmitted}"><label for="fHistoria_actores">Actores</label>:&nbsp;<select id="fHistoria_actores" ng-model="fHistoria.actores"  multiple ng-options="item.key as item.value for item in fHistoria_opcionesActores"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.actores.$invalid" class="help-block">Error en campo Actores.</p></div>
@@ -50,7 +56,14 @@
             <span class="glyphicon glyphicon-flash"></span>Modificar
         </button>
     </form>
-    <hr />
+    <hr /><h3>Tareas <span class="badge" ng-bind="numTareas"></span></h3>        <table ng-table="tableParams2" template-pagination="pager.html" class="table">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Descripción'">{{row['descripcion']}}</td>
+                <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VTarea2(row['idTarea'])">detalles</a></td>
+            </tr>
+        </table>
+
+<hr />
 
 
 <div id="right"></div>

@@ -52,4 +52,17 @@ scrumModule.service('objetivoService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
+    this.AElimObjetivo = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'objetivo/AElimObjetivo',
+          method: 'GET',
+          params: args
+        });
+    //    var labels = ["/VProducto", "/VObjetivo", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
 }]);

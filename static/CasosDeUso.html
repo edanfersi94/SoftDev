@@ -178,13 +178,6 @@ Parámetros GET: idPila
  </li> <li>
   <p></p>
   <ul>
-   <li>URL: '/prod/VCrearProducto'</li>
-   <li>Método: GET</li><li>Formato de salida: JSON</li>
-   <li>Roles: duenoProducto </li>
-  </ul>
- </li> <li>
-  <p></p>
-  <ul>
    <li>URL: '/prod/ACrearProducto'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -223,6 +216,13 @@ Requerido.
 
     </ol>
    </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/prod/VCrearProducto'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: duenoProducto </li>
   </ul>
  </li>
 </ol>
@@ -349,6 +349,35 @@ Opcional.
 Parámetros GET: idPila
    <li>Roles: duenoProducto </li>
   </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/actor/AElimActor'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idActor
+   <li>Roles: Sin restricción de rol
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProducto',</li>
+       <li> msg:"Actor eliminado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VActor',</li>
+       <li> msg:"No se pudo eliminar este actor".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
  </li>
 </ol>
 <h2>Objetivos</h2>
@@ -454,6 +483,35 @@ Requerido.
 Parámetros GET: idPila
    <li>Roles: duenoProducto </li>
   </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/objetivo/AElimObjetivo'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idObjetivo
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProducto',</li>
+       <li> msg:"Objetivo eliminado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VObjetivo',</li>
+       <li> msg:"No se pudo eliminar este objetivo".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
  </li>
 </ol>
 <h2>Acciones</h2>
@@ -508,6 +566,43 @@ Parámetros GET: idAccion
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/accion/AElimAccion'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idAccion
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VProducto',</li>
+       <li> msg:"Accion eliminada".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VAccion',</li>
+       <li> msg:"No se pudo eliminar esta acción".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/accion/VCrearAccion'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: duenoProducto </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
    <li>URL: '/accion/ACrearAccion'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -542,14 +637,6 @@ Opcional.
 
     </ol>
    </li>
-  </ul>
- </li> <li>
-  <p></p>
-  <ul>
-   <li>URL: '/accion/VCrearAccion'</li>
-   <li>Método: GET</li><li>Formato de salida: JSON</li>
-Parámetros GET: idPila
-   <li>Roles: duenoProducto </li>
   </ul>
  </li>
 </ol>
@@ -629,6 +716,14 @@ Requerido.
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/historias/VCrearHistoria'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
    <li>URL: '/historias/AModifHistoria'</li>
    <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
 <li>Parámetros POST:
@@ -691,14 +786,6 @@ Requerido.
  </li> <li>
   <p></p>
   <ul>
-   <li>URL: '/historias/VCrearHistoria'</li>
-   <li>Método: GET</li><li>Formato de salida: JSON</li>
-Parámetros GET: idPila
-   <li>Roles: desarrollador duenoProducto maestroScrum </li>
-  </ul>
- </li> <li>
-  <p></p>
-  <ul>
    <li>URL: '/historias/VHistoria'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idHistoria
@@ -742,10 +829,164 @@ Requerido.
  </li> <li>
   <p></p>
   <ul>
+   <li>URL: '/historias/AElimHistoria'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idHistoria
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VHistorias',</li>
+       <li> msg:"Historia eliminada".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VHistoria',</li>
+       <li> msg:"No se pudo eliminar esta historia".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
    <li>URL: '/historias/VPrioridades'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idPila
    <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li>
+</ol>
+<h2>Tareas</h2>
+<p></p>
+<ol>
+ <li>
+  <p></p>
+  <ul>
+   <li>URL: '/tareas/ACrearTarea'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idHistoria -  
+Opcional. 
+     </li>     <li>idTarea -  
+Opcional. 
+     </li>     <li>descripcion -  
+Requerido. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: Sin restricción de rol
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VHistoria',</li>
+       <li> msg:"Tarea creada".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCrearTarea',</li>
+       <li> msg:"No se pudo crear tarea.".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/tareas/VCrearTarea'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idHistoria
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/tareas/AModifTarea'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idHistoria -  
+Opcional. 
+     </li>     <li>idTarea -  
+Opcional. 
+     </li>     <li>descripcion -  
+Requerido. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: Sin restricción de rol
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VHistoria',</li>
+       <li> msg:"Tarea modificada".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCrearTarea',</li>
+       <li> msg:"No se pudo modificar esta tarea.".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/tareas/VTarea'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idTarea
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/tareas/AElimTarea'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VHistoria',</li>
+       <li> msg:"Historia borrada".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VTarea',</li>
+       <li> msg:"No se pudo eliminar esta tarea".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
   </ul>
  </li>
 </ol>

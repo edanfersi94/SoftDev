@@ -29,6 +29,15 @@ scrumModule.controller('VActorController',
       $scope.VLogin2 = function() {
         $location.path('/VLogin');
       };
+      $scope.AElimActor3 = function(idActor) {
+          
+        actorService.AElimActor({"idActor":((typeof idActor === 'object')?JSON.stringify(idActor):idActor)}).then(function (object) {
+          var msg = object.data["msg"];
+          if (msg) flash(msg);
+          var label = object.data["label"];
+          $location.path(label);
+          $route.reload();
+        });};
 
       $scope.fActorSubmitted = false;
       $scope.AModifActor0 = function(isValid) {

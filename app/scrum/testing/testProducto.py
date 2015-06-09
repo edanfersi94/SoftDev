@@ -392,14 +392,7 @@ class TestProducto(unittest.TestCase):
         self.assertTrue( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.      
 
-    # El id del ojetivo a modificar no existe en la base de datos vacia.
-    def testmodify_ProductoNoExist(self):
-        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
-        tempProducto = clsProducto()
-        newIdProducto= 20
-        newDescripProducto= 'Esto sigue siendo una prueba'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
-        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+    
     
     ### CASOS VALIDOS( Casos Fronteras )
     # El id del producto a modificar existe en la base de datos de varios elementos 
@@ -420,23 +413,6 @@ class TestProducto(unittest.TestCase):
         self.assertTrue( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.  
     
-    # El id del producto a modificar no existe en la base de datos de varios productos
-    def testmodify_ProductoIdNotExistVariosELem(self):
-        self.vaciarBaseDeDatos() # Se limpia la base de datos. d
-        
-        for indice in range(2,10,1):
-            newIdProducto= indice
-            newDescripProducto= 'Descripcion ' + str(indice)
-            newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1)
-            model.db.session.add(newProducto)
-            model.db.session.commit()   
-            
-        tempProducto = clsProducto()
-        newIdProducto= 1
-        newDescripProducto= 'esto sigue siendo una prueva V2'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
-        self.assertFalse( result ) 
-        self.vaciarBaseDeDatos() # Se limpia la base de datos.  
 
     
     #  El id del productoa modificar existe en la base de datos. La nueva 

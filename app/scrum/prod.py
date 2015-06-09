@@ -1,43 +1,67 @@
 # -*- coding: utf-8 -*-
+
+"""
+    UNIVERSIDAD SIMÓN BOLÍVAR
+    Departamento de Computación y Tecnología de la Información.
+    CI-3715 - Ingeniería de Software I (CI-3715)
+    Abril - Julio 2015
+
+    AUTORES:
+        Equipo SoftDev
+
+    DESCRIPCION: 
+        Módulo que contiene los métodos que permitirán insertar, modificar y
+        eliminar productos.
+"""
+
+#.-----------------------------------------------------------------------------.
+
+# Funciones a importar:
+
 from flask import request, session, Blueprint, json
 from app.scrum.funcActor import clsActor
 from app.scrum.funcProducto import clsProducto
-import model
+from model import db, Productos, Actores, Acciones, Objetivos
 
 prod = Blueprint('prod', __name__)
 
-#.----------------------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.
 
 @prod.route('/prod/ACrearProducto', methods=['POST'])
 def ACrearProducto():
-    #POST/PUT parameters
+
     params = request.get_json()
-    results = [{'label':'/VProductos', 'msg':['Producto creado']}, {'label':'/VCrearProducto', 'msg':['Error al crear producto']}, ]
-    res = results[1]
+    results = [{'label':'/VProductos', 'msg':['Producto creado']}, 
+               {'label':'/VCrearProducto', 'msg':['Error al crear producto']}, ]
+    res = results[1] 
 
-    # Descripción del producto a crear.
-    nuevoNombre = params.get('nombre', None)
-    nuevaDescripcionProducto = params.get('descripcion', None)
-    nuevaEscala = params.get('escala', None)
+    # Parámetros del producto a crear.
+    nombre = params.get('nombre', None)
+    descripcion = params.get('descripcion', None)
+    escala = params.get('escala', None)
 
-    if (nuevoNombre != None and nuevaEscala != None):
-        nuevoProducto = clsProducto()
+    if (nombre != None and escala != None and descripcion != None):
+        producto = clsProducto()
 
-        resultInsert = nuevoProducto.insert_Producto(nuevoNombre, nuevaDescripcionProducto, nuevaEscala)
+        # creacionCorrecta es de la forma (Booleano, idProducto).
+        creacionCorrecta = producto.insertar(nombre, descripcion, escala)
 
-        nuevoActor = clsActor()   
-        idProductActual = resultInsert[1]
+        if (creacionCorrecta[0]):
+            actor = clsActor()   
+            idProducto= creacionCorrecta[1]
 
-        # Se añaden los tres actores por defecto.
-        check1 = nuevoActor.insert_Actor(idProductActual, 'Product Owner','Es el dueño del producto')
-        check2 = nuevoActor.insert_Actor(idProductActual, 'Scrum Master','Es el maestro Scrum del producto')
-        check3 = nuevoActor.insert_Actor(idProductActual, 'Developer','Es el desarrollador del producto')    
+            # Se añaden los tres actores por defecto.
+            creacionPO = actor.insertar(idProducto, 'Product Owner',
+                                        'Es el dueño del producto')
+            creacionSM = actor.insertar(idProducto, 'Scrum Master',
+                                        'Es el maestro Scrum del producto')
+            creacionD = actor.insertar(idProducto, 'Developer',
+                                       'Es el desarrollador del producto')    
 
-        res['idPila'] = idProductActual
-
-        if (resultInsert[0] and check1 and check2 and check3):
+        if ( creacionPO and creacionSM and creacionD ):
             res = results[0]  
 
+    res['idPila'] = idProducto
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -45,27 +69,32 @@ def ACrearProducto():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.
 
 @prod.route('/prod/AModifProducto', methods=['POST'])
 def AModifProducto():
-    #POST/PUT parameters
+   
     params = request.get_json()
-    results = [{'label':'/VProductos', 'msg':['Producto actualizado']}, {'label':'/VProductos', 'msg':['Error al modificar el producto']},]
+    results = [{'label':'/VProductos', 'msg':['Producto actualizado']},
+               {'label':'/VProductos', 'msg':['Error al modificar el producto']},]
+    # Resultado de la creación del producto.
     res = results[1]
 
     # Se obtiene el identificador del producto actual.
-    idProductoModif = session['idPila']
+    idProducto = int(session['idPila'])
     
-    nuevoNombre = params.get('nombre', None)
-    nuevaDescripcionProducto = params.get('descripcion', None)
-    nuevaEscala = params.get('escala', None)
+    # Parámetros del producto a modificar.
+    nombre = params.get('nombre', None)
+    descripcion = params.get('descripcion', None)
+    escala = params.get('escala', None)
 
-    productoModif = clsProducto()
-    resultsModif = productoModif.modify_Producto(idProductoModif, nuevoNombre, nuevaDescripcionProducto, nuevaEscala)
+    if ((nombre != None) and (descripcion != None) and (escala != None)):
+        producto = clsProducto()
+        modificacionCorrecta = producto.modificar(idProducto, nombre, descripcion,
+                                                  escala)
 
-    if ( resultsModif ):
-        res = results[0]
+        if ( modificacionCorrecta ):
+            res = results[0]
 
     if "actor" in res:
         if res['actor'] is None:
@@ -74,17 +103,19 @@ def AModifProducto():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.
 
 @prod.route('/prod/VCrearProducto')
 def VCrearProducto():
     res = {}
 
+    # Producto actual.
     idProducto = int(request.args.get('idPila',1))
 
     # Se almacena la información recibida.
     res['fPila'] = {'idPila': idProducto,
-                    'descripcion':request.args.get('descripcion')}
+                    'descripcion':request.args.get('descripcion'),
+                    'escala':request.args.get('escala',1)}
     res['idPila'] = idProducto
 
     res['fPila_opcionesEscala'] = [
@@ -95,41 +126,48 @@ def VCrearProducto():
         res['actor']=session['actor']
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.
 
 @prod.route('/prod/VProducto')
 def VProducto():
     res = {}
 
-    idPila = int(request.args.get('idPila', 1))
+    # Identificar del producto actual.
+    idProducto = int(request.args.get('idPila', 1))
 
     # Carga de los actores, objetivos y acciones a la base de datos.
-    actores = model.db.session.query(model.Actores).filter_by(idProducto = idPila).all()
-    acciones = model.db.session.query(model.Acciones).filter_by(idProducto = idPila).all()
-    objetivos = model.db.session.query(model.Objetivo).filter_by(idProducto = idPila).all()
+    actores = db.session.query(Actores).\
+                    filter(Actores.idProducto == idProducto).all()
+    acciones = db.session.query(Acciones).\
+                    filter(Acciones.idProducto == idProducto).all()
+    objetivos = db.session.query(Objetivos).\
+                    filter(Objetivos.idProducto == idProducto).all()
 
-    productoActual = model.db.session.query(model.Pila).filter_by(idPila = idPila).all()
+    # Carga de la información del producto actual.
+    producto = db.session.query(Productos).\
+                    filter(Productos.identificador == idProducto).first()
 
     # Se envía la información del producto.
-    res['fPila'] = {'idPila':idPila, 
-                    'nombre':productoActual[0].nombreProducto,
-                    'descripcion':productoActual[0].descripProducto}
+    res['fPila'] = {'idPila': idProducto, 
+                    'nombre': producto.nombre,
+                    'descripcion':producto.descripcion,
+                    'escala': producto.escala}
 
     # Se muestran todos los actores asosiados al producto.
     res['data3'] = [
-        {'idActor':act.id_actores, 
-         'nombre':act.nombre_actores, 
-         'descripcion':act.descripcion_actores}
+        {'idActor':act.identificador, 
+         'nombre':act.nombre, 
+         'descripcion':act.descripcion}
         for act in actores]
     
     # Se muestran todos los actores asosiados al producto.
     res['data5'] = [
-        {'idAccion':acc.idacciones, 'descripcion':acc.descripAcciones}
+        {'idAccion':acc.identificador, 'descripcion':acc.descripcion}
          for acc in acciones]
 
     # Se muestran todos los actores asosiados al producto.
     res['data7'] = [
-        {'idObjetivo':obj.idObjetivo, 'descripcion':obj.descripObjetivo}
+        {'idObjetivo':obj.identificador, 'descripcion':obj.descripcion}
          for obj in objetivos]   
 
 
@@ -137,16 +175,14 @@ def VProducto():
       {'key':1,'value':'Alta/Media/Baja'},
       {'key':2,'value':'Entre 1 y 20'}]
 
-
-    print(idPila)
-    session['idPila'] = idPila
-    res['idPila'] = idPila
+    session['idPila'] = idProducto
+    res['idPila'] = idProducto
 
     if "actor" in session:
         res['actor']=session['actor']
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.
 
 @prod.route('/prod/VProductos')
 def VProductos():
@@ -155,11 +191,11 @@ def VProductos():
         res['actor']=session['actor']
 
     # Se muestra la lista de productos.
-    producto = model.Pila.query.all()
+    producto = Productos.query.all()
     res['data0'] = [
-        {'idPila':product.idPila, 'nombre':product.nombreProducto}
+        {'idPila':product.identificador, 'nombre':product.nombre}
         for product in producto ]
 
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.

@@ -12,6 +12,10 @@
         </div>
         <div class="collapse navbar-collapse" id="contenido-plegable">
             <ul class="nav navbar-nav navbar-left">
+<li><a ng-click="AElimObjetivo3(idObjetivo)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+  -objetivo</a></li>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
 <li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
@@ -27,7 +31,7 @@
 </nav>
 
     <form name="fObjetivoForm" ng-submit="AModifObjetivo0(fObjetivoForm.$valid)" novalidate>
-            <div class="form-group" ng-class="{ 'has-error' :  fObjetivoSubmitted && fObjetivoForm.descripcion.$invalid && fObjetivoForm.descripcion.$pristine && fObjetivoSubmitted}"><label for="fObjetivo_descripcion">Descripción</label><div id="fObjetivo_descripcion" text-angular="text-angular" name="descripcion" ng-model="fObjetivo.descripcion" ></div><p ng-show="fObjetivoSubmitted && fObjetivoForm.descripcion.$invalid" class="help-block">Error en campo Descripción.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fObjetivoSubmitted && fObjetivoForm.descripcion.$invalid && fObjetivoForm.descripcion.$pristine && fObjetivoSubmitted}"><label for="fObjetivo_descripcion">Descripción</label><textarea id="fObjetivo_descripcion" name="descripcion" class="form-control" ng-model="fObjetivo.descripcion" placeholder="Descripción" ></textarea><p ng-show="fObjetivoSubmitted && fObjetivoForm.descripcion.$invalid" class="help-block">Error en campo Descripción.</p></div>
             <input id="fObjetivo_idObjetivo" type="hidden" name="idObjetivo" ng-model="fObjetivo.idObjetivo" />
             <input id="fObjetivo_idPila" type="hidden" name="idPila" ng-model="fObjetivo.idPila" />
             <div class="form-group" ng-class="{ 'has-error' :  fObjetivoSubmitted && fObjetivoForm.transversal.$invalid && fObjetivoForm.transversal.$pristine && fObjetivoSubmitted}"><label for="fObjetivo_transversal">Es transversal</label>:&nbsp;<select id="fObjetivo_transversal" ng-model="fObjetivo.transversal" required ng-options="item.key as item.value for item in fObjetivo_opcionesTransversalidad"></select><p ng-show="fObjetivoSubmitted && fObjetivoForm.transversal.$invalid" class="help-block">Error en campo Es transversal.</p></div>
