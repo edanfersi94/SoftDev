@@ -45,7 +45,7 @@ class clsHistoriaActores():
 		idHistoriaInt = type(idHistoria) == int
 		identificadorInt = type(id) == int
 
-		if (idHistoriaInt and idActorInt):
+		if (idHistoriaInt and identificadorInt):
 
 			# Booleanos que indican si se cumplen los límites.
 			idHistoriaPositivo = idHistoria > 0
