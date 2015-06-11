@@ -631,7 +631,7 @@ def VPrioridades():
     listHistorias = {}
     dicH = {}
     listH = []
-    listH.append(None)
+    contador = 0
     
     for j in historias:
         idActoresHistoria = []
@@ -656,7 +656,7 @@ def VPrioridades():
                             all()
 
             nombreActoresHistoria.append(actores[0].nombre)
-            print(nombreActoresHistoria)
+        
 
 
         objetivosHistoria = db.session.query(ObjHistorias).\
@@ -681,13 +681,13 @@ def VPrioridades():
                  'actor': nombreActoresHistoria,
                  'objetivo':nombreObjetivosHistoria,
                  'accion': accionesHistoria[0].descripcion}
-        listH.append(dicH)
-
-
+        listH.append(dicH)  
+    print("historias",historias)
+    print("lista", listH)
     res['idPila'] = idProducto
     res['fPrioridades'] = {'idPila':idProducto,
       'lista':[
-        {'idHistoria':hist.identificador,'prioridad':hist.idEscala, 'enunciado':'En tanto que '+str(listH[hist.identificador].get('actor')) + ' ' + 'pueda'+ ' '+ str(listH[hist.identificador].get('accion')) + ' para '+ str(listH[hist.identificador].get('objetivo')) }
+        {'idHistoria':hist.identificador,'prioridad':hist.idEscala, 'enunciado':'En tanto que '+str(listH[contador].get('actor')) + ' ' + 'pueda'+ ' '+ str(listH[contador].get('accion')) + ' para '+ str(listH[contador].get('objetivo')) }
           for hist in historias]}
 
     #Action code ends here

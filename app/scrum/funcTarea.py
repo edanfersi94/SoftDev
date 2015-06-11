@@ -37,29 +37,35 @@ class clsTarea():
 
             if ( descripcionLongitud and idHistoriaPositivo ):
 
-                enlacesActuales = db.session.query(Enlaces).all()
+                productoBuscado = db.session.query(Historias).\
+                                    filter(Historias.identificador == idHistoria).\
+                                    first()
+                idProductoBuscado = productoBuscado.idProducto
+
+                enlacesActuales = db.session.query(Enlaces).\
+                                  filter(Enlaces.idProducto== idProductoBuscado).all()
                 listaEnlace = {}
 
                 for enlace in enlacesActuales:
+        
                     if (enlace.idClave in listaEnlace):
                         listaEnlace[enlace.idClave] += [enlace.idValor]
+    
                     else:
                         listaEnlace[enlace.idClave] = [enlace.idValor]
 
                     if not(enlace.idValor in listaEnlace):
                         listaEnlace[enlace.idValor] =[]
 
-                print(listaEnlace)
-                if (listaEnlace[identificador] == [] ):
-
-                    # Búsqueda del último id en la base de datos correspondiente.   
-                    ultimoId = db.session.query(func.max(Tareas.identificador)).\
+                 # Búsqueda del último id en la base de datos correspondiente.   
+                ultimoId = db.session.query(func.max(Tareas.identificador)).\
                                     first()
-                    identificador  = ultimoId[0]
+                identificador  = ultimoId[0]
 
-                    # Si no hay acciones en la base de datos, entonces se inicializa 
-                    # el contador.
-                    identificador = 1 if identificador == None else identificador + 1
+                # Si no hay acciones en la base de datos, entonces se inicializa 
+                # el contador.
+                identificador = 1 if identificador == None else identificador + 1
+                if (listaEnlace[idHistoria] == [] ):
 
                     tareaNueva = Tareas(identificador, idHistoria, descripcion)
                     db.session.add(tareaNueva)
