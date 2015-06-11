@@ -137,7 +137,6 @@ class clsProducto():
 											filter(Productos.nombre == nombre).\
 											first()
 
-					print(nombreProductoBuscado)
 					if ( nombreProductoBuscado == None ):
 				
 						db.session.query(Productos).\

@@ -32,8 +32,7 @@ class TestProducto(unittest.TestCase):
     # FUNCION AUXILIAR
     
     def vaciarBaseDeDatos(self):
-        #model.db.session.query(model.Acciones).delete()
-        model.db.session.query( model.Pila ).delete() 
+        model.db.session.query( model.Productos ).delete() 
     
     #.-------------------------------------------------------------------.  
     # VERIFICACION DE LA CLASE.
@@ -49,151 +48,151 @@ class TestProducto(unittest.TestCase):
     
     ### CASOS VALIDOS( Casos Interiores ).
     # Buscar el id de un producto que exista en la base de datos de un elemento. 
-    def testfind_idProductoExist(self):
+    def testBuscarIdProductoExist(self):
         self.vaciarBaseDeDatos()
 
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
         
         tempProducto = clsProducto()
-        newIdProducto= 1
-        query = tempProducto.find_idProducto(newIdProducto)
-        self.assertIsNotNone( query[0] )
+        nuevoIdProducto= 1
+        query = tempProducto.buscarId(nuevoIdProducto)
+        self.assertIsNotNone( query )
         
         self.vaciarBaseDeDatos()
 
     # Buscar el id de un productocon base de datos vacia
     
-    def testfind_idProductoNotExistBaseDeDatosVacia(self):
+    def testBuscarIdProductoNotExistBaseDeDatosVacia(self):
         self.vaciarBaseDeDatos()
         tempProducto = clsProducto()
-        newIdProducto= 1000
-        query = tempProducto.find_idProducto(newIdProducto)
-        self.assertEqual(query,[])
+        nuevoIdProducto= 1000
+        query = tempProducto.buscarId(nuevoIdProducto)
+        self.assertEqual(query,None)
         self.vaciarBaseDeDatos()
 
         
     # Buscar el id de un producto con base de datos un elemento y busqueda no exitosa
         
-    def testfind_idProductoNotExistOneElemento(self):
+    def testBuscarIdProductoNotExistOneElemento(self):
         self.vaciarBaseDeDatos()
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
         
         tempProducto = clsProducto()
-        newIdProducto= 2
-        query = tempProducto.find_idProducto(newIdProducto)
-        self.assertEqual(query,[])
+        nuevoIdProducto= 2
+        query = tempProducto.buscarId(nuevoIdProducto)
+        self.assertEqual(query,None)
         self.vaciarBaseDeDatos()
         
     # Buscar el id de un producto con base de datos de varios elemento y busqueda no exitosa   
     
-    def testfind_idProductoNotExistVariosElementos(self):
+    def testBuscarIdProductoNotExistVariosElementos(self):
         self.vaciarBaseDeDatos()    
      
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
         for indice in range(1,4,1):
-            newIdProducto = indice
-            newDescripProducto=' Descripcion Producto.. ' + str(indice)
-            newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-            model.db.session.add(newProducto)
+            nuevoIdProducto = indice
+            nuevoDescripcionProducto=' Descripcion Producto.. ' + str(indice)
+            nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+            model.db.session.add(nuevoProducto)
             model.db.session.commit()   
         
         tempProducto = clsProducto()
-        newIdProducto= 5
-        query = tempProducto.find_idProducto(newIdProducto)
-        self.assertEqual(query,[])
+        nuevoIdProducto= 5
+        query = tempProducto.buscarId(nuevoIdProducto)
+        self.assertEqual(query,None)
         self.vaciarBaseDeDatos()
           
     # Buscar el id de un producto con base de datos de varios elementos y busqueda exitosa   
-    def testfind_idProductoExistVariosElementos(self):
+    def testBuscarIdProductoExistVariosElementos(self):
         self.vaciarBaseDeDatos()  
 
         # Se insertaN elementoS en la base. Dicha insercion se asegura
         # que es valida.
         for indice in range(1,4,1):
-            newIdProducto = indice
-            newDescripProducto=' Descripcion Producto.. ' + str(indice)
-            newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-            model.db.session.add(newProducto)
+            nuevoIdProducto = indice
+            nuevoDescripcionProducto=' Descripcion Producto.. ' + str(indice)
+            nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+            model.db.session.add(nuevoProducto)
             model.db.session.commit()   
         
         tempProducto = clsProducto()
-        newIdProducto= 3
-        query = tempProducto.find_idProducto(newIdProducto)
-        self.assertIsNotNone( query[0] )
+        nuevoIdProducto= 3
+        query = tempProducto.buscarId(nuevoIdProducto)
+        self.assertIsNotNone( query )
         self.vaciarBaseDeDatos()
         
     ### CASOS INVALIDOS( Casos Malicia )
     #El id del producto a buscar es un string.
-    def testfind_idProductoString(self):
+    def testBuscarIdProductoString(self):
         self.vaciarBaseDeDatos()
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
         
         tempProducto = clsProducto()
-        newIdProducto= '1'
-        query = tempProducto.find_idProducto(newIdProducto)
-        self.assertEqual(query,[])
+        nuevoIdProducto= '1'
+        query = tempProducto.buscarId(nuevoIdProducto)
+        self.assertEqual(query,None)
         
         self.vaciarBaseDeDatos()
         
     # El id del producto a buscar es de tipo float.
-    def testfind_idProductoFloat(self):
+    def testBuscarIdProductoFloat(self):
         self.vaciarBaseDeDatos()
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
         
         tempProducto = clsProducto()
-        newIdProducto= 1.01
-        query = tempProducto.find_idProducto(newIdProducto)
-        self.assertEqual(query,[])  
+        nuevoIdProducto= 1.01
+        query = tempProducto.buscarId(nuevoIdProducto)
+        self.assertEqual(query,None)  
         self.vaciarBaseDeDatos()
 
     #  El id del productoa buscar es nulo.
-    def testfind_idProductoNone(self):
+    def testBuscarIdProductoNone(self):
         self.vaciarBaseDeDatos()
 
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
         
         tempProducto = clsProducto()
-        newIdProducto= None
-        query = tempProducto.find_idProducto(newIdProducto)
-        self.assertEqual(query,[])  
+        nuevoIdProducto= None
+        query = tempProducto.buscarId(nuevoIdProducto)
+        self.assertEqual(query,None)  
         self.vaciarBaseDeDatos()
 
     #  El id del productoa buscar es negativo.
-    def testfind_idProductoNegative(self):
+    def testBuscarIdProductoNegative(self):
         self.vaciarBaseDeDatos()
 
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
         
         tempProducto = clsProducto()
-        newIdProducto= -3
-        query = tempProducto.find_idProducto(newIdProducto)
-        self.assertEqual(query,[])  
+        nuevoIdProducto= -3
+        query = tempProducto.buscarId(nuevoIdProducto)
+        self.assertEqual(query,None)  
         self.vaciarBaseDeDatos()
     
     #.-------------------------------------------------------------------.  
@@ -201,48 +200,48 @@ class TestProducto(unittest.TestCase):
     
     ### CASOS VALIDOS( Casos Interiores ).
     # Insertar un producto con un elemento en la base de datos.
-    def testinsert_ProductoBaseDeDatosOneElem(self):
+    def testInsertarProductoBaseDeDatosOneElem(self):
         self.vaciarBaseDeDatos()
         
-        newIdProducto = 2
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 2
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
         
         tempProducto = clsProducto()
-        newDescripProducto= 'producto2.0'
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,1)
+        nuevoDescripcionProducto= 'producto2.0'
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,1)
         self.assertTrue(result[0])
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
 
     # Insertar un producto con la base de datos vacia.
-    def testinsert_ProductoBaseDeDatosVacia(self):
+    def testInsertarProductoBaseDeDatosVacia(self):
         self.vaciarBaseDeDatos()
         
         tempProducto = clsProducto()
-        newDescripProducto= 'producto2.0'
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,1)
+        nuevoDescripcionProducto= 'producto2.0'
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,1)
         self.assertTrue(result[0])
         
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Insertar un producto con varios elementos en la base de datos.
-    def testinsert_ProductoBaseDeDatosVariosELem(self):
+    def testInsertarProductoBaseDeDatosVariosELem(self):
         self.vaciarBaseDeDatos()
 
         
         for indice in range(5,10,1):
-            newIdProducto= indice
-            newDescripProducto= 'Descripcion ' + str(indice)
-            newProducto= model.Pila( newIdProducto,"Producto", newDescripProducto,1) 
-            model.db.session.add(newProducto)
+            nuevoIdProducto= indice
+            nuevoDescripcionProducto= 'Descripcion ' + str(indice)
+            nuevoProducto= model.Productos( nuevoIdProducto,"Producto", nuevoDescripcionProducto,1) 
+            model.db.session.add(nuevoProducto)
             model.db.session.commit()   
             
         tempProducto = clsProducto()
-        newDescripProducto= 'producto2.0'
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,1)
+        nuevoDescripcionProducto= 'producto2.0'
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,1)
         self.assertTrue(result[0])
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -250,125 +249,125 @@ class TestProducto(unittest.TestCase):
                   
     ### CASOS VALIDOS( Casos Fronteras )
     #Se insertara un productocuyo tama�o es igual a 1.
-    def testinsert_ProductoDescripLen1(self):
+    def testInsertarProductoDescripLen1(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
         tempProducto = clsProducto()
-        newDescripProducto= '1'
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,1)
+        nuevoDescripcionProducto= '1'
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,1)
         self.assertTrue(result[0])
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     #  Se insertara un producto cuyo tama�o es igual a 500.
-    def testinsert_ProductoDescripLen500(self):
+    def testInsertarProductoDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         tempProducto = clsProducto()
-        newDescripProducto='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,1)
+        nuevoDescripcionProducto='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,1)
         self.assertTrue(result[0])
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
                 
     ### CASOS INVALIDOS( Casos Malicia ):    
     #  Se insertara un producto cuyo tama�o es 0 (Cadena Vac�a).
-    def testinsert_ProductoDescripLen0(self):
+    def testInsertarProductoDescripLen0(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
         tempProducto = clsProducto()
-        newDescripProducto= ''
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,1)
+        nuevoDescripcionProducto= ''
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,1)
         self.assertFalse(result[0])
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un productocuyo tama�o es de 501.
-    def testinsert_ProductoDescripLen501(self):
+    def testInsertarProductoDescripLen501(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         tempProducto = clsProducto()
-        newDescripProducto= 'dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,'
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,1)
+        nuevoDescripcionProducto= 'dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,'
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,1)
         self.assertFalse(result[0])
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara una producto cuya descripcion es un numero.
-    def testinsert_ProductoDescripInt(self):
+    def testInsertarProductoDescripInt(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
         tempProducto = clsProducto()
-        newDescripProducto= 501
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,1)
+        nuevoDescripcionProducto= 501
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,1)
         self.assertFalse(result[0])
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un productocuya descripcion dada es None.
-    def testinsert_ProductoDescripNone(self):
+    def testInsertarProductoDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
         tempProducto = clsProducto()
-        newDescripProducto= None
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,1)
+        nuevoDescripcionProducto= None
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,1)
         self.assertFalse(result[0])
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un productocuya descripcion dada es Float.
-    def testinsert_ProductoDescripFloat(self):
+    def testInsertarProductoDescripFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
         tempProducto = clsProducto()
-        newDescripProducto= 0.54
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,1)
+        nuevoDescripcionProducto= 0.54
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,1)
         self.assertFalse(result[0])
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Insertar un producto con escala string.
-    def testinsert_ProductoEscalaString(self):
+    def testInsertarProductoEscalaString(self):
         self.vaciarBaseDeDatos()
         
         tempProducto = clsProducto()
-        newDescripProducto= 'producto2.0'
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,"error")
+        nuevoDescripcionProducto= 'producto2.0'
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,"error")
         self.assertFalse(result[0])
         
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Insertar un producto con escala None
-    def testinsert_ProductoEscalaNone(self):
+    def testInsertarProductoEscalaNone(self):
         self.vaciarBaseDeDatos()
         
         tempProducto = clsProducto()
-        newDescripProducto= 'producto2.0'
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,None)
+        nuevoDescripcionProducto= 'producto2.0'
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,None)
         self.assertFalse(result[0])
         
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Insertar un producto con escala 3
-    def testinsert_ProductoEscalaTres(self):
+    def testInsertarProductoEscalaTres(self):
         self.vaciarBaseDeDatos()
         
         tempProducto = clsProducto()
-        newDescripProducto= 'producto2.0'
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,3)
+        nuevoDescripcionProducto= 'producto2.0'
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,3)
         self.assertFalse(result[0])
         
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Insertar un producto con escala 0
-    def testinsert_ProductoEscalaZero(self):
+    def testInsertarProductoEscalaZero(self):
         self.vaciarBaseDeDatos()
         
         tempProducto = clsProducto()
-        newDescripProducto= 'producto2.0'
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,0)
+        nuevoDescripcionProducto= 'producto2.0'
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,0)
         self.assertFalse(result[0])
         
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Insertar un producto con escala float
-    def testinsert_ProductoEscalaFloat(self):
+    def testInsertarProductoEscalaFloat(self):
         self.vaciarBaseDeDatos()
         
         tempProducto = clsProducto()
-        newDescripProducto= 'producto2.0'
-        result = tempProducto.insert_Producto("Producto Nuevo",newDescripProducto,0.32)
+        nuevoDescripcionProducto= 'producto2.0'
+        result = tempProducto.insertar("Producto Nuevo",nuevoDescripcionProducto,0.32)
         self.assertFalse(result[0])
         
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
@@ -377,18 +376,18 @@ class TestProducto(unittest.TestCase):
     
     ### CASOS VALIDOS( Casos Interiores ).
     # El id del producto a modificar existe en la base de datos de un elemento.
-    def testmodify_ProductoExist(self):
+    def testModificarProductoExist(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
         
         tempProducto = clsProducto()
-        newDescripProducto= 'ObjetivoX'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoDescripcionProducto= 'ObjetivoX'
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertTrue( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.      
 
@@ -396,20 +395,20 @@ class TestProducto(unittest.TestCase):
     
     ### CASOS VALIDOS( Casos Fronteras )
     # El id del producto a modificar existe en la base de datos de varios elementos 
-    def testmodify_ProductoIdExistVariosELem(self):
+    def testModificarProductoIdExistVariosELem(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
        
         for indice in range(1,10,1):
-            newIdProducto= indice
-            newDescripProducto= 'Descripcion ' + str(indice)
-            newProducto= model.Pila( newIdProducto,"Producto", newDescripProducto,1) 
-            model.db.session.add(newProducto)
+            nuevoIdProducto= indice
+            nuevoDescripcionProducto= 'Descripcion ' + str(indice)
+            nuevoProducto= model.Productos( nuevoIdProducto,"Producto", nuevoDescripcionProducto,1) 
+            model.db.session.add(nuevoProducto)
             model.db.session.commit()   
             
         tempProducto = clsProducto()
-        newIdProducto= 3
-        newDescripProducto= 'esto sigue siendo una prueva V2'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 3
+        nuevoDescripcionProducto= 'esto sigue siendo una prueva V2'
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertTrue( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.  
     
@@ -417,40 +416,40 @@ class TestProducto(unittest.TestCase):
     
     #  El id del productoa modificar existe en la base de datos. La nueva 
     #          descripci�n es de largo 1.
-    def testmodify_ProductoIdExistNewDescripLen1(self):
+    def testModificarProductoIdExistNewDescripLen1(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila( newIdProducto,"Producto", newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos( nuevoIdProducto,"Producto", nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
         
         tempProducto = clsProducto()
-        newIdProducto= 1
-        newDescripProducto= 'l'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'l'
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos.    
     
     # El id del productoa modificar existe en la base de datos. La nueva 
     #          descripci�n es de largo 500.
-    def testmodify_ProductoIdExistNewDescripLen500(self):
+    def testModificarProductoIdExistNewDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
         
         tempProducto = clsProducto()
-        newIdProducto= 1
-        newDescripProducto= 'y'*500
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'y'*500
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
+        model.db.session.query(model.Productos).delete()  # Se limpia la base de datos.
         self.assertTrue( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -459,601 +458,601 @@ class TestProducto(unittest.TestCase):
     ### CASOS VALIDOS( Casos Esquinas )
     #  El id del productoa modificar existe en la base de datos y su valor es
     #          igual a 1. La nueva descripci�n es de longitud igual a 1.
-    def testmodify_ProductoIdExistIqual1NewDescripLen1(self):
+    def testModificarProductoIdExistIqual1NewDescripLen1(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto= 1
-        newDescripProducto= 'z'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'z'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()
         
         tempProducto = clsProducto()
-        newIdProducto= 1
-        newDescripProducto= 'z'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'z'
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertTrue( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
     # El id del productoa modificar existe en la base de datos y su valor es
     #          igual a 1. La nueva descripci�n es de longitud igual a 500.
-    def testmodify_ProductoIdExistIqual1NewDescripLen500(self):
+    def testModificarProductoIdExistIqual1NewDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
                
         tempProducto = clsProducto()
-        newIdProducto= 1
-        newDescripProducto='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertTrue( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     ### CASOS INVALIDOS( Casos Malicia )
     
     # la escala del producto a modificar es un string.
-    def testmodify_ProductoEscalaString(self):    
+    def testModificarProductoEscalaString(self):    
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
             
         tempProducto = clsProducto()
-        newIdProducto= 1
-        newDescripProducto= 'Axx'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,"1")
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Axx'
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,"1")
         self.assertFalse( result )  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # la escala del producto a modificar es un None.
-    def testmodify_ProductoEscalaNone(self):    
+    def testModificarProductoEscalaNone(self):    
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
             
         tempProducto = clsProducto()
-        newIdProducto= 1
-        newDescripProducto= 'Axx'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,None)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Axx'
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,None)
         self.assertFalse( result )  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # la escala del producto a modificar es un Float.
-    def testmodify_ProductoEscalaFloat(self):    
+    def testModificarProductoEscalaFloat(self):    
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
             
         tempProducto = clsProducto()
-        newIdProducto= 1
-        newDescripProducto= 'Axx'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,3.32)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Axx'
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,3.32)
         self.assertFalse( result )  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
     
     # la escala del producto a modificar es un cero.
-    def testmodify_ProductoEscalaZero(self):    
+    def testModificarProductoEscalaZero(self):    
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
             
         tempProducto = clsProducto()
-        newIdProducto= 1
-        newDescripProducto= 'Axx'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,0)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Axx'
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,0)
         self.assertFalse( result )  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
     # la escala del producto a modificar es un tres.
-    def testmodify_ProductoEscalaTres(self):    
+    def testModificarProductoEscalaTres(self):    
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
             
         tempProducto = clsProducto()
-        newIdProducto= 1
-        newDescripProducto= 'Axx'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,3)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Axx'
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,3)
         self.assertFalse( result )  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
     # El id dado del producto a modificar es un string.
-    def testmodify_ProductoIdString(self):    
+    def testModificarProductoIdString(self):    
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
             
         tempProducto = clsProducto()
-        newIdProducto= '1'
-        newDescripProducto= 'Axx'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= '1'
+        nuevoDescripcionProducto= 'Axx'
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.   
         
     # El id dado del obetivo a modificar es un numero negativo.    
-    def testmodify_ProductoIdNegative(self):     
+    def testModificarProductoIdNegative(self):     
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
            
         tempProducto = clsProducto()
-        newIdProducto= -1
-        newDescripProducto= 'productode prueba'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= -1
+        nuevoDescripcionProducto= 'productode prueba'
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
                 
     # El id dado del productoa modificar es un float.
-    def testmodify_ProductoIdFloat(self):      
+    def testModificarProductoIdFloat(self):      
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
           
         tempProducto = clsProducto()
-        newIdProducto= 1.0
-        newDescripProducto= 'productode prueba'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 1.0
+        nuevoDescripcionProducto= 'productode prueba'
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # El id dado del productoa modificar es None.         
-    def testmodify_ProductoIdNone(self):   
+    def testModificarProductoIdNone(self):   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        nuevoDescripcionProducto=' Descripcion Producto.. '
+        nuevoProducto = model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit() 
              
         tempProducto = clsProducto()
-        newIdProducto= None
-        newDescripProducto= 'ObjetivoPrueba'
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= None
+        nuevoDescripcionProducto= 'ObjetivoPrueba'
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
     # La nueva descripci�n para la acci�n a modificar es un string vacio.
-    def testmodify_ProductoDescripIsEmpty(self): 
+    def testModificarProductoDescripIsEmpty(self): 
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()
              
         tempProducto = clsProducto()
-        newIdProducto= 1
-        newDescripProducto= ''
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= ''
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es de longitud 501.    
-    def testmodify_ProductoDescripLen501(self):  
+    def testModificarProductoDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
            
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()
            
         tempProducto = clsProducto()
-        newIdProducto= 1
-        newDescripProducto= 'r'*501
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'r'*501
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos.    
 
     #  La nueva descripci�n para el productoa modificar es un numero.
-    def testmodify_ProductoDescripIsNumber(self):   
+    def testModificarProductoDescripIsNumber(self):   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
             
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()
         
         tempProducto = clsProducto()
-        newIdProducto= 1
-        newDescripProducto= 12345
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 12345
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos.   
         
     # La nueva descripci�n para el productoa modificar es None. 
-    def testmodify_ProductoDescripNone(self):  
+    def testModificarProductoDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 1
-        newDescripProducto= None
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= None
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es Entero y id string . 
-    def testmodify_ProductoIdStringDescripInt(self):  
+    def testModificarProductoIdStringDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 'malo'
-        newDescripProducto= 1212
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 'malo'
+        nuevoDescripcionProducto= 1212
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es Float y id string . 
-    def testmodify_ProductoIdStringDescripFloat(self):  
+    def testModificarProductoIdStringDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 'malo'
-        newDescripProducto= 1212.23
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 'malo'
+        nuevoDescripcionProducto= 1212.23
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es None y id string . 
-    def testmodify_ProductoIdStringDescripNone(self):  
+    def testModificarProductoIdStringDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 'malo'
-        newDescripProducto= None
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 'malo'
+        nuevoDescripcionProducto= None
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es tamaño 500 y id string . 
-    def testmodify_ProductoIdStringDescripLen500(self):  
+    def testModificarProductoIdStringDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 'malo'
-        newDescripProducto= 'y'*500
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 'malo'
+        nuevoDescripcionProducto= 'y'*500
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es tamaño 501 y id string . 
-    def testmodify_ProductoIdStringDescripLen501(self):  
+    def testModificarProductoIdStringDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 'malo'
-        newDescripProducto= 'y'*501
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 'malo'
+        nuevoDescripcionProducto= 'y'*501
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es tamaño Entero y id float . 
-    def testmodify_ProductoIdFloatDescripInt(self):  
+    def testModificarProductoIdFloatDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 23.23
-        newDescripProducto= 23
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 23.23
+        nuevoDescripcionProducto= 23
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es tamaño Float y id float . 
-    def testmodify_ProductoIdFloatDescripFloat(self):  
+    def testModificarProductoIdFloatDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 23.23
-        newDescripProducto= 23.23
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 23.23
+        nuevoDescripcionProducto= 23.23
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es None y id float . 
-    def testmodify_ProductoIdFloatDescripNone(self):  
+    def testModificarProductoIdFloatDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 23.23
-        newDescripProducto= None
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 23.23
+        nuevoDescripcionProducto= None
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # La nueva descripci�n para el productoa modificar es tamaño 500 y id float . 
-    def testmodify_ProductoIdFloatDescripLen500(self):  
+    def testModificarProductoIdFloatDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 23.23
-        newDescripProducto= 'y'*500
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 23.23
+        nuevoDescripcionProducto= 'y'*500
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es tamaño 501 y id float . 
-    def testmodify_ProductoIdFloatDescripLen501(self):  
+    def testModificarProductoIdFloatDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 23.23
-        newDescripProducto= 'y'*501
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 23.23
+        nuevoDescripcionProducto= 'y'*501
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es entero y id None . 
-    def testmodify_ProductoIdNoneDescripInt(self):  
+    def testModificarProductoIdNoneDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= None
-        newDescripProducto= 23
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= None
+        nuevoDescripcionProducto= 23
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es float y id None . 
-    def testmodify_ProductoIdNoneDescripFloat(self):  
+    def testModificarProductoIdNoneDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= None
-        newDescripProducto= 23.23
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= None
+        nuevoDescripcionProducto= 23.23
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es None y id None . 
-    def testmodify_ProductoIdNoneDescripNone(self):  
+    def testModificarProductoIdNoneDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= None
-        newDescripProducto= None
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= None
+        nuevoDescripcionProducto= None
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es tamaño 500 y id None . 
-    def testmodify_ProductoIdNoneDescripLen500(self):  
+    def testModificarProductoIdNoneDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= None
-        newDescripProducto= 'y'*500
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= None
+        nuevoDescripcionProducto= 'y'*500
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es tamaño 501 y id None . 
-    def testmodify_ProductoIdNoneDescripLen501(self):  
+    def testModificarProductoIdNoneDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
      
-        newIdProducto= 1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= None
-        newDescripProducto= 'y'*501
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= None
+        nuevoDescripcionProducto= 'y'*501
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # La nueva descripci�n para el productoa modificar es Entero y id MAX . 
-    def testmodify_ProductoIdMaxDescripInt(self):  
+    def testModificarProductoIdMaxDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
-        newIdProducto= 2**31 -1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 2**31 -1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 2**31 -1
-        newDescripProducto= 43
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 2**31 -1
+        nuevoDescripcionProducto= 43
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es float y id MAX . 
-    def testmodify_ProductoIdMaxDescripFloat(self):  
+    def testModificarProductoIdMaxDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto= 2**31 -1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1) 
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 2**31 -1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1) 
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 2**31 -1
-        newDescripProducto= 43.323
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 2**31 -1
+        nuevoDescripcionProducto= 43.323
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es None y id MAX . 
-    def testmodify_ProductoIdMaxDescripNone(self):  
+    def testModificarProductoIdMaxDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
       
-        newIdProducto= 2**31 -1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 2**31 -1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 2**31 -1
-        newDescripProducto= None
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 2**31 -1
+        nuevoDescripcionProducto= None
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el productoa modificar es tamaño 500 y id MAX . 
-    def testmodify_ProductoIdMaxDescripLen500(self):  
+    def testModificarProductoIdMaxDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
       
-        newIdProducto= 2**31 -1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 2**31 -1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 2**31 -1
-        newDescripProducto= 'y'*500
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 2**31 -1
+        nuevoDescripcionProducto= 'y'*500
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertTrue( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el producto a modificar es tamaño 501 y id MAX . 
-    def testmodify_ProductoIdMaxDescripLen501(self):  
+    def testModificarProductoIdMaxDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
       
-        newIdProducto= 2**31 -1
-        newDescripProducto= 'Esto es una prueba.'
-        newProducto= model.Pila(newIdProducto,"producto",newDescripProducto,1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto= 2**31 -1
+        nuevoDescripcionProducto= 'Esto es una prueba.'
+        nuevoProducto= model.Productos(nuevoIdProducto,"producto",nuevoDescripcionProducto,1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()   
           
         tempProducto = clsProducto()
-        newIdProducto= 2**31 -1
-        newDescripProducto= 'y'*501
-        result = tempProducto.modify_Producto(newIdProducto,"Nuevo Nombre",newDescripProducto,1)
+        nuevoIdProducto= 2**31 -1
+        nuevoDescripcionProducto= 'y'*501
+        result = tempProducto.modificar(nuevoIdProducto,"Nuevo Nombre",nuevoDescripcionProducto,1)
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         

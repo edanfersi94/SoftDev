@@ -9,9 +9,9 @@
     
 """
 
-#--------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------
 
-# Librerias a utilizar
+# Librerias a utilizar.
 import os
 import sys
 
@@ -19,21 +19,28 @@ import sys
 sys.path.append('../../../')
 import model
 
-# PATH que permite utilizar al modulo "funcActor.py"
 sys.path.append('../')
 from funcActor import clsActor
+
 
 import unittest
 
 
-class TestActores(unittest.TestCase):
+class TestActor(unittest.TestCase):
     
     # FUNCION AUXILIAR
     
     def vaciarBaseDeDatos(self):
         model.db.session.query( model.Actores ).delete()  # Se limpia la base de datos.
-        model.db.session.query( model.Pila ).delete() 
+        model.db.session.query( model.Productos ).delete() 
     
+    def insertarProducto(self, nuevoIdProducto):
+        nuevoNombreProducto='Nombre Producto'
+        nuevoEscalaProducto= 1
+        nuevoDescripcionProducto= 'Descripcion Producto'
+        nuevoProducto = model.Productos(nuevoIdProducto,nuevoNombreProducto,nuevoDescripcionProducto,nuevoEscalaProducto)
+        model.db.session.add(nuevoProducto)
+        model.db.session.commit() 
     #.-------------------------------------------------------------------.  
     # VERIFICACION DE LA CLASE.
     
@@ -48,260 +55,217 @@ class TestActores(unittest.TestCase):
     
     ### CASOS VALIDOS( Casos Interiores ).
     # Buscar el id de un actor que exista en la base de datos de un elemento. 
-    def testfind_IdActorExist(self):
+    def testBuscarIdActorExist(self):
         self.vaciarBaseDeDatos()
 
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
-        
+        idProducto=1
+        self.insertarProducto(idProducto)
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
         
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba'
+        nuevoActor = model.Actores( idProducto,nuevoIdActor,'actor 1', nuevoDescripcionActor ) 
+        model.db.session.add(nuevoActor)
         model.db.session.commit()   
         
         tempActor = clsActor()
-        newIdActor = 1
-        query = tempActor.find_idActor( newIdProducto,newIdActor )
-        self.assertIsNotNone( query[0] )
+        idaccion = 1
+        query = tempActor.buscarId(idaccion )
+        self.assertIsNotNone( query )
         self.vaciarBaseDeDatos()
 
     # Buscar el id de un actor con base de datos vacia
-    def testfind_IdActorNotExistBaseDeDatosVacia(self):
+    def testBuscarIdActorNotExistBaseDeDatosVacia(self):
         self.vaciarBaseDeDatos()
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newIdActor = 1000
-        query = tempActor.find_idActor( newIdProducto,newIdActor )
-        self.assertEqual(query,[])
+        idaccion = 1000
+        query = tempActor.buscarId( idaccion )
+        self.assertEqual(query,None)
         self.vaciarBaseDeDatos()
 
         
     # Buscar el id de un actor con base de datos un elemento y busqueda no exitosa
         
-    def testfind_IdActorNotExistOneElementos(self):
+    def testBuscarIdActorNotExistOneElementos(self):
         self.vaciarBaseDeDatos()
-        self.vaciarBaseDeDatos()
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
         
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
+        nuevoIdActor = 2
+        nuevoDescripcionActor = 'Esto es una prueba'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1' ,nuevoDescripcionActor ) 
+        model.db.session.add(nuevoActor)
         model.db.session.commit()   
         
-        
         tempActor = clsActor()
-        newIdActor = 2
-        query = tempActor.find_idActor( newIdProducto,newIdActor )
-        self.assertEqual(query,[])
+        idaccion = 1
+        query = tempActor.buscarId( idaccion )
+        self.assertEqual(query,None)
         self.vaciarBaseDeDatos()
         
     # Buscar el id de un actor con base de datos de varios elemento y busqueda no exitosa   
-    def testfind_IdActorNotExistVariosElementos(self):
+    def testBuscarIdActorNotExistVariosElementos(self):
         self.vaciarBaseDeDatos()    
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
         for indice in range(1,4,1):
-            newIdActor = indice
-            newDescripActor  = 'Esto es una prueba ' + str(indice)
-            newNameActor='Joel'
-            newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-            model.db.session.add(newActor)
+            nuevoIdActor = indice
+            nuevoDescripcionActor = 'Descripcion ' + str(indice)
+            nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1' ,nuevoDescripcionActor ) 
+            model.db.session.add(nuevoActor)
             model.db.session.commit()   
         
-        
         tempActor = clsActor()
-        newIdActor = 5
-        query = tempActor.find_idActor( newIdProducto,newIdActor )
-        self.assertEqual(query,[])
+        idaccion = 5
+        query = tempActor.buscarId( idaccion )
+        self.assertEqual(query,None)
         self.vaciarBaseDeDatos()
           
     # Buscar el id de un actor con base de datos de varios elemento y busqueda exitosa   
-    def testfind_IdActorExistVariosElementos(self):
+    def testBuscarIdActorExistVariosElementos(self):
         self.vaciarBaseDeDatos()  
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
         
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+
         # Se insertaN elementoS en la base. Dicha insercion se asegura
         # que es valida.
         for indice in range(1,4,1):
-            newIdActor = indice
-            newDescripActor  = 'Esto es una prueba ' + str(indice)
-            newNameActor='Joel'
-            newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-            model.db.session.add(newActor)
+            nuevoIdActor = indice
+            nuevoDescripcionActor = 'Descripcion ' + str(indice)
+            nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1' ,nuevoDescripcionActor ) 
+            model.db.session.add(nuevoActor)
             model.db.session.commit()   
         
         tempActor = clsActor()
-        newIdActor = 3
-        query = tempActor.find_idActor( newIdProducto,newIdActor )
-        self.assertIsNotNone( query[0] )
+        idaccion = 3
+        query = tempActor.buscarId( idaccion )
+        self.assertIsNotNone( query )
         self.vaciarBaseDeDatos()
         
     ### CASOS INVALIDOS( Casos Malicia )
     #El id del actor a buscar es un string.
-    def testfind_IdActorString(self):
+    def testBuscarIdActorString(self):
         self.vaciarBaseDeDatos()
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto= model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+ 
         
         tempActor = clsActor()
-        newIdActor = '1'
-        query = tempActor.find_idActor(newIdProducto, newIdActor )
-        self.assertEqual(query,[])
+        idaccion = '1'
+        query = tempActor.buscarId( idaccion )
+        self.assertEqual(query,None)
         
         self.vaciarBaseDeDatos()
         
     # El id del actor a buscar es de tipo float.
-    def testfind_IdActorFloat(self):
+    def testBuscarIdActorFloat(self):
         self.vaciarBaseDeDatos()
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto= model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newIdActor = 1.01
-        query = tempActor.find_idActor( newIdProducto,newIdActor )
-        self.assertEqual(query,[])  
+        idaccion = 1.01
+        query = tempActor.buscarId( idaccion )
+        self.assertEqual(query,None)  
         self.vaciarBaseDeDatos()
 
     #  El id del actor a buscar es nulo.
-    def testfind_IdActorNone(self):
+    def testBuscarIdActorNone(self):
         self.vaciarBaseDeDatos()
 
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto= model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
-        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+
         tempActor = clsActor()
-        newIdActor = None
-        query = tempActor.find_idActor( newIdProducto,newIdActor )
-        self.assertEqual(query,[])  
+        idaccion = None
+        query = tempActor.buscarId( idaccion )
+        self.assertEqual(query,None)  
         self.vaciarBaseDeDatos()
 
     #  El id del actor a buscar es negativo.
-    def testfind_IdActorNegative(self):
+    def testBuscarIdActorNegative(self):
         self.vaciarBaseDeDatos()
 
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto= model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newIdActor = -3
-        query = tempActor.find_idActor( newIdProducto,newIdActor )
-        self.assertEqual(query,[])  
+        idaccion = -3
+        query = tempActor.buscarId( idaccion )
+        self.assertEqual(query,None)  
         self.vaciarBaseDeDatos()
     
     #.-------------------------------------------------------------------.  
     # FUNCION INSERTAR.
     
     ### CASOS VALIDOS( Casos Interiores ).
-    # Insertar un actor con un elemento en la base de datos
-    def testinsert_ActorBaseDeDatosOneElem(self):
+    # Insertar un actor con un elemento en la base de datos vacia.
+    def testInsertarActorBaseDeDatosOneElem(self):
         self.vaciarBaseDeDatos()
         
-        newIdProducto = 1
-        newDescripProducto =' Descripcion Producto.. '
-        newProducto  = model.Pila(newIdProducto,newDescripProducto )
-        model.db.session.add(newProducto )
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdActor = 2
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
+        nuevoIdActor = 3
+        nuevoDescripcionActor = 'Esto es una prueba'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1' ,nuevoDescripcionActor ) 
+        model.db.session.add(nuevoActor)
         model.db.session.commit()   
+        
 
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'actor 2.0'
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor   )
+        nuevoDescripcionActor = 'accion 2.0'
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
 
     # Insertar un actor con la base de datos vacia.
-    def testinsert_ActorBaseDeDatosVacia(self):
+    def testInsertarActorBaseDeDatosVacia(self):
         self.vaciarBaseDeDatos()
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
-        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
 
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'actor 2.0'
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor   )
+        nuevoDescripcionActor = 'accion 2.0'
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Insertar un actor con varios elementos en la base de datos.
-    def testinsert_ActorBaseDeDatosVariosELem(self):
+    def testInsertarActorBaseDeDatosVariosELem(self):
         self.vaciarBaseDeDatos()
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         for indice in range(5,10,1):
-            newIdActor = indice
-            newDescripActor  = 'Esto es una prueba ' + str(indice)
-            newNameActor='Joel'
-            newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-            model.db.session.add(newActor)
+            nuevoIdActor = indice
+            nuevoDescripcionActor = 'Descripcion ' + str(indice)
+            nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1' ,nuevoDescripcionActor ) 
+            model.db.session.add(nuevoActor)
             model.db.session.commit()   
             
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'actor 2.0'
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor   )
+        nuevoDescripcionActor = 'accion 2.0'
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -309,639 +273,486 @@ class TestActores(unittest.TestCase):
                   
     ### CASOS VALIDOS( Casos Fronteras )
     #Se insertara un actor cuyo tama�o es igual a 1.
-    def testinsert_ActorDescripLen1(self):
+    def testInsertarActorDescripLen1(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = '1'
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor   )
+        nuevoDescripcionActor = '1'
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertTrue(result)
-        
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     #  Se insertara un actor cuyo tama�o es igual a 500.
-    def testinsert_ActorDescripLen500(self):
+    def testInsertarActorDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto) 
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor   )
+        nuevoDescripcionActor ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertTrue(result)
-        
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
                 
     ### CASOS INVALIDOS( Casos Malicia ):    
     #  Se insertara un actor cuyo tama�o es 0 (Cadena Vac�a).
-    def testinsert_ActorDescripLen0(self):
+    def testInsertarActorDescripLen0(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = ''
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor   )
+        nuevoDescripcionActor = ''
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un actor cuyo tama�o es de 501.
-    def testinsert_ActorDescripLen501(self):
+    def testInsertarActorDescripLen501(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,'
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor   )
+        nuevoDescripcionActor = 'dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,'
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara una actor cuya descripcion es un numero.
-    def testinsert_ActorDescripInt(self):
+    def testInsertarActorDescripInt(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        
-        newNameActor='Joel mejorado'
-        newDescripActor = 501
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 501
+        result = tempActor.insertar(nuevoIdProducto,'Actor 2', nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un actor cuya descripcion dada es None.
-    def testinsert_ActorDescripNone(self):
+    def testInsertarActorDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = None
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor)
+        nuevoDescripcionActor = None
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un actor cuya descripcion dada es Float.
-    def testinsert_ActorDescripFloat(self):
+    def testInsertarActorDescripFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 0.54
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 0.54
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     #Se insertara un actor con id string
-    def testinsert_ActorIdString(self):
+    def testInsertarActorIdString(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'ola k ase'
-        result = tempActor.insert_Actor( 'problem?',newNameActor, newDescripActor)
+        nuevoDescripcionActor = 'ola k ase'
+        result = tempActor.insertar( 'error','Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     #  Se insertara un actor con id Float
-    def testinsert_ActorIdFloat(self):
+    def testInsertarActorIdFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-
-        newNameActor='Joel mejorado'
-        newDescripActor ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
-        result = tempActor.insert_Actor( 1.32,newNameActor, newDescripActor)
+        nuevoDescripcionActor ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
+        result = tempActor.insertar(1.32,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
                 
 
     # Se insertara un actor con id float.
-    def testinsert_ActorIdNone(self):
+    def testInsertarActorIdNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'None.. uff caiste'
-        result = tempActor.insert_Actor( None,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 'None.. uff caiste'
+        result = tempActor.insertar( None,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un actor con id maximo.
-    def testinsert_ActorIdGrant(self):
+    def testInsertarActorIdGrant(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'None.. uff caiste'
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 'None.. uff caiste'
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id negativo.
-    def testinsert_ActorIdNegative(self):
+    def testInsertarActorIdNegative(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'None.. uff caiste'
-        result = tempActor.insert_Actor(-3,newNameActor, newDescripActor )
+        nuevoDescripcionActor = 'None.. uff caiste'
+        result = tempActor.insertar(-3,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id string y descripcion entero.
-    def testinsert_ActorIdStringDescripInt(self):
+    def testInsertarActorIdStringDescripInt(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 123
-        result = tempActor.insert_Actor( 'newIdProducto',newNameActor, newDescripActor )
+        nuevoDescripcionActor = 123
+        result = tempActor.insertar( 'nuevoIdProducto','actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id string y descripcion float.
-    def testinsert_ActorIdStringDescripFloat(self):
+    def testInsertarActorIdStringDescripFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 23.23
-        result = tempActor.insert_Actor( 'newIdProducto',newNameActor, newDescripActor)
+        nuevoDescripcionActor = 23.23
+        result = tempActor.insertar( 'nuevoIdProducto','actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id string y descripcion None.
-    def testinsert_ActorIdStringDescripNone(self):
+    def testInsertarActorIdStringDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = None
-        result = tempActor.insert_Actor( 'newIdProducto',newNameActor, newDescripActor)
+        nuevoDescripcionActor = None
+        result = tempActor.insertar( 'nuevoIdProducto','actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id string y descripcion tamaño 500.
-    def testinsert_ActorIdStringDescripLen500(self):
+    def testInsertarActorIdStringDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'y'*500
-        result = tempActor.insert_Actor( 'newIdProducto',newNameActor, newDescripActor)
+        nuevoDescripcionActor = 'y'*500
+        result = tempActor.insertar( 'nuevoIdProducto','actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un actor con id string y descripcion tamaño 501.
-    def testinsert_ActorIdStringDescripLen501(self):
+    def testInsertarActorIdStringDescripLen501(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'y'*501
-        result = tempActor.insert_Actor( 'newIdProducto',newNameActor, newDescripActor)
+        nuevoDescripcionActor = 'y'*501
+        result = tempActor.insertar( 'nuevoIdProducto','actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id float y descripcion entero.
-    def testinsert_ActorIdFloatDescripInt(self):
+    def testInsertarActorIdFloatDescripInt(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 32
-        result = tempActor.insert_Actor( 43.32,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 32
+        result = tempActor.insertar( 43.32,'Actor 2 ',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id float y descripcion float.
-    def testinsert_ActorIdFloatDescripFloat(self):
+    def testInsertarActorIdFloatDescripFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 32.323
-        result = tempActor.insert_Actor( 43.32,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 32.323
+        result = tempActor.insertar( 43.32,'Actor 2 ',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id float y descripcion None.
-    def testinsert_ActorIdFloatDescripNone(self):
+    def testInsertarActorIdFloatDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = None
-        result = tempActor.insert_Actor( 43.32,newNameActor, newDescripActor)
+        nuevoDescripcionActor = None
+        result = tempActor.insertar( 43.32,'Actor 2 ',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id float y descripcion tamaño 500.
-    def testinsert_ActorIdFloatDescripLen500(self):
+    def testInsertarActorIdFloatDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'y'*500
-        result = tempActor.insert_Actor( 43.32,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 'y'*500
+        result = tempActor.insertar( 43.32,'Actor 2 ',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id float y descripcion tamaño 501.
-    def testinsert_ActorIdFloatDescripLen501(self):
+    def testInsertarActorIdFloatDescripLen501(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-
-        newNameActor='Joel mejorado'
-        newDescripActor = 'y'*501
-        result = tempActor.insert_Actor( 43.32,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 'y'*501
+        result = tempActor.insertar( 43.32,'Actor 2 ',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id None y descripcion entero.
-    def testinsert_ActorIdNoneDescripInt(self):
+    def testInsertarActorIdNoneDescripInt(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 34
-        result = tempActor.insert_Actor( None,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 34
+        result = tempActor.insertar( None,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id None y descripcion float.
-    def testinsert_ActorIdNoneDescripFloat(self):
+    def testInsertarActorIdNoneDescripFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 34.23
-        result = tempActor.insert_Actor( None,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 34.23
+        result = tempActor.insertar( None,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id None y descripcion None.
-    def testinsert_ActorIdNoneDescripNone(self):
+    def testInsertarActorIdNoneDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = None
-        result = tempActor.insert_Actor( None,newNameActor, newDescripActor)
+        nuevoDescripcionActor = None
+        result = tempActor.insertar( None,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un actor con id None y descripcion 500.
-    def testinsert_ActorIdNoneDescripLen500(self):
+    def testInsertarActorIdNoneDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'y'*500
-        result = tempActor.insert_Actor( None,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 'y'*500
+        result = tempActor.insertar( None,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id None y descripcion 501.
-    def testinsert_ActorIdNoneDescripLen501(self):
+    def testInsertarActorIdNoneDescripLen501(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'y'*501
-        result = tempActor.insert_Actor( None,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 'y'*501
+        result = tempActor.insertar( None,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id Grande y descripcion entero.
-    def testinsert_ActorIdGrantDescripInt(self):
+    def testInsertarActorIdGrantDescripInt(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 34
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 34
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un actor con id Grande y descripcion float.
-    def testinsert_ActorIdGrantDescripFloat(self):
+    def testInsertarActorIdGrantDescripFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 34.32
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 34.32
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id Grande y descripcion None.
-    def testinsert_ActorIdGrantDescripNone(self):
+    def testInsertarActorIdGrantDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = None
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor)
+        nuevoDescripcionActor = None
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id Grande y descripcion 500.
-    def testinsert_ActorIdGrantDescrip500(self):
+    def testInsertarActorIdGrantDescrip500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'y'*500
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 'y'*500
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id Grande y descripcion 501.
-    def testinsert_ActorIdGrantDescrip501(self):
+    def testInsertarActorIdGrantDescrip501(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'y'*501
-        result = tempActor.insert_Actor( newIdProducto,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 'y'*501
+        result = tempActor.insertar( nuevoIdProducto,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
  
      # Se insertara un actor con id Negativo y descripcion entero.
-    def testinsert_ActorIdNegativeDescripInt(self):
+    def testInsertarActorIdNegativeDescripInt(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
-        
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 34
-        result = tempActor.insert_Actor( -3,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 34
+        result = tempActor.insertar( -3,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un actor con id negativo y descripcion float.
-    def testinsert_ActorIdNegativeDescripFloat(self):
+    def testInsertarActorIdNegativeDescripFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 34.32
-        result = tempActor.insert_Actor( -3,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 34.32
+        result = tempActor.insertar( -3,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id negativo y descripcion None.
-    def testinsert_ActorIdNegativeDescripNone(self):
+    def testInsertarActorIdNegativeDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = None
-        result = tempActor.insert_Actor( -3,newNameActor, newDescripActor)
+        nuevoDescripcionActor = None
+        result = tempActor.insertar( -3,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id negativo y descripcion 500.
-    def testinsert_ActorIdNegativeDescrip500(self):
+    def testInsertarActorIdNegativeDescrip500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'y'*500
-        result = tempActor.insert_Actor(-3,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 'y'*500
+        result = tempActor.insertar(-3,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un actor con id negativo y descripcion 501.
-    def testinsert_ActorIdGrantDescrip501(self):
+    def testInsertarActorIdGrantDescrip501(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         model.db.session.commit() 
         
         tempActor = clsActor()
-        newNameActor='Joel mejorado'
-        newDescripActor = 'y'*501
-        result = tempActor.insert_Actor( -3 ,newNameActor, newDescripActor)
+        nuevoDescripcionActor = 'y'*501
+        result = tempActor.insertar( -3 ,'Actor 2',nuevoDescripcionActor )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos.        
     #.-------------------------------------------------------------------.  
@@ -949,158 +760,126 @@ class TestActores(unittest.TestCase):
     
     ### CASOS VALIDOS( Casos Interiores ).
     # El id del actor a modificar existe en la base de datos de un elemento.
-    def testmodify_ActorExist(self):
+    def testModificarActorExist(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()   
-
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit() 
         
         tempActor = clsActor()
-        newIdActor = 1
-        newNameActor='otro joel, no es el mismo :p '
-        newDescripActor = 'actorX'
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 1
+        nuevoDescripcionActor = 'accionX'
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertTrue( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.      
 
     # El id del ojetivo a modificar no existe en la base de datos vacia.
-    def testmodify_ActorNotExist(self):
+    def testModificarActorNoExist(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
-      
-        tempActor=clsActor()  
-        newIdActor = 1
-        newNameActor='otro joel, no es el mismo :p '
-        newDescripActor = 'actorX'
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
-        self.assertFalse( result ) 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+        
+        tempActor = clsActor()
+        idaccion = 20
+        nuevoDescripcionActor = 'Esto sigue siendo una prueba'
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
     ### CASOS VALIDOS( Casos Fronteras )
     # El id del actor a modificar existe en la base de datos de varios actors 
-    def testmodify_ActorIdExistVariosELem(self):
+    def testModificarActorIdExistVariosELem(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         for indice in range(1,10,1):
-            newIdActor = indice
-            newDescripActor  = 'Esto es una prueba' + str(indice)
-            newNameActor='Joel'+ str(indice)
-            newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-            model.db.session.add(newActor)
-            model.db.session.commit()    
+            nuevoIdActor = indice
+            nuevoDescripcionActor = 'Descripcion ' + str(indice)
+            nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1' ,nuevoDescripcionActor ) 
+            model.db.session.add(nuevoActor)
+            model.db.session.commit()   
             
-        tempActor=clsActor()
-        newIdActor = 2
-        newNameActor='otro joel, no es el mismo :p '
-        newDescripActor = 'actorX'
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        tempActor = clsActor()
+        idaccion = 1
+        nuevoDescripcionActor = 'esto sigue siendo una prueva V2'
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertTrue( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.  
     
     # El id del actor a modificar no existe en la base de datos de varios actors 
-    def testmodify_ActorIdNotExistVariosELem(self):
+    def testModificarActorIdNotExistVariosELem(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        for indice in range(1,10,1):
-            newIdActor = indice
-            newDescripActor  = 'Esto es una prueba' + str(indice)
-            newNameActor='Joel'+ str(indice)
-            newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-            model.db.session.add(newActor)
+        for indice in range(2,10,1):
+            nuevoIdActor = indice
+            nuevoDescripcionActor = 'Descripcion ' + str(indice)
+            nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1' ,nuevoDescripcionActor ) 
+            model.db.session.add(nuevoActor)
             model.db.session.commit()   
             
         tempActor = clsActor()
-        newIdActor= 43
-        newNameActor='otro joel, no es el mismo :p '
-        newDescripActor = 'actorX'
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 1
+        nuevoDescripcionActor = 'esto sigue siendo una prueva V2'
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.  
 
     
     #  El id del actor a modificar existe en la base de datos. La nueva 
     #          descripci�n es de largo 1.
-    def testmodify_ActorIdExistNewDescripLen1(self):
+    def testModificarActorIdExistNewDescripLen1(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()   
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit() 
         
         tempActor = clsActor()
-        newIdActor = 1
-        newDescripActor = 'l'
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 1
+        nuevoDescripcionActor = 'l'
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos.    
     
     # El id del actor a modificar existe en la base de datos. La nueva 
     #          descripci�n es de largo 500.
-    def testmodify_ActorIdExistNewDescripLen500(self):
+    def testModificarActorIdExistNewDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+        
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
         model.db.session.commit() 
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()  
-        
         tempActor = clsActor()
-        newIdActor = 1
-        newDescripActor = 'y'*500
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 1
+        nuevoDescripcionActor = 'y'*500
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
+        model.db.session.query(model.Actores).delete()  # Se limpia la base de datos.
         self.assertTrue( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -1109,813 +888,580 @@ class TestActores(unittest.TestCase):
     ### CASOS VALIDOS( Casos Esquinas )
     #  El id del actor a modificar existe en la base de datos y su valor es
     #          igual a 1. La nueva descripci�n es de longitud igual a 1.
-    def testmodify_ActorIdExistIqual1NewDescripLen1(self):
+    def testModificarActorIdExistIqual1NewDescripLen1(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()  
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'z'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()
         
         tempActor = clsActor()
-        newIdActor = 1
-        newDescripActor = 'z'
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 1
+        nuevoDescripcionActor = 'z'
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertTrue( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
     # El id del actor a modificar existe en la base de datos y su valor es
     #          igual a 1. La nueva descripci�n es de longitud igual a 500.
-    def testmodify_ActorIdExistIqual1NewDescripLen500(self):
+    def testModificarActorIdExistIqual1NewDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()  
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'x'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()
         
         tempActor = clsActor()
-        newIdActor = 1
-        newDescripActor ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 1
+        nuevoDescripcionActor ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertTrue( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     ### CASOS INVALIDOS( Casos Malicia )
     # El id dado del actor a modificar es un string.
-    def testmodify_ActorIdString(self):    
+    def testModificarActorIdString(self):    
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
-        
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()  
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
             
         tempActor = clsActor()
-        newIdActor = '1'
-        newDescripActor = 'Axx'
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = '1'
+        nuevoDescripcionActor = 'Axx'
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.   
         
     # El id dado del obetivo a modificar es un numero negativo.    
-    def testmodify_ActorIdNegative(self):     
+    def testModificarActorIdNegative(self):     
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
-        
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()   
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
            
         tempActor = clsActor()
-        newIdActor = -1
-        newDescripActor = 'actor de prueba'
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = -1
+        nuevoDescripcionActor = 'accion de prueba'
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
                 
     # El id dado del actor a modificar es un float.
-    def testmodify_ActorIdFloat(self):      
+    def testModificarActorIdFloat(self):      
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
-        
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()  
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
           
         tempActor = clsActor()
-        newIdActor = 1.0
-        newDescripActor = 'actor de prueba'
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 1.0
+        nuevoDescripcionActor = 'accion de prueba'
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # El id dado del actor a modificar es None.         
-    def testmodify_ActorIdNone(self):   
+    def testModificarActorIdNone(self):   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
-        
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()  
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
              
         tempActor = clsActor()
-        newIdActor = None
-        newDescripActor = 'actorPrueba'
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = None
+        nuevoDescripcionActor = 'accionPrueba'
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
     # La nueva descripci�n para la acci�n a modificar es un string vacio.
-    def testmodify_ActorDescripIsEmpty(self): 
+    def testModificarActorDescripIsEmpty(self): 
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()  
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()
              
         tempActor = clsActor()
-        newIdActor = 1
-        newDescripActor = ''
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 1
+        nuevoDescripcionActor = ''
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es de longitud 501.    
-    def testmodify_ActorDescripLen501(self):  
+    def testModificarActorDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
-        
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()  
-        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+           
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()
+           
         tempActor = clsActor()
-        newIdActor = 1
-        newDescripActor = 'r'*501
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 1
+        nuevoDescripcionActor = 'r'*501
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos.    
 
     #  La nueva descripci�n para el actor a modificar es un numero.
-    def testmodify_ActorDescripIsNumber(self):   
+    def testModificarActorDescripIsNumber(self):   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
-        
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()  
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+            
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()
         
         tempActor = clsActor()
-        newIdActor = 1
-        newDescripActor = 12345
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 1
+        nuevoDescripcionActor = 12345
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos.   
         
     # La nueva descripci�n para el actor a modificar es None. 
-    def testmodify_ActorDescripNone(self):  
+    def testModificarActorDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()    
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 1
-        newDescripActor = None
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 1
+        nuevoDescripcionActor = None
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es Entero y id string . 
-    def testmodify_ActorIdStringDescripInt(self):  
+    def testModificarActorIdStringDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()    
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 'malo'
-        newDescripActor = 1212
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 'malo'
+        nuevoDescripcionActor = 1212
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es Float y id string . 
-    def testmodify_ActorIdStringDescripFloat(self):  
+    def testModificarActorIdStringDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()    
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 'malo'
-        newDescripActor = 1212.23
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 'malo'
+        nuevoDescripcionActor = 1212.23
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es None y id string . 
-    def testmodify_ActorIdStringDescripNone(self):  
+    def testModificarActorIdStringDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()    
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 'malo'
-        newDescripActor = None
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 'malo'
+        nuevoDescripcionActor = None
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es tamaño 500 y id string . 
-    def testmodify_ActorIdStringDescripLen500(self):  
+    def testModificarActorIdStringDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()     
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 'malo'
-        newDescripActor = 'y'*500
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 'malo'
+        nuevoDescripcionActor = 'y'*500
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es tamaño 501 y id string . 
-    def testmodify_ActorIdStringDescripLen501(self):  
+    def testModificarActorIdStringDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
         model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 'malo'
-        newDescripActor = 'y'*501
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 'malo'
+        nuevoDescripcionActor = 'y'*501
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es tamaño Entero y id float . 
-    def testmodify_ActorIdFloatDescripInt(self):  
+    def testModificarActorIdFloatDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
         model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 23.23
-        newDescripActor = 23
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 23.23
+        nuevoDescripcionActor = 23
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es tamaño Float y id float . 
-    def testmodify_ActorIdFloatDescripFloat(self):  
+    def testModificarActorIdFloatDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
         model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 23.23
-        newDescripActor = 23.23
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 23.23
+        nuevoDescripcionActor = 23.23
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es None y id float . 
-    def testmodify_ActorIdFloatDescripNone(self):  
+    def testModificarActorIdFloatDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 23.23
-        newDescripActor = None
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 23.23
+        nuevoDescripcionActor = None
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # La nueva descripci�n para el actor a modificar es tamaño 500 y id float . 
-    def testmodify_ActorIdFloatDescripLen500(self):  
+    def testModificarActorIdFloatDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()
-        
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
+          
         tempActor = clsActor()
-        newIdActor = 23.23
-        newDescripActor = 'y'*500
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 23.23
+        nuevoDescripcionActor = 'y'*500
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es tamaño 501 y id float . 
-    def testmodify_ActorIdFloatDescripLen501(self):  
+    def testModificarActorIdFloatDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 23.23
-        newDescripActor = 'y'*501
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 23.23
+        nuevoDescripcionActor = 'y'*501
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es entero y id None . 
-    def testmodify_ActorIdNoneDescripInt(self):  
+    def testModificarActorIdNoneDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit() 
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = None
-        newDescripActor = 23
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = None
+        nuevoDescripcionActor = 23
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es float y id None . 
-    def testmodify_ActorIdNoneDescripFloat(self):  
+    def testModificarActorIdNoneDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit() 
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = None
-        newDescripActor = 23.23
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = None
+        nuevoDescripcionActor = 23.23
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es None y id None . 
-    def testmodify_ActorIdNoneDescripNone(self):  
+    def testModificarActorIdNoneDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit() 
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = None
-        newDescripActor = None
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = None
+        nuevoDescripcionActor = None
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es tamaño 500 y id None . 
-    def testmodify_ActorIdNoneDescripLen500(self):  
+    def testModificarActorIdNoneDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()  
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = None
-        newDescripActor = 'y'*500
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = None
+        nuevoDescripcionActor = 'y'*500
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es tamaño 501 y id None . 
-    def testmodify_ActorIdNoneDescripLen501(self):  
+    def testModificarActorIdNoneDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit() 
+        nuevoIdActor = 1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = None
-        newDescripActor = 'y'*501
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = None
+        nuevoDescripcionActor = 'y'*501
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # La nueva descripci�n para el actor a modificar es Entero y id MAX . 
-    def testmodify_ActorIdMaxDescripInt(self):  
+    def testModificarActorIdMaxDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto) 
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit() 
+        nuevoIdActor = 2**31 -1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 2**31 -1
-        newDescripActor = 43
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 2**31 -1
+        nuevoDescripcionActor = 43
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es float y id MAX . 
-    def testmodify_ActorIdMaxDescripFloat(self):  
+    def testModificarActorIdMaxDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor = 2**31 -1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit() 
+        nuevoIdActor = 2**31 -1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 2**31 -1
-        newDescripActor = 43.323
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 2**31 -1
+        nuevoDescripcionActor = 43.323
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es None y id MAX . 
-    def testmodify_ActorIdMaxDescripNone(self):  
+    def testModificarActorIdMaxDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto) 
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor =  2**31 -1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit() 
+        nuevoIdActor = 2**31 -1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 2**31 -1
-        newDescripActor = None
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 2**31 -1
+        nuevoDescripcionActor = None
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es tamaño 500 y id MAX . 
-    def testmodify_ActorIdMaxDescripLen500(self):  
+    def testModificarActorIdMaxDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor =  2**31 -1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit() 
+        nuevoIdActor = 2**31 -1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 2**31 -1
-        newDescripActor = 'y'*500
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 2**31 -1
+        nuevoDescripcionActor = 'y'*500
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertTrue( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el actor a modificar es tamaño 501 y id MAX . 
-    def testmodify_ActorIdMaxDescripLen501(self):  
+    def testModificarActorIdMaxDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        # Se inserta un elemento en la base. Dicha insercion se asegura
-        # que es valida.
-        newIdActor =  2**31 -1
-        newDescripActor  = 'Esto es una prueba'
-        newNameActor='Joel'
-        newActor = model.Actores( newIdProducto,newIdActor ,newNameActor, newDescripActor  ) 
-        model.db.session.add(newActor)
-        model.db.session.commit()  
+        nuevoIdActor = 2**31 -1
+        nuevoDescripcionActor = 'Esto es una prueba.'
+        nuevoActor = model.Actores( nuevoIdProducto,nuevoIdActor,'actor 1 ', nuevoDescripcionActor) 
+        model.db.session.add(nuevoActor)
+        model.db.session.commit()   
           
         tempActor = clsActor()
-        newIdActor = 2**31 -1
-        newDescripActor = 'y'*501
-        newNameActor='otro joel, no es el mismo :p '
-        result = tempActor.modify_Actor(  newIdProducto,newIdActor ,newNameActor, newDescripActor )
+        idaccion = 2**31 -1
+        nuevoDescripcionActor = 'y'*501
+        result = tempActor.modificar( idaccion,'Actor Nuevo' ,nuevoDescripcionActor )
         self.assertFalse( result )
-        self.vaciarBaseDeDatos() # Se limpia la base de datos.
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
