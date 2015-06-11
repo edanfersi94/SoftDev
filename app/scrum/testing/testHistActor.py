@@ -45,7 +45,7 @@ class TestHistActor(unittest.TestCase):
         NewdescripProducto = "PruebaPila1"
         
         #Se ingresa manualmente los datos a la tabla pila
-        newPila = model.Pila(NewIdPila, NewdescripProducto,"hola",1)
+        newPila = model.Pila(NewIdPila, NewdescripProducto)
         model.db.session.add(newPila)
         model.db.session.commit()
                 
@@ -80,7 +80,7 @@ class TestHistActor(unittest.TestCase):
         NewSuper  = 1
         
         #Se ingresa manualmente los datos a la tabla historia
-        newHistoria = model.Historia_Usuario(NewIdHistoria,NewCodigoHistoria_Usuario, NewId_Pila_Historia_Usuario, NewtipoHistoria_Usuario,NewId_Acciones_Historia_Usuario, NewSuper,1)
+        newHistoria = model.Historia_Usuario(NewIdHistoria,NewCodigoHistoria_Usuario, NewId_Pila_Historia_Usuario, NewtipoHistoria_Usuario,NewId_Acciones_Historia_Usuario, NewSuper)
         model.db.session.add(newHistoria)
         model.db.session.commit()
 

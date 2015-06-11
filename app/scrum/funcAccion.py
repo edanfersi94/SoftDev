@@ -133,30 +133,30 @@ class clsAccion():
 			@brief Función que permite eliminar una acción cuyo id
 				   sea "identificador".
 			
-			@param identificador: identificador de la acción a eliminar.
-
-			@return True si se eliminó correctamente la acción dada. De lo
-					contrario retorna False.
+			@return True si se eliminó la acción dada. De lo contrario retorna
+					False.
 		"""
 
-		# Booleano que indica si el parámetro son del tipo correspondiente.
 		idInt = type(identificador) == int
 		
-		if ( idInt ):
-			idPositivo = identificador > 0
+		if (idInt):
+			idPositivo = identificador >0
 			
 			if ( idPositivo ):
-				# Booleanos que indican si el parámetro tiene el tamaño válido.
+				
 				accionBuscada = db.session.query(Acciones).\
 								filter(Acciones.identificador == identificador).\
 								first()
 
 				if(accionBuscada != []):
+
+
 					accionContenida = db.session.query(Historias).\
 									  filter(Historias.idAccion == identificador).\
 									  first()
 
 					if ( accionContenida == None):
+			
 						db.session.delete(accionBuscada)
 						db.session.commit()
 						return ( True )

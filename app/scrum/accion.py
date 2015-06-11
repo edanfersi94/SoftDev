@@ -64,10 +64,10 @@ def ACrearAccion():
 #.-----------------------------------------------------------------------------.
 @accion.route('/accion/AElimAccion')
 def AElimAccion():
-
+    #GET parameter
+    identificador = int(request.args.get('idAccion',1))
     # Identificador del producto al que pertenece la accion.
     idProducto = int(session['idPila'])
-    identificador = int(session['idAccion'])
     results = [{'label':'/VProducto', 'msg':['Accion eliminada']}, 
                {'label':'/VAccion', 'msg':['No se pudo eliminar esta acción']}, ]
     res = results[1]

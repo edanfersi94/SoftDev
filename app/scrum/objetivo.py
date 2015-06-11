@@ -63,8 +63,8 @@ def ACrearObjetivo():
 #.-----------------------------------------------------------------------------.
 @objetivo.route('/objetivo/AElimObjetivo')
 def AElimObjetivo():
- 
-    identificador = int(session['idObjetivo'])
+    #GET parameter
+    identificador = int(request.args.get('idObjetivo',1))
     idProducto = int(session['idPila'])
     results = [{'label':'/VProducto', 'msg':['Objetivo eliminado']}, {'label':'/VObjetivo', 'msg':['No se pudo eliminar este objetivo']}, ]
     res = results[1]
@@ -177,8 +177,8 @@ def VObjetivo():
     res['idPila'] = idProducto
 
     # Se obtiene el identificador del objetivo actual.
+    
     res['idObjetivo'] = identificador
-    session['idObjetivo'] = identificador
 
     # Se obtiene la información del objetivo a modificar.
     objetivoBuscado = db.session.query(Objetivos).\

@@ -51,20 +51,26 @@ class TestAccion(unittest.TestCase):
     # Buscar el id de un accion que exista en la base de datos de un elemento. 
     def testfind_idAccionExist(self):
         self.vaciarBaseDeDatos()
+
+        newIdProducto = 1
+        newDescripProducto=' Descripcion Producto.. '
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
+        model.db.session.add(newProducto)
+        model.db.session.commit() 
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
+        newIdAccion = 1
+        newDescripAccion = 'Esto es una prueba'
+        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion ) 
+        model.db.session.add(newAccion)
         model.db.session.commit()   
         
         tempAccion = clsAccion()
         idaccion = 1
         query = tempAccion.find_idAccion( newIdProducto,idaccion )
-        self.assertIsNotNone( query )
+        self.assertIsNotNone( query[0] )
         self.vaciarBaseDeDatos()
 
     # Buscar el id de un accion con base de datos vacia
@@ -72,9 +78,9 @@ class TestAccion(unittest.TestCase):
         self.vaciarBaseDeDatos()
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         idaccion = 1000
@@ -90,9 +96,9 @@ class TestAccion(unittest.TestCase):
         self.vaciarBaseDeDatos()
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
@@ -111,13 +117,12 @@ class TestAccion(unittest.TestCase):
         
     # Buscar el id de un accion con base de datos de varios elemento y busqueda no exitosa   
     def testfind_idAccionNotExistVariosElementos(self):
-        self.vaciarBaseDeDatos()   
-         
+        self.vaciarBaseDeDatos()    
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
@@ -139,9 +144,9 @@ class TestAccion(unittest.TestCase):
         self.vaciarBaseDeDatos()  
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         # Se insertaN elementoS en la base. Dicha insercion se asegura
         # que es valida.
@@ -164,9 +169,9 @@ class TestAccion(unittest.TestCase):
         self.vaciarBaseDeDatos()
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         idaccion = '1'
@@ -181,9 +186,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         idaccion = 1.01
@@ -197,9 +202,9 @@ class TestAccion(unittest.TestCase):
 
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         idaccion = None
@@ -213,9 +218,9 @@ class TestAccion(unittest.TestCase):
 
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         idaccion = -3
@@ -233,9 +238,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         newIdAccion = 3
         newDescripAccion = 'Esto es una prueba'
@@ -257,9 +262,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
 
         tempAccion = clsAccion()
@@ -274,9 +279,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         for indice in range(5,10,1):
             newIdAccion = indice
@@ -300,9 +305,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         newDescripAccion = '1'
@@ -316,9 +321,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         newDescripAccion ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
@@ -333,9 +338,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         newDescripAccion = ''
@@ -349,9 +354,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         newDescripAccion = 'dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,'
@@ -365,9 +370,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         newDescripAccion = 501
@@ -381,9 +386,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         newDescripAccion = None
@@ -397,9 +402,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         newDescripAccion = 0.54
@@ -413,9 +418,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         newDescripAccion = 'ola k ase'
@@ -429,9 +434,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         newDescripAccion ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
@@ -446,9 +451,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         newDescripAccion = 'None.. uff caiste'
@@ -462,7 +467,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -478,7 +483,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -494,7 +499,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -510,7 +515,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -526,7 +531,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -542,7 +547,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -558,7 +563,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -574,7 +579,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -590,7 +595,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -606,7 +611,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -622,7 +627,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -638,7 +643,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -654,7 +659,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -670,7 +675,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -686,7 +691,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -702,7 +707,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -718,7 +723,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -734,7 +739,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -750,7 +755,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -766,7 +771,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -782,7 +787,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -798,7 +803,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -814,7 +819,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -830,7 +835,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -846,7 +851,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -862,7 +867,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -878,7 +883,7 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 2**31 - 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
         model.db.session.commit() 
         
@@ -897,9 +902,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
@@ -922,9 +927,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         tempAccion = clsAccion()
         idaccion = 20
@@ -939,9 +944,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         for indice in range(1,10,1):
             newIdAccion = indice
@@ -963,9 +968,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         for indice in range(2,10,1):
             newIdAccion = indice
@@ -989,9 +994,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
@@ -1015,9 +1020,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1043,9 +1048,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         newIdAccion = 1
         newDescripAccion = 'z'
@@ -1067,9 +1072,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
         
         newIdAccion = 1
         newDescripAccion = 'x'
@@ -1091,9 +1096,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
             
         tempAccion = clsAccion()
         idaccion = '1'
@@ -1108,9 +1113,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
            
         tempAccion = clsAccion()
         idaccion = -1
@@ -1125,9 +1130,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
           
         tempAccion = clsAccion()
         idaccion = 1.0
@@ -1142,9 +1147,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
              
         tempAccion = clsAccion()
         idaccion = None
@@ -1159,9 +1164,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()  
+        model.db.session.commit()   
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1182,9 +1187,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
            
         
         newIdAccion = 1
@@ -1206,9 +1211,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit() 
             
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1229,9 +1234,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1252,9 +1257,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1275,9 +1280,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1298,9 +1303,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1321,9 +1326,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1344,9 +1349,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1367,9 +1372,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1390,9 +1395,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1413,9 +1418,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1436,9 +1441,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1459,9 +1464,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1482,9 +1487,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1505,9 +1510,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1528,9 +1533,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1551,9 +1556,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1574,9 +1579,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 1
         newDescripAccion = 'Esto es una prueba.'
@@ -1597,9 +1602,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 2**31 -1
         newDescripAccion = 'Esto es una prueba.'
@@ -1620,9 +1625,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 2**31 -1
         newDescripAccion = 'Esto es una prueba.'
@@ -1643,9 +1648,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 2**31 -1
         newDescripAccion = 'Esto es una prueba.'
@@ -1666,9 +1671,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit() 
+        model.db.session.commit()  
         
         newIdAccion = 2**31 -1
         newDescripAccion = 'Esto es una prueba.'
@@ -1689,9 +1694,9 @@ class TestAccion(unittest.TestCase):
         
         newIdProducto = 1
         newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
+        newProducto = model.Pila(newIdProducto,newDescripProducto)
         model.db.session.add(newProducto)
-        model.db.session.commit()
+        model.db.session.commit()  
         
         newIdAccion = 2**31 -1
         newDescripAccion = 'Esto es una prueba.'
