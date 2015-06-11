@@ -5,10 +5,8 @@
     Departamento de Computación y Tecnología de la Información.
     CI-3715 - Ingeniería de Software I (CI-3715)
     Abril - Julio 2015
-
     AUTORES:
         Equipo SoftDev
-
     DESCRIPCION: 
         Módulo que contiene las aplicaciones y vistas correspondientes de
         las historias.
@@ -557,20 +555,16 @@ def VHistorias():
     productoTipoEscala = db.session.query(Productos.escala).\
                             filter(Productos.identificador == idProducto).\
                             first()      
-
+    historias = db.session.query(Historias).\
+                    filter(Historias.idProducto == idProducto).\
+                    order_by(Historias.idEscala).all() 
     if (productoTipoEscala[0] == 1):
         escala = {1:'Alta', 2:'Media',3:'Baja'}
-        historias = db.session.query(Historias).\
-                        filter(Historias.idProducto == idProducto).\
-                         order_by(Historias.idEscala).all()
         res['data0'] = [
             {'idHistoria':historia.identificador, 'enunciado':historia.codigo, 
              'prioridad':escala[historia.idEscala]} 
             for historia in historias]
     else:
-        historias = db.session.query(Historias).\
-                        filter(Historias.idProducto == idProducto).\
-                         order_by(Historias.idEscala.desc()).all()   
         res['data0'] = [
             {'idHistoria':historia.identificador, 'enunciado':historia.codigo, 
              'prioridad':historia.idEscala} 
@@ -631,7 +625,7 @@ def VPrioridades():
     listHistorias = {}
     dicH = {}
     listH = []
-    contador = 0
+    listH.append(None)
     
     for j in historias:
         idActoresHistoria = []
@@ -656,7 +650,7 @@ def VPrioridades():
                             all()
 
             nombreActoresHistoria.append(actores[0].nombre)
-        
+            print(nombreActoresHistoria)
 
 
         objetivosHistoria = db.session.query(ObjHistorias).\
@@ -681,13 +675,13 @@ def VPrioridades():
                  'actor': nombreActoresHistoria,
                  'objetivo':nombreObjetivosHistoria,
                  'accion': accionesHistoria[0].descripcion}
-        listH.append(dicH)  
-    print("historias",historias)
-    print("lista", listH)
+        listH.append(dicH)
+
+
     res['idPila'] = idProducto
     res['fPrioridades'] = {'idPila':idProducto,
       'lista':[
-        {'idHistoria':hist.identificador,'prioridad':hist.idEscala, 'enunciado':'En tanto que '+str(listH[contador].get('actor')) + ' ' + 'pueda'+ ' '+ str(listH[contador].get('accion')) + ' para '+ str(listH[contador].get('objetivo')) }
+        {'idHistoria':hist.identificador,'prioridad':hist.idEscala, 'enunciado':'En tanto que '+str(listH[hist.identificador].get('actor')) + ' ' + 'pueda'+ ' '+ str(listH[hist.identificador].get('accion')) + ' para '+ str(listH[hist.identificador].get('objetivo')) }
           for hist in historias]}
 
     #Action code ends here

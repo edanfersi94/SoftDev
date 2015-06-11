@@ -45,12 +45,10 @@ def ACrearTarea():
             res['label'] = res['label'] + '/' + repr(idHistoria)
 
         if (res == results[1]):
-            res['label'] = res['label'] + '/' + repr(creaccionCorrecta[1])
+            res['label'] = res['label'] + '/' + repr(idHistoria)
 
-
-    
-
-    #Action code ends here
+    res['idHistoria'] = idHistoria 
+     
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -82,7 +80,7 @@ def AElimTarea():
             res['label'] = res['label'] + '/' + str(identificador)
 
 
-
+    res['idHistoria'] = idHistoria 
     
 
     #Action code ends here
@@ -120,7 +118,8 @@ def AModifTarea():
         if (res == results[1]):
             res['label'] = res['label'] + '/' + repr(identificador)
 
- 
+    res['idHistoria'] = idHistoria 
+        
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -149,7 +148,7 @@ def VCrearTarea():
     res['usuario'] = session['usuario']
     session['idHistoria'] = idHistoria
 
-
+    res['idHistoria'] = idHistoria 
     #Action code ends here
     return json.dumps(res)
 
@@ -180,6 +179,6 @@ def VTarea():
     
     session['idTarea'] = identificador
     res['idTarea'] = identificador
-
+    res['idHistoria'] = idHistoria 
     #Action code ends here
     return json.dumps(res)

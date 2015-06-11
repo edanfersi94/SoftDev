@@ -5,10 +5,8 @@
     Departamento de Computación y Tecnología de la Información.
     CI-3715 - Ingeniería de Software I (CI-3715)
     Abril - Julio 2015
-
     AUTORES:
         Equipo SoftDev
-
     DESCRIPCION: 
         Módulo que contiene los métodos que permitirán insertar, modificar y
         eliminar objetivos del producto.
@@ -64,7 +62,7 @@ def ACrearObjetivo():
 @objetivo.route('/objetivo/AElimObjetivo')
 def AElimObjetivo():
     #GET parameter
-    identificador = int(session['idObjetivo'])
+    identificador = int(request.args.get('idObjetivo',1))
     idProducto = int(session['idPila'])
     results = [{'label':'/VProducto', 'msg':['Objetivo eliminado']}, {'label':'/VObjetivo', 'msg':['No se pudo eliminar este objetivo']}, ]
     res = results[1]
@@ -102,7 +100,7 @@ def AModifObjetivo():
     idProducto = int(session['idPila'])
 
     # Se obtiene los atributos del objetivo a modificar.
-    identificador = int (params.get('idObjetivo',1))
+    identificador = int(session['idObjetivo'])
     descripcion = params.get('descripcion', None)
     transversalidad = params.get('transversal', None)
 
@@ -118,8 +116,6 @@ def AModifObjetivo():
     if (res == results[1]):
         res['label'] = res['label'] + '/' + str(identificador)
     res['idPila'] = idProducto   
-
-    session['idObjetivo'] = identificador
 
     if "actor" in res:
         if res['actor'] is None:
