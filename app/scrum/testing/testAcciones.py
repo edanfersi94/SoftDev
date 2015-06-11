@@ -795,6 +795,7 @@ class TestAccion(unittest.TestCase):
         idaccion = 20
         nuevoDescripcionAccion = 'Esto sigue siendo una prueba'
         result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
+        self.assertFalse( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
     ### CASOS VALIDOS( Casos Fronteras )
