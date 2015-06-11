@@ -37,15 +37,25 @@ class clsTarea():
 
             if ( descripcionLongitud and idHistoriaPositivo ):
 
-                # Búsqueda del último id en la base de datos correspondiente.   
-                ultimoId = db.session.query(func.max(Tareas.identificador)).\
-                                first()
-                identificador  = ultimoId[0]
+                enlacesActuales = db.session.query(Enlaces).all()
+                listaEnlace = {}
 
-                hoja = db.session.query(Historias).\
-                        filter(Historias.identificador == idHistoria).\
-                        first()
-                if (hoja.idSuper == 0):
+                for enlace in enlacesActuales:
+                    if (enlace.idClave in listaEnlace):
+                        listaEnlace[enlace.idClave] += [enlace.idValor]
+                    else:
+                        listaEnlace[enlace.idClave] = [enlace.idValor]
+
+                    if not(enlace.idValor in listaEnlace):
+                        listaEnlace[enlace.idValor] =[]
+
+                print(listaEnlace)
+                if (listaEnlace[identificador] == [] ):
+
+                    # Búsqueda del último id en la base de datos correspondiente.   
+                    ultimoId = db.session.query(func.max(Tareas.identificador)).\
+                                    first()
+                    identificador  = ultimoId[0]
 
                     # Si no hay acciones en la base de datos, entonces se inicializa 
                     # el contador.
