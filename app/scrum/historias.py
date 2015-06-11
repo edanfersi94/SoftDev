@@ -184,7 +184,7 @@ def AElimHistoria():
                             filter(Enlaces.idValor == identificador).\
                             first()
         if (enlaceBuscado != None):
-            db.session.delete(idBuscado)
+            db.session.delete(enlaceBuscado)
             db.session.commit()
         
         # BORRAR LA HISTORIA.         
@@ -245,8 +245,8 @@ def AModifHistoria():
             listaModificar   = []
         
             enlaceBuscado = db.session.query(Enlaces).\
-                                        filter(Enlaces.idValor == identificador).\
-                                        first()
+                                filter(Enlaces.idValor == identificador).\
+                                first()
     
             viejoSuper = enlaceBuscado.identificador
             #viejoSuper = enlaceEncontrado.idClave
@@ -261,7 +261,7 @@ def AModifHistoria():
                                         filter(Historias.idAccion == accion).\
                                         first()
             
-                    if (accionBuscada == []) or (accionBuscada.identificador == identificador):
+                    if (accionBuscada == None) or (accionBuscada.identificador == identificador):
                         # BORRAR ACTORES ASOCIADOS A LA HISTORIA. 
                         modificarActor = actores.eliminar(identificador)
                         listaModificar.append(modificarActor)
@@ -504,9 +504,7 @@ def VHistoria():
                             filter(ObjHistorias.idHistoria == identificador).\
                             all()
     idObjetivosHistoria = [i.idObjetivo for i in objetivosHistoria]
-
-    print(historiaActual.idSuper)
-
+    
     if (historiaActual != None):
         res['fHistoria'] = { 'super':historiaActual.idSuper if historiaActual.idSuper != None else 0,
                              'idHistoria': identificador,

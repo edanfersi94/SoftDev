@@ -100,7 +100,7 @@ def AModifObjetivo():
     idProducto = int(session['idPila'])
 
     # Se obtiene los atributos del objetivo a modificar.
-    identificador = int(session['idObjetivo'])
+    identificador = int(params.get('idObjetivo'))
     descripcion = params.get('descripcion', None)
     transversalidad = params.get('transversal', None)
 
