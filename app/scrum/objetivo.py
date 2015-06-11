@@ -178,6 +178,7 @@ def VObjetivo():
 
     # Se obtiene el identificador del objetivo actual.
     res['idObjetivo'] = identificador
+    session['idObjetivo'] = identificador
 
     # Se obtiene la información del objetivo a modificar.
     objetivoBuscado = db.session.query(Objetivos).\
