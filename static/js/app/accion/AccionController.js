@@ -29,6 +29,15 @@ scrumModule.controller('VAccionController',
       $scope.VLogin2 = function() {
         $location.path('/VLogin');
       };
+      $scope.AElimAccion3 = function(idAccion) {
+          
+        accionService.AElimAccion({"idAccion":((typeof idAccion === 'object')?JSON.stringify(idAccion):idAccion)}).then(function (object) {
+          var msg = object.data["msg"];
+          if (msg) flash(msg);
+          var label = object.data["label"];
+          $location.path(label);
+          $route.reload();
+        });};
 
       $scope.fAccionSubmitted = false;
       $scope.AModifAccion0 = function(isValid) {

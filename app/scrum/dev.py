@@ -9,8 +9,5 @@ def VDesarrollador():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
-
-
-    #Action code ends here
+        
     return json.dumps(res)

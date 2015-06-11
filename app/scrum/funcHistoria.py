@@ -1,249 +1,180 @@
 # -*- coding: utf-8 -*-
 
 """
-    UNIVERSIDAD SIMON BOLIVAR
-    Departamento de Computacion y Tecnologia de la Informacion.
-    CI-3715 - Ingenieria de Software I (CI-3715)
+    UNIVERSIDAD SIMÓN BOLÍVAR
+    Departamento de Computación y Tecnología de la Información.
+    CI-3715 - Ingeniería de Software I (CI-3715)
     Abril - Julio 2015
 
     AUTORES:
         Equipo SoftDev
 
-    DESCRIPCION: 
-        
+    DESCRIPCION:
+        Módulo que contiene los métodos que permitirán insertar y modificar
+        historias.
 """
 
-# Función a importar.
-import model
+# Funciones a importar:
+from model import db, func, Historias
 
-# Numero de historias creadas en la base de datos.
+#.-----------------------------------------------------------------------------.
 
-
-# Clase que tendra las diferentes funcionalidades de la tabla "Historia_Usuario".
-
+# Clase que tendra las diferentes funcionalidades de la tabla "Historias".
 class clsHistoria():
     
-    #-------------------------------------------------------------------------------
+    #.-------------------------------------------------------------------------.
     
-    def insert_Historia(self, newIdProducto, newCodigoHistoria, newTipo, newAccion, idSuper, idEscala):
-        
+    def insertar(self, idProducto, codigoHistoria, tipo, idAccion, idEpica, 
+                 idEscala):       
         """
-            @brief Funcion que permite insertar un nueva historia en la base de datos.
+            @brief Funcion que permite insertar una nueva historia en la base 
+                   de datos.
             
-            @param newTipo : Tipos de Historia.
-                   newCodigo: Codigo que le asigna a la historia de un usuario el dueño del producto
-                   newIdProducto: IdProducto asociado la historia de usario
+            @param idProducto: identificador del producto en donde se creará la 
+                               historia.
+            @param codigoHistoria: string que representará la historia.
+            @param tipo: identificador que representará el tipo de la historia.
+            @param idAccion: identificador de la acción a elegir.
+            @param idEpica : identificador de la historia que será la épica.
+            @param idEscala: identificador de la prioridad de la historia.
 
-            @return Variable Booleana
+            @return Tupla que contiene un booleano y un numero.
 
-                    * True cuando se inserta correctamente en la bases de datos.
-                    * False caso contrario.
-
+                    *(True, num_productos) si se inserta correctamente el producto.
+                    *(False, 0) en caso contrario.
         """
-        
-        salida = (False, 0)
 
-        # Búsqueda del identificador más alto.
-        query = model.db.session.query(model.func.max(model.Historia_Usuario.idHistoria_Usuario)).all()
-        
-        # Se toma la tupla resultante
-        tuplaResult = query[0]
-        
-        num_historias = tuplaResult[0]
+        # Booleanos que indican si los parámetros son del tipo correspondiente.
+        idProductoInt = type(idProducto) == int
+        codigoHistoriaStr = type(codigoHistoria) == str
+        tipoInt = type(tipo) == int
+        idAccionInt = type(idAccion) == int
+        idEpicaInt  = type(idEpica)  == int
+        idEscalaInt = type(idEscala) == int
 
-        # Booleanos que indican si el tipo es el correcto.
-        idProductoIsInt = type(newIdProducto) == int
-        codigoHistoriaIsStr = type(newCodigoHistoria) == str
-    
-
-        if (codigoHistoriaIsStr and idProductoIsInt ):
+        if ( idProductoInt and codigoHistoriaStr and tipoInt and idEpicaInt
+             and idEscalaInt ):
             
-            # Booleano que indica si cumplen con los limites.
-            codigoLenValid = 1<= len(newCodigoHistoria)<=13
-            
-            if(codigoLenValid):
-                if (num_historias == None):
-                    num_historias = 0
-                num_historias = num_historias + 1
+            # Booleanos que indican si los parámetros tienen el tamaño válido.
+            idProductoPositivo = idProducto > 0
+            codigoHistoriaLongitud = 1 <= len(codigoHistoria) <= 13
+            tipoPositivo = 0 < tipo < 3
+            idAccionPositivo = idAccion > 0
+            idEpicaPositivo  = idEpica  >= 0
+            idEscalaPositivo = idEscala > 0
 
-                newHistoriaUsuario = model.Historia_Usuario(num_historias, newCodigoHistoria, newIdProducto, newTipo, newAccion, idSuper, idEscala)
-                model.db.session.add(newHistoriaUsuario)
-                model.db.session.commit()  
-                salida = (True, num_historias)
+
+            if( idProductoPositivo and codigoHistoriaLongitud and tipoPositivo 
+                and idAccionPositivo and idEpicaPositivo and idEscalaPositivo ):
                 
-        return ( salida )
+                # Búsqueda del último id en la base de datos correspondiente.   
+                ultimoId = db.session.query(func.max(Historias.identificador)).\
+                                first()
+                identificador  = ultimoId[0]
+
+                # Si no hay historias en la base de datos, entonces se inicializa 
+                # el contador.
+                identificador = 1 if identificador == None else identificador + 1
+
+                historiaNueva = Historias(identificador, codigoHistoria, idProducto,
+                                          tipo, idAccion, idEpica, idEscala)
+                db.session.add(historiaNueva)
+                db.session.commit()  
+                return( (True, identificador) )
+        return ( (False, 0) )
  
     #-------------------------------------------------------------------------------
 
-    def find_CodHistoria(self,newcodigo):
-        
+    def eliminar(self, identificador):
         """
-            @brief Funcion que realiza la busqueda de la historia cuyo identificador
-                   sea "codigoHistoria_Usuario".
+            @brief Función que elimina la historia cuyo id sea "identificador".
+
+            @param identificador: id de la historia a eliminar.
             
-            @param newcodigo: Identificador de la historia de usuario a buscar.
-            
-            @return lista que contiene las tuplas obtenidas del subquery. De lo 
-                    contrario retorna la lista vacia.
+            @return True si la historia deseada fue eliminada correctamente. En
+                    caso contrario retorna False. 
         """
+
+        # Booleano que indica si el parámetro es del tipo correspondiente.
+        identificadorInt = type(identificador) == int
+
+        if ( identificadorInt ):
+            # Booleano que indica si el parámetro tiene el tamaño válido.
+            identificadorPositivo = identificador > 0
+
+            if ( identificadorPositivo ):
         
-        codigoStr = type(newcodigo) == str
-        
-        
-        if codigoStr:
-            codigoLenValid = 1<= len(newcodigo)<=10
-            if (codigoLenValid):
-                productoEsp = model.Pila.idPila == idProducto
-                historiaEsp = model.Historia_Usuario.codigoHistoria_Usuario == newcodigo
-                query = model.db.session.query(model.Historia_Usuario).filter(historiaEsp).all()
-                return( query )
+                    idBuscado = db.session.query(Historias).\
+                                    filter( Historias.identificador == identificador).\
+                                    first()
 
-        return ([])
-
-    #-------------------------------------------------------------------------------
-
-    def modify_Historia(self, idProducto, idHistoria_Usuario):
-
-        # Booleanos que indican si el tipo es correcto.
-        idHistoriaIsInt = type(idHistoria_Usuario) == int
-        idProductoIsInt = type(idProducto) == int
-
-        if (idHistoriaIsInt and idProductoIsInt):
-            idHistoriaIsPos = idHistoria_Usuario > 0
-            idProductoIsPos = idProducto > 0
-
-            if ( idHistoriaIsPos and idProductoIsPos ):
-                    historiaQuery = model.Historia_Usuario.idHistoria_Usuario == idHistoria_Usuario
-                    productoHistoria = model.Historia_Usuario.id_Pila_Historia_Usuario == idProducto
-                    query = model.db.session.query(model.Historia_Usuario).filter(historiaQuery, productoHistoria).all()
-                    historiaAct = query
-                    
-                    if (historiaAct != []):
-                        for hist in historiaAct:
-                            model.db.session.delete(hist)
-                            model.db.session.commit()
+                    if ( idBuscado != None ):
+                        db.session.delete(idBuscado)
+                        db.session.commit()
                         return( True )
         return( False )
 
     #-------------------------------------------------------------------------------
     
-    def find_Historia(self,idHistoria_Usuario):
-        
-        idHistoriaIsInt = type(idHistoria_Usuario) == int
-        
-        if (idHistoriaIsInt):
-            idHistoriaIsPos = idHistoria_Usuario >0
-            
-            if (idHistoriaIsPos):
-                historiaEsp  = model.Historia_Usuario.idHistoria_Usuario == idHistoria_Usuario
-                query = model.db.session.query(model.Historia_Usuario).filter(historiaEsp).all()
-                historia = query
-                    
-                return (historia)
-            
-            return ([])
-        
-        return ([])
-    
+    def buscarHistoria(self, identificador):
+        """ 
+            @brief Función que realiza la búsqueda de la historia cuyo id sea 
+                   "identificador".
 
-    #-------------------------------------------------------------------------------
-    
-    def existenciaCiclo(self,G):                
-        color = { u : "blanco" for u in G  } 
-        encontrarCiclo = [False]               
-                                                                         
-        for u in G:                          
-            if color[u] == "blanco":
-                self.dfs_visit(G, u, color, encontrarCiclo)
-            if encontrarCiclo[0]:
-                break
-        return encontrarCiclo[0]
-     
-    #-------
-     
-    def dfs_visit(self,G, u, color, encontrarCiclo):
-        if encontrarCiclo[0]:                         
-            return
-        color[u] = "gris"                          
-        for v in G[u]:                             
-            if color[v] == "gris":                 
-                encontrarCiclo[0] = True       
-                return
-            if color[v] == "blanco":                 
-                self.dfs_visit(G, v, color, encontrarCiclo)
-        color[u] = "negro"                         
+            @param identificador: identificador de la historia a buscar.
 
-    #-------------------------------------------------------------------------------
-
-    def verificandoAgregacion(self, idSuper):
-
-        query = model.db.session.query(model.func.max(model.Historia_Usuario.idHistoria_Usuario)).all()
-        # Se toma la tupla resultante
-        tuplaResult = query[0]
-        numNuevaHistoria = tuplaResult[0]
-        if (numNuevaHistoria == None):
-            numNuevaHistoria = 0
-        numNuevaHistoria = numNuevaHistoria + 1
-
-        # Se genera el diccionario con todos los enlaces
-        
-
-        if not(numNuevaHistoria in listaEnlaces):
-            listaEnlaces[numNuevaHistoria] = []
-        
-        # Se crea una copia del diccionario utilizado y se agrega el posible nuevo enlace.
-        target = {}
-        for key in listaEnlaces:
-            print(key)
-            if key == idSuper:
-                print('AQUI')
-                target[key] = listaEnlaces[key] + [numNuevaHistoria]
-            else:
-                print('ALLA')
-                target[key] = listaEnlaces[key]
-
-        print(target)
-
-        # Se agrega el nuevo enlace.
-        #modifAux = aux[idSuper]
-        #modifAux += [numNuevaHistoria]
-        #print(modifAux)
-        existCiclo = self.existenciaCiclo(target)
-
-        if not(existCiclo):
-            listaEnlaces = target
-
-        salida = [existCiclo,listaEnlaces]
-        return(salida)
-
-    #-------------------------------------------------------------------------------
-
-
-    def cambiar_Prioridad(self, idHistoria, newPrioridad):
+            @return tupla que contiene los elementos de la búsqueda deseada. 
+                    En caso de no existir o el parámetro fue incorrecto retorna 
+                    None.
         """
-            @brief Funcion que modifica la escala de una Historia cuyo id sea "idHistoria".
-    
-            @param idHistoria        : Historia a actualizar       
-            @param newPrioridad      : Valor de escala a actualizar
+
+        identificadorInt = type(identificador) == int
+        
+        if (identificadorInt):
+            identificadorPositivo = identificador > 0
             
-            @return True si se modifico la historia dada. De lo contrario False.
+            if (identificadorPositivo):
+                historiaBuscada = db.session.query(Historias).\
+                                    filter(Historias.identificador == identificador).\
+                                    all()
+                return (historiaBuscada)
+            return ( None )
+    
+    #.-------------------------------------------------------------------------.
+    #.-------------------------------------------------------------------------.
+
+    def cambiarPrioridad(self, identificador, prioridad):
+        """
+            @brief Funcion que modifica la escala de una historia cuyo id sea 
+                   "identificador" por "nuevaPrioridad".
+    
+            @param identificador : id de la historia ha actualizar       
+            @param prioridad: nuevo valor de escala ha asignar.
+            
+            @return True si se modifico correctamente la prioridad de la 
+                    historia deseada. En caso contrario retorna False.
         """
         
-        # Booleanos que indican si el tipo es el correcto.
-       
-        idHistIsInt  = type(idHistoria) == int
-        idHistIsPos  = idHistoria > 0
+        # Booleanos que indican si los parámetros son del tipo correspondiente.
+        identificadorInt  = type(identificador)  == int
+        prioridadInt = type(prioridad) == int
         
-        if ( idHistIsInt and idHistIsPos):
-            query = self.find_Historia( idHistoria)
-                
-            if ( query != [] ):
-                historia = model.Historia_Usuario.idHistoria_Usuario == idHistoria
-                model.db.session.query(model.Historia_Usuario).filter(historia).\
-                    update({'idEscala':(newPrioridad)})
-                model.db.session.commit()
-                return( True )
+        if ( identificadorInt and prioridadInt ):
+            # Booleanos que indican si los parámetros tienen el tamaño válido.
+            identificadorPositivo  = identificador  > 0
+            prioridadPositivo = prioridad > 0
+
+            if ( identificadorPositivo and prioridadPositivo ):
+
+                historiaBuscada = self.buscarHistoria(identificador)
                     
+                if ( historiaBuscada != None ):
+        
+                    db.session.query(Historias).\
+                        filter(Historias.identificador == identificador).\
+                        update({'idEscala': prioridad})
+                    db.session.commit()
+                    return( True )    
         return( False )
 
-    #-------------------------------------------------------------------------------
+    #.-------------------------------------------------------------------------.

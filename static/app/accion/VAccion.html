@@ -12,6 +12,10 @@
         </div>
         <div class="collapse navbar-collapse" id="contenido-plegable">
             <ul class="nav navbar-nav navbar-left">
+<li><a ng-click="AElimAccion3(idAccion)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+  -accion</a></li>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
 <li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
@@ -27,7 +31,7 @@
 </nav>
 
     <form name="fAccionForm" ng-submit="AModifAccion0(fAccionForm.$valid)" novalidate>
-            <div class="form-group" ng-class="{ 'has-error' :  fAccionSubmitted && fAccionForm.descripcion.$invalid && fAccionForm.descripcion.$pristine && fAccionSubmitted}"><label for="fAccion_descripcion">Acción</label><div id="fAccion_descripcion" text-angular="text-angular" name="descripcion" ng-model="fAccion.descripcion" ></div><p ng-show="fAccionSubmitted && fAccionForm.descripcion.$invalid" class="help-block">Error en campo Acción.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fAccionSubmitted && fAccionForm.descripcion.$invalid && fAccionForm.descripcion.$pristine && fAccionSubmitted}"><label for="fAccion_descripcion">Acción</label><textarea id="fAccion_descripcion" name="descripcion" class="form-control" ng-model="fAccion.descripcion" placeholder="Acción" ></textarea><p ng-show="fAccionSubmitted && fAccionForm.descripcion.$invalid" class="help-block">Error en campo Acción.</p></div>
             <input id="fAccion_idAccion" type="hidden" name="idAccion" ng-model="fAccion.idAccion" />
             <input id="fAccion_idPila" type="hidden" name="idPila" ng-model="fAccion.idPila" />
         <button type="submit" class="btn btn-perso btn-lg btn-block">

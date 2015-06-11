@@ -1,14 +1,16 @@
-# -*- coding: utf-8 -*-. 
+# -*- coding: utf-8 -*-
 
 """
-    UNIVERSIDAD SIMON BOLIVAR
-    Departamento de Computacion y Tecnologia de la Informacion.
-    CI-3715 - Ingenieria de Software I (CI-3715)
+    UNIVERSIDAD SIMÓN BOLÍVAR
+    Departamento de Computación y Tecnología de la Información.
+    CI-3715 - Ingeniería de Software I (CI-3715)
     Abril - Julio 2015
+
     AUTORES:
         Equipo SoftDev
+
     DESCRIPCION: 
-        
+        Módulo que contiene las clases de las bases de datos.
 """
 #-------------------------------------------------------------------------------
 
@@ -24,7 +26,7 @@ from sqlalchemy             import CheckConstraint, func, desc
 
 # Construcción de la base de datos.
 
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres1234:@localhost/prueba1"
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:1234@localhost/prueba1"
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
@@ -50,145 +52,139 @@ manager.add_command('db', MigrateCommand)
 # Tablas de la base de datos a definir.
 
 # Tabla Pila (Productos):
-class Pila(db.Model):
-    __tablename__   = 'pila'
-    idPila          = db.Column(db.Integer, primary_key = True)
-    nombreProducto  = db.Column(db.String(50), nullable = False)
-    descripProducto = db.Column(db.String(500), nullable = True)
-    escalaProducto  = db.Column(db.Integer, nullable = False)
+class Productos(db.Model):
+    __tablename__   = 'productos'
+    identificador   = db.Column(db.Integer, primary_key = True)
+    nombre          = db.Column(db.String(50), nullable = False)
+    descripcion     = db.Column(db.String(500), nullable = True)
+    escala          = db.Column(db.Integer, nullable = False)
     pilaAcciones    = db.relationship('Acciones', backref = 'pila_acciones', cascade="all, delete, delete-orphan")
-    pilaObjetivos   = db.relationship('Objetivo', backref = 'pila_objetivos', cascade="all, delete, delete-orphan")
+    pilaObjetivos   = db.relationship('Objetivos', backref = 'pila_objetivos', cascade="all, delete, delete-orphan")
     pilaActores     = db.relationship('Actores', backref = 'pila_actores', cascade="all, delete, delete-orphan")
-    pilaHistoria    = db.relationship('Historia_Usuario',backref='pila_historia',cascade = "all, delete, delete-orphan")
+    pilaHistoria    = db.relationship('Historias',backref='pila_historia',cascade = "all, delete, delete-orphan")
     pilaEnlaces     = db.relationship('Enlaces', backref = 'pila_enlaces', cascade="all, delete, delete-orphan")
-    def __init__(self, idPila, nombreProducto, descripProducto, escalaProducto):
-        self.idPila  = idPila
-        self.nombreProducto = nombreProducto
-        self.descripProducto = descripProducto
-        self.escalaProducto = escalaProducto
+    def __init__(self, identificador, nombre, descripcion, escala):
+        self.identificador  = identificador
+        self.nombre         = nombre
+        self.descripcion    = descripcion
+        self.escala         = escala
         
 
 # Tabla Historia:        
-class Historia_Usuario(db.Model):
-    __tablename__    = 'historia'
-    idHistoria_Usuario       = db.Column(db.Integer, unique=True)
-    tipoHistoria_Usuario     = db.Column(db.String(13), nullable = True)
-    codigoHistoria_Usuario   = db.Column(db.String(10), primary_key=True,)
-    id_Pila_Historia_Usuario = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
-    id_Acciones_Historia_Usuario = db.Column(db.Integer, db.ForeignKey('acciones.idacciones'))
-    idSuper                  = db.Column(db.Integer, nullable = False)
-    idEscala                 = db.Column(db.Integer, nullable = True)
+class Historias(db.Model):
+    __tablename__    = 'historias'
+    identificador    = db.Column(db.Integer, unique=True)
+    tipo             = db.Column(db.String(13), nullable = True)
+    codigo           = db.Column(db.String(10), primary_key=True,)
+    idProducto       = db.Column(db.Integer, db.ForeignKey('productos.identificador'))
+    idAccion         = db.Column(db.Integer, db.ForeignKey('acciones.identificador'))
+    idSuper          = db.Column(db.Integer, nullable = False)
+    idEscala         = db.Column(db.Integer, nullable = True)
     listaObjetivos = db.relationship('ObjHistorias',backref='historia',cascade = "all, delete, delete-orphan")
     listaActores = db.relationship('ActoresHistorias',backref='historia',cascade = "all, delete, delete-orphan")
 
-    def __init__(self, idHistoria,codigoHistoria,historiaIdPila, tipoHistoria_Usuario,id_Acciones_Historia_Usuario,idSuper, idEscala):
-        self.idHistoria_Usuario  = idHistoria
-        self.tipoHistoria_Usuario = tipoHistoria_Usuario
-        self.codigoHistoria_Usuario = codigoHistoria
-        self.id_Pila_Historia_Usuario = historiaIdPila
-        self.id_Acciones_Historia_Usuario = id_Acciones_Historia_Usuario
+    def __init__(self, identificador,codigo,idProducto, tipo,idAccion,idSuper, idEscala):
+        self.identificador  = identificador
+        self.tipo = tipo
+        self.codigo = codigo
+        self.idProducto = idProducto
+        self.idAccion = idAccion
         self.idSuper = idSuper
         self.idEscala = idEscala
 
 # Tabla Usuario.
-class User(db.Model):
-    __tablename__ = 'usuario'
-    fullname = db.Column(db.String(50), nullable = False)
+class Users(db.Model):
+    __tablename__ = 'usuarios'
+    nombre = db.Column(db.String(50), nullable = False)
     username = db.Column(db.String(16), primary_key = True)
-    password = db.Column(db.String(16), nullable = False)
-    email      = db.Column(db.String(30), unique = True)
-    #idActores = db.Column(db.Integer, db.ForeignKey('actores.idactores'))
+    clave = db.Column(db.String(16), nullable = False)
+    correo = db.Column(db.String(30), unique = True)
 
     def __init__(self,fullname, username, password, email):
-        self.fullname = fullname
+        self.nombre = fullname
         self.username = username
-        self.password = password
-        self.email = email
-        #self.idAcciones = idAcciones
+        self.clave = password
+        self.correo = email
 
 
 # Tabla Acciones.
 class Acciones(db.Model):
     __tablename__ = 'acciones'
-    idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
-    idacciones      = db.Column(db.Integer, primary_key = True)
-    descripAcciones = db.Column(db.String(500), nullable = False)
-    pilaHistoriaUsuario = db.relationship('Historia_Usuario',backref='pila',cascade = "all, delete, delete-orphan")
-    def __init__(self, idPila, idAcciones, descripAcciones):
-        self.idProducto = idPila
-        self.idacciones      = idAcciones
-        self.descripAcciones = descripAcciones
-        
-
-#class Pila(db.Model):
+    idProducto = db.Column(db.Integer, db.ForeignKey('productos.identificador'))
+    identificador = db.Column(db.Integer, primary_key = True)
+    descripcion = db.Column(db.String(500), nullable = False)
+    historiaAsociada = db.relationship('Historias',backref='acciones',cascade = "all, delete, delete-orphan")
+    def __init__(self, idProducto, identificador, descripcion):
+        self.idProducto = idProducto
+        self.identificador  = identificador
+        self.descripcion = descripcion
 
 # Tabla Objetivo
-class Objetivo(db.Model):
-    __tablename__ = 'objetivo'
-    idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
-    idObjetivo    = db.Column(db.Integer, primary_key = True)
-    descripObjetivo = db.Column(db.String(500), nullable = False)
+class Objetivos(db.Model):
+    __tablename__ = 'objetivos'
+    idProducto = db.Column(db.Integer, db.ForeignKey('productos.identificador'))
+    identificador = db.Column(db.Integer, primary_key = True)
+    descripcion = db.Column(db.String(500), nullable = False)
     transversalidad = db.Column(db.Integer, nullable = True)
-    historiaAsociada = db.relationship('ObjHistorias',backref='objetivo',cascade = "all, delete, delete-orphan")
+    historiaAsociada = db.relationship('ObjHistorias',backref='objetivos',cascade = "all, delete, delete-orphan")
 
-    def __init__(self, idPila, idObjetivo, descripObjetivo,transversalidad):
-        # Constructor del modelo Acciones.
-        self.idProducto = idPila
-        self.idObjetivo       = idObjetivo
-        self.descripObjetivo  = descripObjetivo
+    def __init__(self, idProducto, identificador, descripcion,transversalidad):
+        self.idProducto = idProducto
+        self.identificador = identificador
+        self.descripcion = descripcion
         self.transversalidad = transversalidad
 
 # Tabla Actores.
 class Actores(db.Model):
     __tablename__  = 'actores'
-    idProducto = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
-    id_actores     = db.Column(db.Integer, primary_key = True)
-    nombre_actores = db.Column(db.String(50), nullable = False)
-    descripcion_actores = db.Column(db.String(500), nullable = True)
+    idProducto = db.Column(db.Integer, db.ForeignKey('productos.identificador'))
+    identificador = db.Column(db.Integer, primary_key = True)
+    nombre = db.Column(db.String(50), nullable = False)
+    descripcion = db.Column(db.String(500), nullable = True)
     historiaAsociada = db.relationship('ActoresHistorias',backref='actores',cascade = "all, delete, delete-orphan")
     
-    def __init__(self, idPila, id_actores, nombre_actores, descripcion_actores):
+    def __init__(self, idProducto, identificador, nombre, descripcion):
         # Constructor del modelo Actores.
-        self.idProducto = idPila
-        self.id_actores          = id_actores
-        self.nombre_actores      = nombre_actores
-        self.descripcion_actores = descripcion_actores
+        self.idProducto = idProducto
+        self.identificador       = identificador
+        self.nombre      = nombre
+        self.descripcion = descripcion
 
 
 class ObjHistorias(db.Model):
     __tablename__ = 'objHistorias'
-    idObjetivoHistoria = db.Column(db.Integer, primary_key = True)
-    idHistoria = db.Column(db.Integer, db.ForeignKey('historia.idHistoria_Usuario'))
-    idObjetivo = db.Column(db.Integer, db.ForeignKey('objetivo.idObjetivo'))
+    identificador = db.Column(db.Integer, primary_key = True)
+    idHistoria = db.Column(db.Integer, db.ForeignKey('historias.identificador'))
+    idObjetivo = db.Column(db.Integer, db.ForeignKey('objetivos.identificador'))
 
-    def __init__(self, idObjetivoHistoria, idHistoria, idObjetivo):
-        self.idObjetivoHistoria = idObjetivoHistoria
+    def __init__(self, identificador, idHistoria, idObjetivo):
+        self.identificador = identificador
         self.idHistoria = idHistoria
         self.idObjetivo = idObjetivo
 
 class ActoresHistorias(db.Model):
     __tablename__ = 'actHistorias'
-    idActoresHistoria = db.Column(db.Integer, primary_key = True)
-    idHistoria = db.Column(db.Integer, db.ForeignKey('historia.idHistoria_Usuario'))
-    idActores = db.Column(db.Integer, db.ForeignKey('actores.id_actores'))
+    identificador = db.Column(db.Integer, primary_key = True)
+    idHistoria = db.Column(db.Integer, db.ForeignKey('historias.identificador'))
+    idActores = db.Column(db.Integer, db.ForeignKey('actores.identificador'))
 
-    def __init__(self, idActoresHistoria, idHistoria, idActor):
-        self.idActoresHistoria = idActoresHistoria
+    def __init__(self, identificador, idHistoria, idActor):
+        self.identificador = identificador
         self.idHistoria = idHistoria
         self.idActores = idActor
 
 class Enlaces(db.Model):
     __tablename__ = 'enlaces'
-    id_enlace = db.Column(db.Integer, primary_key = True)
-    id_producto_actual = db.Column(db.Integer, db.ForeignKey('pila.idPila'))
-    id_clave = db.Column(db.Integer, nullable = True)
-    id_valor = db.Column(db.Integer, nullable = True)
+    identificador = db.Column(db.Integer, primary_key = True)
+    idProducto = db.Column(db.Integer, db.ForeignKey('productos.identificador'))
+    idClave = db.Column(db.Integer, nullable = True)
+    idValor = db.Column(db.Integer, nullable = True)
 
-    def __init__(self, id_enlace, id_producto_actual, id_clave, id_valor = None):
-        self.id_enlace = id_enlace
-        self.id_producto_actual  = id_producto_actual
-        self.id_clave     = id_clave
-        self.id_valor    = id_valor
+    def __init__(self, identificador, idProducto, idClave, idValor = None):
+        self.identificador = identificador
+        self.idProducto  = idProducto
+        self.idClave     = idClave
+        self.idValor    = idValor
 
 #-------------------------------------------------------------------------------
 

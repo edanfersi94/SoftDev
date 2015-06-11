@@ -1,121 +1,167 @@
 # -*- coding: utf-8 -*-
 
-# Función a importar.
-import model
+"""
+    UNIVERSIDAD SIMÓN BOLÍVAR
+    Departamento de Computación y Tecnología de la Información.
+    CI-3715 - Ingeniería de Software I (CI-3715)
+    Abril - Julio 2015
+
+    AUTORES:
+        Equipo SoftDev
+
+    DESCRIPCION: 
+		Módulo que contiene los métodos que permitirán insertar, modificar y
+		eliminar objetivos.
+"""
+
+#.-----------------------------------------------------------------------------.
+
+# Funciones a importar:
+from model import db, func, Objetivos, ObjHistorias
+
+#.-----------------------------------------------------------------------------.
 
 # Clase que tendra las diferentes funcionalidades de la tabla "Objetivo".
 class clsObjetivo():
 
-	#-------------------------------------------------------------------------------
+	#.-------------------------------------------------------------------------.
 	
-	def insert_Objetivo(self, idProducto, newDescripObjetivo,newTransversalidad):
+	def insertar(self, idProducto, descripcion,transversalidad):
 		"""
-			@brief Funcion que permite insertar un nuevo objetivo en la base de datos.
+			@brief Funcion que permite insertar un nuevo objetivo en la base de
+				   datos.
 			
-			@param idProducto 		  : Producto al que pertenecerá el objetivo.			
-			@param newDescripObjetivo : Descripcion del objetivo a insertar.
+			@param idProducto : Producto al que pertenecerá el objetivo.			
+			@param descripcion: Descripcion del objetivo a insertar.
+			@param transversalidad: entero entre 0 y 1 que indica si el objetivo
+									es transversal.
 			
 			@return True si se insertó el objetivo dado. De lo contrario False.
 		"""
 
-		# Búsqueda del identificador más alto.		
-		query = model.db.session.query(model.func.max(model.Objetivo.idObjetivo)).all()
-		
-		# Se toma la tupla resultante.
-		tuplaResult = query[0]
-		
-		num_objetivos = int(tuplaResult[0] or 0)
 
-		# Booleano que indica si el tipo es el correcto.
-		isValidTransversalidad = (type(newTransversalidad) == int) and (newTransversalidad== 0 or newTransversalidad== 1)
-		descripIsStr = type(newDescripObjetivo) == str
-		idProdIsInt	 = type(idProducto) == int
+		# Booleanos que indican si los parámetros son del tipo correspondiente.
+		transversalidadInt = type(transversalidad) == int 
+		descripcionStr = type(descripcion) == str
+		idProductoInt  = type(idProducto) == int
 	
-		if ( descripIsStr and idProdIsInt and isValidTransversalidad):
-
-			# Booleano que indica si cumplen con los limites.
-			descripLenValid = 1 <= len(newDescripObjetivo) <= 500
-			idProducIsPosit = idProducto > 0
+		if ( transversalidadInt and idProductoInt and descripcionStr):
+			# Booleanos que indican si se cumplen los limites.
+			descripcionLongitud = 1 <= len(descripcion) <= 500
+			idProductoPositivo  = idProducto > 0
+			transversalidadLongitud = -1 < transversalidad < 2 
 		
-			if ( descripLenValid and idProducIsPosit ):
+			if ( descripcionLongitud and idProductoPositivo and transversalidadLongitud ):
 				
-				# Si no hay objetivos en la base de datos, entonces se inicializa el contador.
-				if num_objetivos == None:
-					num_objetivos = 0
-				
-				num_objetivos = num_objetivos + 1
-				newObjetivo = model.Objetivo(idProducto, num_objetivos, newDescripObjetivo,newTransversalidad)
-				model.db.session.add(newObjetivo)
-				model.db.session.commit()
+				# Búsqueda del último id en la base de datos correspondiente.	
+				ultimoId = db.session.query(func.max(Objetivos.identificador)).\
+							first()
+				identificador  = ultimoId[0]
+
+				# Si no hay acciones en la base de datos, entonces se inicializa 
+				# el contador.
+				identificador = 1 if identificador == None else identificador + 1
+
+				objetivoNuevo = Objetivos(idProducto, identificador ,descripcion,
+										 transversalidad)
+				db.session.add(objetivoNuevo)
+				db.session.commit()
 				return( True )
 		
 		return( False )
 	
-	#-------------------------------------------------------------------------------
+	#.-------------------------------------------------------------------------.
 	
-	def find_idObjetivo(self, idProducto, idObjetivo):
+	def buscarId(self,identificador):
 		"""
 			@brief Funcion que realiza la busqueda del objetivo cuyo identificador
-				   sea "idObjetivo".
+				   sea "identificador".
 			
-			@param idProducto : Producto al que pertenece el objetivo.
-			@param idObjetivo : Identificador del objetivo a buscar.
+			@param identificador: id del objetivo a buscar.
 			
-			@return lista que contiene las tuplas obtenidas del subquery. De lo 
-					contrario retorna la lista vacia.
+			@return lista que contiene las tuplas obtenidas del subquery. En caso
+					cotrario retorna None.
 		"""
 		
-		idIsInt = type(idObjetivo) == int
-		idProdIsInt	 = type(idProducto) == int
+		idInt = type(identificador) == int
 		
-		if ( idIsInt and idProdIsInt ):
-			objetivoEsp = model.Objetivo.idObjetivo == idObjetivo 
-			idProductoEsp =  model.Objetivo.idProducto == idProducto
-			query = model.db.session.query(model.Objetivo).filter(objetivoEsp, idProductoEsp).all()
-			return( query )
-		return( [] )
+		if ( idInt):
+			idBuscado = db.session.query(Objetivos).\
+					filter(Objetivos.identificador == identificador).\
+					first()
+			return( idBuscado )
+		return( None )
 	
-	#-------------------------------------------------------------------------------
+	#.-------------------------------------------------------------------------.
 
-	def modify_Objetivo(self, idProducto, idObjetivo, newDescripObjetivo,newTransversalidad):
+	def modificar(self,identificador, descripcion,transversalidad):
 		"""
-			@brief Funcion que modifica los datos del objetivo cuyo id sea "idObjetivo".
-	
-			@param idProducto 		  : Producto al que pertenece el objetivo.			
-			@param idObjetivo	  	  : id del objetivo a modificar.
-			@param newDescripObjetivo : nueva descripcion para el objetivo dada.
-			
-			@return True si se modifico el objetivo dada. De lo contrario False.
-		"""
-		
-		# Booleanos que indican si el tipo es el correcto.
-		isValidTransversalidad = (type(newTransversalidad) == int) and (newTransversalidad== 0 or newTransversalidad== 1)
-		descripIsStr = type(newDescripObjetivo) == str
-		idIsInt 	 = type(idObjetivo) == int
-		idProdIsInt	 = type(idProducto) == int
-		
-		if ( idIsInt and descripIsStr and idProdIsInt and isValidTransversalidad):
-			# Booleanos que indican si se cumplen los limites.
-			idIsPositive 	= idObjetivo > 0
-			idProducIsPosit = idProducto > 0
-			descripLenValid = 1 <= len(newDescripObjetivo) <= 500
-			
-			if ( idIsPositive and descripLenValid and idProducIsPosit):
-				query = self.find_idObjetivo( idProducto, idObjetivo)
+			@brief Función que modifica los datos del objetivo cuyo id sea 
+			       "identificador".
 				
-				if ( query != [] ):
-					objetivo = model.Objetivo.idObjetivo == idObjetivo 
-					idProductoEsp = model.Objetivo.idProducto == idProducto
-					model.db.session.query(model.Objetivo).filter(objetivo, idProductoEsp).\
-						update({'descripObjetivo':(newDescripObjetivo)})
-					model.db.session.commit()
+			@param identificador: id del objetivo a modificar.
+			@param descripcion: nueva descripcion para el objetivo dada.
+			@param transversalidad: entero entre 0 y 1 que indica si el objetivo
+									es transversal.
 
-					model.db.session.query(model.Objetivo).filter(objetivo, idProductoEsp).\
-						update({'transversalidad':(newTransversalidad)})
-					model.db.session.commit()
+			@return True si se modifico correctamente el objetivo dado. En caso
+					con
+		"""
+		
+		# Booleanos que indican si los parámetros son del tipo correspondiente.
+		transversalidadInt = type(transversalidad) == int 
+		descripcionStr = type(descripcion) == str
+		idInt  = type(identificador) == int
+		
+		if ( idInt and descripcionStr and  transversalidadInt):
+			# Booleanos que indican si se cumplen los limites.
+			idPositivo 	= identificador > 0
+			descripcionLongitud = 1 <= len(descripcion) <= 500
+			transversalidadLongitud = -1 < transversalidad < 2 
+			
+			if ( idPositivo and descripcionLongitud and  transversalidadLongitud ):
+				idBuscado = self.buscarId(identificador)
+				
+				if ( idBuscado != None ):
+					db.session.query(Objetivos).\
+						filter(Objetivos.identificador == identificador).\
+						update({'descripcion': descripcion,
+								'transversalidad':transversalidad})
+					db.session.commit()	
+					return( True )		
+		return( False )	
+
+#.-------------------------------------------------------------------------.	
+
+	def eliminar(self, identificador):
+		"""
+			@brief Función que permite eliminar un objetivo cuyo id
+				   sea "identificador".
+			
+			@return True si se eliminó el objetivo dado. De lo contrario retorna
+					False.
+		"""
+
+		idInt = type(identificador) == int
+		
+		if (idInt):
+			idPositivo = identificador >0
+			
+			if ( idPositivo ):
+				objetivoBuscado = db.session.query(Objetivos).\
+						filter(Objetivos.identificador == identificador).\
+						first()
+
+				if ( objetivoBuscado != []):
+
+					objetivoContenido = db.session.query(ObjHistorias).\
+									  	filter(ObjHistorias.idObjetivo == identificador).\
+									  	first()
 					
-					return( True )
+					if ( objetivoContenido == None):
 					
-		return( False )
-	
-	#--------------------------------------------------------------------------------	
+						db.session.delete(objetivoBuscado)
+						db.session.commit()
+						return ( True )
+			
+		return ( False )

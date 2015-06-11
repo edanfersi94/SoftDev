@@ -29,6 +29,15 @@ scrumModule.controller('VObjetivoController',
       $scope.VLogin2 = function() {
         $location.path('/VLogin');
       };
+      $scope.AElimObjetivo3 = function(idObjetivo) {
+          
+        objetivoService.AElimObjetivo({"idObjetivo":((typeof idObjetivo === 'object')?JSON.stringify(idObjetivo):idObjetivo)}).then(function (object) {
+          var msg = object.data["msg"];
+          if (msg) flash(msg);
+          var label = object.data["label"];
+          $location.path(label);
+          $route.reload();
+        });};
 
       $scope.fObjetivoSubmitted = false;
       $scope.AModifObjetivo0 = function(isValid) {

@@ -28,13 +28,13 @@ app = Flask(__name__, static_url_path='')
 
 # Construcción de la base de datos.
 
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres1234:@localhost/prueba1"
+SQLALCHEMY_DATABASE_URI = "postgresql://BMO:@localhost/newapmwsc"
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
-db_dir = 'postgresql+psycopg2://postgres:1234@localhost/prueba1'
+db_dir = 'postgresql+psycopg2://BMO:@localhost/newapmwsc'
 # Estructrua:
-# 'postgresql+psycopg2://user:password@localhost/the_database' 
+# 'postgresql+psycopg2://user:password@localhost/the_database'  
 
 # Instancia de la aplicación a utilizar.
 #app = Flask(__name__)
@@ -67,6 +67,8 @@ def make_session_permanent():
 def root():
     return app.send_static_file('index.html')
 
+
+
 from app.scrum.ident import ident
 app.register_blueprint(ident)
 from app.scrum.prod import prod
@@ -83,6 +85,8 @@ from app.scrum.accion import accion
 app.register_blueprint(accion)
 from app.scrum.historias import historias
 app.register_blueprint(historias)
+from app.scrum.tareas import tareas
+app.register_blueprint(tareas)
 
 #-------------------------------------------------------------------------------
 

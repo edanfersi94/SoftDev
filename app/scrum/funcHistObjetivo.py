@@ -1,98 +1,98 @@
-# -*- coding: utf-8 -*-
+"""
+    UNIVERSIDAD SIMÓN BOLÍVAR
+    Departamento de Computación y Tecnología de la Información.
+    CI-3715 - Ingeniería de Software I (CI-3715)
+    Abril - Julio 2015
 
-# Función a importar.
-import model
+    AUTORES:
+        Equipo SoftDev
+
+    DESCRIPCION: 
+		Módulo que contiene los métodos que permitirán insertar, modificar y
+		eliminar objetivos de una historia.
+"""
+
+# Funciones a importar:
+from model import db, func, ObjHistorias
+from sqlalchemy.sql.dml import Insert
 
 # Clase que tendra las diferentes funcionalidades de la tabla " ObjHistorias "
 class clsHistoriaObj():
 
-	#-------------------------------------------------------------------------------
+	#.-------------------------------------------------------------------------.
 
-	def insert_Objetivo(self, idHistoria, idObjetivo):
+	def insertar(self, idHistoria, idObjetivo):
+		"""
+			@brief Función que permite insertar un nuevo objetivo de una historia 
+				   en la base de datos.
+			
+			@param idHistoria: identificador de la historia al que pertenecerá el 
+							   objetivo.
+			@param idObjetivo: identificador del objetivo que se asociará a la 
+							   historia.
 
-		# Búsqueda del identificador más alto.
-		query = model.db.session.query(model.func.max(model.ObjHistorias.idObjetivoHistoria)).all()
-
-		# Se toma la tupla resultante.
-		tuplaResult = query[0]
-
-		num_objInsertado = tuplaResult[0]
+			@return True si se insertó correctamente el objetivo deseada. En caso 
+					contrario retorna False.
+		"""
 
 		# Booleanos que indican si el tipo es el correcto.
-		idHistoriaIsInt = type(idHistoria) == int
-		idObjetivoIsInt = type(idObjetivo) == int
+		idHistoriaInt = type(idHistoria) == int
+		idObjetivoInt = type(idObjetivo) == int
 
-		if (idHistoriaIsInt and idObjetivoIsInt):
+		if (idHistoriaInt and idObjetivoInt):
 
 			# Booleanos que indican si se cumplen los límites.
-			idHistoriaIsPos = idHistoria > 0
-			idObjetivoIsPos = idObjetivo > 0
+			idHistoriaPositivo = idHistoria > 0
+			idObjetivoPositivo = idObjetivo > 0
 
-			if (idHistoriaIsPos and idObjetivoIsPos):
+			if (idHistoriaPositivo and idObjetivoPositivo):
+
+				# Búsqueda del último id en la base de datos correspondiente.	
+				ultimoId = db.session.query(func.max(ObjHistorias.identificador)).\
+								first()
+				identificador  = ultimoId[0]
 
 				# Si no hay acciones en la base de datos, entonces se inicializa 
 				# el contador.
-				if (num_objInsertado == None):
-					num_objInsertado = 0
-				num_objInsertado = num_objInsertado + 1
+				identificador = 1 if identificador == None else identificador + 1
 
-				newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-				model.db.session.add(newObj)
-				model.db.session.commit()
+				objetivoNuevo = ObjHistorias(identificador ,idHistoria, idObjetivo)
+				db.session.add(objetivoNuevo)
+				db.session.commit()
 				return( True )
 
 		return( False )
 
-	#-------------------------------------------------------------------------------
+	#.-------------------------------------------------------------------------.
 		
-	def modify_Objetivo(self,idHistoria,idObjetivo):
-		
-		idHistoriaIsInt = type(idHistoria) == int
-		idObjetivoIsInt = type(idObjetivo) == int
-		
-		if (idHistoriaIsInt and idObjetivoIsInt):
-			idHistoriaIsPos = idHistoria >0
-			idObjetivoIsPos = idObjetivo> 0
+	def eliminar(self, idHistoria):
+		"""
+			@brief Función que permite eliminar los datos del objetivo que 
+				   pertenece a una historia cuyo id sea "identificador".
 			
-			if (idHistoriaIsPos and idObjetivoIsPos):
-				objEsp   = model.ObjHistorias.idObjetivo == idObjetivo
-				historiaEsp  = model.ObjHistorias.idHistoria == idHistoria
-				query = model.db.session.query(model.ObjHistorias).filter(objEsp, historiaEsp).all()
-				objetivo = query
+			@param idHistoria: identificador de la historia al que pertenece el/los 
+							   objetivo(s).
+			@return True si se modificó la acción dada. En caso contrario 
+					retorna False.
+		"""
+
+		# Booleano que indica si el parámetro es del tipo correspondiente.		
+		idHistoriaInt = type(idHistoria) == int
+		
+		if ( idHistoriaInt ):
+			idHistoriaPositivo = idHistoria > 0
+
+			if ( idHistoriaPositivo ):
 				
-				if(objetivo != []):
-					for obj in objetivo:
-						model.db.session.delete(obj)
-						model.db.session.commit()
-					
+				objetivoBuscado = db.session.query(ObjHistorias).\
+								filter(ObjHistorias.idHistoria == idHistoria).\
+								all()
+				
+				if(objetivoBuscado != []):
+					for objetivo in objetivoBuscado:
+						db.session.delete(objetivo)
+						db.session.commit()
 					return ( True )
-				
 		return ( False )
 				
-	#-------------------------------------------------------------------------------	
-
-	def find_Objetivo(self,idHistoria):
-		listaObjetivo = []
-		
-		idHistoriaIsInt = type(idHistoria) == int
-		
-		if (idHistoriaIsInt):
-			idHistoriaIsPos = idHistoria >0
-			
-			if (idHistoriaIsPos):
-				historiaEsp  = model.ObjHistorias.idHistoria == idHistoria
-				query = model.db.session.query(model.ObjHistorias).filter(historiaEsp).all()
-				objetivo = query
-				
-				for obj in objetivo:
-					idObjetivo = obj.idObjetivo
-					listaObjetivo.append(idObjetivo)
-					
-				return (listaObjetivo)
-			
-			return ([])
-		
-		return ([])		
-			
-					
-					
+	#.-------------------------------------------------------------------------.

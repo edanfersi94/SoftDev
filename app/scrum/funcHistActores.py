@@ -1,96 +1,104 @@
 # -*- coding: utf-8 -*-
 
-# Función a importar.
-import model
+"""
+    UNIVERSIDAD SIMÓN BOLÍVAR
+    Departamento de Computación y Tecnología de la Información.
+    CI-3715 - Ingeniería de Software I (CI-3715)
+    Abril - Julio 2015
+
+    AUTORES:
+        Equipo SoftDev
+
+    DESCRIPCION: 
+		Módulo que contiene los métodos que permitirán insertar, modificar y
+		eliminar actores de una historia.
+"""
+
+#.-----------------------------------------------------------------------------.
+
+# Funciones a importar:
+from model import db, func, ActoresHistorias
 from sqlalchemy.sql.dml import Insert
+
+#.-----------------------------------------------------------------------------.
 
 # Clase que tendra las diferentes funcionalidades de la tabla " ActoresHistorias "
 class clsHistoriaActores():
 
-	#-------------------------------------------------------------------------------
+	#.-------------------------------------------------------------------------.
 
-	def insert_Actor(self, idHistoria, idActor):
+	def insertar(self, idHistoria, idActor):
+		"""
+			@brief Función que permite insertar un nuevo actor de una historia 
+				   en la base de datos.
+			
+			@param idHistoria: identificador de la historia al que pertenecerá el 
+							   actor.
+			@param idActor: identificador del actor que se asociará a la historia.
 
-		# Búsqueda del identificador más alto.
-		query = model.db.session.query(model.func.max(model.ActoresHistorias.idActoresHistoria)).all()
+			@return True si se insertó correctamente la acción deseada. En caso 
+					contrario retorna False.
+		"""
 
-		# Se toma la tupla resultante.
-		tuplaResult = query[0]
+		# Booleanos que indican si los parámetros son del tipo correspondiente.
+		idHistoriaInt = type(idHistoria) == int
+		idActorInt = type(idActor) == int
 
-		num_actoresInsertado = tuplaResult[0]
-
-		# Booleanos que indican si el tipo es el correcto.
-		idHistoriaIsInt = type(idHistoria) == int
-		idActoresIsInt = type(idActor) == int
-
-		if (idHistoriaIsInt and idActoresIsInt):
+		if (idHistoriaInt and idActorInt):
 
 			# Booleanos que indican si se cumplen los límites.
-			idHistoriaIsPos = idHistoria > 0
-			idActoresIsPos = idActor > 0
+			idHistoriaPositivo = idHistoria > 0
+			idActorPositivo = idActor > 0
 
-			if (idHistoriaIsPos and idActoresIsPos):
+			if (idHistoriaPositivo and idActorPositivo):
+
+				# Búsqueda del último id en la base de datos correspondiente.	
+				ultimoId = db.session.query(func.max(ActoresHistorias.identificador)).\
+								first()
+				identificador  = ultimoId[0]
 
 				# Si no hay acciones en la base de datos, entonces se inicializa 
 				# el contador.
-				if (num_actoresInsertado == None):
-					num_actoresInsertado = 0
-				num_actoresInsertado = num_actoresInsertado + 1
+				identificador = 1 if identificador == None else identificador + 1
 
-				newActor = model.ActoresHistorias(num_actoresInsertado, idHistoria, idActor)
-				model.db.session.add(newActor)
-				model.db.session.commit()
+				actorNuevo = ActoresHistorias(identificador, idHistoria, 
+													idActor)
+				db.session.add(actorNuevo)
+				db.session.commit()
 				return( True )
 
 		return( False )
 
-	#-------------------------------------------------------------------------------
+	#.-------------------------------------------------------------------------.
 
-	def modify_Actor(self,idHistoria,idActores):
-		
-		idHistoriaIsInt = type(idHistoria) == int
-		idActoresIsInt = type(idActores) == int
-		
-		if (idHistoriaIsInt and idActoresIsInt):
-			idHistoriaIsPos = idHistoria >0
-			idActoresIsPos = idActores> 0
+	def eliminar(self, idHistoria):
+		"""
+			@brief Función que permite eliminar los datos del actor que pertenece 
+					a una historia cuyo id sea "idHistoria".
 			
-			if ( idHistoriaIsPos and idActoresIsPos):
-				actoresEsp   = model.ActoresHistorias.idActores == idActores
-				historiaEsp  = model.ActoresHistorias.idHistoria == idHistoria
-				query = model.db.session.query(model.ActoresHistorias).filter(actoresEsp, historiaEsp).all()
-				actores = query
+			@param idHistoria: identificador de la historia al que pertenece el/los 
+							   actor(es).
+			@return True si se modificó la acción dada. En caso contrario 
+					retorna False.
+		"""
+		
+		# Booleano que indica si el parámetro es del tipo correspondiente.
+		idHistoriaInt = type(idHistoria) == int
+		
+		if (idHistoriaInt):
+			# Booleano que indica si se cumplen los límites.
+			idHistoriaPositivo = idHistoria >0
+			
+			if ( idHistoriaPositivo ):
+				actorBuscado = db.session.query(ActoresHistorias).\
+						filter(ActoresHistorias.idHistoria == idHistoria).\
+						all()
 
-				if (actores != []):
-					for act in actores:
-						model.db.session.delete(act)
-						model.db.session.commit()
+				if ( actorBuscado != []):
+					for actor in actorBuscado:
+						db.session.delete(actor)
+						db.session.commit()
 					return ( True )
-			
 		return ( False )
 	
-	#-------------------------------------------------------------------------------			
-	def find_Actores(self,idHistoria):
-		listaActores = []
-		
-		idHistoriaIsInt = type(idHistoria) == int
-		
-		if (idHistoriaIsInt):
-			idHistoriaIsPos = idHistoria >0
-			
-			if (idHistoriaIsPos):
-				historiaEsp  = model.ActoresHistorias.idHistoria == idHistoria
-				query = model.db.session.query(model.ActoresHistorias).filter(historiaEsp).all()
-				actores = query
-				
-				for act in actores:
-					idActores = act.idActores
-					listaActores.append(idActores)
-					
-				return (listaActores)
-			
-			return ([])
-		
-		return ([])
-					
-					
+	#.-------------------------------------------------------------------------.
