@@ -29,7 +29,9 @@ import unittest
 class TestEnlace(unittest.TestCase):
     
     def vaciarBaseDeDatos(self):
+
         model.db.session.query(model.Enlaces).delete()
+        model.db.session.query(model.Actores).delete()
         model.db.session.query(model.Productos).delete()
     
     def InsertarProducto(self):

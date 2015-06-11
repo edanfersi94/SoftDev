@@ -32,6 +32,8 @@ class TestAccion(unittest.TestCase):
     # FUNCION AUXILIAR
     
     def vaciarBaseDeDatos(self):
+        model.db.session.query( model.Historias ).delete()
+        model.db.session.query( model.Objetivos ).delete()
         model.db.session.query( model.Acciones ).delete()  # Se limpia la base de datos.
         model.db.session.query( model.Productos ).delete() 
     
@@ -793,6 +795,7 @@ class TestAccion(unittest.TestCase):
         idaccion = 20
         nuevoDescripcionAccion = 'Esto sigue siendo una prueba'
         result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
+        self.assertFalse( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
     ### CASOS VALIDOS( Casos Fronteras )

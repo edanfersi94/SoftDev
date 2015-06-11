@@ -30,900 +30,530 @@ import unittest
 
 class TestHistoria(unittest.TestCase):
     
+    def vaciarBaseDeDatos(self):
+        model.db.session.query(model.Historias).delete()  # Se limpia la base de datos.
+        model.db.session.query(model.Acciones).delete()
+        model.db.session.query(model.Productos).delete()  # Se limpia la base de datos.
+    
     def testHistoriaExist(self):
-        model.db.session.query(model.Historia_Usuario).delete()
-        model.db.session.query( model.Pila ).delete() # Se limpia la base de datos
+        model.db.session.query(model.Historias).delete()
+        model.db.session.query( model.Productos).delete() # Se limpia la base de datos
         tempHistoria = clsHistoria()
         self.assertIsNotNone(tempHistoria)
-          
-          
-  # FUNCION BUSCAR
+                 
 
-    ### CASOS VALIDOS (Casos Interiores).
-
-    #Test 2: Buscar el codigo de historia que exista
-
-    def find_CodHistoriaExist(self):       
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        #Se inserta un elemento valido en la base de datos
-        newIdProducto = 1
-        newDescripProducto=' Viendo mis casos de prueba  '
-        newProducto = model.Pila(newIdProducto,newDescripProducto)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
-        
-        newcodHistoria = "c1"
-        newTipoHostoria= "opcional"
-        idHistoria=1
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        historiaIdPila= newIdProducto 
-        newProducto = model.Historia_Usuario(idHistoria,newcodHistoria,historiaIdPila,newTipoHostoria,1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
-
-        tempHistoria = clsHistoria()
-        codHistoria = "c1"
-        query = tempHistoria.find_CodHistoria(codHistoria)
-        self.assertIsNotNone(query[0])
-        model.db.session.query( model.Pila ).delete() # Se limpia la base de datos
-
-    # Test 3: Buscar el codigo de historia que no existe
-    def find_CodHistoriaNotExist(self):
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        tempHistoria = clsHistoria()
-        codHistoria = "c1"
-        query = tempHistoria.find_CodHistoria(codHistoria)
-        self.assertEqual(query,[])
-
-    ### CASOS INVALIDOS ( Casos Malicia )
-
-    # Test 4: El codigo es entero.
-    def testfind_CodHistoriaInt(self):
-        tempHistoria = clsHistoria()
-        codHistoria = 1
-        query = tempHistoria.find_CodHistoria(codHistoria)
-        self.assertEqual(query,[])
-    
-    # Test 5: El codigo a buscar es de tipo float.
-    def testfind_CodHistoriaFloat(self):
-        tempHistoria = clsHistoria()
-        codHistoria = 1.0
-        query = tempHistoria.find_CodHistoria(codHistoria)
-        self.assertEqual(query,[])  
-
-    # Test 6: El codigo de la historia a buscar es nulo.
-    def testfind_CodHistoriaNone(self):
-        tempHistoria = clsHistoria()
-        codHistoria = None
-        query = tempHistoria.find_CodHistoria(codHistoria)
-        self.assertEqual(query,[])
-
-    #.-------------------------------------------------------------------.  
     # FUNCION INSERTAR.
     
     ### CASOS VALIDOS( Casos Interiores ).
     # Test 7: Insertar una historia
     def testinsert_Historia(self):
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
+        self.vaciarBaseDeDatos()
         tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
         tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
+        tempAccion.insertar(1,"Holaaa")
         tempHistoria = clsHistoria()
-        result = tempHistoria.insert_Historia(1,'codigo','Opcional',1)
+        result = tempHistoria.insertar(1,'codigo','Opcional',1,0,1)
         self.assertTrue(result)
+        self.vaciarBaseDeDatos()
         
         
 
     # Test 9: Se insertara una historia con codigo float.
     def testinsert_HistoriaCodFloat(self):
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
+        self.vaciarBaseDeDatos()
         tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
         tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
+        tempAccion.insertar(1,"Holaaa")
         tempHistoria = clsHistoria()
-        result = tempHistoria.insert_Historia(1,12.0,'Opcional',1)
+        result = tempHistoria.insertar(1,12.0,'Opcional',1,0,1)
         self.assertFalse(result[0])
+        self.vaciarBaseDeDatos()
                 
     ### CASOS INVALIDOS( Casos Malicia ):    
 
     #Test 11: Se insertara una historia con tipo distinto y codigo entero.
     def testinsert_HistoriaTipoDistintoyCodInt(self):
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
+        self.vaciarBaseDeDatos()
         tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
         tempHistoria = clsHistoria()
         tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
+        tempAccion.insertar(1,"Holaaa")
         tempHistoria = clsHistoria()
-        result = tempHistoria.insert_Historia(salida[1],12,'tipoDistinto',1)
+        result = tempHistoria.insertar(salida[1],12,'tipoDistinto',1,0,1)
         self.assertFalse(result[0])
+        self.vaciarBaseDeDatos()
 
     # Test 12:  Se insertara una historia con tipo distinto y codigo float.
     def testinsert_HistoriaTipoDistintoyCodFloat(self):
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
+        self.vaciarBaseDeDatos()
         tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
         tempHistoria = clsHistoria()
         tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
+        tempAccion.insertar(1,"Holaaa")
         tempHistoria = clsHistoria()
-        result = tempHistoria.insert_Historia(salida[1],12.34,'tipoDistinto',1)
+        result = tempHistoria.insertar(salida[1],12.34,'tipoDistinto',1,0,1)
         self.assertFalse(result[0])
+        self.vaciarBaseDeDatos()
 
     #Test 13: Se insertara una historia con codigo None.
     def testinsert_HistoriaNone(self):
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
+        self.vaciarBaseDeDatos()
         tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
         tempHistoria = clsHistoria()
         tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
+        tempAccion.insertar(1,"Holaaa")
         tempHistoria = clsHistoria()
-        result = tempHistoria.insert_Historia(salida[1], None, 'Obligatorio',1)
+        result = tempHistoria.insertar(salida[1], None, 'Obligatorio',1,0,1)
         self.assertFalse(result[0])
+        self.vaciarBaseDeDatos()
         
-    # FUNCION MODIFICAR
-    # Casos Validos
-    #Test :
-    def testmodify_Historia(self):
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
+    def testbuscarIdHistoria(self):
         
+        self.vaciarBaseDeDatos()
         tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
         
         tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
+        tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        
-        tempHistoria = clsHistoria()
-        result = tempHistoria.modify_Historia(salida[1],1)
-        self.assertTrue(result)
-        
-    def testmodify_IdProductNone(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = None
-        IdHistoria = 1
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdProductStr(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = "Producto"
-        IdHistoria = 1
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdProductEmpty(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = ""
-        IdHistoria = 1
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdProductList(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = []
-        IdHistoria = 1
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-    
-    def testmodify_IdProductFLoat(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = 2.5
-        IdHistoria = 1
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        
-    def testmodify_IdProductNegNum(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = -23
-        IdHistoria = 1
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        self.assertFalse(result)
-        
-    def testmodify_IdHistoriaNone(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = 1
-        IdHistoria = None
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdHistoriaStr(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = 1
-        IdHistoria = "Historia"
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-    
-    def testmodify_IdHistoriaEmpty(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = 1
-        IdHistoria = ""
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdHistoriaList(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = 1
-        IdHistoria = []
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdHistoriaFLoat(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = 1
-        IdHistoria = 2.5
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdHistoriaNegNum(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = 1
-        IdHistoria = -67
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdProductNoneIdHistoriaStr(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = None
-        IdHistoria = "jajaja"
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-    
-    def testmodify_IdProductNoneIdHistoriaNone(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = None
-        IdHistoria = None
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdProductNoneIdHistoriaEmpty(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = None
-        IdHistoria = ""
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdProductNoneIdHistoriaList(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = None
-        IdHistoria = []
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdProductNoneIdHistoriaFloat(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = None
-        IdHistoria = 2.5
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdProductNoneIdHistoriaNegNum(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = None
-        IdHistoria = -456
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdProductStrIdHistoriaNone(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = "pruba1"
-        IdHistoria = None
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdProductStrIdHistoriaEmpty(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = "prueba1"
-        IdHistoria = ""
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdProductStrIdHistoriaList(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = "prueba1"
-        IdHistoria = []
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdProductStrIdHistoriaFloat(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = "prueba1"
-        IdHistoria = 5.7
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_IdProductStrIdHistoriaaNegNUm(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
-        model.db.session.add(newHistoriaUsuario)
-        model.db.session.commit() 
-        tempHistoria = clsHistoria()
-        
-        idProducto = "prueba1"
-        IdHistoria = -3445
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testmodify_Invalid(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos.
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        
-        tempHistoria = clsHistoria()
-        
-        idProducto = 1
-        IdHistoria = 23
-        
-        result = tempHistoria.modify_Historia(idProducto,IdHistoria)
-        self.assertFalse(result)
-        
-    def testfindHistoria(self):
-        
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos
-        
-        tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
-        
-        tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
-        
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         tempHistoria = clsHistoria()
         
         IdHistoria = 1
-        result = tempHistoria.find_Historia(IdHistoria)
+        result = tempHistoria.buscarHistoria(IdHistoria)
         self.assertIsNotNone(result)
+        self.vaciarBaseDeDatos()
         
-    def testfindHistoriaIdHistoriaNone(self):
+    def testbuscarIdHistoriaNone(self):
         
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos
+        self.vaciarBaseDeDatos()
         
         tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
         
         tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
+        tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
         tempHistoria = clsHistoria()
         
         IdHistoria = None
-        query = tempHistoria.find_Historia(IdHistoria)
-        self.assertEqual(query,[])
+        query = tempHistoria.buscarHistoria(IdHistoria)
+        self.assertEqual(query,None)
+        self.vaciarBaseDeDatos()
         
         
-    def testfindHistoriaIdHistoriaStr(self):
+    def testbuscarIdHistoriaStr(self):
         
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos
+        self.vaciarBaseDeDatos()
         
         tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
         
         tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
+        tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
         tempHistoria = clsHistoria()
         
         IdHistoria = "hola"
-        query = tempHistoria.find_Historia(IdHistoria)
-        self.assertEqual(query,[])
+        query = tempHistoria.buscarHistoria(IdHistoria)
+        self.assertEqual(query,None)
+        self.vaciarBaseDeDatos()
         
-    def testfindHistoriaIdHistoriaEmpty(self):
+    def testbuscarIdHistoriaEmpty(self):
         
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos
+        self.vaciarBaseDeDatos()
         
         tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
         
         tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
+        tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
         tempHistoria = clsHistoria()
         
         IdHistoria = ""
-        query = tempHistoria.find_Historia(IdHistoria)
-        self.assertEqual(query,[])
+        query = tempHistoria.buscarHistoria(IdHistoria)
+        self.assertEqual(query,None)
+        self.vaciarBaseDeDatos()
         
-    def testfindHistoriaIdHistoriaList(self):
+    def testbuscarIdHistoriaList(self):
         
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos
+        self.vaciarBaseDeDatos()
         
         tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
         
         tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
+        tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
         tempHistoria = clsHistoria()
         
-        IdHistoria = []
-        query = tempHistoria.find_Historia(IdHistoria)
-        self.assertEqual(query,[])
+        IdHistoria = None
+        query = tempHistoria.buscarHistoria(IdHistoria)
+        self.assertEqual(query,None)
+        self.vaciarBaseDeDatos()
         
-    def testfindHistoriaIdHistoriaFLoat(self):
+    def testbuscarIdHistoriaFLoat(self):
         
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos
+        self.vaciarBaseDeDatos()
         
         tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
         
         tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
+        tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
         tempHistoria = clsHistoria()
         
         IdHistoria = 2.4
-        query = tempHistoria.find_Historia(IdHistoria)
-        self.assertEqual(query,[])
+        query = tempHistoria.buscarHistoria(IdHistoria)
+        self.assertEqual(query,None)
+        self.vaciarBaseDeDatos()
         
-    def testfindHistoriaIdHistoriaNegNum(self):
+    def testbuscarIdHistoriaNegNum(self):
         
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos
+        self.vaciarBaseDeDatos()
         
         tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
         
         tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
+        tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
         tempHistoria = clsHistoria()
         
         IdHistoria = -4
-        query = tempHistoria.find_Historia(IdHistoria)
-        self.assertEqual(query,[])
+        query = tempHistoria.buscarHistoria(IdHistoria)
+        self.assertEqual(query,None)
+        self.vaciarBaseDeDatos()
         
-    def testfindHistoriaIdHistoriaInvalid(self):
+    def testbuscarIdHistoriaInvalid(self):
         
-        model.db.session.query(model.Historia_Usuario).delete()  # Se limpia la base de datos.
-        model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Pila).delete()  # Se limpia la base de datos
+        self.vaciarBaseDeDatos()
         
         tempProducto = clsProducto()
-        salida= tempProducto.insert_Producto('Prueba de Producto1')
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
         
         tempAccion = clsAccion()
-        tempAccion.insert_Accion(1,"Holaaa")
+        tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historia_Usuario(1,"codigo", 1, "opcional", 1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
         tempHistoria = clsHistoria()
         
         IdHistoria = 24
-        query = tempHistoria.find_Historia(IdHistoria)
+        query = tempHistoria.buscarHistoria(IdHistoria)
         self.assertEqual(query,[])
+        self.vaciarBaseDeDatos()
+        
+  # FUNCION ELIMINAR
+    
+    ### CASOS VALIDOS( Casos Interiores ).
+    # Eliminar el id de una historia que exista en la base de datos de un elemento. 
+    def testEliminarIdHistoriaExist(self):
+        self.vaciarBaseDeDatos()
+
+        tempProducto = clsProducto()
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
+        
+        tempAccion = clsAccion()
+        tempAccion.insertar(1,"Holaaa")
+        
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        model.db.session.add(newHistoriaUsuario)
+        model.db.session.commit() 
+        
+        tempHistoria = clsHistoria()
+        idhistoria = 1
+        query = tempHistoria.eliminar(idhistoria )
+        self.assertTrue( query )
+        self.vaciarBaseDeDatos()
+
+    # Eliminar el id de una historia con base de datos vacia
+    def testEliminarIdHistoriaNotExistBaseDeDatosVacia(self):
+        self.vaciarBaseDeDatos()
+        
+        tempProducto = clsProducto()
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
+        
+        tempAccion = clsAccion()
+        tempAccion.insertar(1,"Holaaa")
+        
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        model.db.session.add(newHistoriaUsuario)
+        model.db.session.commit() 
+        
+        tempHistoria = clsHistoria()
+        idhistoria = 1000
+        query = tempHistoria.eliminar( idhistoria )
+        self.assertFalse(query)
+        self.vaciarBaseDeDatos()
+
+        
+    # Eliminar el id de una historia con base de datos un elemento y busqueda no exitosa
+        
+    def testEliminarIdHistoriaNotExistOneElementos(self):
+        self.vaciarBaseDeDatos()
+        
+        tempProducto = clsProducto()
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
+        
+        tempAccion = clsAccion()
+        tempAccion.insertar(1,"Holaaa")
+        
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        model.db.session.add(newHistoriaUsuario)
+        model.db.session.commit() 
+        
+        tempHistoria = clsHistoria()
+        idhistoria = 13
+        query = tempHistoria.eliminar( idhistoria )
+        self.assertFalse(query)
+        self.vaciarBaseDeDatos()
+    
+        
+    ### CASOS INVALIDOS( Casos Malicia )
+    #El id del historia a Eliminar es un string.
+    def testEliminarIdHistoriaString(self):
+        self.vaciarBaseDeDatos()
+        
+        tempProducto = clsProducto()
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
+        
+        tempAccion = clsAccion()
+        tempAccion.insertar(1,"Holaaa")
+        
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        model.db.session.add(newHistoriaUsuario)
+        model.db.session.commit() 
+ 
+        
+        tempHistoria = clsHistoria()
+        idhistoria = '1'
+        query = tempHistoria.eliminar( idhistoria )
+        self.assertFalse(query)
+        
+        self.vaciarBaseDeDatos()
+        
+    # El id del historia a Eliminar es de tipo float.
+    def testEliminarIdHistoriaFloat(self):
+        self.vaciarBaseDeDatos()
+        
+        tempProducto = clsProducto()
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
+        
+        tempAccion = clsAccion()
+        tempAccion.insertar(1,"Holaaa")
+        
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        model.db.session.add(newHistoriaUsuario)
+        model.db.session.commit() 
+        
+        tempHistoria= clsAccion()
+        idhistoria = 1.01
+        query = tempHistoria.eliminar( idhistoria )
+        self.assertFalse(query)  
+        self.vaciarBaseDeDatos()
+
+    #  El id del historia a Eliminar es nulo.
+    def testEliminarIdHistoriaNone(self):
+        self.vaciarBaseDeDatos()
+
+        tempProducto = clsProducto()
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
+        
+        tempAccion = clsAccion()
+        tempAccion.insertar(1,"Holaaa")
+        
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        model.db.session.add(newHistoriaUsuario)
+        model.db.session.commit() 
+
+        tempHistoria = clsHistoria()
+        idhistoria = None
+        query = tempHistoria.eliminar( idhistoria )
+        self.assertFalse(query)  
+        self.vaciarBaseDeDatos()
+
+    #  El id del historia a Eliminar es negativo.
+    def testEliminarIdHistoriaNegative(self):
+        self.vaciarBaseDeDatos()
+
+        tempProducto = clsProducto()
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
+        
+        tempAccion = clsAccion()
+        tempAccion.insertar(1,"Holaaa")
+        
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        model.db.session.add(newHistoriaUsuario)
+        model.db.session.commit() 
+        
+        tempHistoria = clsHistoria()
+        idhistoria = -3
+        query = tempHistoria.eliminar( idhistoria )
+        self.assertFalse(query)  
+        self.vaciarBaseDeDatos()
+    
+    #.-------------------------------------------------------------------.  
+  # FUNCION CAMBIAR PRIORIDADES
+  
+      #  El id del historia a cambiar no existe en la base de datos.
+    def testCambiarPrioridadIdHistoriaNotExist(self):
+        self.vaciarBaseDeDatos()
+
+        tempProducto = clsProducto()
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
+        
+        tempAccion = clsAccion()
+        tempAccion.insertar(1,"Holaaa")
+        
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        model.db.session.add(newHistoriaUsuario)
+        model.db.session.commit() 
+        
+        tempHistoria = clsHistoria()
+        idhistoria = 3
+        prioridad=2
+        query = tempHistoria.cambiarPrioridad(idhistoria, prioridad)
+        self.assertFalse(query)  
+        self.vaciarBaseDeDatos()
+        
+      #  El id del historia a cambiar existe en la base de datos.
+    def testCambiarPrioridadIdHistoriaExist(self):
+        self.vaciarBaseDeDatos()
+
+        tempProducto = clsProducto()
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
+        
+        tempAccion = clsAccion()
+        tempAccion.insertar(1,"Holaaa")
+        
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        model.db.session.add(newHistoriaUsuario)
+        model.db.session.commit() 
+        
+        tempHistoria = clsHistoria()
+        idhistoria = 1
+        prioridad=2
+        query = tempHistoria.cambiarPrioridad(idhistoria, prioridad)
+        self.assertTrue(query)  
+        self.vaciarBaseDeDatos()
+  
+        #  El id del historia a cambiar prioridad es float existe en la base de datos.
+    def testCambiarPrioridadIdHistoriaPrioridadFloat(self):
+        self.vaciarBaseDeDatos()
+
+        tempProducto = clsProducto()
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
+        
+        tempAccion = clsAccion()
+        tempAccion.insertar(1,"Holaaa")
+        
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        model.db.session.add(newHistoriaUsuario)
+        model.db.session.commit() 
+        
+        tempHistoria = clsHistoria()
+        idhistoria = 3
+        prioridad=2.2
+        query = tempHistoria.cambiarPrioridad(idhistoria, prioridad)
+        self.assertFalse(query)  
+        self.vaciarBaseDeDatos()
+  
+         #  El id del historia a cambiar prioridad es None existe en la base de datos.
+    def testCambiarPrioridadIdHistoriaPrioridadNone(self):
+        self.vaciarBaseDeDatos()
+
+        tempProducto = clsProducto()
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
+        
+        tempAccion = clsAccion()
+        tempAccion.insertar(1,"Holaaa")
+        
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        model.db.session.add(newHistoriaUsuario)
+        model.db.session.commit() 
+        
+        tempHistoria = clsHistoria()
+        idhistoria = 1
+        prioridad=None
+        query = tempHistoria.cambiarPrioridad(idhistoria, prioridad)
+        self.assertFalse(query)  
+        self.vaciarBaseDeDatos()
+        
+         #  El id del historia a cambiar prioridad es String existe en la base de datos.
+    def testCambiarPrioridadIdHistoriaPrioridadString(self):
+        self.vaciarBaseDeDatos()
+
+        tempProducto = clsProducto()
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
+        
+        tempAccion = clsAccion()
+        tempAccion.insertar(1,"Holaaa")
+        
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        model.db.session.add(newHistoriaUsuario)
+        model.db.session.commit() 
+        
+        tempHistoria = clsHistoria()
+        idhistoria = 1
+        prioridad='error'
+        query = tempHistoria.cambiarPrioridad(idhistoria, prioridad)
+        self.assertFalse(query)  
+        self.vaciarBaseDeDatos()
+        
+         #  El id del historia a cambiar prioridad es negativo existe en la base de datos.
+    def testCambiarPrioridadIdHistoriaPrioridadNegative(self):
+        self.vaciarBaseDeDatos()
+
+        tempProducto = clsProducto()
+        salida= tempProducto.insertar('Producto','Prueba de Producto1',1)
+        
+        tempAccion = clsAccion()
+        tempAccion.insertar(1,"Holaaa")
+        
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        model.db.session.add(newHistoriaUsuario)
+        model.db.session.commit() 
+        
+        tempHistoria = clsHistoria()
+        idhistoria = 1
+        prioridad=-3
+        query = tempHistoria.cambiarPrioridad(idhistoria, prioridad)
+        self.assertFalse(query)  
+        self.vaciarBaseDeDatos()
+  
