@@ -142,7 +142,7 @@ class clsEnlace():
  							listaEnlace[idHistoria] = []
 
 
- 				elif (enlace.idClave == viejoSuper and enlace.idValor == idHistoria):
+ 				elif (enlace.idClave == idViejaEpica and enlace.idValor == idHistoria):
  					listaEnlace[idHistoria] = []
 		
 		 	existeCiclo = self.existenciaCiclo(listaEnlace)

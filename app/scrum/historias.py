@@ -24,7 +24,9 @@ from app.scrum.funcActor    import clsActor
 from app.scrum.funcHistObjetivo import clsHistoriaObj
 from app.scrum.funcHistActores  import clsHistoriaActores
 from app.scrum.funcEnlace import clsEnlace
-from model import db,func,Historias,Objetivos,Acciones,Actores,Productos, ActoresHistorias, ObjHistorias, Enlaces, Tareas
+from model import db,func,Historias,Objetivos,Acciones,Actores
+from model import Productos, ActoresHistorias, ObjHistorias, Enlaces, Tareas
+from app.scrum.funcTarea import clsTarea
 
 historias = Blueprint('historias', __name__)
 
@@ -133,22 +135,36 @@ def ACrearHistoria():
 #.--------------------------------------------------------------------------------------------------------------
 @historias.route('/historias/AElimHistoria')
 def AElimHistoria():
-    #GET parameter
-    identificador = int(request.args['idHistoria'])
+    
+    idProducto = session['idPila']
+    identificador = session['idHistoria']
     results = [{'label':'/VHistorias', 'msg':['Historia eliminada']}, {'label':'/VHistoria', 'msg':['No se pudo eliminar esta historia']}, ]
     res = results[1]
     
     historia = clsHistoria()
-    actores = clsActor()
-    objetivos = clsObjetivo()
+    actores = clsHistoriaActores()
+    objetivos = clsHistoriaObj()
     listaEliminar = []
 
-    historiaBuscada = db.session.query(Historias).\
-                      filter(Historias.identificador == identificador).\
-                      first()
+    enlacesActuales = db.session.query(Enlaces).all()
+    listaEnlace = {}
 
-    if (historiaBuscada.idSuper == 0):
+    for enlace in enlacesActuales:
+        if (enlace.idClave in listaEnlace):
+            listaEnlace[enlace.idClave] += [enlace.idValor]
+        else:
+            listaEnlace[enlace.idClave] = [enlace.idValor]
 
+        if not(enlace.idValor in listaEnlace):
+            listaEnlace[enlace.idValor] =[]
+
+    print(listaEnlace)
+    if (listaEnlace[identificador] == [] ):
+        
+        historiaBuscada = db.session.query(Historias).\
+                           filter(Historias.identificador == identificador).\
+                           first()
+                    
         eliminarActor = actores.eliminar(identificador)
         listaEliminar.append(eliminarActor)
                  
@@ -156,14 +172,35 @@ def AElimHistoria():
         eliminarObjetivo= objetivos.eliminar(identificador)
         listaEliminar.append(eliminarObjetivo)
                          
+        # BORRAR TAREAS.
+        listaTareas = db.session.query(Tareas).\
+                        filter(Tareas.idHistoria == identificador).\
+                        all()   
+        tareaEliminar = clsTarea()
+        for tarea in listaTareas:
+            tareaEliminar.eliminar(tarea.identificador)
+                  
+        
+        # Se elimina el enlace.
+        enlaceBuscado = db.session.query(Enlaces).\
+                            filter(Enlaces.idValor == identificador).\
+                            first()
+        if (enlaceBuscado != None):
+            db.session.delete(idBuscado)
+            db.session.commit()
+        
         # BORRAR LA HISTORIA.         
         eliminarHistoria = historia.eliminar(identificador)
         listaEliminar.append(eliminarHistoria)
         print("listaEliminar",listaEliminar)
         if (listaEliminar == [True,True,True]):
             res = results[0]
+            res['label'] = res['label'] + '/' + str(idProducto)
 
-    res['label'] = res['label'] + '/' + str(identificador)
+    # Se actualiza el URL de la pág a donde se va a redirigir.
+    if (res == results[1]):
+        res['label'] = res['label'] + '/' + str(identificador)
+
     
 
     #Action code ends here
@@ -202,62 +239,64 @@ def AModifHistoria():
         (objetivo != None) and (actor != None) and (idSuper != None)
         and (prioridad != None)):
 
-        historia = clsHistoria()
-        objetivos = clsHistoriaObj()
-        actores    = clsHistoriaActores()
-        listaModificar   = []
-    
-        enlaceBuscado = db.session.query(Enlaces).\
-                                    filter(Enlaces.idValor == identificador).\
-                                    first()
+        if (len(codigo) <= 10):
 
-        viejoSuper = enlaceBuscado.identificador
-        #viejoSuper = enlaceEncontrado.idClave
-
-        enlace = clsEnlace()
-        modificacionCorrecta = enlace.modificar(viejoSuper, idSuper, 
-                                                identificador)
-
-        if (modificacionCorrecta):
-
-                accionBuscada = db.session.query(Historias).\
-                                    filter(Historias.idAccion == accion).\
-                                    first()
+            historia = clsHistoria()
+            objetivos = clsHistoriaObj()
+            actores    = clsHistoriaActores()
+            listaModificar   = []
         
-                if (accionBuscada == []) or (accionBuscada.identificador == identificador):
-                    # BORRAR ACTORES ASOCIADOS A LA HISTORIA. 
-                    modificarActor = actores.eliminar(identificador)
-                    listaModificar.append(modificarActor)
-                 
-                    #BORRAR OBJETIVOS ASOCIADOS A LA HISTORIA.        
-                    modificarObjetivo= objetivos.eliminar(identificador)
-                    listaModificar.append(modificarObjetivo)
-                         
-                    # BORRAR LA HISTORIA.         
-                    modificarHistoria = historia.eliminar(identificador)
-                    listaModificar.append(modificarHistoria)
-
-                    if (listaModificar == [True,True,True]):
-                        historia = clsHistoria()
-                        creacionCorrecta = historia.insertar(idProducto, codigo, 
-                                                             tipo, accion, idSuper, 
-                                                             prioridad) 
+            enlaceBuscado = db.session.query(Enlaces).\
+                                        filter(Enlaces.idValor == identificador).\
+                                        first()
+    
+            viejoSuper = enlaceBuscado.identificador
+            #viejoSuper = enlaceEncontrado.idClave
+    
+            enlace = clsEnlace()
+            modificacionCorrecta = enlace.modificar(viejoSuper, idSuper, 
+                                                    identificador)
+    
+            if (modificacionCorrecta):
+    
+                    accionBuscada = db.session.query(Historias).\
+                                        filter(Historias.idAccion == accion).\
+                                        first()
             
-                        if ( creacionCorrecta[0] ):
-                            histObjetivo = clsHistoriaObj()
-                            histActores  = clsHistoriaActores()
-
-                            # Se agregan los objetivos seleccionados en la base 
-                            # de datos.
-                            for obj in objetivo:
-                                histObjetivo.insertar(creacionCorrecta[1], obj)
-                            # Se agregan los actores seleccionados en la base de 
-                            # datos.
-                            for act in actor:
-                                histActores.insertar(creacionCorrecta[1], act)
-                            res = results[0]
-                            res['label'] = res['label'] + '/' + str(idProducto)
-
+                    if (accionBuscada == []) or (accionBuscada.identificador == identificador):
+                        # BORRAR ACTORES ASOCIADOS A LA HISTORIA. 
+                        modificarActor = actores.eliminar(identificador)
+                        listaModificar.append(modificarActor)
+                     
+                        #BORRAR OBJETIVOS ASOCIADOS A LA HISTORIA.        
+                        modificarObjetivo= objetivos.eliminar(identificador)
+                        listaModificar.append(modificarObjetivo)
+                             
+                        # BORRAR LA HISTORIA.         
+                        modificarHistoria = historia.eliminar(identificador)
+                        listaModificar.append(modificarHistoria)
+    
+                        if (listaModificar == [True,True,True]):
+                            historia = clsHistoria()
+                            creacionCorrecta = historia.insertar(idProducto, codigo, 
+                                                                 tipo, accion, idSuper, 
+                                                                 prioridad) 
+                
+                            if ( creacionCorrecta[0] ):
+                                histObjetivo = clsHistoriaObj()
+                                histActores  = clsHistoriaActores()
+    
+                                # Se agregan los objetivos seleccionados en la base 
+                                # de datos.
+                                for obj in objetivo:
+                                    histObjetivo.insertar(creacionCorrecta[1], obj)
+                                # Se agregan los actores seleccionados en la base de 
+                                # datos.
+                                for act in actor:
+                                    histActores.insertar(creacionCorrecta[1], act)
+                                res = results[0]
+                                res['label'] = res['label'] + '/' + str(idProducto)
+    
 
     if (res == results[1]):
         res['idHistoria'] = identificador
@@ -380,6 +419,12 @@ def VHistoria():
 
     idProducto = int(session['idPila'])
     identificador = int(request.args.get('idHistoria',1))
+    session['idHistoria'] = identificador
+    historiaActual = db.session.query(Historias).\
+                        filter(Historias.identificador == identificador).\
+                        first()
+    print(historiaActual)
+
 
     # Se obtiene la información de la historia actual.
     historias = db.session.query(Historias).\
@@ -413,7 +458,7 @@ def VHistoria():
 
     # Se muestra por pantalla los actores que pertenecen al producto.
     res['fHistoria_opcionesActores'] = [
-      {'key':act.identificador,'value':act.descripcion}
+      {'key':act.identificador,'value':act.nombre}
         for act in actores]
 
     # Se muestra por pantalla las acciones que pertenecen al producto.
@@ -462,15 +507,18 @@ def VHistoria():
                             all()
     idObjetivosHistoria = [i.idObjetivo for i in objetivosHistoria]
 
-    res['fHistoria'] = { 'super':0,
-                         'idHistoria': identificador,
-                         'idPila': idProducto,
-                         'objetivos':idObjetivosHistoria,
-                         'actores': idActoresHistoria,
-                         'accion': historias[0].idAccion,
-                         'codigo': historias[0].codigo,
-                         'tipo': int(historias[0].tipo),
-                         'prioridad':historias[0].idEscala}
+    print(historiaActual.idSuper)
+
+    if (historiaActual != None):
+        res['fHistoria'] = { 'super':historiaActual.idSuper if historiaActual.idSuper != None else 0,
+                             'idHistoria': identificador,
+                             'idPila': idProducto,
+                             'objetivos':idObjetivosHistoria,
+                             'actores': idActoresHistoria,
+                             'accion': historiaActual.idAccion,
+                             'codigo': historiaActual.codigo,
+                             'tipo': int(historiaActual.tipo),
+                             'prioridad':historiaActual.idEscala}
 
     tareas = db.session.query(Tareas).\
                         filter(Tareas.idHistoria == identificador).\
@@ -485,6 +533,7 @@ def VHistoria():
 
     res['idPila'] = idProducto
     res['idHistoria'] = identificador
+    session['idHistoria'] = identificador
     #res['idHistoria'] = identificador
 
     return json.dumps(res)

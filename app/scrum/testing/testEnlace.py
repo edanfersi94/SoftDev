@@ -30,16 +30,16 @@ class TestEnlace(unittest.TestCase):
     
     def vaciarBaseDeDatos(self):
         model.db.session.query(model.Enlaces).delete()
-        model.db.session.query(model.Pila).delete()
+        model.db.session.query(model.Productos).delete()
     
     def InsertarProducto(self):
         #Datos a ingresar a la tabla de pila
-        NewIdPila = 1
-        NewdescripProducto = "PruebaPila1"
+        NuevoIdProducto = 1
+        NuevoDescripcionProducto = "PruebaPila1"
         
         #Se ingresa manualmente los datos a la tabla pila
-        newPila = model.Pila(NewIdPila, NewdescripProducto,"hola",1)
-        model.db.session.add(newPila)
+        nuevoProducto = model.Productos(NuevoIdProducto, NuevoDescripcionProducto,"hola",1)
+        model.db.session.add(nuevoProducto)
         model.db.session.commit()
         
     def insertarEnlace (self):
@@ -48,14 +48,14 @@ class TestEnlace(unittest.TestCase):
         idclave = 1
         idvalor= 1
         
-        newEnlace = model.Enlaces(idEnlace,idproducto,idclave,idvalor)
-        model.db.session.add(newEnlace)
+        nuevoEnlace = model.Enlaces(idEnlace,idproducto,idclave,idvalor)
+        model.db.session.add(nuevoEnlace)
         model.db.session.commit()
         
         
     #Se prueba que exista la clase clsEnlace
     def testEnlaceExist(self):
-        model.db.session.query(model.Pila).delete()
+        model.db.session.query(model.Productos).delete()
         model.db.session.query( model.Enlaces ).delete() # Se limpia la base de datos
         tempEnlace = clsEnlace()
         self.assertIsNotNone(tempEnlace)
@@ -78,9 +78,10 @@ class TestEnlace(unittest.TestCase):
         idclave = 1
         idvalor= 1
         
-        newEnlace = model.Enlaces(idEnlace,idproducto,idclave,idvalor)
-        model.db.session.add(newEnlace)
+        nuevoEnlace = model.Enlaces(idEnlace,idproducto,idclave,idvalor)
+        model.db.session.add(nuevoEnlace)
         model.db.session.commit()
+        self.vaciarBaseDeDatos()
     
     #CASOS INVALIDOS
     # test : Se inserta un idProducto y idSuper correctos
@@ -95,11 +96,12 @@ class TestEnlace(unittest.TestCase):
         idproducto = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.insert_Enlace(idproducto,idSuper)
+        result = tempEnlace.insertar(idproducto,idSuper)
         self.assertTrue(result)
+        self.vaciarBaseDeDatos()
     
     # test Se inserta un idProdicto de tipo None y idSuper de tipo int
-    def testinsertIdProductoNone(self):
+    def testInsertarIdProductoNone(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -111,11 +113,12 @@ class TestEnlace(unittest.TestCase):
         idproducto = None
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.insert_Enlace(idproducto,idSuper)
+        result = tempEnlace.insertar(idproducto,idSuper)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     # test Se inserta un idProdicto de tipo String y idSuper de tipo int    
-    def testinsertIdProductoStr(self):
+    def testInsertarIdProductoStr(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -127,11 +130,12 @@ class TestEnlace(unittest.TestCase):
         idproducto = "HOLA"
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.insert_Enlace(idproducto,idSuper)
+        result = tempEnlace.insertar(idproducto,idSuper)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     # test Se inserta un idProdicto vacio y idSuper de tipo int    
-    def testinsertIdProductoEmpty(self):
+    def testInsertarIdProductoEmpty(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -143,11 +147,12 @@ class TestEnlace(unittest.TestCase):
         idproducto = ""
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.insert_Enlace(idproducto,idSuper)
+        result = tempEnlace.insertar(idproducto,idSuper)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
     
     # test Se inserta un idProdicto de tipo Lista y idSuper de tipo int    
-    def testinsertIdProductoList(self):
+    def testInsertarIdProductoList(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -159,11 +164,12 @@ class TestEnlace(unittest.TestCase):
         idproducto = []
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.insert_Enlace(idproducto,idSuper)
+        result = tempEnlace.insertar(idproducto,idSuper)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
     
     # test Se inserta un idProdicto de tipo float y idSuper de tipo int    
-    def testinsertIdProductoFLoat(self):
+    def testInsertarIdProductoFLoat(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -175,11 +181,12 @@ class TestEnlace(unittest.TestCase):
         idproducto = 2.5656565
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.insert_Enlace(idproducto,idSuper)
+        result = tempEnlace.insertar(idproducto,idSuper)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     # test Se inserta un idProdicto de tipo numero entero negativo y idSuper de tipo int    
-    def testinsertIdProductoNegNum(self):
+    def testInsertarIdProductoNegNum(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -191,11 +198,12 @@ class TestEnlace(unittest.TestCase):
         idproducto =-34.0
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.insert_Enlace(idproducto,idSuper)
+        result = tempEnlace.insertar(idproducto,idSuper)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
     
     # test Se inserta un idProdicto de tipo int y idSuper de tipo None  
-    def testinsertIdSuperNone(self):
+    def testInsertarIdSuperNone(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -207,11 +215,12 @@ class TestEnlace(unittest.TestCase):
         idproducto = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.insert_Enlace(idproducto,idSuper)
+        result = tempEnlace.insertar(idproducto,idSuper)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     # test Se inserta un idProducto de tipo int y idSuper de tipo String  
-    def testinsertIdSuperString(self):
+    def testInsertarIdSuperString(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -223,11 +232,12 @@ class TestEnlace(unittest.TestCase):
         idproducto = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.insert_Enlace(idproducto,idSuper)
+        result = tempEnlace.insertar(idproducto,idSuper)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     # test Se inserta un idProducto de tipo int y idSuper vacio 
-    def testinsertIdSuperEmpty(self):
+    def testInsertarIdSuperEmpty(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -239,11 +249,12 @@ class TestEnlace(unittest.TestCase):
         idproducto = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.insert_Enlace(idproducto,idSuper)
+        result = tempEnlace.insertar(idproducto,idSuper)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     # test Se inserta un idProducto de tipo int y idSuper de tipo List 
-    def testinsertIdSuperList(self):
+    def testInsertarIdSuperList(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -255,11 +266,12 @@ class TestEnlace(unittest.TestCase):
         idproducto = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.insert_Enlace(idproducto,idSuper)
+        result = tempEnlace.insertar(idproducto,idSuper)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     # test Se inserta un idProducto de tipo int y idSuper de tipo Float 
-    def testinsertIdSuperFLoat(self):
+    def testInsertarIdSuperFLoat(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -271,11 +283,12 @@ class TestEnlace(unittest.TestCase):
         idproducto = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.insert_Enlace(idproducto,idSuper)
+        result = tempEnlace.insertar(idproducto,idSuper)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     # test Se inserta un idProducto de tipo int y idSuper de tipo Numeros Negativos 
-    def testinsertIdSuperNegNum(self):
+    def testInsertarIdSuperNegNum(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -287,11 +300,12 @@ class TestEnlace(unittest.TestCase):
         idproducto = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.insert_Enlace(idproducto,idSuper)
+        result = tempEnlace.insertar(idproducto,idSuper)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: El idProducto no se encuentra en la tabla Pila
-    def testinsertIdProductNoExist(self):
+    def testInsertarIdProductNoExist(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -303,8 +317,9 @@ class TestEnlace(unittest.TestCase):
         idproducto = 345446
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.insert_Enlace(idproducto,idSuper)
+        result = tempEnlace.insertar(idproducto,idSuper)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     # --------------------------------------------------------------------------------------
         
@@ -313,7 +328,7 @@ class TestEnlace(unittest.TestCase):
     # CASO VALIDO
     
     #test: Modifica un enlace con los parametros correctos
-    def testmodifyValid(self):
+    def testModificarValid(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -329,153 +344,13 @@ class TestEnlace(unittest.TestCase):
         valor = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertTrue(result)
-        
-    #CASOS INVALIDOS
-    
-    #test: Modifica un enlace con idProducto de tipo None, los demas parametros son de tipo entero
-    def testmodifyIdProductoNone(self):
-        
-        #Se borra la base de datos
         self.vaciarBaseDeDatos()
-        
-        #Se introduce datos a la tabla producto
-        self.InsertarProducto()
-        
-        self.insertarEnlace()
-        
-        idproducto =None
-        viejoSuper = 1
-        nuevoSuper = 2
-        valor = 1
-        tempEnlace = clsEnlace()
-        
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
-        self.assertFalse(result)
-        
-    #test: Modifica un enlace con idProducto de tipo String, los demas parametros son de tipo entero
-    def testmodifyIdProductoString(self):
-        
-        #Se borra la base de datos
-        self.vaciarBaseDeDatos()
-        
-        #Se introduce datos a la tabla producto
-        self.InsertarProducto()
-        
-        self.insertarEnlace()
-        
-        idproducto = "Hola"
-        viejoSuper = 1
-        nuevoSuper = 2
-        valor = 1
-        tempEnlace = clsEnlace()
-        
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
-        self.assertFalse(result)
-        
-    #test: Modifica un enlace con idProducto de tipo Empty, los demas parametros son de tipo entero
-    def testmodifyIdProductoEmpty(self):
-        
-        #Se borra la base de datos
-        self.vaciarBaseDeDatos()
-        
-        #Se introduce datos a la tabla producto
-        self.InsertarProducto()
-        
-        self.insertarEnlace()
-        
-        idproducto = ""
-        viejoSuper = 1
-        nuevoSuper = 2
-        valor = 1
-        tempEnlace = clsEnlace()
-        
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
-        self.assertFalse(result)
-        
-    #test: Modifica un enlace con idProducto de tipo List, los demas parametros son de tipo entero
-    def testmodifyIdProductoList(self):
-        
-        #Se borra la base de datos
-        self.vaciarBaseDeDatos()
-        
-        #Se introduce datos a la tabla producto
-        self.InsertarProducto()
-        
-        self.insertarEnlace()
-        
-        idproducto = []
-        viejoSuper = 1
-        nuevoSuper = 2
-        valor = 1
-        tempEnlace = clsEnlace()
-        
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
-        self.assertFalse(result)
-        
-    #test: Modifica un enlace con idProducto de tipo Float, los demas parametros son de tipo entero
-    def testmodifyIdProductoFLoat(self):
-        
-        #Se borra la base de datos
-        self.vaciarBaseDeDatos()
-        
-        #Se introduce datos a la tabla producto
-        self.InsertarProducto()
-        
-        self.insertarEnlace()
-        
-        idproducto = 2.5454
-        viejoSuper = 1
-        nuevoSuper = 2
-        valor = 1
-        tempEnlace = clsEnlace()
-        
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
-        self.assertFalse(result)
-        
-    #test: Modifica un enlace con idProducto de tipo Numeros negativos, los demas parametros son de tipo entero
-    def testmodifyIdProductoNegNum(self):
-        
-        #Se borra la base de datos
-        self.vaciarBaseDeDatos()
-        
-        #Se introduce datos a la tabla producto
-        self.InsertarProducto()
-        
-        self.insertarEnlace()
-        
-        idproducto = -3.454
-        viejoSuper = 1
-        nuevoSuper = 2
-        valor = 1
-        tempEnlace = clsEnlace()
-        
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
-        self.assertFalse(result)
-        
-    #test: Modifica un enlace con idProducto que no exista, los demas parametros son de tipo entero
-    def testmodifyIdProductoNoExist(self):
-        
-        #Se borra la base de datos
-        self.vaciarBaseDeDatos()
-        
-        #Se introduce datos a la tabla producto
-        self.InsertarProducto()
-        
-        self.insertarEnlace()
-        
-        idproducto = 34343
-        viejoSuper = 1
-        nuevoSuper = 2
-        valor = 1
-        tempEnlace = clsEnlace()
-        
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
-        self.assertFalse(result)
+            
         
     #test: Modifica un enlace con viejorSuper de tipo None, los demas parametros son de tipo entero
-    def testmodifyIdviejoSuperNone(self):
+    def testModificarIdviejoSuperNone(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -491,11 +366,12 @@ class TestEnlace(unittest.TestCase):
         valor = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con viejorSuper de tipo String, los demas parametros son de tipo entero
-    def testmodifyIdviejoSuperString(self):
+    def testModificarIdviejoSuperString(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -511,11 +387,12 @@ class TestEnlace(unittest.TestCase):
         valor = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con viejorSuper de tipo Empty, los demas parametros son de tipo entero
-    def testmodifyIdviejoSuperEmpty(self):
+    def testModificarIdviejoSuperEmpty(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -531,11 +408,12 @@ class TestEnlace(unittest.TestCase):
         valor = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con viejorSuper de tipo List, los demas parametros son de tipo entero
-    def testmodifyIdviejoSuperList(self):
+    def testModificarIdviejoSuperList(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -551,11 +429,12 @@ class TestEnlace(unittest.TestCase):
         valor = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con viejorSuper de tipo Float, los demas parametros son de tipo entero
-    def testmodifyIdviejoSuperFloat(self):
+    def testModificarIdviejoSuperFloat(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -571,11 +450,12 @@ class TestEnlace(unittest.TestCase):
         valor = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
     
     #test: Modifica un enlace con viejorSuper de tipo numero negativos, los demas parametros son de tipo entero
-    def testmodifyIdviejoSuperNegNum(self):
+    def testModificarIdviejoSuperNegNum(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -591,11 +471,12 @@ class TestEnlace(unittest.TestCase):
         valor = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con viejorSuper que no exista, los demas parametros son de tipo entero
-    def testmodifyIdviejoSuperNoExist(self):
+    def testModificarIdviejoSuperNoExist(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -611,11 +492,12 @@ class TestEnlace(unittest.TestCase):
         valor = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con nuevoSuper de tipo None, los demas parametros son de tipo entero
-    def testmodifyIdnuevoSuperNone(self):
+    def testModificarIdnuevoSuperNone(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -631,11 +513,12 @@ class TestEnlace(unittest.TestCase):
         valor = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con nuevoSuper de tipo Empty, los demas parametros son de tipo entero
-    def testmodifyIdnuevoSuperEmpty(self):
+    def testModificarIdnuevoSuperEmpty(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -651,11 +534,12 @@ class TestEnlace(unittest.TestCase):
         valor = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con nuevoSuper de tipo String, los demas parametros son de tipo entero
-    def testmodifyIdnuevoSuperString(self):
+    def testModificarIdnuevoSuperString(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -671,11 +555,12 @@ class TestEnlace(unittest.TestCase):
         valor = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con nuevoSuper de tipo List, los demas parametros son de tipo entero
-    def testmodifyIdnuevoSuperList(self):
+    def testModificarIdnuevoSuperList(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -691,11 +576,12 @@ class TestEnlace(unittest.TestCase):
         valor = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con nuevoSuper de tipo Float, los demas parametros son de tipo entero
-    def testmodifyIdnuevoSuperFloat(self):
+    def testModificarIdnuevoSuperFloat(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -711,11 +597,12 @@ class TestEnlace(unittest.TestCase):
         valor = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con nuevoSuper de tipo Numeros negativos, los demas parametros son de tipo entero
-    def testmodifyIdnuevoSuperNumNeg(self):
+    def testModificarIdnuevoSuperNumNeg(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -731,11 +618,12 @@ class TestEnlace(unittest.TestCase):
         valor = 1
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con idValor de tipo None, los demas parametros son de tipo entero
-    def testmodifyIdValorNone(self):
+    def testModificarIdValorNone(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -751,11 +639,12 @@ class TestEnlace(unittest.TestCase):
         valor = None
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con idValor de tipo Empty, los demas parametros son de tipo entero
-    def testmodifyIdValorEmpty(self):
+    def testModificarIdValorEmpty(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -771,11 +660,12 @@ class TestEnlace(unittest.TestCase):
         valor = ""
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con idValor de tipo String, los demas parametros son de tipo entero
-    def testmodifyIdValorString(self):
+    def testModificarIdValorString(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -791,12 +681,13 @@ class TestEnlace(unittest.TestCase):
         valor = "Hola"
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
         
     #test: Modifica un enlace con idValor de tipo List, los demas parametros son de tipo entero
-    def testmodifyIdValorList(self):
+    def testModificarIdValorList(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -812,11 +703,12 @@ class TestEnlace(unittest.TestCase):
         valor = []
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con idValor de tipo Float, los demas parametros son de tipo entero
-    def testmodifyIdValorFloat(self):
+    def testModificarIdValorFloat(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -832,11 +724,12 @@ class TestEnlace(unittest.TestCase):
         valor = 2.333
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
     #test: Modifica un enlace con idValor de tipo Numeros Negativos, los demas parametros son de tipo entero
-    def testmodifyIdValorNumNeg(self):
+    def testModificarIdValorNumNeg(self):
         
         #Se borra la base de datos
         self.vaciarBaseDeDatos()
@@ -852,8 +745,9 @@ class TestEnlace(unittest.TestCase):
         valor = -223.333
         tempEnlace = clsEnlace()
         
-        result = tempEnlace.modify_Enlace(idproducto,viejoSuper,nuevoSuper,valor)
+        result = tempEnlace.modificar(viejoSuper,nuevoSuper,valor)
         self.assertFalse(result)
+        self.vaciarBaseDeDatos()
         
         
         

@@ -156,7 +156,7 @@ def VCrearActor():
 
 @actor.route('/actor/VActor')
 def VActor():
-    identificador = int(request.args.get('idActor',1))
+
     res = {}
     if "actor" in session:
         res['actor']=session['actor']

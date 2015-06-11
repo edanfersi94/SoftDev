@@ -148,7 +148,7 @@ class clsAccion():
 								filter(Acciones.identificador == identificador).\
 								first()
 
-				if(accionBuscada != []):
+				if(accionBuscada != None):
 
 
 					accionContenida = db.session.query(Historias).\

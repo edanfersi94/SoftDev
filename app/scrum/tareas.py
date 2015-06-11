@@ -147,7 +147,6 @@ def VCrearTarea():
       res['logout'] = '/'
       return json.dumps(res)
     res['usuario'] = session['usuario']
-    res['codHistoria'] = codigoBuscado.codigo
     session['idHistoria'] = idHistoria
 
 

@@ -152,7 +152,7 @@ class clsObjetivo():
 						filter(Objetivos.identificador == identificador).\
 						first()
 
-				if ( objetivoBuscado != []):
+				if ( objetivoBuscado != None):
 
 					objetivoContenido = db.session.query(ObjHistorias).\
 									  	filter(ObjHistorias.idObjetivo == identificador).\

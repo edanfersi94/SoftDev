@@ -87,7 +87,7 @@ class clsHistoriaActores():
 		
 		if (idHistoriaInt):
 			# Booleano que indica si se cumplen los límites.
-			idHistoriaPositivo = idHistoria >0
+			idHistoriaPositivo = idHistoria > 0
 			
 			if ( idHistoriaPositivo ):
 				actorBuscado = db.session.query(ActoresHistorias).\
