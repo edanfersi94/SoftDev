@@ -52,4 +52,17 @@ scrumModule.service('actorService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
+    this.AElimActor = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'actor/AElimActor',
+          method: 'GET',
+          params: args
+        });
+    //    var labels = ["/VProducto", "/VActor", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
 }]);

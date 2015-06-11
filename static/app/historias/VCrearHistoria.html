@@ -1,0 +1,56 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Nueva historia de usuario</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+<li><a ng-click="VCrearActor2(idPila)"
+       ng-show="actor=='duenoProducto' || false">
+  +Actor</a></li>
+<li><a ng-click="VCrearAccion3(idPila)"
+       ng-show="actor=='duenoProducto' || false">
+  +Accion</a></li>
+<li><a ng-click="VCrearObjetivo4(idPila)"
+       ng-show="actor=='duenoProducto' || false">
+  +Objetivo</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VHistorias0(idPila)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+<li><a ng-click="VLogin5()">
+    Salir</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <form name="fHistoriaForm" ng-submit="ACrearHistoria1(fHistoriaForm.$valid)" novalidate>
+            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.codigo.$invalid && fHistoriaForm.codigo.$pristine && fHistoriaSubmitted}"><label for="fHistoria_codigo">Código de la historia</label><input id="fHistoria_codigo" type="text" name="codigo" class="form-control" ng-model="fHistoria.codigo" placeholder="Código de la historia" required/><p ng-show="fHistoriaSubmitted && fHistoriaForm.codigo.$invalid" class="help-block">Error en campo Código de la historia.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.super.$invalid && fHistoriaForm.super.$pristine && fHistoriaSubmitted}"><label for="fHistoria_super">Historia más general</label>:&nbsp;<select id="fHistoria_super" ng-model="fHistoria.super"  ng-options="item.key as item.value for item in fHistoria_opcionesHistorias"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.super.$invalid" class="help-block">Error en campo Historia más general.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.actores.$invalid && fHistoriaForm.actores.$pristine && fHistoriaSubmitted}"><label for="fHistoria_actores">Actores</label>:&nbsp;<select id="fHistoria_actores" ng-model="fHistoria.actores"  multiple ng-options="item.key as item.value for item in fHistoria_opcionesActores"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.actores.$invalid" class="help-block">Error en campo Actores.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.tipo.$invalid && fHistoriaForm.tipo.$pristine && fHistoriaSubmitted}"><label for="fHistoria_tipo">Tipo</label>:&nbsp;<select id="fHistoria_tipo" ng-model="fHistoria.tipo"  ng-options="item.key as item.value for item in fHistoria_opcionesTiposHistoria"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.tipo.$invalid" class="help-block">Error en campo Tipo.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.accion.$invalid && fHistoriaForm.accion.$pristine && fHistoriaSubmitted}"><label for="fHistoria_accion">Acción</label>:&nbsp;<select id="fHistoria_accion" ng-model="fHistoria.accion"  ng-options="item.key as item.value for item in fHistoria_opcionesAcciones"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.accion.$invalid" class="help-block">Error en campo Acción.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.objetivos.$invalid && fHistoriaForm.objetivos.$pristine && fHistoriaSubmitted}"><label for="fHistoria_objetivos">Objetivos no transversales</label>:&nbsp;<select id="fHistoria_objetivos" ng-model="fHistoria.objetivos"  multiple ng-options="item.key as item.value for item in fHistoria_opcionesObjetivos"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.objetivos.$invalid" class="help-block">Error en campo Objetivos no transversales.</p></div>
+            <input id="fHistoria_idPila" type="hidden" name="idPila" ng-model="fHistoria.idPila" />
+            <input id="fHistoria_idHistoria" type="hidden" name="idHistoria" ng-model="fHistoria.idHistoria" />
+            <div class="form-group" ng-class="{ 'has-error' :  fHistoriaSubmitted && fHistoriaForm.prioridad.$invalid && fHistoriaForm.prioridad.$pristine && fHistoriaSubmitted}"><label for="fHistoria_prioridad">Prioridad</label>:&nbsp;<select id="fHistoria_prioridad" ng-model="fHistoria.prioridad" required ng-options="item.key as item.value for item in fHistoria_opcionesPrioridad"></select><p ng-show="fHistoriaSubmitted && fHistoriaForm.prioridad.$invalid" class="help-block">Error en campo Prioridad.</p></div>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Crear
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>

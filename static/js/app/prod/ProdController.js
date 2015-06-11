@@ -12,8 +12,8 @@ scrumModule.config(function ($routeProvider) {
 });
 
 scrumModule.controller('VProductosController', 
-   ['$scope', '$location', '$route', 'flash', 'ngTableParams', 'accionService', 'actorService', 'identService', 'objetivoService', 'prodService',
-    function ($scope, $location, $route, flash, ngTableParams, accionService, actorService, identService, objetivoService, prodService) {
+   ['$scope', '$location', '$route', 'flash', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService',
+    function ($scope, $location, $route, flash, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService) {
       $scope.msg = '';
       prodService.VProductos().then(function (object) {
         $scope.res = object.data;
@@ -50,8 +50,8 @@ scrumModule.controller('VProductosController',
 
     }]);
 scrumModule.controller('VProductoController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'identService', 'objetivoService', 'prodService',
-    function ($scope, $location, $route, flash, $routeParams, ngTableParams, accionService, actorService, identService, objetivoService, prodService) {
+   ['$scope', '$location', '$route', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService',
+    function ($scope, $location, $route, flash, $routeParams, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService) {
       $scope.msg = '';
       $scope.fPila = {};
 
@@ -113,8 +113,11 @@ scrumModule.controller('VProductoController',
       $scope.VCrearAccion10 = function(idPila) {
         $location.path('/VCrearAccion/'+idPila);
       };
-      $scope.VCrearObjetivo11 = function() {
-        $location.path('/VCrearObjetivo');
+      $scope.VCrearObjetivo11 = function(idPila) {
+        $location.path('/VCrearObjetivo/'+idPila);
+      };
+      $scope.VHistorias12 = function(idPila) {
+        $location.path('/VHistorias/'+idPila);
       };
 
       $scope.fPilaSubmitted = false;
@@ -126,11 +129,8 @@ scrumModule.controller('VProductoController',
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];
-              if (label == '/VProducto') {
-                  $route.reload();
-              } else {
-                  $location.path(label);
-              }
+              $location.path(label);
+              $route.reload();
           });
         }
       };
@@ -147,8 +147,8 @@ scrumModule.controller('VProductoController',
 
     }]);
 scrumModule.controller('VCrearProductoController', 
-   ['$scope', '$location', '$route', 'flash', 'accionService', 'actorService', 'identService', 'objetivoService', 'prodService',
-    function ($scope, $location, $route, flash, accionService, actorService, identService, objetivoService, prodService) {
+   ['$scope', '$location', '$route', 'flash', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService',
+    function ($scope, $location, $route, flash, accionService, actorService, historiasService, identService, objetivoService, prodService) {
       $scope.msg = '';
       $scope.fPila = {};
 
@@ -177,11 +177,8 @@ scrumModule.controller('VCrearProductoController',
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];
-              if (label == '/VCrearProducto') {
-                  $route.reload();
-              } else {
-                  $location.path(label);
-              }
+              $location.path(label);
+              $route.reload();
           });
         }
       };

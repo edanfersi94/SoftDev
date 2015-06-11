@@ -1,34 +1,59 @@
 # -*- coding: utf-8 -*-
 
+"""
+    UNIVERSIDAD SIMÓN BOLÍVAR
+    Departamento de Computación y Tecnología de la Información.
+    CI-3715 - Ingeniería de Software I (CI-3715)
+    Abril - Julio 2015
+
+    AUTORES:
+        Equipo SoftDev
+
+    DESCRIPCION: 
+        Módulo que contiene los métodos que permitirán insertar, modificar y
+        eliminar actores.
+"""
+#.-----------------------------------------------------------------------------.
+
 # Librerias a importar.
 from flask import request, session, Blueprint, json
 from app.scrum.funcActor import clsActor
-import model
+from app.scrum.controlDeAcceso import clsControlDeAcceso
+from model import db, Actores
 
 actor = Blueprint('actor', __name__)
 
-#.----------------------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.
 
 @actor.route('/actor/ACrearActor', methods=['POST'])
 def ACrearActor():
-    #POST/PUT parameters
+
     params = request.get_json()
-    results = [{'label':'/VProducto', 'msg':['Actor creado']}, {'label':'/VCrearActor', 'msg':['Error al crear actor']}, ]
-    res = results[0]
+    results = [{'label':'/VProducto', 'msg':['Actor creado']},
+               {'label':'/VCrearActor', 'msg':['Error al crear actor']}, ]
+    res = results[1]
 
-    nuevo_nombre_actores      = params['nombre']
-    nueva_descripcion_actores = params['descripcion']
-    
-    nuevoActor   = clsActor()
-    resultInsert = nuevoActor.insert_Actor(nuevo_nombre_actores, nueva_descripcion_actores)
+    # Se obtiene el identificador del producto actual.
+    idProducto = int(session['idPila'])
 
-    if ( resultInsert ):
-        res = results[0]
-    else:
-        res = results[1]
+    # Parámetros del actor a crear.
+    nombre = params.get('nombre',None)
+    descripcion = params.get('descripcion', None)
+   
+    if( ( nombre != None ) and ( descripcion != None ) ):
+        controlDeAcceso = clsControlDeAcceso()
+        descripcionValida = controlDeAcceso.verificarDescripcion( descripcion )
 
-    idPila = 1
-    res['label'] = res['label'] + '/' + str(idPila)
+        if ( descripcionValida ):
+            nuevoActor = clsActor()
+            creacionCorrecta = nuevoActor.insertar(idProducto,nombre,descripcion)
+
+            if ( creacionCorrecta ):
+                res = results[0]  
+
+    res['idPila'] = idProducto
+    # Se actualiza el URL de la pág a donde se va a redirigir.
+    res['label'] = res['label'] + '/' + str(idProducto) 
 
     if "actor" in res:
         if res['actor'] is None:
@@ -36,33 +61,65 @@ def ACrearActor():
         else:
             session['actor'] = res['actor']
     return json.dumps(res)
+#.-----------------------------------------------------------------------------.
+@actor.route('/actor/AElimActor')
+def AElimActor():
+    #GET parameter
+    identificador = int(session['idActor'])
+    # Identificador del producto al que pertenece la accion.
+    idProducto = int(session['idPila'])
+    results = [{'label':'/VProducto', 'msg':['Actor eliminado']}, {'label':'/VActor', 'msg':['No se pudo eliminar este actor']}, ]
+    res = results[1]
+    
+    actor = clsActor()
+    eliminarCorrecto = actor.eliminar(identificador)
 
-#.----------------------------------------------------------------------------------------.
+    if(eliminarCorrecto):
+        res = results[0]
+        res['label'] = res['label'] + '/' + str(idProducto)
+
+    # Se actualiza el URL de la pág a donde se va a redirigir.
+    if (res == results[1]):
+        res['label'] = res['label'] + '/' + str(identificador)
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
+#.-----------------------------------------------------------------------------.
 
 @actor.route('/actor/AModifActor', methods=['POST'])
 def AModifActor():
-    #POST/PUT parameters
+
     params = request.get_json()
-    results = [{'label':'/VProducto', 'msg':['Actor actualizado']}, {'label':'/VActor', 'msg':['Error al modificar actor']}, ]
-    res = results[0]
+    results = [{'label':'/VProducto', 'msg':['Actor actualizado']}, 
+               {'label':'/VActor', 'msg':['Error al modificar actor']}, ]
+    res = results[1]
 
-    idPila = 1
-    res['label'] = res['label'] + '/' + str(idPila)
+    # Se obtiene el identificador del producto actual.
+    idProducto = int(session['idPila'])
 
-    productoActual = model.EstadoActual.id_producto_actual == idPila
-    query = model.db.session.query(model.EstadoActual).filter(productoActual).all()
-    
-    id_actor = query[0].id_actor_actual
-    nuevo_nombre_actores = params['nombre']
-    nueva_descripcion_actores = params['descripcion']
+    # Se obtiene los atributos del actor a modificar.
+    identificador = int(session['idActor'])
+    nombre = params.get('nombre', None)
+    descripcion= params.get('descripcion', None)
 
-    actorModif = clsActor()
-    resultsModif = actorModif.modify_Actor(id_actor, nuevo_nombre_actores, nueva_descripcion_actores)
+    if ((nombre != None) and (descripcion != None)):
+        actor = clsActor()
+        modificacionCorrecta = actor.modificar(identificador,nombre,descripcion)
 
-    if ( resultsModif ):
-        res = results[0]
-    else:
-        res = results[1]
+        if ( modificacionCorrecta ):
+            res = results[0]
+            res['label'] = res['label'] + '/' + str(idProducto)
+
+    # Se actualiza el URL de la pág a donde se va a redirigir.
+    if (res == results[1]):
+        res['label'] = res['label'] + '/' + str(identificador)
+    res['idPila'] = idProducto    
 
     if "actor" in res:
         if res['actor'] is None:
@@ -71,34 +128,64 @@ def AModifActor():
             session['actor'] = res['actor']
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
-
-@actor.route('/actor/VActor')
-def VActor():
-    res = {}
-    if "actor" in session:
-        res['actor']=session['actor']
-
-    res['idPila'] = 1 
-
-    pagActorActual= request.url
-    pagActorActual.split('=')
-    actorActual = int(pagActorActual[-1])
-
-    productoActual = model.EstadoActual.id_producto_actual == 1
-    model.db.session.query(model.EstadoActual).filter(productoActual).\
-        update({'id_actor_actual':actorActual})
-    model.db.session.commit()    
-
-    return json.dumps(res)
-
-#.----------------------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.
 
 @actor.route('/actor/VCrearActor')
 def VCrearActor():
     res = {}
+    # Producto actual.
+    idProducto = session['idPila']
+
+    # Se almacena la información recibida.
+    res['fActor'] = {'idPila':idProducto,
+                     'idActor':request.args.get('idActor',1),
+                     'descripcion':request.args.get('descripcion')}
+    res['idPila'] = idProducto
+
     if "actor" in session:
         res['actor']=session['actor']
+
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+    res['usuario'] = session['usuario']
+
     return json.dumps(res)
 
-#.----------------------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.
+
+@actor.route('/actor/VActor')
+def VActor():
+    identificador = int(request.args.get('idActor',1))
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+    res['usuario'] = session['usuario']
+
+    idProducto = int(session['idPila'])
+    
+    # Se envía el identificador del producto al que pertenece el producto actual.
+    res['idPila'] = idProducto
+
+    # Se obtiene el identificador del actor actual.
+    identificador = int(request.args.get('idActor',1))
+    session['idActor'] = identificador
+
+    # Se obtiene la información del actor a modificar.
+    accionBuscada = db.session.query(Actores).\
+                        filter(Actores.identificador == identificador).\
+                        first()
+    nombre = accionBuscada.nombre
+    descripcion = accionBuscada.descripcion
+
+    res['fActor'] = {'idPila': idProducto,
+                     'nombre':nombre,
+                     'descripcion':descripcion}
+
+    return json.dumps(res)
+
+#.-----------------------------------------------------------------------------.
