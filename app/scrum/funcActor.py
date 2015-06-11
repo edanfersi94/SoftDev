@@ -186,7 +186,7 @@ class clsActor():
 						filter(Actores.identificador == identificador).\
 						first()
 
-				if ( actorBuscado != []):
+				if ( actorBuscado != None):
 
 						actorContenido = db.session.query(ActoresHistorias).\
 									  filter(ActoresHistorias.idActores == identificador).\

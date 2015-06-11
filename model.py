@@ -26,11 +26,11 @@ from sqlalchemy             import CheckConstraint, func, desc
 
 # Construcción de la base de datos.
 
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres:1234@localhost/prueba1"
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:joel123@localhost/prueba"
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
-db_dir = 'postgresql+psycopg2://postgres:1234@localhost/prueba1'
+db_dir = 'postgresql+psycopg2://postgres:joel123@localhost/prueba'
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
@@ -82,6 +82,8 @@ class Historias(db.Model):
     idEscala         = db.Column(db.Integer, nullable = True)
     listaObjetivos = db.relationship('ObjHistorias',backref='historia',cascade = "all, delete, delete-orphan")
     listaActores = db.relationship('ActoresHistorias',backref='historia',cascade = "all, delete, delete-orphan")
+    historiaTarea = db.relationship('Tareas',backref='historia',cascade = "all, delete, delete-orphan")
+
 
     def __init__(self, identificador,codigo,idProducto, tipo,idAccion,idSuper, idEscala):
         self.identificador  = identificador
@@ -185,6 +187,18 @@ class Enlaces(db.Model):
         self.idProducto  = idProducto
         self.idClave     = idClave
         self.idValor    = idValor
+
+
+class Tareas(db.Model):
+    __tablename__ = 'tareas'
+    identificador = db.Column(db.Integer, primary_key = True)
+    idHistoria = db.Column(db.Integer, db.ForeignKey('historias.identificador'))
+    descripcion = db.Column(db.String(500), nullable = True)
+
+    def __init__(self, identificador, idHistoria, descripcion):
+        self.identificador = identificador
+        self.idHistoria  = idHistoria
+        self.descripcion     = descripcion
 
 #-------------------------------------------------------------------------------
 

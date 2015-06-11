@@ -64,9 +64,8 @@ def ACrearActor():
 #.-----------------------------------------------------------------------------.
 @actor.route('/actor/AElimActor')
 def AElimActor():
-    #GET parameter
+
     identificador = int(session['idActor'])
-    # Identificador del producto al que pertenece la accion.
     idProducto = int(session['idPila'])
     results = [{'label':'/VProducto', 'msg':['Actor eliminado']}, {'label':'/VActor', 'msg':['No se pudo eliminar este actor']}, ]
     res = results[1]
@@ -156,7 +155,7 @@ def VCrearActor():
 
 @actor.route('/actor/VActor')
 def VActor():
-    identificador = int(request.args.get('idActor',1))
+
     res = {}
     if "actor" in session:
         res['actor']=session['actor']

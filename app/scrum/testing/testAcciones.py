@@ -33,8 +33,15 @@ class TestAccion(unittest.TestCase):
     
     def vaciarBaseDeDatos(self):
         model.db.session.query( model.Acciones ).delete()  # Se limpia la base de datos.
-        model.db.session.query( model.Pila ).delete() 
+        model.db.session.query( model.Productos ).delete() 
     
+    def insertarProducto(self, nuevoIdProducto):
+        nuevoNombreProducto='Nombre Producto'
+        nuevoEscalaProducto= 1
+        nuevoDescripcionProducto= 'Descripcion Producto'
+        nuevoProducto = model.Productos(nuevoIdProducto,nuevoNombreProducto,nuevoDescripcionProducto,nuevoEscalaProducto)
+        model.db.session.add(nuevoProducto)
+        model.db.session.commit() 
     #.-------------------------------------------------------------------.  
     # VERIFICACION DE LA CLASE.
     
@@ -49,178 +56,160 @@ class TestAccion(unittest.TestCase):
     
     ### CASOS VALIDOS( Casos Interiores ).
     # Buscar el id de un accion que exista en la base de datos de un elemento. 
-    def testfind_idAccionExist(self):
+    def testBuscarIdAccionExist(self):
         self.vaciarBaseDeDatos()
-        
+
+        idProducto=1
+        self.insertarProducto(idProducto)
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba'
+        nuevoAccion = model.Acciones( idProducto,nuevoIdAccion, nuevoDescripcionAccion ) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
         
         tempAccion = clsAccion()
         idaccion = 1
-        query = tempAccion.find_idAccion( newIdProducto,idaccion )
+        query = tempAccion.buscarId(idaccion )
         self.assertIsNotNone( query )
         self.vaciarBaseDeDatos()
 
     # Buscar el id de un accion con base de datos vacia
-    def testfind_idAccionNotExistBaseDeDatosVacia(self):
+    def testBuscarIdAccionNotExistBaseDeDatosVacia(self):
         self.vaciarBaseDeDatos()
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
         idaccion = 1000
-        query = tempAccion.find_idAccion( newIdProducto,idaccion )
-        self.assertEqual(query,[])
+        query = tempAccion.buscarId( idaccion )
+        self.assertEqual(query,None)
         self.vaciarBaseDeDatos()
 
         
     # Buscar el id de un accion con base de datos un elemento y busqueda no exitosa
         
-    def testfind_idAccionNotExistOneElementos(self):
+    def testBuscarIdAccionNotExistOneElementos(self):
         self.vaciarBaseDeDatos()
-        self.vaciarBaseDeDatos()
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
         
-        newIdAccion = 2
-        newDescripAccion = 'Esto es una prueba'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion ) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 2
+        nuevoDescripcionAccion = 'Esto es una prueba'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion ) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
         
         tempAccion = clsAccion()
         idaccion = 1
-        query = tempAccion.find_idAccion( newIdProducto,idaccion )
-        self.assertEqual(query,[])
+        query = tempAccion.buscarId( idaccion )
+        self.assertEqual(query,None)
         self.vaciarBaseDeDatos()
         
     # Buscar el id de un accion con base de datos de varios elemento y busqueda no exitosa   
-    def testfind_idAccionNotExistVariosElementos(self):
-        self.vaciarBaseDeDatos()   
-         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+    def testBuscarIdAccionNotExistVariosElementos(self):
+        self.vaciarBaseDeDatos()    
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
         for indice in range(1,4,1):
-            newIdAccion = indice
-            newDescripAccion = 'Descripcion ' + str(indice)
-            newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion ) 
-            model.db.session.add(newAccion)
+            nuevoIdAccion = indice
+            nuevoDescripcionAccion = 'Descripcion ' + str(indice)
+            nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion ) 
+            model.db.session.add(nuevoAccion)
             model.db.session.commit()   
         
         tempAccion = clsAccion()
         idaccion = 5
-        query = tempAccion.find_idAccion( newIdProducto,idaccion )
-        self.assertEqual(query,[])
+        query = tempAccion.buscarId( idaccion )
+        self.assertEqual(query,None)
         self.vaciarBaseDeDatos()
           
     # Buscar el id de un accion con base de datos de varios elemento y busqueda exitosa   
-    def testfind_idAccionExistVariosElementos(self):
+    def testBuscarIdAccionExistVariosElementos(self):
         self.vaciarBaseDeDatos()  
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
         
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+
         # Se insertaN elementoS en la base. Dicha insercion se asegura
         # que es valida.
         for indice in range(1,4,1):
-            newIdAccion = indice
-            newDescripAccion = 'Descripcion ' + str(indice)
-            newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion ) 
-            model.db.session.add(newAccion)
+            nuevoIdAccion = indice
+            nuevoDescripcionAccion = 'Descripcion ' + str(indice)
+            nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion ) 
+            model.db.session.add(nuevoAccion)
             model.db.session.commit()   
         
         tempAccion = clsAccion()
         idaccion = 3
-        query = tempAccion.find_idAccion( newIdProducto,idaccion )
-        self.assertIsNotNone( query[0] )
+        query = tempAccion.buscarId( idaccion )
+        self.assertIsNotNone( query )
         self.vaciarBaseDeDatos()
         
     ### CASOS INVALIDOS( Casos Malicia )
     #El id del accion a buscar es un string.
-    def testfind_idAccionString(self):
+    def testBuscarIdAccionString(self):
         self.vaciarBaseDeDatos()
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+ 
         
         tempAccion = clsAccion()
         idaccion = '1'
-        query = tempAccion.find_idAccion(newIdProducto, idaccion )
-        self.assertEqual(query,[])
+        query = tempAccion.buscarId( idaccion )
+        self.assertEqual(query,None)
         
         self.vaciarBaseDeDatos()
         
     # El id del accion a buscar es de tipo float.
-    def testfind_idAccionFloat(self):
+    def testBuscarIdAccionFloat(self):
         self.vaciarBaseDeDatos()
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
         idaccion = 1.01
-        query = tempAccion.find_idAccion( newIdProducto,idaccion )
-        self.assertEqual(query,[])  
+        query = tempAccion.buscarId( idaccion )
+        self.assertEqual(query,None)  
         self.vaciarBaseDeDatos()
 
     #  El id del accion a buscar es nulo.
-    def testfind_idAccionNone(self):
+    def testBuscarIdAccionNone(self):
         self.vaciarBaseDeDatos()
 
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
-        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+
         tempAccion = clsAccion()
         idaccion = None
-        query = tempAccion.find_idAccion( newIdProducto,idaccion )
-        self.assertEqual(query,[])  
+        query = tempAccion.buscarId( idaccion )
+        self.assertEqual(query,None)  
         self.vaciarBaseDeDatos()
 
     #  El id del accion a buscar es negativo.
-    def testfind_idAccionNegative(self):
+    def testBuscarIdAccionNegative(self):
         self.vaciarBaseDeDatos()
 
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
         idaccion = -3
-        query = tempAccion.find_idAccion( newIdProducto,idaccion )
-        self.assertEqual(query,[])  
+        query = tempAccion.buscarId( idaccion )
+        self.assertEqual(query,None)  
         self.vaciarBaseDeDatos()
     
     #.-------------------------------------------------------------------.  
@@ -228,66 +217,56 @@ class TestAccion(unittest.TestCase):
     
     ### CASOS VALIDOS( Casos Interiores ).
     # Insertar un accion con un elemento en la base de datos vacia.
-    def testinsert_AccionBaseDeDatosOneElem(self):
+    def testInsertarAccionBaseDeDatosOneElem(self):
         self.vaciarBaseDeDatos()
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 3
-        newDescripAccion = 'Esto es una prueba'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion ) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 3
+        nuevoDescripcionAccion = 'Esto es una prueba'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion ) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
         
 
         tempAccion = clsAccion()
-        newDescripAccion = 'accion 2.0'
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion = 'accion 2.0'
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
 
     # Insertar un accion con la base de datos vacia.
-    def testinsert_AccionBaseDeDatosVacia(self):
+    def testInsertarAccionBaseDeDatosVacia(self):
         self.vaciarBaseDeDatos()
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
-        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
 
         tempAccion = clsAccion()
-        newDescripAccion = 'accion 2.0'
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion = 'accion 2.0'
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Insertar un accion con varios elementos en la base de datos.
-    def testinsert_AccionBaseDeDatosVariosELem(self):
+    def testInsertarAccionBaseDeDatosVariosELem(self):
         self.vaciarBaseDeDatos()
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         for indice in range(5,10,1):
-            newIdAccion = indice
-            newDescripAccion = 'Descripcion ' + str(indice)
-            newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion ) 
-            model.db.session.add(newAccion)
+            nuevoIdAccion = indice
+            nuevoDescripcionAccion = 'Descripcion ' + str(indice)
+            nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion ) 
+            model.db.session.add(nuevoAccion)
             model.db.session.commit()   
             
         tempAccion = clsAccion()
-        newDescripAccion = 'accion 2.0'
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion = 'accion 2.0'
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -295,596 +274,486 @@ class TestAccion(unittest.TestCase):
                   
     ### CASOS VALIDOS( Casos Fronteras )
     #Se insertara un accion cuyo tama�o es igual a 1.
-    def testinsert_AccionDescripLen1(self):
+    def testInsertarAccionDescripLen1(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = '1'
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion = '1'
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     #  Se insertara un accion cuyo tama�o es igual a 500.
-    def testinsert_AccionDescripLen500(self):
+    def testInsertarAccionDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto) 
         
         tempAccion = clsAccion()
-        newDescripAccion ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
                 
     ### CASOS INVALIDOS( Casos Malicia ):    
     #  Se insertara un accion cuyo tama�o es 0 (Cadena Vac�a).
-    def testinsert_AccionDescripLen0(self):
+    def testInsertarAccionDescripLen0(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = ''
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion = ''
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un accion cuyo tama�o es de 501.
-    def testinsert_AccionDescripLen501(self):
+    def testInsertarAccionDescripLen501(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 'dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,'
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion = 'dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,'
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara una accion cuya descripcion es un numero.
-    def testinsert_AccionDescripInt(self):
+    def testInsertarAccionDescripInt(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 501
-        result = tempAccion.insert_Accion(newIdProducto, newDescripAccion )
+        nuevoDescripcionAccion = 501
+        result = tempAccion.insertar(nuevoIdProducto, nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un accion cuya descripcion dada es None.
-    def testinsert_AccionDescripNone(self):
+    def testInsertarAccionDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = None
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion = None
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un accion cuya descripcion dada es Float.
-    def testinsert_AccionDescripFloat(self):
+    def testInsertarAccionDescripFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 0.54
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion = 0.54
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     #Se insertara un accion con id string
-    def testinsert_AccionIdString(self):
+    def testInsertarAccionIdString(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 'ola k ase'
-        result = tempAccion.insert_Accion( 'error',newDescripAccion )
+        nuevoDescripcionAccion = 'ola k ase'
+        result = tempAccion.insertar( 'error',nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     #  Se insertara un accion con id Float
-    def testinsert_AccionIdFloat(self):
+    def testInsertarAccionIdFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
-        result = tempAccion.insert_Accion(1.32,newDescripAccion )
+        nuevoDescripcionAccion ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
+        result = tempAccion.insertar(1.32,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
                 
 
     # Se insertara un accion con id float.
-    def testinsert_AccionIdNone(self):
+    def testInsertarAccionIdNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 'None.. uff caiste'
-        result = tempAccion.insert_Accion( None,newDescripAccion )
+        nuevoDescripcionAccion = 'None.. uff caiste'
+        result = tempAccion.insertar( None,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un accion con id maximo.
-    def testinsert_AccionIdGrant(self):
+    def testInsertarAccionIdGrant(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 'None.. uff caiste'
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion = 'None.. uff caiste'
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id negativo.
-    def testinsert_AccionIdNegative(self):
+    def testInsertarAccionIdNegative(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 'None.. uff caiste'
-        result = tempAccion.insert_Accion(-3,newDescripAccion )
+        nuevoDescripcionAccion = 'None.. uff caiste'
+        result = tempAccion.insertar(-3,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id string y descripcion entero.
-    def testinsert_AccionIdStringDescripInt(self):
+    def testInsertarAccionIdStringDescripInt(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 123
-        result = tempAccion.insert_Accion( 'newIdProducto',newDescripAccion )
+        nuevoDescripcionAccion = 123
+        result = tempAccion.insertar( 'nuevoIdProducto',nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id string y descripcion float.
-    def testinsert_AccionIdStringDescripFloat(self):
+    def testInsertarAccionIdStringDescripFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 23.23
-        result = tempAccion.insert_Accion( 'newIdProducto',newDescripAccion )
+        nuevoDescripcionAccion = 23.23
+        result = tempAccion.insertar( 'nuevoIdProducto',nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id string y descripcion None.
-    def testinsert_AccionIdStringDescripNone(self):
+    def testInsertarAccionIdStringDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = None
-        result = tempAccion.insert_Accion( 'newIdProducto',newDescripAccion )
+        nuevoDescripcionAccion = None
+        result = tempAccion.insertar( 'nuevoIdProducto',nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id string y descripcion tamaño 500.
-    def testinsert_AccionIdStringDescripLen500(self):
+    def testInsertarAccionIdStringDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 'y'*500
-        result = tempAccion.insert_Accion( 'newIdProducto',newDescripAccion )
+        nuevoDescripcionAccion = 'y'*500
+        result = tempAccion.insertar( 'nuevoIdProducto',nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un accion con id string y descripcion tamaño 501.
-    def testinsert_AccionIdStringDescripLen501(self):
+    def testInsertarAccionIdStringDescripLen501(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 'y'*501
-        result = tempAccion.insert_Accion( 'newIdProducto',newDescripAccion )
+        nuevoDescripcionAccion = 'y'*501
+        result = tempAccion.insertar( 'nuevoIdProducto',nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id float y descripcion entero.
-    def testinsert_AccionIdFloatDescripInt(self):
+    def testInsertarAccionIdFloatDescripInt(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 32
-        result = tempAccion.insert_Accion( 43.32,newDescripAccion )
+        nuevoDescripcionAccion = 32
+        result = tempAccion.insertar( 43.32,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id float y descripcion float.
-    def testinsert_AccionIdFloatDescripFloat(self):
+    def testInsertarAccionIdFloatDescripFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 32.323
-        result = tempAccion.insert_Accion( 43.32,newDescripAccion )
+        nuevoDescripcionAccion = 32.323
+        result = tempAccion.insertar( 43.32,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id float y descripcion None.
-    def testinsert_AccionIdFloatDescripNone(self):
+    def testInsertarAccionIdFloatDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = None
-        result = tempAccion.insert_Accion( 43.32,newDescripAccion )
+        nuevoDescripcionAccion = None
+        result = tempAccion.insertar( 43.32,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id float y descripcion tamaño 500.
-    def testinsert_AccionIdFloatDescripLen500(self):
+    def testInsertarAccionIdFloatDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 'y'*500
-        result = tempAccion.insert_Accion( 43.32,newDescripAccion )
+        nuevoDescripcionAccion = 'y'*500
+        result = tempAccion.insertar( 43.32,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id float y descripcion tamaño 501.
-    def testinsert_AccionIdFloatDescripLen501(self):
+    def testInsertarAccionIdFloatDescripLen501(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 'y'*501
-        result = tempAccion.insert_Accion( 43.32,newDescripAccion )
+        nuevoDescripcionAccion = 'y'*501
+        result = tempAccion.insertar( 43.32,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id None y descripcion entero.
-    def testinsert_AccionIdNoneDescripInt(self):
+    def testInsertarAccionIdNoneDescripInt(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 34
-        result = tempAccion.insert_Accion( None,newDescripAccion )
+        nuevoDescripcionAccion = 34
+        result = tempAccion.insertar( None,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id None y descripcion float.
-    def testinsert_AccionIdNoneDescripFloat(self):
+    def testInsertarAccionIdNoneDescripFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 34.23
-        result = tempAccion.insert_Accion( None,newDescripAccion )
+        nuevoDescripcionAccion = 34.23
+        result = tempAccion.insertar( None,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id None y descripcion None.
-    def testinsert_AccionIdNoneDescripNone(self):
+    def testInsertarAccionIdNoneDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = None
-        result = tempAccion.insert_Accion( None,newDescripAccion )
+        nuevoDescripcionAccion = None
+        result = tempAccion.insertar( None,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un accion con id None y descripcion 500.
-    def testinsert_AccionIdNoneDescripLen500(self):
+    def testInsertarAccionIdNoneDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 'y'*500
-        result = tempAccion.insert_Accion( None,newDescripAccion )
+        nuevoDescripcionAccion = 'y'*500
+        result = tempAccion.insertar( None,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id None y descripcion 501.
-    def testinsert_AccionIdNoneDescripLen501(self):
+    def testInsertarAccionIdNoneDescripLen501(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 'y'*501
-        result = tempAccion.insert_Accion( None,newDescripAccion )
+        nuevoDescripcionAccion = 'y'*501
+        result = tempAccion.insertar( None,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id Grande y descripcion entero.
-    def testinsert_AccionIdGrantDescripInt(self):
+    def testInsertarAccionIdGrantDescripInt(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 34
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion = 34
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un accion con id Grande y descripcion float.
-    def testinsert_AccionIdGrantDescripFloat(self):
+    def testInsertarAccionIdGrantDescripFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 34.32
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion = 34.32
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id Grande y descripcion None.
-    def testinsert_AccionIdGrantDescripNone(self):
+    def testInsertarAccionIdGrantDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = None
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion = None
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id Grande y descripcion 500.
-    def testinsert_AccionIdGrantDescrip500(self):
+    def testInsertarAccionIdGrantDescrip500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 'y'*500
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion = 'y'*500
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id Grande y descripcion 501.
-    def testinsert_AccionIdGrantDescrip501(self):
+    def testInsertarAccionIdGrantDescrip501(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 'y'*501
-        result = tempAccion.insert_Accion( newIdProducto,newDescripAccion )
+        nuevoDescripcionAccion = 'y'*501
+        result = tempAccion.insertar( nuevoIdProducto,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
  
      # Se insertara un accion con id Negativo y descripcion entero.
-    def testinsert_AccionIdNegativeDescripInt(self):
+    def testInsertarAccionIdNegativeDescripInt(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 34
-        result = tempAccion.insert_Accion( -3,newDescripAccion )
+        nuevoDescripcionAccion = 34
+        result = tempAccion.insertar( -3,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # Se insertara un accion con id negativo y descripcion float.
-    def testinsert_AccionIdNegativeDescripFloat(self):
+    def testInsertarAccionIdNegativeDescripFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 34.32
-        result = tempAccion.insert_Accion( -3,newDescripAccion )
+        nuevoDescripcionAccion = 34.32
+        result = tempAccion.insertar( -3,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id negativo y descripcion None.
-    def testinsert_AccionIdNegativeDescripNone(self):
+    def testInsertarAccionIdNegativeDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = None
-        result = tempAccion.insert_Accion( -3,newDescripAccion )
+        nuevoDescripcionAccion = None
+        result = tempAccion.insertar( -3,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id negativo y descripcion 500.
-    def testinsert_AccionIdNegativeDescrip500(self):
+    def testInsertarAccionIdNegativeDescrip500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
-        newDescripAccion = 'y'*500
-        result = tempAccion.insert_Accion(-3,newDescripAccion )
+        nuevoDescripcionAccion = 'y'*500
+        result = tempAccion.insertar(-3,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # Se insertara un accion con id negativo y descripcion 501.
-    def testinsert_AccionIdGrantDescrip501(self):
+    def testInsertarAccionIdGrantDescrip501(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 2**31 - 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
+        nuevoIdProducto = 2**31 - 1
+        self.insertarProducto(nuevoIdProducto)
         model.db.session.commit() 
         
         tempAccion = clsAccion()
-        newDescripAccion = 'y'*501
-        result = tempAccion.insert_Accion( -3 ,newDescripAccion )
+        nuevoDescripcionAccion = 'y'*501
+        result = tempAccion.insertar( -3 ,nuevoDescripcionAccion )
         self.assertFalse(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos.        
     #.-------------------------------------------------------------------.  
@@ -892,143 +761,125 @@ class TestAccion(unittest.TestCase):
     
     ### CASOS VALIDOS( Casos Interiores ).
     # El id del accion a modificar existe en la base de datos de un elemento.
-    def testmodify_AccionExist(self):
+    def testModificarAccionExist(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit() 
         
         tempAccion = clsAccion()
         idaccion = 1
-        newDescripAccion = 'accionX'
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'accionX'
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertTrue( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.      
 
     # El id del ojetivo a modificar no existe en la base de datos vacia.
-    def testmodify_AccionNoExist(self):
+    def testModificarAccionNoExist(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         tempAccion = clsAccion()
         idaccion = 20
-        newDescripAccion = 'Esto sigue siendo una prueba'
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'Esto sigue siendo una prueba'
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
     ### CASOS VALIDOS( Casos Fronteras )
     # El id del accion a modificar existe en la base de datos de varios accions 
-    def testmodify_AccionIdExistVariosELem(self):
+    def testModificarAccionIdExistVariosELem(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         for indice in range(1,10,1):
-            newIdAccion = indice
-            newDescripAccion = 'Descripcion ' + str(indice)
-            newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion ) 
-            model.db.session.add(newAccion)
+            nuevoIdAccion = indice
+            nuevoDescripcionAccion = 'Descripcion ' + str(indice)
+            nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion ) 
+            model.db.session.add(nuevoAccion)
             model.db.session.commit()   
             
         tempAccion = clsAccion()
         idaccion = 1
-        newDescripAccion = 'esto sigue siendo una prueva V2'
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'esto sigue siendo una prueva V2'
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertTrue( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.  
     
     # El id del accion a modificar no existe en la base de datos de varios accions 
-    def testmodify_AccionIdNotExistVariosELem(self):
+    def testModificarAccionIdNotExistVariosELem(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         for indice in range(2,10,1):
-            newIdAccion = indice
-            newDescripAccion = 'Descripcion ' + str(indice)
-            newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion ) 
-            model.db.session.add(newAccion)
+            nuevoIdAccion = indice
+            nuevoDescripcionAccion = 'Descripcion ' + str(indice)
+            nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion ) 
+            model.db.session.add(nuevoAccion)
             model.db.session.commit()   
             
         tempAccion = clsAccion()
         idaccion = 1
-        newDescripAccion = 'esto sigue siendo una prueva V2'
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'esto sigue siendo una prueva V2'
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.  
 
     
     #  El id del accion a modificar existe en la base de datos. La nueva 
     #          descripci�n es de largo 1.
-    def testmodify_AccionIdExistNewDescripLen1(self):
+    def testModificarAccionIdExistNewDescripLen1(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit() 
         
         tempAccion = clsAccion()
         idaccion = 1
-        newDescripAccion = 'l'
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'l'
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertTrue(result)
         self.vaciarBaseDeDatos() # Se limpia la base de datos.    
     
     # El id del accion a modificar existe en la base de datos. La nueva 
     #          descripci�n es de largo 500.
-    def testmodify_AccionIdExistNewDescripLen500(self):
+    def testModificarAccionIdExistNewDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit() 
         
         tempAccion = clsAccion()
         idaccion = 1
-        newDescripAccion = 'y'*500
-        result = tempAccion.modify_Accion(newIdProducto, idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'y'*500
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         model.db.session.query(model.Acciones).delete()  # Se limpia la base de datos.
         self.assertTrue( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
@@ -1038,671 +889,745 @@ class TestAccion(unittest.TestCase):
     ### CASOS VALIDOS( Casos Esquinas )
     #  El id del accion a modificar existe en la base de datos y su valor es
     #          igual a 1. La nueva descripci�n es de longitud igual a 1.
-    def testmodify_AccionIdExistIqual1NewDescripLen1(self):
+    def testModificarAccionIdExistIqual1NewDescripLen1(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'z'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'z'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()
         
         tempAccion = clsAccion()
         idaccion = 1
-        newDescripAccion = 'z'
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'z'
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertTrue( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
     # El id del accion a modificar existe en la base de datos y su valor es
     #          igual a 1. La nueva descripci�n es de longitud igual a 500.
-    def testmodify_AccionIdExistIqual1NewDescripLen500(self):
+    def testModificarAccionIdExistIqual1NewDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'x'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'x'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()
         
         tempAccion = clsAccion()
         idaccion = 1
-        newDescripAccion ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertTrue( result ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     ### CASOS INVALIDOS( Casos Malicia )
     # El id dado del accion a modificar es un string.
-    def testmodify_AccionIdString(self):    
+    def testModificarAccionIdString(self):    
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
             
         tempAccion = clsAccion()
         idaccion = '1'
-        newDescripAccion = 'Axx'
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'Axx'
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.   
         
     # El id dado del obetivo a modificar es un numero negativo.    
-    def testmodify_AccionIdNegative(self):     
+    def testModificarAccionIdNegative(self):     
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
            
         tempAccion = clsAccion()
         idaccion = -1
-        newDescripAccion = 'accion de prueba'
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'accion de prueba'
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
                 
     # El id dado del accion a modificar es un float.
-    def testmodify_AccionIdFloat(self):      
+    def testModificarAccionIdFloat(self):      
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
           
         tempAccion = clsAccion()
         idaccion = 1.0
-        newDescripAccion = 'accion de prueba'
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'accion de prueba'
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # El id dado del accion a modificar es None.         
-    def testmodify_AccionIdNone(self):   
+    def testModificarAccionIdNone(self):   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
              
         tempAccion = clsAccion()
         idaccion = None
-        newDescripAccion = 'accionPrueba'
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'accionPrueba'
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
     # La nueva descripci�n para la acci�n a modificar es un string vacio.
-    def testmodify_AccionDescripIsEmpty(self): 
+    def testModificarAccionDescripIsEmpty(self): 
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()  
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()
              
         tempAccion = clsAccion()
         idaccion = 1
-        newDescripAccion = ''
-        result = tempAccion.modify_Accion(newIdProducto, idaccion, newDescripAccion )
+        nuevoDescripcionAccion = ''
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es de longitud 501.    
-    def testmodify_AccionDescripLen501(self):  
+    def testModificarAccionDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
            
-        
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()
            
         tempAccion = clsAccion()
         idaccion = 1
-        newDescripAccion = 'r'*501
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'r'*501
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos.    
 
     #  La nueva descripci�n para el accion a modificar es un numero.
-    def testmodify_AccionDescripIsNumber(self):   
+    def testModificarAccionDescripIsNumber(self):   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
             
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()
         
         tempAccion = clsAccion()
         idaccion = 1
-        newDescripAccion = 12345
-        result = tempAccion.modify_Accion(newIdProducto, idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 12345
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos.   
         
     # La nueva descripci�n para el accion a modificar es None. 
-    def testmodify_AccionDescripNone(self):  
+    def testModificarAccionDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 1
-        newDescripAccion = None
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = None
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es Entero y id string . 
-    def testmodify_AccionIdStringDescripInt(self):  
+    def testModificarAccionIdStringDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 'malo'
-        newDescripAccion = 1212
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 1212
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es Float y id string . 
-    def testmodify_AccionIdStringDescripFloat(self):  
+    def testModificarAccionIdStringDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 'malo'
-        newDescripAccion = 1212.23
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 1212.23
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es None y id string . 
-    def testmodify_AccionIdStringDescripNone(self):  
+    def testModificarAccionIdStringDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 'malo'
-        newDescripAccion = None
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = None
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es tamaño 500 y id string . 
-    def testmodify_AccionIdStringDescripLen500(self):  
+    def testModificarAccionIdStringDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 'malo'
-        newDescripAccion = 'y'*500
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'y'*500
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es tamaño 501 y id string . 
-    def testmodify_AccionIdStringDescripLen501(self):  
+    def testModificarAccionIdStringDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 'malo'
-        newDescripAccion = 'y'*501
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'y'*501
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es tamaño Entero y id float . 
-    def testmodify_AccionIdFloatDescripInt(self):  
+    def testModificarAccionIdFloatDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 23.23
-        newDescripAccion = 23
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 23
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es tamaño Float y id float . 
-    def testmodify_AccionIdFloatDescripFloat(self):  
+    def testModificarAccionIdFloatDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 23.23
-        newDescripAccion = 23.23
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 23.23
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es None y id float . 
-    def testmodify_AccionIdFloatDescripNone(self):  
+    def testModificarAccionIdFloatDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 23.23
-        newDescripAccion = None
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = None
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # La nueva descripci�n para el accion a modificar es tamaño 500 y id float . 
-    def testmodify_AccionIdFloatDescripLen500(self):  
+    def testModificarAccionIdFloatDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 23.23
-        newDescripAccion = 'y'*500
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'y'*500
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es tamaño 501 y id float . 
-    def testmodify_AccionIdFloatDescripLen501(self):  
+    def testModificarAccionIdFloatDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 23.23
-        newDescripAccion = 'y'*501
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'y'*501
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es entero y id None . 
-    def testmodify_AccionIdNoneDescripInt(self):  
+    def testModificarAccionIdNoneDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = None
-        newDescripAccion = 23
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 23
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es float y id None . 
-    def testmodify_AccionIdNoneDescripFloat(self):  
+    def testModificarAccionIdNoneDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = None
-        newDescripAccion = 23.23
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 23.23
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es None y id None . 
-    def testmodify_AccionIdNoneDescripNone(self):  
+    def testModificarAccionIdNoneDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = None
-        newDescripAccion = None
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = None
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es tamaño 500 y id None . 
-    def testmodify_AccionIdNoneDescripLen500(self):  
+    def testModificarAccionIdNoneDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = None
-        newDescripAccion = 'y'*500
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'y'*500
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es tamaño 501 y id None . 
-    def testmodify_AccionIdNoneDescripLen501(self):  
+    def testModificarAccionIdNoneDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = None
-        newDescripAccion = 'y'*501
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'y'*501
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
     # La nueva descripci�n para el accion a modificar es Entero y id MAX . 
-    def testmodify_AccionIdMaxDescripInt(self):  
+    def testModificarAccionIdMaxDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto) 
         
-        newIdAccion = 2**31 -1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 2**31 -1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 2**31 -1
-        newDescripAccion = 43
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 43
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es float y id MAX . 
-    def testmodify_AccionIdMaxDescripFloat(self):  
+    def testModificarAccionIdMaxDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 2**31 -1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 2**31 -1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 2**31 -1
-        newDescripAccion = 43.323
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 43.323
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es None y id MAX . 
-    def testmodify_AccionIdMaxDescripNone(self):  
+    def testModificarAccionIdMaxDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto) 
         
-        newIdAccion = 2**31 -1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 2**31 -1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 2**31 -1
-        newDescripAccion = None
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = None
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es tamaño 500 y id MAX . 
-    def testmodify_AccionIdMaxDescripLen500(self):  
+    def testModificarAccionIdMaxDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit() 
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 2**31 -1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 2**31 -1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
         idaccion = 2**31 -1
-        newDescripAccion = 'y'*500
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'y'*500
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertTrue( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
     # La nueva descripci�n para el accion a modificar es tamaño 501 y id MAX . 
-    def testmodify_AccionIdMaxDescripLen501(self):  
+    def testModificarAccionIdMaxDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        newIdProducto = 1
-        newDescripProducto=' Descripcion Producto.. '
-        newProducto = model.Pila(newIdProducto,newDescripProducto,"hola",1)
-        model.db.session.add(newProducto)
-        model.db.session.commit()
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
         
-        newIdAccion = 2**31 -1
-        newDescripAccion = 'Esto es una prueba.'
-        newAccion = model.Acciones( newIdProducto,newIdAccion, newDescripAccion) 
-        model.db.session.add(newAccion)
+        nuevoIdAccion = 2**31 -1
+        nuevoDescripcionAccion = 'Esto es una prueba.'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion) 
+        model.db.session.add(nuevoAccion)
         model.db.session.commit()   
           
         tempAccion = clsAccion()
+        
+
         idaccion = 2**31 -1
-        newDescripAccion = 'y'*501
-        result = tempAccion.modify_Accion( newIdProducto,idaccion, newDescripAccion )
+        nuevoDescripcionAccion = 'y'*501
+        result = tempAccion.modificar( idaccion, nuevoDescripcionAccion )
         self.assertFalse( result )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+    #.-------------------------------------------------------------------.  
+    # FUNCION ELIMINAR
+    
+    ### CASOS VALIDOS( Casos Interiores ).
+    # Eliminar el id de un accion que exista en la base de datos de un elemento. 
+    def testEliminarIdAccionExist(self):
+        self.vaciarBaseDeDatos()
+
+        idProducto=1
+        self.insertarProducto(idProducto)
+        # Se inserta un elemento en la base. Dicha insercion se asegura
+        # que es valida.
+        
+        nuevoIdAccion = 1
+        nuevoDescripcionAccion = 'Esto es una prueba'
+        nuevoAccion = model.Acciones( idProducto,nuevoIdAccion, nuevoDescripcionAccion ) 
+        model.db.session.add(nuevoAccion)
+        model.db.session.commit()   
+        
+        tempAccion = clsAccion()
+        idaccion = 1
+        query = tempAccion.eliminar(idaccion )
+        self.assertTrue( query )
+        self.vaciarBaseDeDatos()
+
+    # Eliminar el id de un accion con base de datos vacia
+    def testEliminarIdAccionNotExistBaseDeDatosVacia(self):
+        self.vaciarBaseDeDatos()
+        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+        
+        tempAccion = clsAccion()
+        idaccion = 1000
+        query = tempAccion.eliminar( idaccion )
+        self.assertFalse(query)
+        self.vaciarBaseDeDatos()
+
+        
+    # Eliminar el id de un accion con base de datos un elemento y busqueda no exitosa
+        
+    def testEliminarIdAccionNotExistOneElementos(self):
+        self.vaciarBaseDeDatos()
+        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+
+        
+        # Se inserta un elemento en la base. Dicha insercion se asegura
+        # que es valida.
+        
+        nuevoIdAccion = 2
+        nuevoDescripcionAccion = 'Esto es una prueba'
+        nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion ) 
+        model.db.session.add(nuevoAccion)
+        model.db.session.commit()   
+        
+        tempAccion = clsAccion()
+        idaccion = 1
+        query = tempAccion.eliminar( idaccion )
+        self.assertFalse(query)
+        self.vaciarBaseDeDatos()
+        
+    # Eliminar el id de un accion con base de datos de varios elemento y busqueda no exitosa   
+    def testEliminarIdAccionNotExistVariosElementos(self):
+        self.vaciarBaseDeDatos()    
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+        
+        # Se inserta un elemento en la base. Dicha insercion se asegura
+        # que es valida.
+        for indice in range(1,4,1):
+            nuevoIdAccion = indice
+            nuevoDescripcionAccion = 'Descripcion ' + str(indice)
+            nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion ) 
+            model.db.session.add(nuevoAccion)
+            model.db.session.commit()   
+        
+        tempAccion = clsAccion()
+        idaccion = 5
+        query = tempAccion.eliminar( idaccion )
+        self.assertFalse(query)
+        self.vaciarBaseDeDatos()
+          
+    # Eliminar el id de un accion con base de datos de varios elemento y busqueda exitosa   
+    def testEliminarIdAccionExistVariosElementos(self):
+        self.vaciarBaseDeDatos()  
+        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+
+        # Se insertaN elementoS en la base. Dicha insercion se asegura
+        # que es valida.
+        for indice in range(1,4,1):
+            nuevoIdAccion = indice
+            nuevoDescripcionAccion = 'Descripcion ' + str(indice)
+            nuevoAccion = model.Acciones( nuevoIdProducto,nuevoIdAccion, nuevoDescripcionAccion ) 
+            model.db.session.add(nuevoAccion)
+            model.db.session.commit()   
+        
+        tempAccion = clsAccion()
+        idaccion = 3
+        query = tempAccion.eliminar( idaccion )
+        self.assertTrue( query )
+        self.vaciarBaseDeDatos()
+        
+    ### CASOS INVALIDOS( Casos Malicia )
+    #El id del accion a Eliminar es un string.
+    def testEliminarIdAccionString(self):
+        self.vaciarBaseDeDatos()
+        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+ 
+        
+        tempAccion = clsAccion()
+        idaccion = '1'
+        query = tempAccion.eliminar( idaccion )
+        self.assertFalse(query)
+        
+        self.vaciarBaseDeDatos()
+        
+    # El id del accion a Eliminar es de tipo float.
+    def testEliminarIdAccionFloat(self):
+        self.vaciarBaseDeDatos()
+        
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+        
+        tempAccion = clsAccion()
+        idaccion = 1.01
+        query = tempAccion.eliminar( idaccion )
+        self.assertFalse(query)  
+        self.vaciarBaseDeDatos()
+
+    #  El id del accion a Eliminar es nulo.
+    def testEliminarIdAccionNone(self):
+        self.vaciarBaseDeDatos()
+
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+
+        tempAccion = clsAccion()
+        idaccion = None
+        query = tempAccion.eliminar( idaccion )
+        self.assertFalse(query)  
+        self.vaciarBaseDeDatos()
+
+    #  El id del accion a Eliminar es negativo.
+    def testEliminarIdAccionNegative(self):
+        self.vaciarBaseDeDatos()
+
+        nuevoIdProducto = 1
+        self.insertarProducto(nuevoIdProducto)
+        
+        tempAccion = clsAccion()
+        idaccion = -3
+        query = tempAccion.eliminar( idaccion )
+        self.assertFalse(query)  
+        self.vaciarBaseDeDatos()
+    
+    #.-------------------------------------------------------------------.  
         
