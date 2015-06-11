@@ -32,10 +32,11 @@ class TestHistObj(unittest.TestCase):
     
     def vaciarBaseDeDatos(self):
         model.db.session.query(model.ObjHistorias).delete()
-        model.db.session.query(model.Historia_Usuario).delete()
+        model.db.session.query(model.Historias).delete()
         model.db.session.query(model.Acciones).delete()
-        model.db.session.query(model.Objetivo).delete()
-        model.db.session.query(model.Pila).delete()
+        model.db.session.query(model.Objetivos).delete()
+        model.db.session.query(model.Actores).delete()
+        model.db.session.query(model.Productos).delete()
         
     #Funcion que inserta datos las tablas que se necesitan para poder insertar datos a la tabla "objHistorias"
     
@@ -46,7 +47,7 @@ class TestHistObj(unittest.TestCase):
         NewdescripProducto = "PruebaPila1"
         
         #Se ingresa manualmente los datos a la tabla pila
-        newPila = model.Pila(NewIdPila, NewdescripProducto)
+        newPila = model.Productos(NewIdPila, "prod",NewdescripProducto,1)
         model.db.session.add(newPila)
         model.db.session.commit()
         
@@ -57,7 +58,7 @@ class TestHistObj(unittest.TestCase):
         NewidProducto = 1
         
         #Se ingresa manualmente los datos a la tabla objetivos
-        newObjetivo = model.Objetivo(NewidProducto, NewidObjetivo,NewdescripObjetivo)
+        newObjetivo = model.Objetivos(NewidProducto, NewidObjetivo,NewdescripObjetivo,0)
         model.db.session.add(newObjetivo)
         model.db.session.commit()
         
@@ -83,7 +84,7 @@ class TestHistObj(unittest.TestCase):
         NewSuper = 1
         
         #Se ingresa manualmente los datos a la tabla historia
-        newHistoria = model.Historia_Usuario(NewIdHistoria,NewCodigoHistoria_Usuario, NewId_Pila_Historia_Usuario, NewtipoHistoria_Usuario,NewId_Acciones_Historia_Usuario,NewSuper)
+        newHistoria = model.Historias(NewIdHistoria,NewCodigoHistoria_Usuario, NewId_Pila_Historia_Usuario,NewtipoHistoria_Usuario, NewId_Acciones_Historia_Usuario,NewSuper,1)
         model.db.session.add(newHistoria)
         model.db.session.commit()
         
@@ -111,7 +112,7 @@ class TestHistObj(unittest.TestCase):
         NewIdObj = 1
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewIdObj)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewIdObj)
         self.assertTrue(resultInsert)
         
         #Se limpia la bases de datos
@@ -125,7 +126,7 @@ class TestHistObj(unittest.TestCase):
     # test2: Se inserta un idHistoria de tipo float
     #                idObjetivo de tipo int
         
-    def testinsertIdHistoriaFloat(self):
+    def testInsertarIdHistoriaFloat(self):
         
        
         #Limpia bases de datos
@@ -140,7 +141,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo = 1
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -151,7 +152,7 @@ class TestHistObj(unittest.TestCase):
     #------------------------------------------------------------------------------------------------------------------------------    
     # test3: Se inserta un idHistoria de tipo string
     #                idObjetivo de tipo int
-    def testInsertIdHistoriaStr(self):
+    def testInsertarIdHistoriaStr(self):
     
        #Limpia bases de datos
         self.vaciarBaseDeDatos()
@@ -166,7 +167,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo = 1
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -178,7 +179,7 @@ class TestHistObj(unittest.TestCase):
     # test4: Se inserta un idHistoria de tipo None
     #                idObjetivo de tipo int
         
-    def testInsertIdHistoriaNone(self):
+    def testInsertarIdHistoriaNone(self):
         #Limpia bases de datos
         self.vaciarBaseDeDatos()
         
@@ -193,7 +194,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo= 1
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -220,7 +221,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivoes = 1
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivoes)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivoes)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -231,7 +232,7 @@ class TestHistObj(unittest.TestCase):
     # test6: Se inserta un idHistoria negativo
     #                idObjetivo de tipo int
     
-    def testInsertIdHistoriaNeg(self):
+    def testInsertarIdHistoriaNeg(self):
         
         #Limpia bases de datos
         self.vaciarBaseDeDatos()
@@ -246,7 +247,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo = 1
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -258,7 +259,7 @@ class TestHistObj(unittest.TestCase):
     #                idObjetivo de tipo int
     
     
-    def testInsertIdHistoriaNegFLoat(self):
+    def testInsertarIdHistoriaNegFLoat(self):
         
         #Limpia bases de datos
         self.vaciarBaseDeDatos()
@@ -273,7 +274,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo = 1
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -282,7 +283,7 @@ class TestHistObj(unittest.TestCase):
     # test8: Se inserta un idHistoria de tipo string con una cardinalidad de 2**31 -1
     #                idObjetivo de tipo in
     
-    #def testInsertIdHistoriaStrMax(self):
+    #def testInsertarIdHistoriaStrMax(self):
         
         #Limpia bases de datos
         #self.vaciarBaseDeDatos()
@@ -297,7 +298,7 @@ class TestHistObj(unittest.TestCase):
     #    NewidObjetivo = 1
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-    #    resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+    #    resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
     #    self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -308,7 +309,7 @@ class TestHistObj(unittest.TestCase):
     #------------------------------------------------------------------------------------------------------------------------------    
     # test9: Se inserta un idHistoria de tipo int
     #                      idObjetivo de tipo string
-    def testInsertIdObjetivoStr(self):
+    def testInsertarIdObjetivoStr(self):
     
         #Limpia bases de datos
         self.vaciarBaseDeDatos()
@@ -323,7 +324,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo = "holaaaa"
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -334,7 +335,7 @@ class TestHistObj(unittest.TestCase):
     # test10: Se inserta un idHistoria de tipo int
     #                idObjetivo de tipo float
         
-    def testinsertidObjetivoFloat(self):
+    def testInsertaridObjetivoFloat(self):
         
         #Limpia bases de datos
         self.vaciarBaseDeDatos()
@@ -349,7 +350,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo = 1.1
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -360,7 +361,7 @@ class TestHistObj(unittest.TestCase):
     # test11: Se inserta un idHistoria de tipo int
     #                idObjetivo de tipo NOne
         
-    def testInsertidObjetivoNone(self):
+    def testInsertaridObjetivoNone(self):
         
        #Limpia bases de datos
         self.vaciarBaseDeDatos()
@@ -375,7 +376,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo = None
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -388,7 +389,7 @@ class TestHistObj(unittest.TestCase):
     # test12: Se inserta un idHistoria int
     #                idObjetivo de tipo negativo
     
-    def testInsertidObjetivoNeg(self):
+    def testInsertaridObjetivoNeg(self):
         
         #Limpia bases de datos
         self.vaciarBaseDeDatos()
@@ -403,7 +404,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo = -31
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -415,7 +416,7 @@ class TestHistObj(unittest.TestCase):
     #                idObjetivo de tipo float neagativo
     
     
-    def testInsertidObjetivoNegFLoat(self):
+    def testInsertaridObjetivoNegFLoat(self):
         
         #Limpia bases de datos
         self.vaciarBaseDeDatos()
@@ -430,7 +431,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo = -2.5
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -439,7 +440,7 @@ class TestHistObj(unittest.TestCase):
     # test14: Se inserta un idHistoria de tipo int
     #                idObjetivo de tipo string con una cardinalidad de 2**31 -1
     
-    #def testInsertObjetivoStrMax(self):
+    #def testInsertarObjetivoStrMax(self):
         
         #Limpia bases de datos
         #self.vaciarBaseDeDatos()
@@ -454,7 +455,7 @@ class TestHistObj(unittest.TestCase):
     #    NewidObjetivo = 'z'*(2**31-1)
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-    #    resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+    #    resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
     #    self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -466,7 +467,7 @@ class TestHistObj(unittest.TestCase):
     # test15: Se inserta un idHistoria de tipo float
     #                idObjetivo de tipo float
         
-    def testinsertIdFloat(self):
+    def testInsertarIdFloat(self):
         
         #Limpia bases de datos
         self.vaciarBaseDeDatos()
@@ -481,7 +482,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo = 1.9
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -492,7 +493,7 @@ class TestHistObj(unittest.TestCase):
     #------------------------------------------------------------------------------------------------------------------------------    
     # test16: Se inserta un idHistoria de tipo string
     #                idObjetivo de tipo float
-    def testInsertIdfloatStr(self):
+    def testInsertarIdfloatStr(self):
     
         #Limpia bases de datos
         self.vaciarBaseDeDatos()
@@ -507,7 +508,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo = 7.9
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -519,7 +520,7 @@ class TestHistObj(unittest.TestCase):
     # test17: Se inserta un idHistoria de tipo None
     #                idObjetivo de tipo None
         
-    def testInsertIdNone(self):
+    def testInsertarIdNone(self):
         
         #Limpia bases de datos
         self.vaciarBaseDeDatos()
@@ -534,7 +535,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo = None
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -561,7 +562,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo = ''
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -572,7 +573,7 @@ class TestHistObj(unittest.TestCase):
     # test19: Se inserta un idHistoria negativo
     #                idObjetivo de tipo negativo
     
-    def testInsertIdNeg(self):
+    def testInsertarIdNeg(self):
         #Limpia bases de datos
         self.vaciarBaseDeDatos()
         
@@ -586,7 +587,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo =-61
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -598,7 +599,7 @@ class TestHistObj(unittest.TestCase):
     #                idObjetivo de tipo string
     
     
-    def testInsertIdStrNegFLoat(self):
+    def testInsertarIdStrNegFLoat(self):
         
         #Limpia bases de datos
         self.vaciarBaseDeDatos()
@@ -613,7 +614,7 @@ class TestHistObj(unittest.TestCase):
         NewidObjetivo = "gogogogog"
         
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-        resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+        resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
         self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
@@ -622,7 +623,7 @@ class TestHistObj(unittest.TestCase):
     # test21: Se inserta un idHistoria de tipo string con una cardinalidad de 2**31 -1
     #                idObjetivo de tipo string con una cardinalidad de 2**31 -1
     
-    #def testInsertIdHistoriaStrMax(self):
+    #def testInsertarIdHistoriaStrMax(self):
         
     #Limpia bases de datos
         #self.vaciarBaseDeDatos()
@@ -636,512 +637,146 @@ class TestHistObj(unittest.TestCase):
     #    NewIdHistObj = 'z'*(2**31-1)
     #    NewidObjetivo = 'u'*(2**31-1)
         #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
-    #    resultInsert = tempObj.insert_Objetivo(NewIdHistObj,NewidObjetivo)
+    #    resultInsert = tempObj.insertar(NewIdHistObj,NewidObjetivo)
     #    self.assertFalse(resultInsert)
         
         #Se limpia la bases de datos
     #    self.vaciarBaseDeDatos()
         
     #-------------------------------------------------------------------------------------------------------
-    # FUNCION MODIFICAR
     
-    #CASO VALIDO
-    #test : Modificar un objetivo que se encuentra en la base de datos
-    def testmodify(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
-        self.assertTrue(result)
-        
-    #CASOS INVALIDOS    
-    #test: Modificar un objetivo con IdHistora de tipo None   
-    def testmodifyIdHistoriaNone(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= None
-        idObjetivo =1
-        
-        result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
-        self.assertFalse(result)
+    # FUNCION ELIMINAR
     
-    #test: Modificar un objetivo con IdHistora de tipo String    
-    def testmodifyIdHistoriaString(self):
+  # Se quiere eliminar un objetivo que no esta    
+    def testEliminarNotExist(self):
+        
+        #Limpia bases de datos
         self.vaciarBaseDeDatos()
+        
         #Inserta tablas dependientes
         self.insertar()
         
         tempObj = clsHistoriaObj()
         
         #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
+        NewIdHistObj = 1
         
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
+        #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
+        resultInsert = tempObj.eliminar(NewIdHistObj)
+        self.assertFalse(resultInsert)
         
-        idHistoria= "hola"
-        idObjetivo =1
+        #Se limpia la bases de datos
+        self.vaciarBaseDeDatos() 
         
-        result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
-        self.assertFalse(result)
+  # Se quiere eliminar un objetivo que esta en la base de datos
+    def testEliminarExist(self):
+        
+        #Limpia bases de datos
+        self.vaciarBaseDeDatos()
+        
+        #Inserta tablas dependientes
+        self.insertar()
+        #Datos a ingresar a la tabla objHistorias
+        NewIdHistObj = 1
+        
+        tempObj = clsHistoriaObj()
+        tempObj.insertar(NewIdHistObj,1)
+
+        
+        #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
+        resultInsert = tempObj.eliminar(NewIdHistObj)
+        self.assertTrue(resultInsert)
+        
+        #Se limpia la bases de datos
+        self.vaciarBaseDeDatos() 
     
-    #test: Modificar un objetivo con IdHistora Vacio    
-    def testmodifyIdHistoriaEmpty(self):
+  # Se quiere eliminar un objetivo con id None que esta en la base de datos
+    def testEliminarIdNone(self):
+        
+        #Limpia bases de datos
         self.vaciarBaseDeDatos()
+        
         #Inserta tablas dependientes
         self.insertar()
+        #Datos a ingresar a la tabla objHistorias
+        NewIdHistObj = 1
         
         tempObj = clsHistoriaObj()
+        tempObj.insertar(NewIdHistObj,1)
+
         
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
+        #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
+        resultInsert = tempObj.eliminar(None)
+        self.assertFalse(resultInsert)
         
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= ""
-        idObjetivo =1
-        
-        result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
-        self.assertFalse(result)
+        #Se limpia la bases de datos
+        self.vaciarBaseDeDatos() 
     
-    #test: Modificar un objetivo con IdHistora de tipo Lista
-    def testmodifyIdHistoriaList(self):
+  # Se quiere eliminar un objetivo con id String que esta en la base de datos
+    def testEliminarIdString(self):
+        
+        #Limpia bases de datos
         self.vaciarBaseDeDatos()
+        
         #Inserta tablas dependientes
         self.insertar()
+        #Datos a ingresar a la tabla objHistorias
+        NewIdHistObj = 1
         
         tempObj = clsHistoriaObj()
+        tempObj.insertar(NewIdHistObj,1)
+
         
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
+        #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
+        resultInsert = tempObj.eliminar('None')
+        self.assertFalse(resultInsert)
         
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
+        #Se limpia la bases de datos
+        self.vaciarBaseDeDatos() 
         
-        idHistoria= []
-        idObjetivo =1
+  # Se quiere eliminar un objetivo con id negativo que esta en la base de datos
+    def testEliminarIdNegative(self):
         
-        result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
-        self.assertFalse(result)
-    
-    #test: Modificar un objetivo con IdHistora de tipo Float    
-    def testmodifyIdHistoriaFloat(self):
+        #Limpia bases de datos
         self.vaciarBaseDeDatos()
+        
         #Inserta tablas dependientes
         self.insertar()
+        #Datos a ingresar a la tabla objHistorias
+        NewIdHistObj = 1
         
         tempObj = clsHistoriaObj()
+        tempObj.insertar(NewIdHistObj,1)
+
         
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
+        #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
+        resultInsert = tempObj.eliminar(-1)
+        self.assertFalse(resultInsert)
         
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
+        #Se limpia la bases de datos
+        self.vaciarBaseDeDatos() 
         
-        idHistoria= 2.5
-        idObjetivo =1
+  # Se quiere eliminar un objetivo con id float que esta en la base de datos
+    def testEliminarIdFloat(self):
         
-        result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
-        self.assertFalse(result)
-    
-    #test: Modificar un objetivo con IdHistora de tipo Numero Negativo    
-    def testmodifyIdHistoriaNegNum(self):
+        #Limpia bases de datos
         self.vaciarBaseDeDatos()
+        
         #Inserta tablas dependientes
         self.insertar()
+        #Datos a ingresar a la tabla objHistorias
+        NewIdHistObj = 1
         
         tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= -34
-        idObjetivo =1
-        
-        result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
-        self.assertFalse(result)
-    
-    #test: Modificar un objetivo con IdObjetivo de tipo None     
-    def testmodifyIdObjetivoNone(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= 1
-        idObjetivo = None
-        
-        result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
-        self.assertFalse(result)
-    
-    #test: Modificar un objetivo con IdObjetivo de tipo String    
-    def testmodifyIdObjetivoStr(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= 1
-        idObjetivo = "hola"
-        
-        result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
-        self.assertFalse(result)
-    
-    #test: Modificar un objetivo con IdObjetivo Vacio    
-    def testmodifyIdObjetivoEmpty(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= 1
-        idObjetivo = ""
-        
-        result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
-        self.assertFalse(result)
-    
-    #test: Modificar un objetivo con IdObjetivo de tipo List    
-    def testmodifyIdObjetivoList(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= 1
-        idObjetivo = []
-        
-        result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
-        self.assertFalse(result)
-    
-    #test: Modificar un objetivo con IdObjetivo de tipo Float    
-    def testmodifyIdObjetivoFLoat(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= 1
-        idObjetivo = 2.4
-        
-        result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
-        self.assertFalse(result)
-    
-    #test: Modificar un objetivo con IdObjetivo de tipo Numero Negativo    
-    def testmodifyIdObjetivoNegNum(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= 1
-        idObjetivo = -34
-        
-        result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
-        self.assertFalse(result)
-    
-    #test: Modificar un objetivo con IdObjetivo y IdHistoria que no se encuentran en la base de datos    
-    def testmodifyInvalid(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= 23
-        idObjetivo = 45
-        
-        result = tempObj.modify_Objetivo(idHistoria,idObjetivo)
-        self.assertFalse(result)
-    # FUNCION FIND OBJETIVO
-    
-    #CASO VALIDO
-    #test: Encontrar un objetivo valido
-    def testfindObjetivo(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= 1
-        
-        query = tempObj.find_Objetivo(idHistoria)
-        self.assertIsNotNone(query)
-        
-    #test: Encontrar un objetivo con IdHistoria de tipo None  
-    def testfindObjetivoIdHistoriaNone(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= None
-        
-        query = tempObj.find_Objetivo(idHistoria)
-        self.assertEqual(query,[])
-        
-    #test: Encontrar un objetivo con IdHistoria de tipo String
-    def testfindObjetivoIdHistoriaStr(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= "hola"
-        
-        query = tempObj.find_Objetivo(idHistoria)
-        self.assertEqual(query,[])
-        
-    #test: Encontrar un objetivo con IdHistoria Vacio
-    def testfindObjetivoIdHistoriaEmpty(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= ""
-        
-        query = tempObj.find_Objetivo(idHistoria)
-        self.assertEqual(query,[])
-    
-    #test: Encontrar un objetivo con IdHistoria de tipo List    
-    def testfindObjetivoIdHistoriaList(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= []
-        
-        query = tempObj.find_Objetivo(idHistoria)
-        self.assertEqual(query,[])
-    
-    #test: Encontrar un objetivo con IdHistoria de tipo FLoat
-    def testfindObjetivoIdHistoriaFLoat(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= 2.5
-        
-        query = tempObj.find_Objetivo(idHistoria)
-        self.assertEqual(query,[])
-        
-    #test: Encontrar un objetivo con IdHistoria de tipo Numero Negativo
-    def testfindObjetivoIdHistoriaNegNum(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= -45
-        
-        query = tempObj.find_Objetivo(idHistoria)
-        self.assertEqual(query,[])
-        
-    #test: Encontrar un objetivo con IdHistoria que no se encuentra almacenado en la bases de datos
-    def testfindObjetivoInvalid(self):
-        self.vaciarBaseDeDatos()
-        #Inserta tablas dependientes
-        self.insertar()
-        
-        tempObj = clsHistoriaObj()
-        
-        #Datos a ingresar a la tabla objHistorias
-        num_objInsertado =1
-        idHistoria= 1
-        idObjetivo =1
-        
-        newObj = model.ObjHistorias(num_objInsertado ,idHistoria, idObjetivo)
-        model.db.session.add(newObj)
-        model.db.session.commit()
-        
-        idHistoria= 354
-        
-        query = tempObj.find_Objetivo(idHistoria)
-        self.assertEqual(query,[])
-        
+        tempObj.insertar(NewIdHistObj,1)
+
+        
+        #Se llama a la funcion "insertObjetivo" para que ingrese los datos a la bases de datos
+        resultInsert = tempObj.eliminar(1.32)
+        self.assertFalse(resultInsert)
+        
+        #Se limpia la bases de datos
+        self.vaciarBaseDeDatos() 
+
+
     

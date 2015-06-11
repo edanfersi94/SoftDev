@@ -31,6 +31,8 @@ class TestActor(unittest.TestCase):
     # FUNCION AUXILIAR
     
     def vaciarBaseDeDatos(self):
+        model.db.session.query( model.Historias ).delete() 
+        model.db.session.query( model.Acciones ).delete() 
         model.db.session.query( model.Actores ).delete()  # Se limpia la base de datos.
         model.db.session.query( model.Productos ).delete() 
     

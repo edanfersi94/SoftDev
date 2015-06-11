@@ -168,13 +168,14 @@ class clsHistoria():
 
                 historiaBuscada = self.buscarHistoria(identificador)
                     
-                if ( historiaBuscada != None ):
+                if ( historiaBuscada != None and historiaBuscada != []  ):
         
                     db.session.query(Historias).\
                         filter(Historias.identificador == identificador).\
                         update({'idEscala': prioridad})
                     db.session.commit()
                     return( True )    
+                
         return( False )
 
     #.-------------------------------------------------------------------------.
