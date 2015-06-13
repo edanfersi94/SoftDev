@@ -87,8 +87,9 @@ def ACrearHistoria():
     idSuper = params.get('super', None)
     prioridad = params.get('prioridad', None)
 
+    print(objetivo)
     if not(( tipo == None ) and ( codigo == None ) and ( accion == None ) and 
-           ( objetivos == None ) and ( actor == None) and (idSuper == None) and 
+           ( objetivo == None ) and ( actor == None) and (idSuper == None) and 
            (prioridad == None)):
         accionBuscada = db.session.query(Historias).\
                             filter(Historias.idAccion == accion).first()
@@ -389,12 +390,12 @@ def VCrearHistoria():
     res['fHistoria'] = { 'super':0,
                          'idHistoria': request.args.get('idHistoria',1),
                          'idPila': idProducto,
-                         'objetivos':request.args.get('idObjetivo',1),
-                         'actores': request.args.get('idActores',1),
-                         'accion': request.args.get('idAccion',1),
+                         'objetivos':request.args.get('idObjetivo'),
+                         'actores': request.args.get('idActores'),
+                         'accion': request.args.get('idAccion'),
                          'codigo': request.args.get('codigo',None),
-                         'tipo': request.args.get('tipo',1),
-                         'prioridad':request.args.get('escala',1)}
+                         'tipo': request.args.get('tipo'),
+                         'prioridad':request.args.get('escala')}
 
 
     # Se almacena la información recibida.  

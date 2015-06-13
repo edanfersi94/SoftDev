@@ -149,8 +149,8 @@ class clsObjetivo():
 			
 			if ( idPositivo ):
 				objetivoBuscado = db.session.query(Objetivos).\
-						filter(Objetivos.identificador == identificador).\
-						first()
+					               	filter(Objetivos.identificador == identificador).\
+						            first()
 
 				if ( objetivoBuscado != None):
 
@@ -159,7 +159,6 @@ class clsObjetivo():
 									  	first()
 					
 					if ( objetivoContenido == None):
-					
 						db.session.delete(objetivoBuscado)
 						db.session.commit()
 						return ( True )
