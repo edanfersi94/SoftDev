@@ -26,11 +26,11 @@ from sqlalchemy             import CheckConstraint, func, desc
 
 # Construcción de la base de datos.
 
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres:joel123@localhost/prueba"
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:@localhost/prueba1"
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
-db_dir = 'postgresql+psycopg2://postgres:joel123@localhost/prueba'
+db_dir = 'postgresql+psycopg2://postgres:@localhost/prueba1'
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
