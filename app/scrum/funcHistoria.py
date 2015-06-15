@@ -57,7 +57,7 @@ class clsHistoria():
             
             # Booleanos que indican si los parámetros tienen el tamaño válido.
             idProductoPositivo = idProducto > 0
-            codigoHistoriaLongitud = 1 <= len(codigoHistoria) <= 13
+            codigoHistoriaLongitud = 1 <= len(codigoHistoria) <= 10
             tipoPositivo = 0 < tipo < 3
             idAccionPositivo = idAccion > 0
             idEpicaPositivo  = idEpica  >= 0
@@ -85,32 +85,78 @@ class clsHistoria():
  
     #-------------------------------------------------------------------------------
 
-    def eliminar(self, identificador):
+    def modificar(self, identificador, tipo, codigo, idAccion, idSuper, idEscala):
         """
             @brief Función que elimina la historia cuyo id sea "identificador".
 
-            @param identificador: id de la historia a eliminar.
-            
+            @param identificador: id de la historia a modificar.
+            @param tipo: entero que indica el nuevo tipo de la historia.
+            @param codigo: nuevo código de la historia.
+            @param idAccion: identificador de la acción a asociar ha la historia.
+            @param idSuper : identificador de la historia que será la super.
+            @param idEscala: entero que indica la nueva escala de la historia.
+             
             @return True si la historia deseada fue eliminada correctamente. En
                     caso contrario retorna False. 
         """
 
-        # Booleano que indica si el parámetro es del tipo correspondiente.
+        # Booleanos que indican si los parámetros son del tipo correspondiente.
         identificadorInt = type(identificador) == int
+        tipoInt = type(tipo) == int
+        codigoStr = type(codigo) == str
+        idAccionInt = type(idAccion) == int
+        idSuperInt  = type(idSuper) == int
+        idEscalaInt = type(idEscala) == int 
 
-        if ( identificadorInt ):
-            # Booleano que indica si el parámetro tiene el tamaño válido.
+        print(identificadorInt, tipoInt, codigoStr, idAccionInt, idSuperInt, idEscalaInt)
+        if ( identificadorInt and tipoInt and codigoStr and idAccionInt and idSuperInt
+             and idEscalaInt):
+            # Booleanos que indican si los parámetros tienen el tamaño válido.
             identificadorPositivo = identificador > 0
-
-            if ( identificadorPositivo ):
+            tipoLongitud = 0 < tipo < 3
+            codigoLongitud = len(codigo) <= 10
+            idAccionPositivo = idAccion > 0
+            idSuperPositivo = idSuper >= 0
+            idEscalaPositivo = idEscala > 0
+            print(identificadorPositivo, tipoLongitud, codigoLongitud ,idAccionPositivo, idSuperPositivo, idEscalaPositivo)
+            if ( identificadorPositivo and tipoLongitud and codigoLongitud and idAccionPositivo
+                 and idSuperPositivo and idEscalaPositivo):
         
                     idBuscado = db.session.query(Historias).\
                                     filter( Historias.identificador == identificador).\
                                     first()
 
                     if ( idBuscado != None ):
-                        db.session.delete(idBuscado)
-                        db.session.commit()
+                        
+                        if( idBuscado.tipo != tipo):
+                            db.session.query(Historias).\
+                            filter(Historias.identificador == identificador).\
+                            update({'tipo': tipo})
+                            db.session.commit()
+                            
+                        if( idBuscado.codigo != codigo):
+                            db.session.query(Historias).\
+                            filter(Historias.identificador == identificador).\
+                            update({'codigo': codigo})
+                            db.session.commit()
+                            
+                        if( idBuscado.idAccion != idAccion):
+                            db.session.query(Historias).\
+                            filter(Historias.identificador == identificador).\
+                            update({'idAccion': idAccion})
+                            db.session.commit()
+
+                        if( idBuscado.idSuper != idSuper):
+                            db.session.query(Historias).\
+                            filter(Historias.identificador == identificador).\
+                            update({'idSuper': idSuper})
+                            db.session.commit()
+                            
+                        if( idBuscado.idEscala != idEscala):
+                            db.session.query(Historias).\
+                            filter(Historias.identificador == identificador).\
+                            update({'idEscala': idEscala})
+                            db.session.commit()
                         return( True )
         return( False )
 
@@ -139,8 +185,7 @@ class clsHistoria():
                                     all()
                 return (historiaBuscada)
             return ( None )
-    
-    #.-------------------------------------------------------------------------.
+  
     #.-------------------------------------------------------------------------.
 
     def cambiarPrioridad(self, identificador, prioridad):
@@ -158,7 +203,7 @@ class clsHistoria():
         # Booleanos que indican si los parámetros son del tipo correspondiente.
         identificadorInt  = type(identificador)  == int
         prioridadInt = type(prioridad) == int
-        
+      
         if ( identificadorInt and prioridadInt ):
             # Booleanos que indican si los parámetros tienen el tamaño válido.
             identificadorPositivo  = identificador  > 0
