@@ -620,8 +620,7 @@ def VPrioridades():
 
     listHistorias = {}
     dicH = {}
-    listH = []
-    listH.append(None)
+    listH ={}
     
     for j in historias:
         idActoresHistoria = []
@@ -639,6 +638,7 @@ def VPrioridades():
 
 
             idActoresHistoria.append(i.idActores)
+        print("idActoresHistoria",idActoresHistoria)
 
         for i in idActoresHistoria:
             actores = db.session.query(Actores).\
@@ -646,7 +646,9 @@ def VPrioridades():
                             all()
 
             nombreActoresHistoria.append(actores[0].nombre)
-            print(nombreActoresHistoria)
+        print("nombreActoresHistoria",nombreActoresHistoria)
+            
+        
 
 
         objetivosHistoria = db.session.query(ObjHistorias).\
@@ -654,6 +656,7 @@ def VPrioridades():
                                 all()
         for i in objetivosHistoria:
             idObjetivosHistoria.append(i.idObjetivo)
+        print("idObjetivosHistoria",idObjetivosHistoria)
 
         for i in idObjetivosHistoria:
             objetivos = db.session.query(Objetivos).\
@@ -661,6 +664,7 @@ def VPrioridades():
                             all()
 
             nombreObjetivosHistoria.append(objetivos[0].descripcion)
+        print("nombreObjetivosHistoria",nombreObjetivosHistoria)
 
         accionesHistoria = db.session.query(Acciones).\
                                 filter(Acciones.identificador == j.idAccion).\
@@ -671,9 +675,10 @@ def VPrioridades():
                  'actor': nombreActoresHistoria,
                  'objetivo':nombreObjetivosHistoria,
                  'accion': accionesHistoria[0].descripcion}
-        listH.append(dicH)
+        listH[j.identificador]=dicH
 
-
+    print("list",listH)
+    print("historias",historias)
     res['idPila'] = idProducto
     res['fPrioridades'] = {'idPila':idProducto,
       'lista':[
