@@ -74,7 +74,7 @@ class Productos(db.Model):
 class Historias(db.Model):
     __tablename__    = 'historias'
     identificador    = db.Column(db.Integer, unique=True)
-    tipo             = db.Column(db.String(13), nullable = True)
+    tipo             = db.Column(db.Integer, nullable = True)
     codigo           = db.Column(db.String(10), primary_key=True,)
     idProducto       = db.Column(db.Integer, db.ForeignKey('productos.identificador'))
     idAccion         = db.Column(db.Integer, db.ForeignKey('acciones.identificador'))
