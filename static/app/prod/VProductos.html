@@ -14,12 +14,15 @@
             <ul class="nav navbar-nav navbar-left">
 <li><a ng-click="VCrearProducto1()"
        ng-show="actor=='duenoProducto' || false">
-  Nuevo</a></li>
+  +Producto</a></li>
+<li><a ng-click="VCategorias2()"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+  Categorías de tareas</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
 <li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
-<li><a ng-click="VLogin2()">
+<li><a ng-click="VLogin3()">
     Salir</a></li>
 
             </ul>

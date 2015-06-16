@@ -23,7 +23,7 @@
   +Objetivo</a></li>
 <li><a ng-click="VHistorias12(idPila)"
        ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
-  +Historias</a></li>
+  Historias</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -51,7 +51,6 @@
     <hr /><h3>Actores</h3>
         <table ng-table="tableParams3" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
-                <td data-title="'Nombre'">{{row['nombre']}}</td>
                 <td data-title="'Descripción'">{{row['descripcion']}}</td>
                 <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VActor3(row['idActor'])">Ver</a></td>
             </tr>

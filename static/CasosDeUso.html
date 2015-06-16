@@ -38,7 +38,7 @@ Long. mínima: <code>1</code>.
      <li>
       <p>resultado:</p>
       <ul>
-       <li>label:'/VMaestroScrum',</li>
+       <li>label:'/VProductos',</li>
        <li> msg:"Bienvenido Maestro Scrum".</li>
       </ul>
 <p>Se continúa con el rol de maestroScrum.</p>
@@ -46,7 +46,7 @@ Long. mínima: <code>1</code>.
      <li>
       <p>resultado:</p>
       <ul>
-       <li>label:'/VDesarrollador',</li>
+       <li>label:'/VProductos',</li>
        <li> msg:"Bienvenido Desarrollador".</li>
       </ul>
 <p>Se continúa con el rol de desarrollador.</p>
@@ -355,7 +355,7 @@ Parámetros GET: idPila
    <li>URL: '/actor/AElimActor'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idActor
-   <li>Roles: Sin restricción de rol
+   <li>Roles: duenoProducto </li>
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
@@ -489,7 +489,7 @@ Parámetros GET: idPila
    <li>URL: '/objetivo/AElimObjetivo'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idObjetivo
-   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Roles: duenoProducto </li>
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
@@ -569,7 +569,7 @@ Parámetros GET: idAccion
    <li>URL: '/accion/AElimAccion'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idAccion
-   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Roles: duenoProducto </li>
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
@@ -690,7 +690,7 @@ Requerido.
      </li>
     </ul>
    </li>
-   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Roles: duenoProducto </li>
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
@@ -712,14 +712,6 @@ Requerido.
 
     </ol>
    </li>
-  </ul>
- </li> <li>
-  <p></p>
-  <ul>
-   <li>URL: '/historias/VCrearHistoria'</li>
-   <li>Método: GET</li><li>Formato de salida: JSON</li>
-Parámetros GET: idPila
-   <li>Roles: desarrollador duenoProducto maestroScrum </li>
   </ul>
  </li> <li>
   <p></p>
@@ -760,7 +752,7 @@ Requerido.
      </li>
     </ul>
    </li>
-   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Roles: duenoProducto </li>
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
@@ -782,6 +774,14 @@ Requerido.
 
     </ol>
    </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/historias/VCrearHistoria'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPila
+   <li>Roles: duenoProducto </li>
   </ul>
  </li> <li>
   <p></p>
@@ -810,7 +810,7 @@ Requerido.
      </li>
     </ul>
    </li>
-   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Roles: duenoProducto </li>
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
@@ -832,7 +832,7 @@ Requerido.
    <li>URL: '/historias/AElimHistoria'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idHistoria
-   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Roles: duenoProducto </li>
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
@@ -861,7 +861,7 @@ Parámetros GET: idHistoria
    <li>URL: '/historias/VPrioridades'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idPila
-   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Roles: duenoProducto </li>
   </ul>
  </li>
 </ol>
@@ -880,10 +880,17 @@ Opcional.
 Opcional. 
      </li>     <li>descripcion -  
 Requerido. 
+     </li>     <li>opcionesCategoria -  
+Opcional. 
+     </li>     <li>categoria -  
+Opcional. 
+     </li>     <li>peso -  
+Opcional. 
+Valor mínimo: <code></code>. 
      </li>
     </ul>
    </li>
-   <li>Roles: Sin restricción de rol
+   <li>Roles: desarrollador duenoProducto </li>
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
@@ -912,7 +919,7 @@ Requerido.
    <li>URL: '/tareas/VCrearTarea'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idHistoria
-   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Roles: desarrollador duenoProducto </li>
   </ul>
  </li> <li>
   <p></p>
@@ -926,10 +933,17 @@ Opcional.
 Opcional. 
      </li>     <li>descripcion -  
 Requerido. 
+     </li>     <li>opcionesCategoria -  
+Opcional. 
+     </li>     <li>categoria -  
+Opcional. 
+     </li>     <li>peso -  
+Opcional. 
+Valor mínimo: <code></code>. 
      </li>
     </ul>
    </li>
-   <li>Roles: Sin restricción de rol
+   <li>Roles: desarrollador duenoProducto </li>
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
@@ -965,7 +979,7 @@ Parámetros GET: idTarea
   <ul>
    <li>URL: '/tareas/AElimTarea'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
-   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+   <li>Roles: desarrollador duenoProducto </li>
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
@@ -974,7 +988,7 @@ Parámetros GET: idTarea
       <p>resultado:</p>
       <ul>
        <li>label:'/VHistoria',</li>
-       <li> msg:"Historia borrada".</li>
+       <li> msg:"Tarea borrada".</li>
       </ul>
      </li>
      <li>
@@ -987,6 +1001,133 @@ Parámetros GET: idTarea
 
     </ol>
    </li>
+  </ul>
+ </li>
+</ol>
+<h2>Categorías</h2>
+<p></p>
+<ol>
+ <li>
+  <p></p>
+  <ul>
+   <li>URL: '/cates/ACrearCategoria'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idCategoria -  
+Opcional. 
+     </li>     <li>nombre -  
+Requerido. 
+     </li>     <li>peso -  
+Requerido. 
+Valor mínimo: <code></code>. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: maestroScrum </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCategorias',</li>
+       <li> msg:"Categoría creada.".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCategorias',</li>
+       <li> msg:"Error al intentar crear categoría.".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/cates/VCategorias'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/cates/AElimCategoria'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idCategoria
+   <li>Roles: maestroScrum </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCategorias',</li>
+       <li> msg:"Categoría eliminada.".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCategorias',</li>
+       <li> msg:"Error al intentar eliminar categoría.".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/cates/AModifCategoria'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idCategoria -  
+Opcional. 
+     </li>     <li>nombre -  
+Requerido. 
+     </li>     <li>peso -  
+Requerido. 
+Valor mínimo: <code></code>. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: maestroScrum </li>
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCategorias',</li>
+       <li> msg:"Categoría actualizada.".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VCategorias',</li>
+       <li> msg:"Error al intentar modificar categoría.".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/cates/VCategoria'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idCategoria
+   <li>Roles: maestroScrum </li>
   </ul>
  </li>
 </ol>

@@ -34,11 +34,13 @@ def ACrearTarea():
 
     idHistoria = int(session['idHistoria'])
     descripcion = params.get('descripcion', None)
+    idCategoria = params.get('categoria',None)
+    peso = params.get('peso',None)
 
-    if not(( descripcion == None )):
+    if not(( descripcion == None ) and ( idCategoria == None ) and ( peso == None )):
         tarea = clsTarea()
 
-        creaccionCorrecta = tarea.insertar(idHistoria,descripcion)
+        creaccionCorrecta = tarea.insertar(idHistoria,descripcion,idCategoria,peso)
 
         if (creaccionCorrecta[0]):
             res = results[0]
@@ -48,6 +50,7 @@ def ACrearTarea():
             res['label'] = res['label'] + '/' + repr(idHistoria)
 
     res['idHistoria'] = idHistoria 
+    res['idTarea']= creaccionCorrecta[1]
      
     if "actor" in res:
         if res['actor'] is None:
@@ -102,14 +105,15 @@ def AModifTarea():
 
     idHistoria = int(session['idHistoria'])
     descripcion = params.get('descripcion', None)
+    idCategoria = params.get('categoria',None)
+    peso = params.get('peso',None)
 
     identificador = params.get('idTarea',None)
-    print("modificar",identificador)
 
-    if not(( descripcion == None )):
+    if not(( descripcion == None ) and ( idCategoria == None ) and ( peso == None )):
 
         tarea = clsTarea()
-        modificacionCorrecta = tarea.modificar(identificador,descripcion)
+        modificacionCorrecta = tarea.modificar(identificador,descripcion,idCategoria,peso)
 
         if(modificacionCorrecta):
             res = results[0]
@@ -146,8 +150,17 @@ def VCrearTarea():
       res['logout'] = '/'
       return json.dumps(res)
     res['usuario'] = session['usuario']
+    res['codHistoria'] = codigoBuscado.codigo
     session['idHistoria'] = idHistoria
-
+    res['fTarea_opcionesCategoria'] = [
+      {'key':1, 'value':'Crear una acción (1)', 'peso':1},
+      {'key':2, 'value':'Migrar la base de datos (2)', 'peso':2},
+      {'key':3, 'value':'Escribir el manual en línea de una vista (1)', 'peso':1},
+      {'key':4, 'value':'Crear un criterio de aceptación (1)', 'peso':1},
+      {'key':5, 'value':'Crear una prueba de aceptación (2)', 'peso':2},
+      {'key':6, 'value':'Crear una regla de negocio compleja (3)', 'peso':3},
+    ]
+    res['fTarea'] = {'idHistoria':int(idHistoria)}
     res['idHistoria'] = idHistoria 
     #Action code ends here
     return json.dumps(res)
@@ -176,6 +189,17 @@ def VTarea():
       return json.dumps(res)
     res['usuario'] = session['usuario']
     res['codHistoria'] = codigoBuscado.codigo
+    res['fTarea_opcionesCategoria'] = [
+      {'key':1, 'value':'Crear una acción (1)', 'peso':1},
+      {'key':2, 'value':'Migrar la base de datos (2)', 'peso':2},
+      {'key':3, 'value':'Escribir el manual en línea de una vista (1)', 'peso':1},
+      {'key':4, 'value':'Crear un criterio de aceptación (1)', 'peso':1},
+      {'key':5, 'value':'Crear una prueba de aceptación (2)', 'peso':2},
+      {'key':6, 'value':'Crear una regla de negocio compleja (3)', 'peso':3},
+    ]
+    res['fTarea'] = {'idHistoria':idHistoria, 'idTarea':int(identificador),
+                     'descripcion':'Sacarle jugo a una piedra',
+                    'categoria':4, 'peso':1}
     
     session['idTarea'] = identificador
     res['idTarea'] = identificador

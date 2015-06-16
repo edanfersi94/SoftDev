@@ -9,8 +9,8 @@ scrumModule.config(function ($routeProvider) {
 });
 
 scrumModule.controller('VLoginController', 
-   ['$scope', '$location', '$route', 'flash', 'devService', 'identService', 'mastService', 'prodService',
-    function ($scope, $location, $route, flash, devService, identService, mastService, prodService) {
+   ['$scope', '$location', '$route', 'flash', 'identService', 'prodService',
+    function ($scope, $location, $route, flash, identService, prodService) {
       $scope.msg = '';
       $scope.fLogin = {};
 
@@ -44,8 +44,8 @@ scrumModule.controller('VLoginController',
 
     }]);
 scrumModule.controller('VRegistroController', 
-   ['$scope', '$location', '$route', 'flash', 'devService', 'identService', 'mastService', 'prodService',
-    function ($scope, $location, $route, flash, devService, identService, mastService, prodService) {
+   ['$scope', '$location', '$route', 'flash', 'identService', 'prodService',
+    function ($scope, $location, $route, flash, identService, prodService) {
       $scope.msg = '';
       $scope.fUsuario = {};
 

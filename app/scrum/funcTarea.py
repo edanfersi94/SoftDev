@@ -16,7 +16,7 @@
 #.-----------------------------------------------------------------------------.
 
 # Funciones a importar:
-from model import db, func,Historias, Tareas, Enlaces
+from model import db, func,Historias, Tareas, Enlaces,Categorias
 
 #.-----------------------------------------------------------------------------.
 
@@ -24,18 +24,40 @@ from model import db, func,Historias, Tareas, Enlaces
 # Clase que tendrá las diferentes funcionalidades de la tabla "Acciones".
 class clsTarea():
 
-    def insertar(self, idHistoria,descripcion):
+    def insertar(self, idHistoria,descripcion, idCategoria, peso):
+        
+        """
+            @brief Función que permite insertar los datos de la tarea cuyo id
+                   sea "identificador".
+        
+            @param idHistoria: identificador de la historia asociada a la tarea.
+            @param descripcion  : nueva descripción para la tarea dada.
+            @param idCategoria  : identificador de la categoria asociada a la tarea.
+            @param peso  : peso de la categoria.
+            
+            @return True si se inserto la tarea dada. De lo contrario retorna
+                    False.
+        """
 
         descripcionStr = type(descripcion) == str
         idHistoriaInt  = type(idHistoria)  == int
+        idCategoriaInt = type(idCategoria) == int
+        pesoInt = type(peso) == int
+        
+        categoriaBuscada = db.session.query(Categorias).\
+                            filter(Categorias.identificador == idCategoria).\
+                            first()
+                          
 
-        if ( descripcionStr and idHistoriaInt ):
+        if ( descripcionStr and idHistoriaInt and idCategoriaInt and pesoInt and (categoriaBuscada !=None)):
             # Booleanos que indican si los parámetros tienen el tamaño válido.
             descripcionLongitud = 1 <= len(descripcion) <= 500
             idHistoriaPositivo  = idHistoria> 0
+            idCategoriaPositivo = idCategoria >0
+            pesoPositivo = peso >0
 
 
-            if ( descripcionLongitud and idHistoriaPositivo ):
+            if ( descripcionLongitud and idHistoriaPositivo and idCategoriaPositivo and pesoPositivo ):
 
                 productoBuscado = db.session.query(Historias).\
                                     filter(Historias.identificador == idHistoria).\
@@ -67,7 +89,7 @@ class clsTarea():
                 identificador = 1 if identificador == None else identificador + 1
                 if (listaEnlace[idHistoria] == [] ):
 
-                    tareaNueva = Tareas(identificador, idHistoria, descripcion)
+                    tareaNueva = Tareas(identificador, idHistoria, descripcion, idCategoria, peso)
                     db.session.add(tareaNueva)
                     db.session.commit()
                     return((True,identificador))
@@ -76,15 +98,17 @@ class clsTarea():
         return( (False,0) )
 #.----------------------------------------------------------------------------------------        
 
-    def modificar(self, identificador, descripcion):
+    def modificar(self, identificador, descripcion,idCategoria, peso):
         """
-            @brief Función que permite modificar los datos de la acción cuyo id
+            @brief Función que permite modificar los datos de la tarea cuyo id
                    sea "identificador".
         
             @param identificador: identificador de la tarea a modificar.
             @param descripcion  : nueva descripción para la tarea dada.
+            @param idCategoria  : identificador de la categoria asociada a la tarea.
+            @param peso  : peso de la categoria.
             
-            @return True si se modificó la acción dada. De lo contrario retorna
+            @return True si se modificó la tarea dada. De lo contrario retorna
                     False.
         """
         
@@ -103,7 +127,7 @@ class clsTarea():
                 if ( idBuscado != None ):
                     db.session.query(Tareas).\
                         filter(Tareas.identificador == identificador).\
-                        update({'descripcion':descripcion})
+                        update({'descripcion':descripcion, 'idCategoria':idCategoria, 'peso':peso})
                     db.session.commit()
                     return( True )
                     
@@ -113,7 +137,7 @@ class clsTarea():
 
     def eliminar(self, identificador):
         """
-            @brief Función que permite eliminar una acción cuyo id
+            @brief Función que permite eliminar una tarea cuyo id
                    sea "identificador".
             
             @return True si se eliminó la tarea dada. De lo contrario retorna

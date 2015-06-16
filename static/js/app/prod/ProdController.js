@@ -12,8 +12,8 @@ scrumModule.config(function ($routeProvider) {
 });
 
 scrumModule.controller('VProductosController', 
-   ['$scope', '$location', '$route', 'flash', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService',
-    function ($scope, $location, $route, flash, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService) {
+   ['$scope', '$location', '$route', 'flash', 'ngTableParams', 'accionService', 'actorService', 'catesService', 'historiasService', 'identService', 'objetivoService', 'prodService',
+    function ($scope, $location, $route, flash, ngTableParams, accionService, actorService, catesService, historiasService, identService, objetivoService, prodService) {
       $scope.msg = '';
       prodService.VProductos().then(function (object) {
         $scope.res = object.data;
@@ -40,7 +40,10 @@ scrumModule.controller('VProductosController',
       $scope.VCrearProducto1 = function() {
         $location.path('/VCrearProducto');
       };
-      $scope.VLogin2 = function() {
+      $scope.VCategorias2 = function() {
+        $location.path('/VCategorias');
+      };
+      $scope.VLogin3 = function() {
         $location.path('/VLogin');
       };
 
@@ -50,8 +53,8 @@ scrumModule.controller('VProductosController',
 
     }]);
 scrumModule.controller('VProductoController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService',
-    function ($scope, $location, $route, flash, $routeParams, ngTableParams, accionService, actorService, historiasService, identService, objetivoService, prodService) {
+   ['$scope', '$location', '$route', 'flash', '$routeParams', 'ngTableParams', 'accionService', 'actorService', 'catesService', 'historiasService', 'identService', 'objetivoService', 'prodService',
+    function ($scope, $location, $route, flash, $routeParams, ngTableParams, accionService, actorService, catesService, historiasService, identService, objetivoService, prodService) {
       $scope.msg = '';
       $scope.fPila = {};
 
@@ -147,8 +150,8 @@ scrumModule.controller('VProductoController',
 
     }]);
 scrumModule.controller('VCrearProductoController', 
-   ['$scope', '$location', '$route', 'flash', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService',
-    function ($scope, $location, $route, flash, accionService, actorService, historiasService, identService, objetivoService, prodService) {
+   ['$scope', '$location', '$route', 'flash', 'accionService', 'actorService', 'catesService', 'historiasService', 'identService', 'objetivoService', 'prodService',
+    function ($scope, $location, $route, flash, accionService, actorService, catesService, historiasService, identService, objetivoService, prodService) {
       $scope.msg = '';
       $scope.fPila = {};
 

@@ -13,10 +13,10 @@
         <div class="collapse navbar-collapse" id="contenido-plegable">
             <ul class="nav navbar-nav navbar-left">
 <li><a ng-click="VCrearHistoria1(idPila)"
-       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+       ng-show="actor=='duenoProducto' || false">
   Crear</a></li>
 <li><a ng-click="VPrioridades3(idPila)"
-       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+       ng-show="actor=='duenoProducto' || false">
   Cambiar prioridades</a></li>
 
             </ul>
@@ -37,6 +37,7 @@
             <tr ng-repeat="row in $data">
                 <td data-title="'Prioridad'">{{row['prioridad']}}</td>
                 <td data-title="'Enunciado'">{{row['enunciado']}}</td>
+                <td data-title="'Peso'">{{row['peso']}}</td>
                 <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VHistoria0(row['idHistoria'])">Detalles</a></td>
             </tr>
         </table>

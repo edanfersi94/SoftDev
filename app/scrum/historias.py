@@ -419,7 +419,6 @@ def VHistoria():
     historiaActual = db.session.query(Historias).\
                         filter(Historias.identificador == identificador).\
                         first()
-    print(historiaActual)
 
 
     # Se obtiene la información de la historia actual.

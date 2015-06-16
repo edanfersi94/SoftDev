@@ -26,11 +26,11 @@ from sqlalchemy             import CheckConstraint, func, desc
 
 # Construcción de la base de datos.
 
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres:@localhost/prueba1"
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:1234@localhost/prueba1"
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
-db_dir = 'postgresql+psycopg2://postgres:@localhost/prueba1'
+db_dir = 'postgresql+psycopg2://postgres:1234@localhost/prueba1'
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
@@ -187,18 +187,34 @@ class Enlaces(db.Model):
         self.idProducto  = idProducto
         self.idClave     = idClave
         self.idValor    = idValor
+        
+class Categorias(db.Model):
+    __tablename__ = 'categorias'
+    identificador = db.Column(db.Integer, primary_key = True)
+    nombre = db.Column(db.String(100), nullable = True)
+    peso = db.Column(db.Integer)
+    categoriasTareas   = db.relationship('Tareas', backref = 'categoria_Tareas', cascade="all, delete, delete-orphan")
 
+    def __init__(self, identificador,nombre, peso):
+        self.identificador = identificador
+        self.nombre     = nombre
+        self.peso = peso
+        
 
 class Tareas(db.Model):
     __tablename__ = 'tareas'
     identificador = db.Column(db.Integer, primary_key = True)
     idHistoria = db.Column(db.Integer, db.ForeignKey('historias.identificador'))
     descripcion = db.Column(db.String(500), nullable = True)
+    idCategoria = db.Column(db.Integer, db.ForeignKey ('categorias.identificador'))
+    peso = db.Column(db.Integer)
 
-    def __init__(self, identificador, idHistoria, descripcion):
+    def __init__(self, identificador, idHistoria, descripcion, idCategoria, peso):
         self.identificador = identificador
         self.idHistoria  = idHistoria
         self.descripcion     = descripcion
+        self.idCategoria = idCategoria
+        self.peso = peso
 
 #-------------------------------------------------------------------------------
 
