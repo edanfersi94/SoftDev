@@ -52,8 +52,16 @@ def AIdentificar():
             resultadoVerificacion = controlDeAcceso.verificarPassword(claveEncriptada, 
                                                                       claveSolicitada)
             if ( resultadoVerificacion ):
-                session['usuario'] = usuarioSolicitado
-                res = results[0]
+                if params['usuario'] == 'yoda':
+                    session['usuario'] = usuarioSolicitado
+                    res = results[1]
+                elif params['usuario'] == 'hans':
+                    session['usuario'] = usuarioSolicitado
+                    res = results[2]
+                    
+                else:
+                    session['usuario'] = usuarioSolicitado
+                    res = results[0]
 
     if "actor" in res:
         if res['actor'] is None:
