@@ -87,6 +87,8 @@ from app.scrum.historias import historias
 app.register_blueprint(historias)
 from app.scrum.tareas import tareas
 app.register_blueprint(tareas)
+from app.scrum.cates import cates
+app.register_blueprint(cates)
 
 #-------------------------------------------------------------------------------
 
@@ -214,6 +216,18 @@ class ActoresHistorias(db.Model):
         self.idActoresHistoria = idActoresHistoria
         self.idHistoria = idHistoria
         self.idActores = idActor
+        
+class Categorias(db.Model):
+    __tablename__ = 'categorias'
+    identificador = db.Column(db.Integer, primary_key = True)
+    nombre = db.Column(db.String(100), nullable = True)
+    peso = db.Column(db.Integer)
+    categoriasTareas   = db.relationship('Tareas', backref = 'categoria_Tareas', cascade="all, delete, delete-orphan")
+
+    def __init__(self, identificador,nombre, peso):
+        self.identificador = identificador
+        self.nombre     = nombre
+        self.peso = peso
 
 """class EstadoActual(db.Model):
     __tablename__ = 'estados'
@@ -240,6 +254,21 @@ class Enlaces(db.Model):
         self.id_producto_actual  = id_producto_actual
         self.id_clave     = id_clave
         self.id_valor    = id_valor
+        
+class Tareas(db.Model):
+    __tablename__ = 'tareas'
+    identificador = db.Column(db.Integer, primary_key = True)
+    idHistoria = db.Column(db.Integer, db.ForeignKey('historias.identificador'))
+    descripcion = db.Column(db.String(500), nullable = True)
+    idCategoria = db.Column(db.Integer, db.ForeignKey ('categorias.identificador'))
+    peso = db.Column(db.Integer)
+
+    def __init__(self, identificador, idHistoria, descripcion, idCategoria, peso):
+        self.identificador = identificador
+        self.idHistoria  = idHistoria
+        self.descripcion     = descripcion
+        self.idCategoria = idCategoria
+        self.peso = peso
         
 
 #-------------------------------------------------------------------------------

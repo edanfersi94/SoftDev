@@ -19,7 +19,7 @@
 #.-----------------------------------------------------------------------------.
 from flask import request, session, Blueprint, json
 from app.scrum.funcTarea import clsTarea
-from model import db,Tareas, Historias
+from model import db,Tareas, Historias, Categorias
 
 tareas = Blueprint('tareas', __name__)
 
@@ -41,7 +41,7 @@ def ACrearTarea():
         tarea = clsTarea()
 
         creaccionCorrecta = tarea.insertar(idHistoria,descripcion,idCategoria,peso)
-
+        print("creacionCorrecta",creaccionCorrecta)
         if (creaccionCorrecta[0]):
             res = results[0]
             res['label'] = res['label'] + '/' + repr(idHistoria)
@@ -152,14 +152,12 @@ def VCrearTarea():
     res['usuario'] = session['usuario']
     res['codHistoria'] = codigoBuscado.codigo
     session['idHistoria'] = idHistoria
+    
+    categoriasBuscadas = db.session.query(Categorias).all()
+    
     res['fTarea_opcionesCategoria'] = [
-      {'key':1, 'value':'Crear una acción (1)', 'peso':1},
-      {'key':2, 'value':'Migrar la base de datos (2)', 'peso':2},
-      {'key':3, 'value':'Escribir el manual en línea de una vista (1)', 'peso':1},
-      {'key':4, 'value':'Crear un criterio de aceptación (1)', 'peso':1},
-      {'key':5, 'value':'Crear una prueba de aceptación (2)', 'peso':2},
-      {'key':6, 'value':'Crear una regla de negocio compleja (3)', 'peso':3},
-    ]
+      {'key':cat.identificador, 'value':cat.nombre, 'peso':cat.peso}
+       for cat in categoriasBuscadas]
     res['fTarea'] = {'idHistoria':int(idHistoria)}
     res['idHistoria'] = idHistoria 
     #Action code ends here
@@ -189,17 +187,27 @@ def VTarea():
       return json.dumps(res)
     res['usuario'] = session['usuario']
     res['codHistoria'] = codigoBuscado.codigo
+    
+    categoriasBuscadas = db.session.query(Categorias).all()
+    
+    
     res['fTarea_opcionesCategoria'] = [
-      {'key':1, 'value':'Crear una acción (1)', 'peso':1},
-      {'key':2, 'value':'Migrar la base de datos (2)', 'peso':2},
-      {'key':3, 'value':'Escribir el manual en línea de una vista (1)', 'peso':1},
-      {'key':4, 'value':'Crear un criterio de aceptación (1)', 'peso':1},
-      {'key':5, 'value':'Crear una prueba de aceptación (2)', 'peso':2},
-      {'key':6, 'value':'Crear una regla de negocio compleja (3)', 'peso':3},
-    ]
-    res['fTarea'] = {'idHistoria':idHistoria, 'idTarea':int(identificador),
-                     'descripcion':'Sacarle jugo a una piedra',
-                    'categoria':4, 'peso':1}
+      {'key':cat.identificador, 'value':cat.nombre, 'peso':cat.peso}
+       for cat in categoriasBuscadas]
+    
+    tareaBuscada = db.session.query(Tareas).filter(Tareas.identificador == identificador).first()
+    
+    idCategoria = tareaBuscada.idCategoria
+    
+    categorias = db.session.query(Categorias).\
+                filter(Categorias.identificador == idCategoria).\
+                first()
+                
+    print("peso",tareaBuscada.peso)
+    
+    res['fTarea'] = {'idHistoria':idHistoria, 'idTarea':identificador,
+                     'descripcion':tareaBuscada.descripcion,
+                    'categoria':idCategoria, 'peso':tareaBuscada.peso}
     
     session['idTarea'] = identificador
     res['idTarea'] = identificador

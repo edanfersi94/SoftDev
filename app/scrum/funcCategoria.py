@@ -42,7 +42,7 @@ class clsCategoria():
 
         if ( nombreStr and pesoInt):
             # Booleanos que indican si los parámetros tienen el tamaño válido.
-            nombreLongitud = 1 <= len(descripcion) <= 100
+            nombreLongitud = 1 <= len(nombre) <= 100
             pesoPositivo = peso >0
 
 
