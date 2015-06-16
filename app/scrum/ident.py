@@ -19,6 +19,7 @@
 from app.scrum.user import clsUser
 from flask import request, session, Blueprint, json
 from app.scrum.controlDeAcceso import clsControlDeAcceso
+from model import db, Users
 
 ident = Blueprint('ident', __name__)
 
@@ -52,16 +53,26 @@ def AIdentificar():
             resultadoVerificacion = controlDeAcceso.verificarPassword(claveEncriptada, 
                                                                       claveSolicitada)
             if ( resultadoVerificacion ):
-                if params['usuario'] == 'yoda':
+                
+                usuarioBuscado = db.session.query(Users).\
+                                filter(Users.username == usuarioSolicitado).\
+                                first()
+                                
+                actorBuscado = usuarioBuscado.actor
+                
+                if (actorBuscado == 'PO'):
+                    session['usuario'] = usuarioSolicitado
+                    res = results[0]
+                
+                if (actorBuscado == 'SM'):
                     session['usuario'] = usuarioSolicitado
                     res = results[1]
-                elif params['usuario'] == 'hans':
+                    
+                if (actorBuscado == 'DV'):
                     session['usuario'] = usuarioSolicitado
                     res = results[2]
                     
-                else:
-                    session['usuario'] = usuarioSolicitado
-                    res = results[0]
+              
 
     if "actor" in res:
         if res['actor'] is None:
@@ -87,7 +98,8 @@ def ARegistrar():
     clave = params['clave']
     claveRepetida = params['clave2']
     correo = params['correo']
-
+    actor = params['actorScrum']
+    
     usuario = clsUser()
     verificarUsuario = usuario.buscarUsername(nombreUsuario)
     verificarCorreo  = usuario.buscarCorreo(correo)
@@ -98,8 +110,7 @@ def ARegistrar():
                                                             claveRepetida)
 
     if ( verificarUsuario == None and verificarCorreo == None and resultadoVerificacion):
-        resultadoCreacion = usuario.insertar(nombreUsuario, username, 
-                                                    clave, correo)
+        resultadoCreacion = usuario.insertar(nombreUsuario, username,clave,correo,actor)
         if ( resultadoCreacion ):
             res = results[0]
 
@@ -129,6 +140,12 @@ def VRegistro():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
+    res['fUsuario_opcionesActorScrum'] = [
+      {'key':'SM','value':'Maestro Scrum'},
+      {'key':'PO','value':'Dueño de producto'},
+      {'key':'DV','value':'Miembro del equipo de desarrollo'},
+    ]
+
     return json.dumps(res)
 
 #.-----------------------------------------------------------------------------.

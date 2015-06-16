@@ -24,7 +24,7 @@ from model import db, Users
 # Clase que tendrá las diferentes funcionalidades de la tabla "Users".
 class clsUser():
 
-    def insertar(self, nombre, username, clave, correo):
+    def insertar(self, nombre, username, clave, correo,actor):
         """
             @brief Función que permite insertar un nuevo usuario en la base de 
                    datos.
@@ -33,6 +33,7 @@ class clsUser():
             @param username: username del usuario a crear.
             @param clave: contraseña del usuario a crear.
             @param correo: email del usuario a crear.
+            @param actor: actor del usuario a crear.
 
             @return True si se inserto correctamente el usuario deseado. En caso
                     contrario retorna False.
@@ -58,7 +59,7 @@ class clsUser():
                 correoExiste = self.buscarCorreo(correo)
 
                 if (usernameExiste == None and correoExiste == None):
-                    usuarioNuevo = Users(nombre, username, clave, correo)
+                    usuarioNuevo = Users(nombre, username, clave, correo,actor)
                     db.session.add(usuarioNuevo)
                     db.session.commit()
                     return( True )

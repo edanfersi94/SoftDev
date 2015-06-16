@@ -101,12 +101,14 @@ class Users(db.Model):
     username = db.Column(db.String(16), primary_key = True)
     clave = db.Column(db.String(16), nullable = False)
     correo = db.Column(db.String(30), unique = True)
+    actor = db.Column(db.String(10), nullable = False)
 
-    def __init__(self,fullname, username, password, email):
+    def __init__(self,fullname, username, password, email,actor):
         self.nombre = fullname
         self.username = username
         self.clave = password
         self.correo = email
+        self.actor = actor
 
 
 # Tabla Acciones.

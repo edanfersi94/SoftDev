@@ -32,8 +32,6 @@ def ACrearCategoria():
     
     print("params",params)
     
-    res['label'] = res['label'] + '/1'
-    #res[idCategoria]
     
     if "actor" in res:
         if res['actor'] is None:
