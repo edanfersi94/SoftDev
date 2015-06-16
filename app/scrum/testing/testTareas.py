@@ -3,7 +3,7 @@
     Departamento de Computacion y Tecnologia de la Informacion.
     CI-3715 - Ingenieria de Software I (CI-3715)
     Abril - Julio 2015
-    AUTORES:
+    AUTORES: SoftDev
         
     DESCRIPCION: Script que contiene los casos de prueba del modulo "funcTarea.py"
     
@@ -34,17 +34,17 @@ class TestTareas(unittest.TestCase):
         model.db.session.query( model.Tareas ).delete()  # Se limpia la base de datos.
         model.db.session.query( model.Productos ).delete() 
     
-    def crearProducto(idProducto, nombreProducto, descProducto, escalaProducto):
-        nuevoProducto  = model.Productos( idProducto, nombreProducto, descProducto, escalaProducto )
+    def crearProducto(self, idProducto, nombreProducto, descProducto, escalaProducto):
+        nuevoProducto = model.Productos( idProducto, nombreProducto, descProducto, escalaProducto )
         model.db.session.add(nuevoProducto)
         model.db.session.commit()
 
-    def crearAccion(idProducto, idAccion, descAccion):
+    def crearAccion(self, idProducto, idAccion, descAccion):
         nuevaAccion = model.Acciones( idProducto, idAccion , descAccion  ) 
         model.db.session.add(nuevaAccion)
         model.db.session.commit()
 
-    def crearHistoria(idHistoria, codigo, idProducto, tipo, idAccion , idSuper, idEscala):
+    def crearHistoria(self, idHistoria, codigo, idProducto, tipo, idAccion , idSuper, idEscala):
         newHistoria = model.Historias( idHistoria, codigo, idProducto, tipo, idAccion , idSuper, idEscala ) 
         model.db.session.add(newHistoria)
         model.db.session.commit()
@@ -67,9 +67,9 @@ class TestTareas(unittest.TestCase):
     def testinsert_TareaBaseDeDatosOneElem(self):
         self.vaciarBaseDeDatos()
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)
 
         nuevoIdTarea = 8
         nuevaDescTarea = 'caso de prueba'
@@ -86,9 +86,9 @@ class TestTareas(unittest.TestCase):
     def testinsert_TareaBaseDeDatosVacia(self):
         self.vaciarBaseDeDatos()
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         tempTarea = clsTarea()
         nuevaDescTarea = 'tarea 2.0'
@@ -100,9 +100,9 @@ class TestTareas(unittest.TestCase):
     def testinsert_TareaBaseDeDatosVariosELem(self):
         self.vaciarBaseDeDatos()
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         for indice in range(5,10,1):
             nuevoIdTarea = indice
@@ -124,9 +124,9 @@ class TestTareas(unittest.TestCase):
     def testinsert_TareaDescripLen1(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         tempTarea = clsTarea()
         nuevaDescTarea = '1'
@@ -139,9 +139,9 @@ class TestTareas(unittest.TestCase):
     def testinsert_TareaDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         tempTarea = clsTarea()
         nuevaDescTarea ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
@@ -155,9 +155,9 @@ class TestTareas(unittest.TestCase):
     def testinsert_TareaDescripLen0(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
         tempTarea = clsTarea()
         nuevaDescTarea = ''
@@ -169,9 +169,9 @@ class TestTareas(unittest.TestCase):
     def testinsert_TareaDescripLen501(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
         tempTarea = clsTarea()
         nuevaDescTarea = 'dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,'
@@ -183,9 +183,9 @@ class TestTareas(unittest.TestCase):
     def testinsert_TareaDescripInt(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         tempTarea = clsTarea()
         newDescripTarea = 501
@@ -197,9 +197,9 @@ class TestTareas(unittest.TestCase):
     def testinsert_TareaDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
         tempTarea = clsTarea()
         nuevaDescTarea = None
@@ -211,9 +211,9 @@ class TestTareas(unittest.TestCase):
     def testinsert_TareaDescripFloat(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         tempTarea = clsTarea()
         nuevaDescTarea = 0.54
@@ -229,9 +229,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaExist(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
 
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
@@ -250,9 +250,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaNoExist(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         tempTarea = clsTarea()
         idTarea = 20
@@ -266,9 +266,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdExistVariosELem(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
         for indice in range(1,10,1):
             nuevoIdTarea = indice
@@ -288,9 +288,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdNotExistVariosELem(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
         for indice in range(2,10,1):
             nuevoIdTarea = indice
@@ -312,9 +312,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdExistNewDescripLen1(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
@@ -336,9 +336,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdExistNewDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -362,9 +362,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdExistIqual1NewDescripLen1(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'z'
@@ -384,9 +384,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdExistIqual1NewDescripLen500(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'x'
@@ -407,9 +407,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdString(self):    
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
             
         tempTarea = clsTarea()
         idTarea = '1'
@@ -422,9 +422,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdNegative(self):     
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
            
         tempTarea = clsTarea()
         idTarea = -1
@@ -437,9 +437,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdFloat(self):      
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
           
         tempTarea = clsTarea()
         idTarea = 1.0
@@ -452,9 +452,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdNone(self):   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
              
         tempTarea = clsTarea()
         idTarea = None
@@ -467,9 +467,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaDescripIsEmpty(self): 
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)    
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)    
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -488,9 +488,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -509,9 +509,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaDescripIsNumber(self):   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
             
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -530,9 +530,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -551,9 +551,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdStringDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -572,9 +572,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdStringDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -593,9 +593,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdStringDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -614,9 +614,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdStringDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -635,9 +635,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdStringDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -656,9 +656,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdFloatDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -677,9 +677,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdFloatDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -698,9 +698,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdFloatDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -719,9 +719,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdFloatDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -740,9 +740,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdFloatDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -761,9 +761,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdNoneDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -782,9 +782,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdNoneDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -803,9 +803,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdNoneDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -824,9 +824,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdNoneDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -845,9 +845,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdNoneDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -866,9 +866,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdMaxDescripInt(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -887,9 +887,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdMaxDescripFloat(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -908,9 +908,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdMaxDescripNone(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -929,9 +929,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdMaxDescripLen500(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
@@ -950,9 +950,9 @@ class TestTareas(unittest.TestCase):
     def testmodify_TareaIdMaxDescripLen501(self):  
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
-        crearProducto(1, 'prueba', 'descripcion', 1)
-        crearAccion(1, 1, 'esto es una prueba')
-        crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
