@@ -36,19 +36,19 @@ def ACrearObjetivo():
     descripcion = params.get('descripcion', None)
     transversalidad = params.get('transversal', None)
 
-    if ( (transversalidad != None) and (descripcion!= None)):
+    if ((transversalidad != None) and (descripcion!= None)):
         controlDeAcceso = clsControlDeAcceso()
         descripcionValida = controlDeAcceso.verificarDescripcion( descripcion )
 
-        if ( descripcionValida ):
+        if (descripcionValida):
             nuevoObjetivo = clsObjetivo()
             creacionCorrecta = nuevoObjetivo.insertar(idProducto, descripcion,
                                                       transversalidad)
-            if ( creacionCorrecta ):
+            if (creacionCorrecta):
                 res = results[0]  
-                # Se actualiza el URL de la pág a donde se va a redirigir.
-                res['label'] = res['label'] + '/' + str(idProducto) 
-
+    
+    # Se actualiza el URL de la pág a donde se va a redirigir.
+    res['label'] = res['label'] + '/' + str(idProducto) 
     res['idPila'] = idProducto
 
     if "actor" in res:
@@ -64,7 +64,8 @@ def AElimObjetivo():
     #GET parameter
     identificador = int(request.args.get('idObjetivo',1))
     idProducto = int(session['idPila'])
-    results = [{'label':'/VProducto', 'msg':['Objetivo eliminado']}, {'label':'/VObjetivo', 'msg':['No se pudo eliminar este objetivo']}, ]
+    results = [{'label':'/VProducto', 'msg':['Objetivo eliminado']}, 
+               {'label':'/VObjetivo', 'msg':['No se pudo eliminar este objetivo']}, ]
     res = results[1]
 
     objetivo = clsObjetivo()

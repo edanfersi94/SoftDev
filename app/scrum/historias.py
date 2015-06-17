@@ -80,6 +80,7 @@ def ACrearHistoria():
 
     # Atributos de la historia a crear.
     tipo = params.get('tipo', None)
+    print(tipo)
     codigo = params.get('codigo', None)
     accion = params.get('accion', None) 
     objetivo = params.get('objetivos', None)
@@ -87,9 +88,9 @@ def ACrearHistoria():
     idSuper = params.get('super', None)
     prioridad = params.get('prioridad', None)
 
-    if not(( tipo == None ) and ( codigo == None ) and ( accion == None ) and 
-           ( objetivos == None ) and ( actor == None) and (idSuper == None) and 
-           (prioridad == None)):
+    if (( tipo != None ) and ( codigo != None ) and ( accion != None ) and 
+           ( objetivo != None ) and ( actor != None) and (idSuper != None) and 
+           (prioridad != None)):
         accionBuscada = db.session.query(Historias).\
                             filter(Historias.idAccion == accion).first()
 
@@ -249,7 +250,6 @@ def AModifHistoria():
                                 first()
     
             viejoSuper = enlaceBuscado.identificador
-            #viejoSuper = enlaceEncontrado.idClave
     
             enlace = clsEnlace()
             modificacionCorrecta = enlace.modificar(viejoSuper, idSuper, 
@@ -269,18 +269,17 @@ def AModifHistoria():
                         #BORRAR OBJETIVOS ASOCIADOS A LA HISTORIA.        
                         modificarObjetivo= objetivos.eliminar(identificador)
                         listaModificar.append(modificarObjetivo)
-                             
-                        # BORRAR LA HISTORIA.         
-                        modificarHistoria = historia.eliminar(identificador)
-                        listaModificar.append(modificarHistoria)
-    
-                        if (listaModificar == [True,True,True]):
-                            historia = clsHistoria()
-                            creacionCorrecta = historia.insertar(idProducto, codigo, 
-                                                                 tipo, accion, idSuper, 
-                                                                 prioridad) 
+                    
+                        print(listaModificar)
+                        print("Antes")
+                        if (listaModificar == [True,True]):
+                            print("Estoy aqui")
+                            # Se modifica la historia.       
+                            modificarHistoria = historia.modificar(identificador, tipo, 
+                                                                   codigo, accion, idSuper,
+                                                                   prioridad)
                 
-                            if ( creacionCorrecta[0] ):
+                            if ( modificarHistoria ):
                                 histObjetivo = clsHistoriaObj()
                                 histActores  = clsHistoriaActores()
     
@@ -295,7 +294,6 @@ def AModifHistoria():
                                 res = results[0]
                                 res['label'] = res['label'] + '/' + str(idProducto)
     
-
     if (res == results[1]):
         res['idHistoria'] = identificador
         # Se actualiza el URL de la pág a donde se va a redirigir.
@@ -389,8 +387,8 @@ def VCrearHistoria():
     res['fHistoria'] = { 'super':0,
                          'idHistoria': request.args.get('idHistoria',1),
                          'idPila': idProducto,
-                         'objetivos':request.args.get('idObjetivo',1),
-                         'actores': request.args.get('idActores',1),
+                         'objetivos':request.args.get('idObjetivo'),
+                         'actores': request.args.get('idActores'),
                          'accion': request.args.get('idAccion',1),
                          'codigo': request.args.get('codigo',None),
                          'tipo': request.args.get('tipo',1),

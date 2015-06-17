@@ -39,19 +39,19 @@ def ACrearAccion():
     idProducto = int(session['idPila'])
     descripcion = params.get('descripcion', None)
     
-    if ( descripcion != None ):
+    if (descripcion != None):
         controlDeAcceso = clsControlDeAcceso()
-        descripcionValida = controlDeAcceso.verificarDescripcion( descripcion )
+        descripcionValida = controlDeAcceso.verificarDescripcion(descripcion)
 
-        if ( descripcionValida ):
+        if (descripcionValida):
             accionNueva = clsAccion()
             creacionCorrecta = accionNueva.insertar(idProducto, descripcion)
 
-            if ( creacionCorrecta ):
+            if (creacionCorrecta):
                 res = results[0]
-                # Se actualiza el URL de la pág a donde se va a redirigir.
-                res['label'] = res['label'] + '/' + str(idProducto)
                 
+    # Se actualiza el URL de la pág a donde se va a redirigir.
+    res['label'] = res['label'] + '/' + str(idProducto)
     res['idPila'] = idProducto
 
     if "actor" in res:

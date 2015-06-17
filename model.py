@@ -26,11 +26,11 @@ from sqlalchemy             import CheckConstraint, func, desc
 
 # Construcción de la base de datos.
 
-SQLALCHEMY_DATABASE_URI = "postgresql://postgres:joel123@localhost/prueba"
+SQLALCHEMY_DATABASE_URI = "postgresql://postgres:@localhost/prueba1"
     # Estructura para realizar la conexión con la base de datos:
     # "postgresql://yourusername:yourpassword@localhost/yournewdb"
 
-db_dir = 'postgresql+psycopg2://postgres:joel123@localhost/prueba'
+db_dir = 'postgresql+psycopg2://postgres:@localhost/prueba1'
 # Estructrua:
 # 'postgresql+psycopg2://user:password@localhost/the_database'  
 
@@ -74,7 +74,7 @@ class Productos(db.Model):
 class Historias(db.Model):
     __tablename__    = 'historias'
     identificador    = db.Column(db.Integer, unique=True)
-    tipo             = db.Column(db.String(13), nullable = True)
+    tipo             = db.Column(db.Integer, nullable = True)
     codigo           = db.Column(db.String(10), primary_key=True,)
     idProducto       = db.Column(db.Integer, db.ForeignKey('productos.identificador'))
     idAccion         = db.Column(db.Integer, db.ForeignKey('acciones.identificador'))
