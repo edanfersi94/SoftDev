@@ -95,7 +95,6 @@ app.register_blueprint(cates)
 # Tablas de la base de datos a definir.
 
 # Tabla Pila (Productos):
-# Tabla Pila (Productos):
 class Productos(db.Model):
     __tablename__   = 'productos'
     identificador   = db.Column(db.Integer, primary_key = True)
@@ -128,6 +127,7 @@ class Historias(db.Model):
     listaActores = db.relationship('ActoresHistorias',backref='historia',cascade = "all, delete, delete-orphan")
     historiaTarea = db.relationship('Tareas',backref='historia',cascade = "all, delete, delete-orphan")
     historiaPeso = db.relationship('Pesos',backref='historia',cascade = "all, delete, delete-orphan")
+
 
 
     def __init__(self, identificador,codigo,idProducto, tipo,idAccion,idSuper, idEscala):
@@ -262,7 +262,7 @@ class Tareas(db.Model):
         self.descripcion     = descripcion
         self.idCategoria = idCategoria
         self.peso = peso
-        
+
 class Pesos(db.Model):
     __tablename__ = 'pesos'
     identificador = db.Column(db.Integer, primary_key = True)
@@ -273,7 +273,6 @@ class Pesos(db.Model):
         self.identificador = identificador
         self.idHistoria  = idHistoria
         self.peso = peso
-        
 
 #-------------------------------------------------------------------------------
 
