@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html ng-app="scrum">
-    <head><title>scrum</title>
+    <head><title>APMwSc</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
@@ -17,6 +17,7 @@
         <![endif]-->
     </head>
 <body ng-controller="scrumController_">
+	
     <div class="container">
         <flash:messages class="alert-perso"></flash:messages>
         <div ng-view class="fade"></div>
@@ -25,10 +26,6 @@
       <div class="container">
           <div class="row">
               <div class="col-xs-12" style="background-color: #333333; height: 2px;"></div>
-          </div>
-          <div class="row">
-              <div class="col-xs-10 text-inverse" ng-bind="title"></div>
-              <div class="col-xs-2" style="text-align: right"><img alt="Logo" src="img/logo.png" height="30" /></div>
           </div>
       </div>
     </footer>

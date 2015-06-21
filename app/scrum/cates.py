@@ -121,49 +121,6 @@ def VCategorias():
       res['logout'] = '/'
       return json.dumps(res)
   
-    categoriasBuscadas = db.session.query(Categorias).all()
-    
-    if (categoriasBuscadas == []):
-        
-        categoriaNueva = Categorias(1,'Implementar una acción',2)
-        db.session.add(categoriaNueva)
-        db.session.commit()
-        
-        categoriaNueva = Categorias(2,'Implementar una vista',2)
-        db.session.add(categoriaNueva)
-        db.session.commit()
-        
-        categoriaNueva = Categorias(3,'Implementar una regla de negocio o un método de una clase',2)
-        db.session.add(categoriaNueva)
-        db.session.commit()
-        
-        categoriaNueva = Categorias(4,'Migrar la bases de datos',2)
-        db.session.add(categoriaNueva)
-        db.session.commit()
-        
-        categoriaNueva = Categorias(5,'Crear un diagrama UML',1)
-        db.session.add(categoriaNueva)
-        db.session.commit()
-        
-        categoriaNueva = Categorias(6,'Crear datos iniciales',1)
-        db.session.add(categoriaNueva)
-        db.session.commit()
-        
-        categoriaNueva = Categorias(7,'Crear un criterio de aceptación',1)
-        db.session.add(categoriaNueva)
-        db.session.commit()
-        
-        categoriaNueva = Categorias(8,'Crear una prueba de aceptación',2)
-        db.session.add(categoriaNueva)
-        db.session.commit()
-        
-        categoriaNueva = Categorias(9,'Actualizar un elemento implementado en otra tarea',1)
-        db.session.add(categoriaNueva)
-        db.session.commit()
-        
-        categoriaNueva = Categorias(10,'Escribir el manual en línea de una página',1)
-        db.session.add(categoriaNueva)
-        db.session.commit()
         
     categorias = db.session.query(Categorias).all()
     res['usuario'] = session['usuario']

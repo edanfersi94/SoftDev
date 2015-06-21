@@ -58,7 +58,7 @@
     </form>
     <hr /><h3>Tareas <span class="badge" ng-bind="numTareas"></span></h3>        <table ng-table="tableParams2" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
-                <td data-title="'Descripción'">{{row['descripcion']}}</td>
+                <td align="center" data-title="'Descripción'">{{row['descripcion']}}</td>
                 <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VTarea2(row['idTarea'])">detalles</a></td>
             </tr>
         </table>

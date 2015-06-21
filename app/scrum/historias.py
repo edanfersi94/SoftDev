@@ -23,7 +23,7 @@ from app.scrum.funcHistObjetivo import clsHistoriaObj
 from app.scrum.funcHistActores  import clsHistoriaActores
 from app.scrum.funcEnlace import clsEnlace
 from model import db,func,Historias,Objetivos,Acciones,Actores
-from model import Productos, ActoresHistorias, ObjHistorias, Enlaces, Tareas
+from model import Productos, ActoresHistorias, ObjHistorias, Enlaces, Tareas, Pesos,func
 from app.scrum.funcTarea import clsTarea
 
 historias = Blueprint('historias', __name__)
@@ -419,7 +419,45 @@ def VHistoria():
     historiaActual = db.session.query(Historias).\
                         filter(Historias.identificador == identificador).\
                         first()
-
+    
+    pesoBuscado = db.session.query(Pesos).\
+                  filter(Pesos.idHistoria == identificador).first()
+                  
+    if (pesoBuscado!= None):
+        tareaBuscada = db.session.query(Tareas).\
+                        filter(Tareas.idHistoria == identificador)
+                        
+        if (tareaBuscada!=None):
+            suma = 0
+            for tarea in tareaBuscada:
+                suma = tarea.peso + suma
+            
+            db.session.query(Pesos).\
+                filter(Pesos.idHistoria == identificador).\
+                update({'peso':suma})
+            db.session.commit()
+            
+    else:
+        
+        tareaBuscada = db.session.query(Tareas).\
+                        filter(Tareas.idHistoria == identificador)
+                        
+        if (tareaBuscada!=None):
+            suma = 0
+            for tarea in tareaBuscada:
+                suma = tarea.peso + suma
+        
+            ultimoId = db.session.query(func.max(Pesos.identificador)).\
+                                        first()
+            identificadorP  = ultimoId[0]
+            # Si no hay acciones en la base de datos, entonces se inicializa 
+            # el contador.
+            identificadorP = 1 if identificadorP == None else identificadorP + 1
+            
+            pesoNuevo = Pesos(identificadorP,identificador,suma)
+            db.session.add(pesoNuevo)
+            db.session.commit()
+        
 
     # Se obtiene la información de la historia actual.
     historias = db.session.query(Historias).\
@@ -552,18 +590,28 @@ def VHistorias():
                             first()      
     historias = db.session.query(Historias).\
                     filter(Historias.idProducto == idProducto).\
-                    order_by(Historias.idEscala).all() 
+                    order_by(Historias.idEscala).all()
+                    
+    pesos = db.session.query(Pesos).all()
+    
+    pesosHistoria = {}
+    
+    for peso in pesos:
+        pesosHistoria[peso.idHistoria] = peso.peso
+    
+     
     if (productoTipoEscala[0] == 1):
         escala = {1:'Alta', 2:'Media',3:'Baja'}
         res['data0'] = [
             {'idHistoria':historia.identificador, 'enunciado':historia.codigo, 
-             'prioridad':escala[historia.idEscala]} 
+             'prioridad':escala[historia.idEscala],'peso':pesosHistoria[historia.identificador]} 
             for historia in historias]
     else:
         res['data0'] = [
             {'idHistoria':historia.identificador, 'enunciado':historia.codigo, 
              'prioridad':historia.idEscala} 
             for historia in historias]
+    
 
     res['idPila'] = idProducto
   

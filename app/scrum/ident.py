@@ -5,10 +5,8 @@
     Departamento de Computación y Tecnología de la Información.
     CI-3715 - Ingeniería de Software I (CI-3715)
     Abril - Julio 2015
-
     AUTORES:
         Equipo SoftDev
-
     DESCRIPCION: 
         Módulo que contiene los métodos que permitirán insertar, modificar y
         eliminar acciones.
@@ -30,8 +28,8 @@ def AIdentificar():
 
     params = request.get_json()
     results = [{'label':'/VProductos', 'msg':['Bienvenido dueño de producto'], "actor":"duenoProducto"}, 
-               {'label':'/VMaestroScrum', 'msg':['Bienvenido Maestro Scrum'],  "actor":"maestroScrum"}, 
-               {'label':'/VDesarrollador','msg':['Bienvenido Desarrollador'], "actor":"desarrollador"}, 
+               {'label':'/VProductos', 'msg':['Bienvenido Maestro Scrum'],  "actor":"maestroScrum"}, 
+               {'label':'/VProductos','msg':['Bienvenido Desarrollador'], "actor":"desarrollador"}, 
                {'label':'/VLogin', 'msg':['Datos de identificación incorrectos']}, ]
     # Resultado de la autenticación del usuario.
     lastResult  = len(results) - 1
@@ -148,4 +146,4 @@ def VRegistro():
 
     return json.dumps(res)
 
-#.-----------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.--------------------------------------.

@@ -83,7 +83,9 @@ class Historias(db.Model):
     listaObjetivos = db.relationship('ObjHistorias',backref='historia',cascade = "all, delete, delete-orphan")
     listaActores = db.relationship('ActoresHistorias',backref='historia',cascade = "all, delete, delete-orphan")
     historiaTarea = db.relationship('Tareas',backref='historia',cascade = "all, delete, delete-orphan")
+    historiaPeso = db.relationship('Pesos',backref='historia',cascade = "all, delete, delete-orphan")
 
+    
 
     def __init__(self, identificador,codigo,idProducto, tipo,idAccion,idSuper, idEscala):
         self.identificador  = identificador
@@ -217,6 +219,18 @@ class Tareas(db.Model):
         self.descripcion     = descripcion
         self.idCategoria = idCategoria
         self.peso = peso
+        
+class Pesos(db.Model):
+    __tablename__ = 'pesos'
+    identificador = db.Column(db.Integer, primary_key = True)
+    idHistoria = db.Column(db.Integer, db.ForeignKey('historias.identificador'))
+    peso = db.Column(db.Integer)
+    
+    def __init__(self, identificador, idHistoria,peso):
+        self.identificador = identificador
+        self.idHistoria  = idHistoria
+        self.peso = peso
+    
 
 #-------------------------------------------------------------------------------
 
