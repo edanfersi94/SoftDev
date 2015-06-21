@@ -87,10 +87,12 @@ def ACrearHistoria():
     actor = params.get('actores', None)
     idSuper = params.get('super', None)
     prioridad = params.get('prioridad', None)
+    
+    hist = db.session.query(Historias).filter(Historias.codigo == codigo).first()
 
     if (( tipo != None ) and ( codigo != None ) and ( accion != None ) and 
            ( objetivo != None ) and ( actor != None) and (idSuper != None) and 
-           (prioridad != None)):
+           (prioridad != None) and (hist==None)):
         accionBuscada = db.session.query(Historias).\
                             filter(Historias.idAccion == accion).first()
 
@@ -119,6 +121,17 @@ def ACrearHistoria():
 
                     res = results[0]
                     res['idHistoria'] = creacionCorrecta[1]
+                    
+                    ultimoId = db.session.query(func.max(Pesos.identificador)).\
+                                        first()
+                    identificadorP  = ultimoId[0]
+                    # Si no hay acciones en la base de datos, entonces se inicializa 
+                    # el contador.
+                    identificadorP = 1 if identificadorP == None else identificadorP + 1
+            
+                    pesoNuevo = Pesos(identificadorP,creacionCorrecta[1],0)
+                    db.session.add(pesoNuevo)
+                    db.session.commit()
                      
     
     res['idPila'] = idProducto 
@@ -157,8 +170,12 @@ def AElimHistoria():
         if not(enlace.idValor in listaEnlace):
             listaEnlace[enlace.idValor] =[]
 
-    print(listaEnlace)
     if (listaEnlace[identificador] == [] ):
+        
+        pesoBuscado = db.session.query(Pesos).\
+                        filter(Pesos.idHistoria == identificador).first()
+        db.session.delete(pesoBuscado)
+        db.session.commit()
         
         historiaBuscada = db.session.query(Historias).\
                            filter(Historias.identificador == identificador).\
@@ -187,6 +204,8 @@ def AElimHistoria():
         if (enlaceBuscado != None):
             db.session.delete(enlaceBuscado)
             db.session.commit()
+        
+        
         
         # BORRAR LA HISTORIA.         
         eliminarHistoria = historia.eliminar(identificador)
@@ -437,26 +456,6 @@ def VHistoria():
                 update({'peso':suma})
             db.session.commit()
             
-    else:
-        
-        tareaBuscada = db.session.query(Tareas).\
-                        filter(Tareas.idHistoria == identificador)
-                        
-        if (tareaBuscada!=None):
-            suma = 0
-            for tarea in tareaBuscada:
-                suma = tarea.peso + suma
-        
-            ultimoId = db.session.query(func.max(Pesos.identificador)).\
-                                        first()
-            identificadorP  = ultimoId[0]
-            # Si no hay acciones en la base de datos, entonces se inicializa 
-            # el contador.
-            identificadorP = 1 if identificadorP == None else identificadorP + 1
-            
-            pesoNuevo = Pesos(identificadorP,identificador,suma)
-            db.session.add(pesoNuevo)
-            db.session.commit()
         
 
     # Se obtiene la información de la historia actual.
@@ -609,7 +608,7 @@ def VHistorias():
     else:
         res['data0'] = [
             {'idHistoria':historia.identificador, 'enunciado':historia.codigo, 
-             'prioridad':historia.idEscala} 
+             'prioridad':historia.idEscala, 'peso':pesosHistoria[historia.identificador]} 
             for historia in historias]
     
 
