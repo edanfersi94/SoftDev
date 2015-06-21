@@ -30,8 +30,8 @@ def AIdentificar():
 
     params = request.get_json()
     results = [{'label':'/VProductos', 'msg':['Bienvenido dueño de producto'], "actor":"duenoProducto"}, 
-               {'label':'/VMaestroScrum', 'msg':['Bienvenido Maestro Scrum'],  "actor":"maestroScrum"}, 
-               {'label':'/VDesarrollador','msg':['Bienvenido Desarrollador'], "actor":"desarrollador"}, 
+               {'label':'/VProductos', 'msg':['Bienvenido Maestro Scrum'],  "actor":"maestroScrum"}, 
+               {'label':'/VProductos','msg':['Bienvenido Desarrollador'], "actor":"desarrollador"}, 
                {'label':'/VLogin', 'msg':['Datos de identificación incorrectos']}, ]
     # Resultado de la autenticación del usuario.
     lastResult  = len(results) - 1
