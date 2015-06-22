@@ -121,7 +121,7 @@ def AModifProducto():
     params = request.get_json()
     results = [{'label':'/VProductos', 'msg':['Producto actualizado']},
                {'label':'/VProductos', 'msg':['Error al modificar el producto']},]
-    # Resultado de la creación del producto.
+    # Resultado de la modificación del producto.
     res = results[1]
 
     # Se obtiene el identificador del producto actual.
@@ -180,6 +180,11 @@ def VCrearProducto():
 def VProducto():
     res = {}
 
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+    res['usuario'] = session['usuario']
+
     # Identificar del producto actual.
     idProducto = int(request.args.get('idPila', 1))
 
@@ -194,11 +199,6 @@ def VProducto():
     # Carga de la información del producto actual.
     producto = db.session.query(Productos).\
                     filter(Productos.identificador == idProducto).first()
-
-    if 'usuario' not in session:
-      res['logout'] = '/'
-      return json.dumps(res)
-    res['usuario'] = session['usuario']
 
     # Se envía la información del producto.
     res['fPila'] = {'idPila': idProducto, 
@@ -243,11 +243,13 @@ def VProductos():
     if "actor" in session:
         res['actor']=session['actor']
 
-    # Se muestra la lista de productos.
-    producto = Productos.query.all()
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
+
+    # Se muestra la lista de productos.
+    producto = Productos.query.all()
+
     res['usuario'] = session['usuario']
     res['data0'] = [
         {'idPila':product.identificador, 'nombre':product.nombre}
