@@ -21,6 +21,7 @@
 from flask import request, session, Blueprint, json
 from app.scrum.funcActor import clsActor
 from app.scrum.funcProducto import clsProducto
+from app.scrum.funcCategoria import clsCategoria
 from model import db, Productos, Actores, Acciones, Objetivos, Categorias
 
 prod = Blueprint('prod', __name__)
@@ -45,7 +46,7 @@ def ACrearProducto():
 
         # creacionCorrecta es de la forma (Booleano, idProducto).
         creacionCorrecta = producto.insertar(nombre, descripcion, escala)
-
+        print("creacionCorrecta", creacionCorrecta[0])
         if (creacionCorrecta[0]):
             actor = clsActor()   
             idProducto= creacionCorrecta[1]
@@ -58,54 +59,10 @@ def ACrearProducto():
             creacionD = actor.insertar(idProducto, 'Developer',
                                        'Es el desarrollador del producto')    
 
-        if ( creacionPO and creacionSM and creacionD ):
-            res = results[0]
-            
-            categoriasBuscadas = db.session.query(Categorias).all()
-    
-            if (categoriasBuscadas == []):
+            if ( creacionPO and creacionSM and creacionD ):
+                res = results[0]
+                res['idPila'] = idProducto
                 
-                categoriaNueva = Categorias(1,'Implementar una acción',2)
-                db.session.add(categoriaNueva)
-                db.session.commit()
-                
-                categoriaNueva = Categorias(2,'Implementar una vista',2)
-                db.session.add(categoriaNueva)
-                db.session.commit()
-                
-                categoriaNueva = Categorias(3,'Implementar una regla de negocio o un método de una clase',2)
-                db.session.add(categoriaNueva)
-                db.session.commit()
-                
-                categoriaNueva = Categorias(4,'Migrar la bases de datos',2)
-                db.session.add(categoriaNueva)
-                db.session.commit()
-                
-                categoriaNueva = Categorias(5,'Crear un diagrama UML',1)
-                db.session.add(categoriaNueva)
-                db.session.commit()
-                
-                categoriaNueva = Categorias(6,'Crear datos iniciales',1)
-                db.session.add(categoriaNueva)
-                db.session.commit()
-                
-                categoriaNueva = Categorias(7,'Crear un criterio de aceptación',1)
-                db.session.add(categoriaNueva)
-                db.session.commit()
-                
-                categoriaNueva = Categorias(8,'Crear una prueba de aceptación',2)
-                db.session.add(categoriaNueva)
-                db.session.commit()
-                
-                categoriaNueva = Categorias(9,'Actualizar un elemento implementado en otra tarea',1)
-                db.session.add(categoriaNueva)
-                db.session.commit()
-                
-                categoriaNueva = Categorias(10,'Escribir el manual en línea de una página',1)
-                db.session.add(categoriaNueva)
-                db.session.commit()  
-
-    res['idPila'] = idProducto
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -246,6 +203,21 @@ def VProductos():
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
+  
+    categorias = db.session.query(Categorias).all()
+    
+    if (categorias == []):
+        categoria = clsCategoria()
+        categoria.insertar('Implementar una acción',2)
+        categoria.insertar('Implementar una vista',2)
+        categoria.insertar('Implementar una regla de negocio o un método de una clase',2)
+        categoria.insertar('Migrar la base de datos',2)
+        categoria.insertar('Crear un diagrama UML',1)
+        categoria.insertar('Crear datos iniciales',1)
+        categoria.insertar('Crear una prueba de aceptación',1)
+        categoria.insertar('Actualizar un elemento implementado en otra tarea',2)
+        categoria.insertar('Actualizar en elemento implementado en otra tarea',1)
+        categoria.insertar('Escribir el manual en línea de unapágina',1)
 
     # Se muestra la lista de productos.
     producto = Productos.query.all()

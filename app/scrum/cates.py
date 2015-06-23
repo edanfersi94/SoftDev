@@ -60,12 +60,18 @@ def AElimCategoria():
       res['logout'] = '/'
       return json.dumps(res)
   
-    idCategoria = int(request.args['idCategoria'])
+    identificador = int(request.args['idCategoria'])
     results = [{'label':'/VCategorias', 'msg':['Categoría eliminada.']}, 
                {'label':'/VCategorias', 'msg':['Error al intentar eliminar categoría.']}, ]
-    res = results[1]
+    res = results[0]
+    
+    cates = clsCategoria()
+    eliminarCorrecto = cates.eliminar(identificador)
+    
+    if(eliminarCorrecto):
+        res = results[0]
 
-    res['label'] = res['label'] + '/' + str(idCategoria)
+    ###res['label'] = res['label'] + '/'
     #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
@@ -141,21 +147,8 @@ def VCategorias():
       res['logout'] = '/'
       return json.dumps(res)
   
-    # Se muestra la lista de categorias.
     categorias = Categorias.query.all()
-    
-    if (categorias != None):
-        categoria = clsCategoria()
-        categoria.insertar('Implementar una acción',2)
-        categoria.insertar('Implementar una vista',2)
-        categoria.insertar('Implementar una regla de negocio o un método de una clase',2)
-        categoria.insertar('Migrar la base de datos',2)
-        categoria.insertar('Crear un diagrama UML',1)
-        categoria.insertar('Crear datos iniciales',1)
-        categoria.insertar('Crear una prueba de aceptación',1)
-        categoria.insertar('Actualizar un elemento implementado en otra tarea',2)
-        categoria.insertar('Actualizar en elemento implementado en otra tarea',1)
-        categoria.insertar('Escribir el manual en línea de unapágina',1)
+    # Se muestra la lista de categorias.
         
     res['usuario'] = session['usuario']
     res['data0'] = [

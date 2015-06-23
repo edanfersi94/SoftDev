@@ -305,11 +305,11 @@ def AModifHistoria():
                                 # Se agregan los objetivos seleccionados en la base 
                                 # de datos.
                                 for obj in objetivo:
-                                    histObjetivo.insertar(creacionCorrecta[1], obj)
+                                    histObjetivo.insertar(identificador, obj)
                                 # Se agregan los actores seleccionados en la base de 
                                 # datos.
                                 for act in actor:
-                                    histActores.insertar(creacionCorrecta[1], act)
+                                    histActores.insertar(identificador, act)
                                 res = results[0]
                                 res['label'] = res['label'] + '/' + str(idProducto)
     
