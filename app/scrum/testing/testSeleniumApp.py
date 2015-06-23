@@ -236,6 +236,50 @@ class testSeleniumApp(unittest.TestCase):
         self.esperar()     
         codigoHistoria.submit()
         
+        # MODIFICO LA HISTORIA
+        self.esperar()
+        driver.get("http://0.0.0.0:5000/#/VHistoria/1")
+        self.esperar()
+        
+        codigoHistoria = driver.find_element_by_name("codigo")
+        codigoHistoria.clear()
+        codigoHistoria.send_keys("CodHist")
+        self.seleccionarEtiqueta(driver,"fHistoria_super","Ninguna")
+        self.seleccionarEtiqueta(driver,"fHistoria_actores","Developer")
+        self.seleccionarEtiqueta(driver,"fHistoria_tipo","Obligatoria")   
+        self.seleccionarEtiqueta(driver,"fHistoria_accion","Accion 1 Modificada")
+        self.seleccionarEtiqueta(driver,"fHistoria_objetivos","Objetivo 1 Modificado")   
+        self.seleccionarEtiqueta(driver,"fHistoria_prioridad","Baja")           
+        
+        self.esperar()     
+        codigoHistoria.submit()
+        
+        # ELIMINO LA HISTORIA 
+        self.esperar()
+        driver.get("http://0.0.0.0:5000/#/VHistoria/1")
+        self.esperar()
+        
+        driver.find_element_by_link_text("-historia").click(); 
+        
+        # VUELVO A CREAR LA HISTORIA
+        
+        self.esperar()
+        driver.get("http://0.0.0.0:5000/#/VHistorias/1 ")
+        self.esperar()  
+        
+        driver.get("http://0.0.0.0:5000/#/VCrearHistoria/1")
+        self.esperar()  
+        codigoHistoria = driver.find_element_by_name("codigo")
+        codigoHistoria.send_keys("CodHist")
+        self.seleccionarEtiqueta(driver,"fHistoria_super","Ninguna")
+        self.seleccionarEtiqueta(driver,"fHistoria_actores","Developer")
+        self.seleccionarEtiqueta(driver,"fHistoria_tipo","Opcional")   
+        self.seleccionarEtiqueta(driver,"fHistoria_accion","Accion 1 Modificada")
+        self.seleccionarEtiqueta(driver,"fHistoria_objetivos","Objetivo 1 Modificado")   
+        self.seleccionarEtiqueta(driver,"fHistoria_prioridad","Alta")           
+        
+        self.esperar()     
+        codigoHistoria.submit()
                      
     def tearDown(self):
         self.esperar()
