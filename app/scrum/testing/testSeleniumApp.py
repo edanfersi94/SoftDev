@@ -63,6 +63,20 @@ class testSeleniumApp(unittest.TestCase):
         self.esperar() 
         clave.submit()
         
+        # CREO UNA CATEGORIA 
+        self.esperar() 
+        driver.get("http://0.0.0.0:5000/#/VCategorias")
+        self.esperar() 
+        
+        nombreCategoria= driver.find_element_by_name("nombre")
+        nombreCategoria.send_keys("Categoria Creada ")
+
+        pesoCategoria = driver.find_element_by_name("peso")
+        pesoCategoria.send_keys("2")
+        self.esperar() 
+                 
+        pesoCategoria.submit()
+        
         # CREO PRODUCTO
         self.esperar() 
         driver.get("http://0.0.0.0:5000/#/VProductos")
@@ -139,11 +153,12 @@ class testSeleniumApp(unittest.TestCase):
         nombreObjetivo1 = driver.find_element_by_id("fObjetivo_descripcion")
         nombreObjetivo1.send_keys("Objetivo 1")
         
-        self.seleccionarEtiqueta(driver,"fObjetivo_transversal","No")
+        self.seleccionarEtiqueta(driver,"fObjetivo_transversal","Si")
 
         self.esperar()                  
         nombreObjetivo1.submit()
 
+        # CREO  OBJETIVO 2
         self.esperar()
         driver.get("http://0.0.0.0:5000/#/VCrearObjetivo/1")
         self.esperar() 
@@ -163,7 +178,8 @@ class testSeleniumApp(unittest.TestCase):
         
         driver.find_element_by_link_text("-objetivo").click(); 
         
-        # Modifico Objetivo 1    
+        # Modifico Objetivo 1  
+          
         self.esperar()
         driver.get("http://0.0.0.0:5000/#/VObjetivo/1")
         self.esperar() 
@@ -245,10 +261,8 @@ class testSeleniumApp(unittest.TestCase):
         codigoHistoria.clear()
         codigoHistoria.send_keys("CodHist")
         self.seleccionarEtiqueta(driver,"fHistoria_super","Ninguna")
-        self.seleccionarEtiqueta(driver,"fHistoria_actores","Developer")
-        self.seleccionarEtiqueta(driver,"fHistoria_tipo","Obligatoria")   
-        self.seleccionarEtiqueta(driver,"fHistoria_accion","Accion 1 Modificada")
-        self.seleccionarEtiqueta(driver,"fHistoria_objetivos","Objetivo 1 Modificado")   
+        self.seleccionarEtiqueta(driver,"fHistoria_actores","Scrum Master")
+        self.seleccionarEtiqueta(driver,"fHistoria_tipo","Obligatoria")
         self.seleccionarEtiqueta(driver,"fHistoria_prioridad","Baja")           
         
         self.esperar()     
@@ -280,7 +294,65 @@ class testSeleniumApp(unittest.TestCase):
         
         self.esperar()     
         codigoHistoria.submit()
-                     
+        
+        # CREAR TAREAS
+        
+        self.esperar()
+        driver.get("http://0.0.0.0:5000/#/VHistoria/1")
+        self.esperar()  
+        
+        self.esperar()
+        driver.get("http://0.0.0.0:5000/#/VCrearTarea/1")
+        self.esperar()  
+        
+        descripcionTarea = driver.find_element_by_name("descripcion")
+        descripcionTarea.send_keys("Tarea 1")
+        self.seleccionarEtiqueta(driver,"fTarea_categoria","Categoria Creada")
+        self.esperar()  
+        descripcionTarea.submit()
+        
+        # MODIFICAR TAREA
+        
+        self.esperar()
+        driver.get("http://0.0.0.0:5000/#/VTarea/1")
+        self.esperar()  
+        
+        descripcionTarea = driver.find_element_by_name("descripcion")
+        descripcionTarea.clear()
+        descripcionTarea.send_keys("Tarea 1 modificada")
+        self.seleccionarEtiqueta(driver,"fTarea_categoria","Crear un diagrama UML")
+        self.esperar()  
+        descripcionTarea.submit()
+        
+        # ELIMINAR TAREA
+        
+        self.esperar()
+        driver.get("http://0.0.0.0:5000/#/VTarea/1")
+        self.esperar()  
+        
+        driver.find_element_by_link_text("-tarea").click();
+        
+        # CAMBIAR PRIORIDAD DE LA HISTORIA 
+        
+        self.esperar()
+        driver.get("http://0.0.0.0:5000/#/VHistorias/1 ")
+        self.esperar()  
+        
+        self.esperar()
+        driver.get("http://0.0.0.0:5000/#/VPrioridades/1")
+        self.esperar()
+        
+        prioridad = driver.find_element_by_id("fPrioridades_prioridad")
+        for option in prioridad.find_elements_by_tag_name('option'):
+            if option.text in "Baja":
+                option.click()
+        self.esperar()
+        
+        prioridad.submit()
+        
+        self.esperar()
+        
+                  
     def tearDown(self):
         self.esperar()
         self.driver.close()
