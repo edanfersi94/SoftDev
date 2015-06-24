@@ -717,6 +717,7 @@ def VPrioridades():
 
 
         dicH = {'id':j.identificador,
+                'tipo': j.tipo,
                  'actor': nombreActoresHistoria,
                  'objetivo':nombreObjetivosHistoria,
                  'accion': accionesHistoria[0].descripcion}
@@ -730,7 +731,9 @@ def VPrioridades():
                                     {'idHistoria':hist.identificador,
                                      'prioridad':hist.idEscala, 'enunciado':('En tanto que el ' + str(', '.join([ actor 
                                                                                 for actor in listH[hist.identificador].get('actor')])) +
-                                                                             ' ' + ('pueda' if len(listH[hist.identificador].get('actor')) == 1 else 'puedan')+ 
+                                                                             ' '+ (('podría' if len(listH[hist.identificador].get('actor')) == 1 and listH[hist.identificador].get('tipo') == 1 
+                                                                                            else 'podrían' if len(listH[hist.identificador].get('actor')) != 1 and listH[hist.identificador].get('tipo') == 1 else
+                                                                                            'pueda' if len(listH[hist.identificador].get('actor')) == 1 and listH[hist.identificador].get('tipo') != 1 else 'puedan'))+ 
                                                                              ' '+ str(listH[hist.identificador].get('accion')).lower() + 
                                                                              ' para '+ str(', '.join([ objetivo.lower() 
                                                                                 for objetivo in listH[hist.identificador].get('objetivo')])))}
