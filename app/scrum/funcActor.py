@@ -1,128 +1,202 @@
 # -*- coding: utf-8 -*-
 
-# Función a importar.
-import model
+"""
+    UNIVERSIDAD SIMÓN BOLÍVAR
+    Departamento de Computación y Tecnología de la Información.
+    CI-3715 - Ingeniería de Software I (CI-3715)
+    Abril - Julio 2015
 
-# Numero de actores creados en la base de datos.
-num_actores   = 0
+    AUTORES:
+        Equipo SoftDev
+
+    DESCRIPCION: 
+		Módulo que contiene los métodos que permitirán insertar, modificar y
+		eliminar actores.
+"""
+
+#.-----------------------------------------------------------------------------.
+
+# Funciones a importar.
+from model import db,func,Actores, ActoresHistorias
+
+#.-----------------------------------------------------------------------------.
+
 
 # Clase que tendra las diferentes funcionalidades de la tabla "Actores".
 class clsActor():
 
-	#-------------------------------------------------------------------------------
+	#.-------------------------------------------------------------------------.
 	
-	def insert_Actor(self, newNameActor,newDescripActor):
+	def insertar(self, idProducto, nombre, descripcion):
 		"""
-			@brief Funcion que permite insertar un nuevo actor en la base de datos.
-			
-			@param newNameActor 	: Nombre del actor a insertar.
-			@param newDescripActor 	: Descripcion del actor a insertar.
+			@brief Funcion que permite insertar un nuevo actor en 
+					la base de datos.
 
-			@return True si se inserto el actor dado. De lo contrario False.
+			@param idProducto: identificador del producto al que pertenecerá el 
+							   actor.						
+			@param nombre: nombre del actor a insertar.
+			@param descripcion: especificacion del actor a insertar.
+
+			@return True si se insertó correctamente el actor deseado. En caso 
+					contrario, retorna False.
 		"""
-		
-		global num_actores
 
-		# Booleanos que indican si el tipo es el correcto.
-		descripIsStr = type(newDescripActor) == str
-		nameIsStr = type(newNameActor) == str
-	
-		if ( nameIsStr and descripIsStr):
+		# Booleanos que indican si los parametros son del tipo correspondiente.
+		descripcionStr = type(descripcion) == str
+		nombreStr = type(nombre) == str
+		idProductoInt  = type(idProducto) == int
 
-			# Booleanos que indican si cumplen con los limites.
-			nameLenValid = 1 <= len(newNameActor) <= 50
-			descripLenValid = 1 <= len(newDescripActor) <= 500
+		if ( descripcionStr and nombreStr and idProductoInt ):
+			# Booleanos que indican si los parametros tienen el tamaño valido.
+			nombreLongitud = 1 <= len(nombre) <= 50
+			descripcionLongitud = 1 <= len(descripcion) <= 500
+			idProductoPositivo = idProducto > 0
 		
-			if (nameLenValid and descripLenValid):
-				query = self.find_nameActor(newNameActor)
+			if (nombreLongitud and descripcionLongitud and idProductoPositivo):
 
-				if ( query == [] ):
-					num_actores = num_actores + 1
-					newActor = model.Actores(num_actores,newNameActor, newDescripActor)
-					model.db.session.add(newActor)
-					model.db.session.commit()
-					return( True )
-		
+				# Ultimo id en la base de datos correspondiente	
+				ultimoId = db.session.query(func.max(Actores.identificador)).\
+								first()
+				identificador = ultimoId[0]
+
+				# Si no hay acciones en la base de datos, entonces se inicializa 
+				# el contador.
+				identificador = 1 if identificador == None else identificador + 1
+
+				actorNuevo = Actores(idProducto, identificador,nombre, descripcion)
+				db.session.add(actorNuevo)
+				db.session.commit()
+				return( True )
+
 		return( False )
 		
-	#-------------------------------------------------------------------------------
+	#.-------------------------------------------------------------------------.
 	
-	def find_idActor(self, idActor):
+	def buscarId(self,identificador):
 		"""
 			@brief Funcion que realiza la busqueda del actor cuyo identificador
-				   sea "idActor".
+				   sea "identificador".
+		
+			@param identificador: id del actor a buscar.
 			
-			@param idActor: Identificador del actor a buscar.
-			
-			@return lista que contiene las tuplas obtenidas del subquery. De lo 
-					contrario retorna la lista vacia.
+			@return tupla que contiene la información del actor buscado. En caso
+					contrario retorna None.
 		"""
 		
-		idIsInt = type(idActor) == int
-		
-		if ( idIsInt ):
-			actoresEsp = model.Actores.id_actores == idActor
-			query = model.db.session.query(model.Actores).filter(actoresEsp).all()
-			return( query )
-		return( [] )
+		# Booleano que indica si el parámetro es del tipo correspondiente.
+		idInt = type(identificador) == int		
+
+		if ( idInt ):
+			idBuscado = db.session.query(Actores).\
+							filter(Actores.identificador == identificador).\
+							first()	
+			return( idBuscado )
+		return( None )
 	
-	#-------------------------------------------------------------------------------
+	#.-------------------------------------------------------------------------.
 
-	def find_nameActor(self, nameActor):
+	def buscarNombre(self, nombre):
 		"""
-			@brief Funcion que realiza la busqueda de los actores cuyo identificador
-				   sea "nameActor".
-				   
-			@param nameActor: Nombre del actor a buscar.
+			@brief Funcion que realiza la busqueda de los actores cuyo nombre
+				   sea "nombre".
+
+			@param nombre: nombre del actor a buscar.
 			
-			@return lista que contiene las tuplas obtenidas del subquery. De lo 
-					contrario retorna la lista vacia.
+			@return tupla que contiene la información del actor buscado. En caso
+					contrario retorna None. 
+
 		"""
 
-		nameIsStr = type(nameActor) == str
+		# Booleano que indica si el parametro es del tipo correspondiente.
+		nombreStr = type(nombre) == str
 		
-		if ( nameIsStr ):
-			actoresEsp = model.Actores.nombre_actores == nameActor
-			query = model.db.session.query(model.Actores).filter(actoresEsp).all()
-			return( query )
-		return( [] )
+		if ( nombreStr ):
+			nombreBuscado = db.session.query(Actores).\
+					filter(Actores.nombre == nombre).\
+					first()
+			return (nombreBuscado)
+		return( None )
 		
-	#-------------------------------------------------------------------------------
+	#.-------------------------------------------------------------------------.
 
-	def modify_Actor(self, idActor, newNameActor, newDescripActor):
+	def modificar(self, identificador, nombre, descripcion):
 		"""
-			@brief Funcion que modifica los datos del actor cuyo id sea "idActor".
-			
-			@param idActor	  	    : id del actor a modificar.
-			@param newNameActor 	: nuevo nombre para el actor dado.
-			@param newDescripActor  : nueva descripcion para el actor dado.
-			
-			@return True si se modifico el actor dado. De lo contrario False.
-		"""
-		
-		# Booleanos que indican si el tipo es el correcto.
-		nameIsStr 	 = type(newNameActor) == str
-		descripIsStr = type(newDescripActor) == str
-		idIsInt 	 = type(idActor) == int
-		
-		if ( nameIsStr and  idIsInt and descripIsStr ):
-			# Booleanos que indican si se cumplen los limites.
-			nameLenValid 	= 1 <= len(newNameActor) <= 50
-			idIsPositive 	= idActor > 0
-			descripLenValid = 1 <= len(newDescripActor) <= 500
-			
-			if ( nameLenValid and idIsPositive and descripLenValid ):
-				query1 = self.find_idActor(idActor)
-				query2 = self.find_nameActor(newNameActor)
+			@brief Función que modifica los datos del actor cuyo id sea 
+				   "identificador".
 				
-				if (( query1 != [] ) and ( query2 == [])):
-					actores = model.Actores.id_actores == idActor
-					model.db.session.query(model.Actores).filter(actores).\
-						update({'nombre_actores':(newNameActor),'descripcion_actores':(newDescripActor)})
-					model.db.session.commit()
-					return( True )
-					
+			@param identificador: id del actor a modificar.
+			@param nombre: nuevo nombre para el actor dado.
+			@param descripcion: nueva descripcion para el actor dado.
+			
+			@return True si se modifico correctamente el actor dado. En caso 
+					contrario retorna False.
+		"""
+		
+		# Booleanos que indican si los parámetros son del tipo correspondiente.
+		nombreStr = type(nombre) == str
+		descripcionStr = type(descripcion) == str
+		idInt = type(identificador) == int
+		
+		if ( nombreStr and idInt and descripcionStr ):
+			# Booleanos que indican si se cumplen los limites.
+			nombreLongitud 	= 1 <= len(nombre) <= 50
+			idPositivo 	= identificador > 0
+			descripcionLongitud = 1 <= len(descripcion) <= 500
+			
+			if ( nombreLongitud and idPositivo and descripcionLongitud ):
+				idBuscado = self.buscarId(identificador)
+				nombreBuscado = self.buscarNombre(nombre)
+				
+				if ( idBuscado != None):
+
+					if (nombreBuscado == None):
+						db.session.query(Actores).\
+							filter(Actores.identificador == identificador).\
+							update({'nombre': nombre,'descripcion': descripcion})
+						db.session.commit()
+						return( True )
+
+					elif (nombreBuscado != None and idBuscado.nombre == nombre):
+						db.session.query(Actores).\
+							filter(Actores.identificador == identificador).\
+							update({'descripcion':(descripcion)})
+						db.session.commit()
+						return( True )
 		return( False )
 	
-	#--------------------------------------------------------------------------------	
-	
+
+	#.-------------------------------------------------------------------------.
+
+	def eliminar(self, identificador):
+		"""
+			@brief Función que permite eliminar una actor cuyo id
+				   sea "identificador".
+			
+			@return True si se eliminó el actor dado. De lo contrario retorna
+					False.
+		"""
+
+		idInt = type(identificador) == int
+		
+		if (idInt):
+			idPositivo = identificador >0
+			
+			if ( idPositivo ):
+				actorBuscado = db.session.query(Actores).\
+						filter(Actores.identificador == identificador).\
+						first()
+
+				if ( actorBuscado != None):
+
+						actorContenido = db.session.query(ActoresHistorias).\
+									  filter(ActoresHistorias.idActores == identificador).\
+									  first()
+
+
+						if ( actorContenido == None):
+
+							db.session.delete(actorBuscado)
+							db.session.commit()
+							return ( True )
+			
+		return ( False )

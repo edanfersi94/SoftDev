@@ -6,7 +6,7 @@ scrumModule.service('identService', ['$q', '$http', function($q, $http) {
           data: fLogin,
           method: 'POST',
         });
-    //    var labels = ["/VProductos", "/VMaestroScrum", "/VDesarrollador", "/VLogin", ];
+    //    var labels = ["/VProductos", "/VProductos", "/VProductos", "/VLogin", ];
     //    var res = labels[0];
     //    var deferred = $q.defer();
     //    deferred.resolve(res);

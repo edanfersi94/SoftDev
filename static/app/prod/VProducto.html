@@ -18,9 +18,12 @@
 <li><a ng-click="VCrearAccion10(idPila)"
        ng-show="actor=='duenoProducto' || false">
   +Accion</a></li>
-<li><a ng-click="VCrearObjetivo11()"
+<li><a ng-click="VCrearObjetivo11(idPila)"
        ng-show="actor=='duenoProducto' || false">
   +Objetivo</a></li>
+<li><a ng-click="VHistorias12(idPila)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+  Historias</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -36,9 +39,11 @@
     </div>
 </nav>
 
-    <form name="fPilaForm" ng-submit="AModifProducto0(fPilaForm.$valid)" novalidate>
+    <form name="fPilaForm" ng-submit="AModifProducto0(fPilaForm.$valid)" novalidate style="width:800px;margin-left:150px;">
+            <div class="form-group" ng-class="{ 'has-error' :  fPilaSubmitted && fPilaForm.nombre.$invalid && fPilaForm.nombre.$pristine && fPilaSubmitted}"><label for="fPila_nombre">Nombre</label><input id="fPila_nombre" type="text" name="nombre" class="form-control" ng-model="fPila.nombre" placeholder="Nombre" required/><p ng-show="fPilaSubmitted && fPilaForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p></div>
             <div class="form-group" ng-class="{ 'has-error' :  fPilaSubmitted && fPilaForm.descripcion.$invalid && fPilaForm.descripcion.$pristine && fPilaSubmitted}"><label for="fPila_descripcion">Descripción</label><textarea id="fPila_descripcion" name="descripcion" class="form-control" ng-model="fPila.descripcion" placeholder="Descripción" required></textarea><p ng-show="fPilaSubmitted && fPilaForm.descripcion.$invalid" class="help-block">Error en campo Descripción.</p></div>
             <input id="fPila_idPila" type="hidden" name="idPila" ng-model="fPila.idPila" />
+            <div class="form-group" ng-class="{ 'has-error' :  fPilaSubmitted && fPilaForm.escala.$invalid && fPilaForm.escala.$pristine && fPilaSubmitted}"><label for="fPila_escala">Escala de prioridad para las historias</label>:&nbsp;<select id="fPila_escala" ng-model="fPila.escala" required ng-options="item.key as item.value for item in fPila_opcionesEscala"></select><p ng-show="fPilaSubmitted && fPilaForm.escala.$invalid" class="help-block">Error en campo Escala de prioridad para las historias.</p></div>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
             <span class="glyphicon glyphicon-flash"></span>Modificar
         </button>
@@ -46,7 +51,8 @@
     <hr /><h3>Actores</h3>
         <table ng-table="tableParams3" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
-                <td data-title="'Descripción'">{{row['descripcion']}}</td>
+            	<td align="center" data-title="'Nombre'">{{row['nombre']}}</td>
+                <td align="center" data-title="'Descripción'">{{row['descripcion']}}</td>
                 <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VActor3(row['idActor'])">Ver</a></td>
             </tr>
         </table>
@@ -54,7 +60,7 @@
 <hr /><h3>Acciones</h3>
         <table ng-table="tableParams5" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
-                <td data-title="'Descripción'">{{row['descripcion']}}</td>
+                <td align="center" data-title="'Descripción'">{{row['descripcion']}}</td>
                 <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VAccion5(row['idAccion'])">Ver</a></td>
             </tr>
         </table>
@@ -62,7 +68,7 @@
 <hr /><h3>Objetivos</h3>
         <table ng-table="tableParams7" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
-                <td data-title="'Descripción'">{{row['descripcion']}}</td>
+                <td align="center" data-title="'Descripción'">{{row['descripcion']}}</td>
                 <td><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VObjetivo7(row['idObjetivo'])">Ver</a></td>
             </tr>
         </table>

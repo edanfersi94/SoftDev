@@ -9,8 +9,8 @@ scrumModule.config(function ($routeProvider) {
 });
 
 scrumModule.controller('VActorController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'actorService', 'prodService',
-    function ($scope, $location, $route, flash, $routeParams, actorService, prodService) {
+   ['$scope', '$location', '$route', 'flash', '$routeParams', 'actorService', 'identService', 'prodService',
+    function ($scope, $location, $route, flash, $routeParams, actorService, identService, prodService) {
       $scope.msg = '';
       $scope.fActor = {};
 
@@ -26,6 +26,18 @@ scrumModule.controller('VActorController',
       $scope.VProducto1 = function(idPila) {
         $location.path('/VProducto/'+idPila);
       };
+      $scope.VLogin2 = function() {
+        $location.path('/VLogin');
+      };
+      $scope.AElimActor3 = function(idActor) {
+          
+        actorService.AElimActor({"idActor":((typeof idActor === 'object')?JSON.stringify(idActor):idActor)}).then(function (object) {
+          var msg = object.data["msg"];
+          if (msg) flash(msg);
+          var label = object.data["label"];
+          $location.path(label);
+          $route.reload();
+        });};
 
       $scope.fActorSubmitted = false;
       $scope.AModifActor0 = function(isValid) {
@@ -36,19 +48,16 @@ scrumModule.controller('VActorController',
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];
-              if (label == '/VActor') {
-                  $route.reload();
-              } else {
-                  $location.path(label);
-              }
+              $location.path(label);
+              $route.reload();
           });
         }
       };
 
     }]);
 scrumModule.controller('VCrearActorController', 
-   ['$scope', '$location', '$route', 'flash', '$routeParams', 'actorService', 'prodService',
-    function ($scope, $location, $route, flash, $routeParams, actorService, prodService) {
+   ['$scope', '$location', '$route', 'flash', '$routeParams', 'actorService', 'identService', 'prodService',
+    function ($scope, $location, $route, flash, $routeParams, actorService, identService, prodService) {
       $scope.msg = '';
       $scope.fActor = {};
 
@@ -64,6 +73,9 @@ scrumModule.controller('VCrearActorController',
       $scope.VProducto1 = function(idPila) {
         $location.path('/VProducto/'+idPila);
       };
+      $scope.VLogin2 = function() {
+        $location.path('/VLogin');
+      };
 
       $scope.fActorSubmitted = false;
       $scope.ACrearActor0 = function(isValid) {
@@ -74,11 +86,8 @@ scrumModule.controller('VCrearActorController',
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];
-              if (label == '/VCrearActor') {
-                  $route.reload();
-              } else {
-                  $location.path(label);
-              }
+              $location.path(label);
+              $route.reload();
           });
         }
       };

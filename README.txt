@@ -59,3 +59,16 @@ unzip scrumFL.zip
 #Ejecutar la aplicación
 
 python base.py runserver
+
+Si va a utilizar SQLAlchemy verifique que este paquete está instalado. Si no
+es el caso pruebe ejecutando los siguientes comandos de instalación:
+
+sudo pip3 install SQLAlchemy
+sudo pip3 install Flask-SQLAlchemy
+sudo pip3 install Flask-Migrate
+
+Para verificar is ya están instalados ejecute python3 una consola de terminal e importe 
+los archivos pertinentes:
+
+from flask import Flask
+from flask.ext.sqlalchemy import SQLAlchemy

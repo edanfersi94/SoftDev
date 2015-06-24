@@ -1,0 +1,48 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Categorías de tareas</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VProductos2()"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+<li><a ng-click="VLogin3()">
+    Salir</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+        <table ng-table="tableParams0" template-pagination="pager.html" class="table">
+            <tr ng-repeat="row in $data">
+                <td data-title="'Nombre'">{{row['nombre']}}</td>
+                <td data-title="'Peso'">{{row['peso']}}</td>
+                <td><a ng-show="actor=='maestroScrum' || false" ng-click="VCategoria0(row['idCategoria'])">Modificar</a></td>
+            </tr>
+        </table>
+
+<hr />    <form name="fCategoriaForm" ng-submit="ACrearCategoria1(fCategoriaForm.$valid)" novalidate>
+            <input id="fCategoria_idCategoria" type="hidden" name="idCategoria" ng-model="fCategoria.idCategoria" />
+            <div class="form-group" ng-class="{ 'has-error' :  fCategoriaSubmitted && fCategoriaForm.nombre.$invalid && fCategoriaForm.nombre.$pristine && fCategoriaSubmitted}"><label for="fCategoria_nombre">Nombre de la categoría</label><input id="fCategoria_nombre" type="text" name="nombre" class="form-control" ng-model="fCategoria.nombre" placeholder="Nombre de la categoría" required/><p ng-show="fCategoriaSubmitted && fCategoriaForm.nombre.$invalid" class="help-block">Error en campo Nombre de la categoría.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fCategoriaSubmitted && fCategoriaForm.peso.$invalid && fCategoriaForm.peso.$pristine && fCategoriaSubmitted}"><label for="fCategoria_peso">Peso</label><input id="fCategoria_peso" type="number" name="peso" class="form-control" ng-model="fCategoria.peso" placeholder="Peso" required min=""/><p ng-show="fCategoriaSubmitted && fCategoriaForm.peso.$invalid" class="help-block">Error en campo Peso.</p></div>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Crear
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>

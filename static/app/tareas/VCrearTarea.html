@@ -1,0 +1,42 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Crear tarea para la historia {{codHistoria}}</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="VHistoria1(idHistoria)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+<li><a ng-click="VLogin2()">
+    Salir</a></li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <form name="fTareaForm" ng-submit="ACrearTarea0(fTareaForm.$valid)" novalidate>
+            <input id="fTarea_idHistoria" type="hidden" name="idHistoria" ng-model="fTarea.idHistoria" />
+            <input id="fTarea_idTarea" type="hidden" name="idTarea" ng-model="fTarea.idTarea" />
+            <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.descripcion.$invalid && fTareaForm.descripcion.$pristine && fTareaSubmitted}"><label for="fTarea_descripcion">Descripción</label><textarea id="fTarea_descripcion" name="descripcion" class="form-control" ng-model="fTarea.descripcion" placeholder="Descripción" required></textarea><p ng-show="fTareaSubmitted && fTareaForm.descripcion.$invalid" class="help-block">Error en campo Descripción.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.categoria.$invalid && fTareaForm.categoria.$pristine && fTareaSubmitted}"><label for="fTarea_categoria">Cateoría</label>:&nbsp;<select id="fTarea_categoria" ng-model="fTarea.categoria"  ng-options="item.key as item.value for item in fTarea_opcionesCategoria"></select><p ng-show="fTareaSubmitted && fTareaForm.categoria.$invalid" class="help-block">Error en campo Cateoría.</p></div>
+            <div class="form-group" ng-class="{ 'has-error' :  fTareaSubmitted && fTareaForm.peso.$invalid && fTareaForm.peso.$pristine && fTareaSubmitted}"><label for="fTarea_peso">Peso</label><input id="fTarea_peso" type="number" name="peso" class="form-control" ng-model="fTarea.peso" placeholder="Peso"  min=""/><p ng-show="fTareaSubmitted && fTareaForm.peso.$invalid" class="help-block">Error en campo Peso.</p></div>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+            <span class="glyphicon glyphicon-flash"></span>Crear
+        </button>
+    </form>
+    <hr />
+
+
+<div id="right"></div>

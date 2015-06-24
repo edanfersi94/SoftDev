@@ -9,8 +9,8 @@ scrumModule.config(function ($routeProvider) {
 });
 
 scrumModule.controller('VLoginController', 
-   ['$scope', '$location', '$route', 'flash', 'devService', 'identService', 'mastService', 'prodService',
-    function ($scope, $location, $route, flash, devService, identService, mastService, prodService) {
+   ['$scope', '$location', '$route', 'flash', 'identService', 'prodService',
+    function ($scope, $location, $route, flash, identService, prodService) {
       $scope.msg = '';
       $scope.fLogin = {};
 
@@ -36,19 +36,16 @@ scrumModule.controller('VLoginController',
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];
-              if (label == '/VLogin') {
-                  $route.reload();
-              } else {
-                  $location.path(label);
-              }
+              $location.path(label);
+              $route.reload();
           });
         }
       };
 
     }]);
 scrumModule.controller('VRegistroController', 
-   ['$scope', '$location', '$route', 'flash', 'devService', 'identService', 'mastService', 'prodService',
-    function ($scope, $location, $route, flash, devService, identService, mastService, prodService) {
+   ['$scope', '$location', '$route', 'flash', 'identService', 'prodService',
+    function ($scope, $location, $route, flash, identService, prodService) {
       $scope.msg = '';
       $scope.fUsuario = {};
 
@@ -74,11 +71,8 @@ scrumModule.controller('VRegistroController',
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];
-              if (label == '/VRegistro') {
-                  $route.reload();
-              } else {
-                  $location.path(label);
-              }
+              $location.path(label);
+              $route.reload();
           });
         }
       };
