@@ -252,10 +252,12 @@ def AModifHistoria():
     actor = params.get('actores', None)
     idSuper = params.get('super', None)
     prioridad = params.get('prioridad', None)
+    
+    idrepetido = idSuper == identificador
 
     if ((tipo != None) and (codigo != None) and (accion != None) and 
         (objetivo != None) and (actor != None) and (idSuper != None)
-        and (prioridad != None)):
+        and (prioridad != None) and (idrepetido == False)):
 
         if (len(codigo) <= 10):
 
