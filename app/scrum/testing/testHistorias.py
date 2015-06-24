@@ -53,7 +53,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         tempHistoria = clsHistoria()
-        result = tempHistoria.insertar(1,'codigo','Opcional',1,0,1)
+        result = tempHistoria.insertar(1,'codigo',1,1,0,1)
         self.assertTrue(result)
         self.vaciarBaseDeDatos()
         
@@ -67,7 +67,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         tempHistoria = clsHistoria()
-        result = tempHistoria.insertar(1,12.0,'Opcional',1,0,1)
+        result = tempHistoria.insertar(1,12.0,1,1,0,1)
         self.assertFalse(result[0])
         self.vaciarBaseDeDatos()
                 
@@ -121,7 +121,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         tempHistoria = clsHistoria()
@@ -141,7 +141,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -163,7 +163,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -184,7 +184,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -205,7 +205,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -226,7 +226,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -247,7 +247,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -268,7 +268,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -292,7 +292,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -312,7 +312,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -334,7 +334,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -356,7 +356,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
  
@@ -378,7 +378,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -398,7 +398,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
 
@@ -418,7 +418,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -441,7 +441,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -462,7 +462,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -483,7 +483,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -504,7 +504,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -525,7 +525,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
@@ -546,7 +546,7 @@ class TestHistoria(unittest.TestCase):
         tempAccion = clsAccion()
         tempAccion.insertar(1,"Holaaa")
         
-        newHistoriaUsuario = model.Historias(1,"codigo", 1, "opcional", 1,0,1)
+        newHistoriaUsuario = model.Historias(1,"codigo", 1, 1, 1,0,1)
         model.db.session.add(newHistoriaUsuario)
         model.db.session.commit() 
         
