@@ -689,14 +689,11 @@ def VPrioridades():
         for i in idActoresHistoria:
             actores = db.session.query(Actores).\
                             filter(Actores.identificador == i).\
-                            all()
+                            first()
 
-            nombreActoresHistoria.append(actores[0].nombre)
+            nombreActoresHistoria.append(actores.nombre)
         print("nombreActoresHistoria",nombreActoresHistoria)
             
-        
-
-
         objetivosHistoria = db.session.query(ObjHistorias).\
                                 filter(ObjHistorias.idHistoria == j.identificador).\
                                 all()
@@ -707,9 +704,9 @@ def VPrioridades():
         for i in idObjetivosHistoria:
             objetivos = db.session.query(Objetivos).\
                             filter(Objetivos.identificador == i).\
-                            all()
+                            first()
 
-            nombreObjetivosHistoria.append(objetivos[0].descripcion)
+            nombreObjetivosHistoria.append(objetivos.descripcion)
         print("nombreObjetivosHistoria",nombreObjetivosHistoria)
 
         accionesHistoria = db.session.query(Acciones).\
@@ -727,9 +724,15 @@ def VPrioridades():
     print("historias",historias)
     res['idPila'] = idProducto
     res['fPrioridades'] = {'idPila':idProducto,
-      'lista':[
-        {'idHistoria':hist.identificador,'prioridad':hist.idEscala, 'enunciado':'En tanto que '+str(listH[hist.identificador].get('actor')) + ' ' + 'pueda'+ ' '+ str(listH[hist.identificador].get('accion')) + ' para '+ str(listH[hist.identificador].get('objetivo')) }
-          for hist in historias]}
+                           'lista':[
+                                    {'idHistoria':hist.identificador,
+                                     'prioridad':hist.idEscala, 'enunciado':('En tanto que el ' + str(', '.join([ actor 
+                                                                                for actor in listH[hist.identificador].get('actor')])) +
+                                                                             ' ' + ('pueda' if len(listH[hist.identificador].get('actor')) == 1 else 'puedan')+ 
+                                                                             ' '+ str(listH[hist.identificador].get('accion')).lower() + 
+                                                                             ' para '+ str(', '.join([ objetivo.lower() 
+                                                                                for objetivo in listH[hist.identificador].get('objetivo')])))}
+                                    for hist in historias]}
 
     #Action code ends here
     return json.dumps(res)
