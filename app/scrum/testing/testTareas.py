@@ -257,12 +257,16 @@ class TestTareas(unittest.TestCase):
         # que es valida.
         nuevoIdTarea = 8
         nuevaDescTarea = 'caso de prueba'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1, nuevaDescTarea )
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea)
+        model.db.session.add(nuevaTarea)
+        model.db.session.commit() 
         
         tempTarea = clsTarea()
         idTarea = 8
         nuevaDescTarea = 'accionX'
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        nuevoPesoTarea = 1
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertTrue( resultado ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.      
 
@@ -277,7 +281,8 @@ class TestTareas(unittest.TestCase):
         tempTarea = clsTarea()
         idTarea = 20
         nuevaDescTarea = 'Esto sigue siendo una prueba'
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        nuevoPesoTarea = 1
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertTrue( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
@@ -290,17 +295,18 @@ class TestTareas(unittest.TestCase):
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
+        nuevoPesoTarea = 1
         for indice in range(1,10,1):
             nuevoIdTarea = indice
             nuevaDescTarea = 'Descripcion ' + str(indice)
-            nuevaTarea = model.Tareas( nuevoIdTarea, 1, nuevaDescTarea ) 
-            model.db.session.add(nuevaTareaa)
+            nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
+            model.db.session.add(nuevaTarea)
             model.db.session.commit()   
             
         tempTarea = clsTarea()
         idTarea = 1
         nuevaDescTarea = 'esto sigue siendo una prueva V2'
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertTrue( resultado ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.  
     
@@ -312,17 +318,18 @@ class TestTareas(unittest.TestCase):
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
         
+        nuevoPesoTarea = 1
         for indice in range(2,10,1):
             nuevoIdTarea = indice
             nuevaDescTarea = 'Descripcion ' + str(indice)
-            nuevaTarea = model.Tareas( nuevoIdTarea , 1 , nuevaDescTarea ) 
+            nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
             model.db.session.add(nuevaTarea)
             model.db.session.commit()   
             
         tempTarea = clsTarea()
         idTarea = 1
         nuevaDescTarea = 'esto sigue siendo una prueva V2'
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos.  
 
@@ -340,14 +347,15 @@ class TestTareas(unittest.TestCase):
         # que es valida.
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1, nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit() 
         
         tempTarea = clsTarea()
         idTarea = 1
         nuevaDescTarea = 'l'
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertTrue(resultado)
         self.vaciarBaseDeDatos() # Se limpia la base de datos.    
     
@@ -362,20 +370,20 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 ,nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea)
         model.db.session.add(nuevaTarea)
         model.db.session.commit() 
         
         tempTarea = clsTarea()
         idTarea = 1
         nuevaDescTarea = 'y'*500
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         model.db.session.query(model.Tareas).delete()  # Se limpia la base de datos.
         self.assertTrue( resultado )
-        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        self.vaciarBaseDeDatos() # Se limpia la base de datos.
 
         
-    
     ### CASOS VALIDOS( Casos Esquinas )
     #  El id de la tarea a modificar existe en la base de datos y su valor es
     #          igual a 1. La nueva descripcion es de longitud igual a 1.
@@ -388,14 +396,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'z'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()
         
         tempTarea = clsTarea()
         idTarea = 1
         nuevaDescTarea = 'z'
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertTrue( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
@@ -410,14 +419,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'x'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()
         
         tempTarea = clsTarea()
         idTarea = 1
         nuevaDescTarea ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertTrue( resultado ) 
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -434,7 +444,8 @@ class TestTareas(unittest.TestCase):
         tempTarea = clsTarea()
         idTarea = '1'
         nuevaDescTarea = 'Axx'
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        nuevoPesoTarea = 1
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )  
         self.vaciarBaseDeDatos() # Se limpia la base de datos.   
         
@@ -449,7 +460,8 @@ class TestTareas(unittest.TestCase):
         tempTarea = clsTarea()
         idTarea = -1
         nuevaDescTarea = 'accion de prueba'
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        nuevoPesoTarea = 1
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
                 
@@ -464,7 +476,8 @@ class TestTareas(unittest.TestCase):
         tempTarea = clsTarea()
         idTarea = 1.0
         nuevaDescTarea = 'accion de prueba'
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        nuevoPesoTarea = 1
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -479,7 +492,8 @@ class TestTareas(unittest.TestCase):
         tempTarea = clsTarea()
         idTarea = None
         nuevaDescTarea = 'accionPrueba'
-        resultado = tempTarea.modifIcar( idTarea, nuevaDescTarea )
+        nuevoPesoTarea = 1
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )   
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
     
@@ -493,6 +507,7 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
+
         nuevaTarea = model.Tareas( nuevoIdTarea, nuevoIdHistoria, nuevaDescTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()
@@ -500,7 +515,8 @@ class TestTareas(unittest.TestCase):
         tempTarea = clsTarea()
         idTarea = 1
         nuevaDescTarea = ''
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        nuevoPesoTarea = 1
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -514,14 +530,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()
            
         tempTarea = clsTarea()
         idTarea = 1
         nuevaDescTarea = 'r'*501
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos.    
 
@@ -535,14 +552,15 @@ class TestTareas(unittest.TestCase):
             
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()
         
         tempTarea = clsTarea()
         idTarea = 1
         nuevaDescTarea = 12345
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos.   
         
@@ -556,16 +574,109 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = 1
         nuevaDescTarea = None
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+
+    # El nuevo peso para la tarea a modificar es negativo. 
+    def testmodify_TareaDescripNone(self):  
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        
+        nuevoIdTarea = 1
+        nuevaDescTarea = 'Esto es una prueba.'
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
+        model.db.session.add(nuevaTarea)
+        model.db.session.commit()   
+          
+        tempTarea = clsTarea()
+        idTarea = 1
+        nuevaDescTarea = 'accionPrueba'
+        nuevoPesoTarea = -1
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
+        self.assertFalse( resultado )
+        self.vaciarBaseDeDatos() # Se limpia la base de datos.
+
+    # El nuevo peso para la tarea a modificar es float. 
+    def testmodify_TareaDescripNone(self):  
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        
+        nuevoIdTarea = 1
+        nuevaDescTarea = 'Esto es una prueba.'
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
+        model.db.session.add(nuevaTarea)
+        model.db.session.commit()   
+          
+        tempTarea = clsTarea()
+        idTarea = 1
+        nuevaDescTarea = 'accionPrueba'
+        nuevoPesoTarea = 1.23
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
+        self.assertFalse( resultado )
+        self.vaciarBaseDeDatos() # Se limpia la base de datos.
+
+    # El nuevo peso para la tarea a modificar es string. 
+    def testmodify_TareaDescripNone(self):  
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        
+        nuevoIdTarea = 1
+        nuevaDescTarea = 'Esto es una prueba.'
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
+        model.db.session.add(nuevaTarea)
+        model.db.session.commit()   
+          
+        tempTarea = clsTarea()
+        idTarea = 1
+        nuevaDescTarea = 'accionPrueba'
+        nuevoPesoTarea = '1'
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
+        self.assertFalse( resultado )
+        self.vaciarBaseDeDatos() # Se limpia la base de datos.
+
+    # El nuevo peso para la tarea a modificar es None. 
+    def testmodify_TareaDescripNone(self):  
+        self.vaciarBaseDeDatos() # Se limpia la base de datos. 
+        
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        
+        nuevoIdTarea = 1
+        nuevaDescTarea = 'Esto es una prueba.'
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
+        model.db.session.add(nuevaTarea)
+        model.db.session.commit()   
+          
+        tempTarea = clsTarea()
+        idTarea = 1
+        nuevaDescTarea = 'accionPrueba'
+        nuevoPesoTarea = None
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
+        self.assertFalse( resultado )
+        self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
     # La nueva descripcion para la tarea a modificar es Entero y id string . 
     def testmodify_TareaIdStringDescripInt(self):  
@@ -577,14 +688,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = 'malo'
         nuevaDescTarea = 1212
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -598,14 +710,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = 'malo'
         nuevaDescTarea = 1212.23
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -619,14 +732,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = 'malo'
         nuevaDescTarea = None
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -640,14 +754,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = 'malo'
         nuevaDescTarea = 'y'*500
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -661,14 +776,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea= clsTarea()
         idTarea = 'malo'
         nuevaDescTarea = 'y'*501
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -682,14 +798,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea= 23.23
         nuevaDescTarea = 23
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -703,14 +820,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = 23.23
         nuevaDescTarea = 23.23
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -724,14 +842,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = 23.23
         nuevaDescTarea = None
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -745,14 +864,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = 23.23
         nuevaDescTarea = 'y'*500
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -766,14 +886,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = 23.23
         nuevaDescTarea = 'y'*501
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -787,14 +908,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = None
         nuevaDescTarea = 23
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -808,14 +930,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = None
         nuevaDescTarea = 23.23
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -829,14 +952,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = None
         nuevaDescTarea = None
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -850,14 +974,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = None
         nuevaDescTarea = 'y'*500
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -871,14 +996,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = None
         nuevaDescTarea = 'y'*501
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -892,14 +1018,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = 2**31 -1
         nuevaDescTarea = 43
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -913,14 +1040,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = 2**31 -1
         nuevaDescTarea = 43.323
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -934,14 +1062,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempAccion = clsTarea()
         idTarea = 2**31 -1
         nuevaDescTarea = None
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -955,14 +1084,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = 2**31 -1
         nuevaDescTarea = 'y'*500
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertTrue( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -976,14 +1106,15 @@ class TestTareas(unittest.TestCase):
         
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea) 
         model.db.session.add(nuevaTarea)
         model.db.session.commit()   
           
         tempTarea = clsTarea()
         idTarea = 2**31 -1
         nuevaDescTarea = 'y'*501
-        resultado = tempTarea.modificar( idTarea, nuevaDescTarea )
+        resultado = tempTarea.modificar(idTarea, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
