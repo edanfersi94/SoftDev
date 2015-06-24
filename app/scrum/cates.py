@@ -18,7 +18,7 @@
 
 from flask import request, session, Blueprint, json
 from app.scrum.funcCategoria import clsCategoria
-from model import db,Categorias
+from model import db,Categorias, Users
 
 cates = Blueprint('cates', __name__)
 
@@ -30,19 +30,24 @@ def ACrearCategoria():
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
-
     params = request.get_json()
     results = [{'label':'/VCategorias', 'msg':['Categoría creada.']}, 
-               {'label':'/VCategorias', 'msg':['Error al intentar crear categoría.']}, ]
+               {'label':'/VCategorias', 'msg':['Error al intentar crear categoría.']},
+               {'label':'/VCategorias', 'msg':['Solo puede crear categorias el Scrum Master.']} ]
     res = results[1]
     
+    usuarioActual = session['usuario']
+    infoUsuarioActual = Users.query.filter(Users.username == usuarioActual).first()
     nombre = params.get('nombre',None)
     peso = params.get('peso',None)   
     
-    if (( nombre != None ) and ( peso != None )): 
-        categoria = clsCategoria()
-        creaccionCorrecta = categoria.insertar(nombre,peso)
-        res = results[0] if creaccionCorrecta[0] else results[1]
+    if (infoUsuarioActual.actor == 'SM' ): 
+        if (( nombre != None ) and ( peso != None )): 
+            categoria = clsCategoria()
+            creaccionCorrecta = categoria.insertar(nombre,peso)
+            res = results[0] if creaccionCorrecta[0] else results[1]
+    else:
+        res = results[2]
 
     if "actor" in res:
         if res['actor'] is None:

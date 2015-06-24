@@ -143,9 +143,7 @@ def VRegistro():
       {'key':'PO','value':'Dueño de producto'},
       {'key':'DV','value':'Miembro del equipo de desarrollo'},
     ]
-    res['fUsuario'] = {'actorScrum' : request.args.get('actorScrum','SM')
-                       
-                       }
+    res['fUsuario'] = {'actorScrum' : request.args.get('actorScrum','SM') }
     return json.dumps(res)
 
 #.-----------------------------------------------------------------------------.--------------------------------------.
