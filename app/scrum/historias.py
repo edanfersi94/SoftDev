@@ -268,7 +268,7 @@ def AModifHistoria():
                                 filter(Enlaces.idValor == identificador).\
                                 first()
     
-            viejoSuper = enlaceBuscado.identificador
+            viejoSuper = enlaceBuscado.idClave
     
             enlace = clsEnlace()
             modificacionCorrecta = enlace.modificar(viejoSuper, idSuper, 
