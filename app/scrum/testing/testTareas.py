@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
     UNIVERSIDAD SIMON BOLIVAR
     Departamento de Computacion y Tecnologia de la Informacion.
@@ -32,7 +34,10 @@ class TestTareas(unittest.TestCase):
 
     def vaciarBaseDeDatos(self):
         model.db.session.query( model.Tareas ).delete()  # Se limpia la base de datos.
-        model.db.session.query( model.Productos ).delete() 
+        model.db.session.query( model.Productos ).delete()
+        model.db.session.query( model.Acciones ).delete()
+        model.db.session.query( model.Historias ).delete()
+        model.db.session.query( model.Categorias ).delete() 
     
     def crearProducto(self, idProducto, nombreProducto, descProducto, escalaProducto):
         nuevoProducto = model.Productos( idProducto, nombreProducto, descProducto, escalaProducto )
@@ -45,9 +50,14 @@ class TestTareas(unittest.TestCase):
         model.db.session.commit()
 
     def crearHistoria(self, idHistoria, codigo, idProducto, tipo, idAccion , idSuper, idEscala):
-        newHistoria = model.Historias( idHistoria, codigo, idProducto, tipo, idAccion , idSuper, idEscala ) 
-        model.db.session.add(newHistoria)
+        nuevaHistoria = model.Historias( idHistoria, codigo, idProducto, tipo, idAccion , idSuper, idEscala ) 
+        model.db.session.add(nuevaHistoria)
         model.db.session.commit()
+
+    def crearCategoria(self, idCategoria, nombreCategoria, pesoCategoria):
+    	nuevaCategoria = model.Categorias( idCategoria, nombreCategoria, pesoCategoria )
+    	model.db.session.add(nuevaCategoria)
+    	model.db.session.commit()
 
     #.-------------------------------------------------------------------.  
     # VERIFICACION DE LA CLASE.
@@ -70,14 +80,16 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)
+        self.crearCategoria(1,'nombre',1)
 
         nuevoIdTarea = 8
         nuevaDescTarea = 'caso de prueba'
-        nuevaTarea = model.Tareas( nuevoIdTarea, 1, nuevaDescTarea )
+        nuevaTarea = model.Tareas( nuevoIdTarea, 1, nuevaDescTarea, 1, 1)
 
         tempTarea = clsTarea()
         nuevaDescTarea = 'tarea 2.0'
-        resultado = tempTarea.insertar( 1, nuevaDescTarea )
+        nuevoPesoTarea = 1
+        resultado = tempTarea.insertar(1, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertTrue(resultado)
         self.vaciarBaseDeDatos() # Se limpia la base de datos.
         
@@ -92,7 +104,7 @@ class TestTareas(unittest.TestCase):
         
         tempTarea = clsTarea()
         nuevaDescTarea = 'tarea 2.0'
-        resultado = tempTarea.insertar( 1, nuevaDescTarea )
+        resultado = tempTarea.insertar(1, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertTrue(resultado)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -104,16 +116,17 @@ class TestTareas(unittest.TestCase):
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
+        nuevoPesoTarea = 1
         for indice in range(5,10,1):
             nuevoIdTarea = indice
             nuevaDescTarea  = 'Esto es una prueba ' + str(indice)
-            nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea ) 
+            nuevaTarea = model.Tareas( nuevoIdTarea, 1 , nuevaDescTarea, 1 , nuevoPesoTarea ) 
             model.db.session.add(nuevaTarea)
             model.db.session.commit()   
             
         tempTarea = clsTarea()
         nuevaDescTarea = 'tarea 2.0'
-        resultado = tempTarea.insertar( 1, nuevaDescTarea )
+        resultado = tempTarea.insertar(1, nuevaDescTarea, 1, nuevoPesoTarea)
         self.assertTrue(resultado)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -130,7 +143,8 @@ class TestTareas(unittest.TestCase):
         
         tempTarea = clsTarea()
         nuevaDescTarea = '1'
-        resultado = tempTarea.insertar(1, nuevaDescTarea)
+        nuevoPesoTarea = 1
+        resultado = tempTarea.insertar(1,nuevaDescTarea,1,nuevoPesoTarea)
         self.assertTrue(resultado)
         
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
@@ -145,7 +159,8 @@ class TestTareas(unittest.TestCase):
         
         tempTarea = clsTarea()
         nuevaDescTarea ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
-        resultado = tempTarea.insertar(1, nuevaDescTarea)
+        nuevoPesoTarea = 1
+        resultado = tempTarea.insertar(1,nuevaDescTarea,1,nuevoPesoTarea)
         self.assertTrue(resultado)
         
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
@@ -161,7 +176,8 @@ class TestTareas(unittest.TestCase):
         
         tempTarea = clsTarea()
         nuevaDescTarea = ''
-        resultado = tempTarea.insertar(1, nuevaDescTarea)
+        nuevoPesoTarea = 1
+        resultado = tempTarea.insertar(1,nuevaDescTarea,1,nuevoPesoTarea)
         self.assertFalse(resultado)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -175,7 +191,8 @@ class TestTareas(unittest.TestCase):
         
         tempTarea = clsTarea()
         nuevaDescTarea = 'dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,'
-        resultado = tempTarea.insertar(1, nuevaDescTarea)
+        nuevoPesoTarea = 1
+        resultado = tempTarea.insertar(1,nuevaDescTarea,1,nuevoPesoTarea)
         self.assertFalse(resultado)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -188,12 +205,13 @@ class TestTareas(unittest.TestCase):
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
         
         tempTarea = clsTarea()
-        newDescripTarea = 501
-        resultado = tempTarea.insertar( 1, nuevaDescTarea)
+        nuevaDescTarea = 501
+        nuevoPesoTarea = 1
+        resultado = tempTarea.insertar(1,nuevaDescTarea,1,nuevoPesoTarea)
         self.assertFalse(resultado)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
-    # Se insertara una tarea cuya descripcion dada es None.
+    # Se insertara una tarea cuya descripcion es None.
     def testinsert_TareaDescripNone(self):
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
@@ -203,7 +221,8 @@ class TestTareas(unittest.TestCase):
         
         tempTarea = clsTarea()
         nuevaDescTarea = None
-        resultado = tempTarea.insertar( 1, nuevaDescTarea)
+        nuevoPesoTarea = 1
+        resultado = tempTarea.insertar(1,nuevaDescTarea,1,nuevoPesoTarea)
         self.assertFalse(resultado)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -217,7 +236,8 @@ class TestTareas(unittest.TestCase):
         
         tempTarea = clsTarea()
         nuevaDescTarea = 0.54
-        resultado = tempTarea.insertar( 1, nuevaDescTarea)
+        nuevoPesoTarea = 1
+        resultado = tempTarea.insertar(1,nuevaDescTarea,1,nuevoPesoTarea)
         self.assertFalse(resultado)
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
 
@@ -967,6 +987,160 @@ class TestTareas(unittest.TestCase):
         self.assertFalse( resultado )
         self.vaciarBaseDeDatos() # Se limpia la base de datos. 
         
+#.-------------------------------------------------------------------.
+    # FUNCION ELIMINAR
+    
+    ### CASOS VALIDOS( Casos Interiores ).
+    # Eliminar el id de una categoria que exista en la base de datos de un elemento. 
+    def testEliminarIdCategoriaExist(self):
+        self.vaciarBaseDeDatos()
+        
+        nuevoIdTarea = 1
+        nuevaDescTarea = 'Esto es una prueba'
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas( nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea ) 
+        model.db.session.add(nuevaTarea)
+        model.db.session.commit()   
+        
+        tempTarea = clsTarea()
+        nuevoIdTarea = 1
+        resultado = tempTarea.eliminar( nuevoIdTarea )
+        self.assertTrue( resultado )
+        self.vaciarBaseDeDatos()
 
+    # Eliminar el id de una categoria con base de datos vacia
+    def testEliminarIdCategoriaNotExistBaseDeDatosVacia(self):
+        self.vaciarBaseDeDatos()
+        
+        tempTarea = clsTarea()
+        nuevoIdTarea = 1000
+        resultado = tempTarea.eliminar( nuevoIdTarea )
+        self.assertFalse( resultado )
+        self.vaciarBaseDeDatos()
 
+        
+    # Eliminar el id de una categoria con base de datos un elemento y busqueda no exitosa   
+    def testEliminarIdCategoriaNotExistOneElementos(self):
+        self.vaciarBaseDeDatos()
+        
+        nuevoIdTarea = 1
+        nuevaDescTarea = 'Esto es una prueba'
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas( nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea )
+        model.db.session.add(nuevaTarea)
+        model.db.session.commit()  
+        
+        tempTarea = clsTarea()
+        nuevoIdTarea = 2
+        resultado = tempTarea.eliminar( nuevoIdTarea )
+        self.assertFalse(resultado)
+        self.vaciarBaseDeDatos()
+        
+    # Eliminar el id de una categoria con base de datos de varios elemento y busqueda no exitosa   
+    def testEliminarIdCategoriaNotExistVariosElementos(self):
+        self.vaciarBaseDeDatos()    
+        
+        for indice in range(1,4,1):
+            nuevoIdTarea = indice
+            nuevaDescTarea = 'Descripcion ' + str(indice)
+            nuevoPesoTarea = 1
+            nuevaTarea = model.Tareas( nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea )  
+            model.db.session.add(nuevaTarea)
+            model.db.session.commit()   
+        
+        tempTarea = clsTarea()
+        nuevoIdTarea = 5
+        resultado = tempTarea.eliminar( nuevoIdTarea )
+        self.assertFalse(resultado)
+        self.vaciarBaseDeDatos()
+          
+    # Eliminar el id de una categoria con base de datos de varios elemento y busqueda exitosa   
+    def testEliminarIdCategoriaExistVariosElementos(self):
+        self.vaciarBaseDeDatos()  
+        
+        for indice in range(1,4,1):
+            nuevoIdTarea = indice
+            nuevaDescTarea = 'Descripcion ' + str(indice)
+            nuevoPesoTarea = 1
+            nuevaTarea = model.Tareas( nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea )
+            model.db.session.add(nuevaTarea)
+            model.db.session.commit()   
+        
+        tempTarea = clsTarea()
+        nuevoIdTarea = 3
+        resultado = tempTarea.eliminar( nuevoIdTarea )
+        self.assertTrue( resultado )
+        self.vaciarBaseDeDatos()
+        
+    ### CASOS INVALIDOS( Casos Malicia )
+    #El id de la categoria a Eliminar es un string.
+    def testEliminarIdCategoriaString(self):
+        self.vaciarBaseDeDatos()
+        
+        nuevoIdTarea = 1
+        nuevaDescTarea = 'Esto es una prueba'
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas( nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea ) 
+        model.db.session.add(nuevaTarea)
+        model.db.session.commit()
 
+        tempTarea = clsTarea()
+        nuevoIdTarea = '1'
+        resultado = tempTarea.eliminar( nuevoIdTarea )
+        self.assertFalse(resultado)
+        
+        self.vaciarBaseDeDatos()
+        
+    # El id de la categoria a Eliminar es de tipo float.
+    def testEliminarIdCategoriaFloat(self):
+        self.vaciarBaseDeDatos()
+        
+        nuevoIdTarea = 1
+        nuevaDescTarea = 'Esto es una prueba'
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas( nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea )
+        model.db.session.add(nuevaTarea)
+        model.db.session.commit()
+        
+        tempTarea = clsTarea()
+        nuevoIdTarea = 1.01
+        resultado = tempTarea.eliminar( nuevoIdTarea )
+        self.assertFalse(resultado)  
+        self.vaciarBaseDeDatos()
+
+    #  El id de la categoria a Eliminar es nulo.
+    def testEliminarIdCategoriaNone(self):
+        self.vaciarBaseDeDatos()
+
+        nuevoIdTarea = 1
+        nuevaDescTarea = 'Esto es una prueba'
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas( nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea ) 
+        model.db.session.add(nuevaTarea)
+        model.db.session.commit()
+
+        tempTarea = clsTarea()
+        nuevoIdTarea = None
+        resultado = tempTarea.eliminar( nuevoIdTarea )
+        self.assertFalse(resultado)  
+        self.vaciarBaseDeDatos()
+
+    #  El id de la categoria a Eliminar es negativo.
+    def testEliminarIdCategoriaNegative(self):
+        self.vaciarBaseDeDatos()
+
+        nuevoIdTarea = 1
+        nuevaDescTarea = 'Esto es una prueba'
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas( nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea )
+        model.db.session.add(nuevaTarea)
+        model.db.session.commit()
+        
+        tempTarea = clsTarea()
+        nuevoIdTarea = -3
+        resultado = tempTarea.eliminar( nuevoIdTarea )
+        self.assertFalse(resultado)  
+        self.vaciarBaseDeDatos()
+
+    #.-------------------------------------------------------------------.
+    #.-------------------------------------------------------------------.
