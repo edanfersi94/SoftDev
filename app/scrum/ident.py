@@ -89,7 +89,7 @@ def ARegistrar():
     results = [{'label':'/VLogin', 'msg':['Felicitaciones, Ya estás registrado en la aplicación']},
                {'label':'/VRegistro', 'msg':['Error al tratar de registrarse']}, ]
     res = results[1]
-
+    
     # Campos correspondiente a la registración del usuario.
     nombreUsuario = params['nombre']
     username = params['usuario']
@@ -143,7 +143,9 @@ def VRegistro():
       {'key':'PO','value':'Dueño de producto'},
       {'key':'DV','value':'Miembro del equipo de desarrollo'},
     ]
-
+    res['fUsuario'] = {'actorScrum' : request.args.get('actorScrum','SM')
+                       
+                       }
     return json.dumps(res)
 
 #.-----------------------------------------------------------------------------.--------------------------------------.
