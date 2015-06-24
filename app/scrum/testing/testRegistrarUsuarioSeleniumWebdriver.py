@@ -11,7 +11,7 @@ class testRegistrarUsuarioSeleniumWebdriver(unittest.TestCase):
     def testRegistrarUsuario(self):
         driver = self.driver
         driver.get("http://0.0.0.0:5000/#/VRegistro")
-        
+   
         nombreCompleto = driver.find_element_by_name("nombre")
         nombreCompleto.send_keys("Joel Rivas")
         
@@ -29,7 +29,6 @@ class testRegistrarUsuarioSeleniumWebdriver(unittest.TestCase):
         correo.submit()
 
         assert "No results found." not in driver.page_source
-
 
     def tearDown(self):
         time.sleep(5)

@@ -1,4 +1,3 @@
-
 import unittest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -44,7 +43,7 @@ class testSeleniumApp(unittest.TestCase):
         
         el = driver.find_element_by_id("fUsuario_actorScrum")
         for option in el.find_elements_by_tag_name('option'):
-            if option.text == 'Due√±o de producto':
+            if option.text == 'Dueño de producto':
                 option.click()
                 break
         
@@ -122,8 +121,7 @@ class testSeleniumApp(unittest.TestCase):
         
         nombreActor1 = driver.find_element_by_name("nombre")
         nombreActor1.send_keys("Actor 1")
-
-        descripcionActor1 = driver.find_element_by_tag_name("Descripci√≥n")
+        descripcionActor1 = driver.find_element_by_tag_name("Descripción")
         descripcionActor1.send_keys("Descripcion Actor 1")
         self.esperar() 
                  
@@ -135,7 +133,6 @@ class testSeleniumApp(unittest.TestCase):
         
         nombreActor2 = driver.find_element_by_name("nombre")
         nombreActor2.send_keys("Actor 2")
-
         descripcionActor2 = driver.find_element_by_id("fActor_descripcion")
         descripcionActor2.send_keys("Descripcion Actor 2")
         self.esperar() 
