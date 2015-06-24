@@ -205,4 +205,4 @@ class clsProducto():
                             db.session.commit()
                             
                         return ( salida )        
-        return( Salida )
+        return( salida )
