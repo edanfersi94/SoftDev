@@ -26,19 +26,6 @@ scrumModule.service('historiasService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
-    this.AModifHistoria = function(fHistoria) {
-        return  $http({
-          url: "historias/AModifHistoria",
-          data: fHistoria,
-          method: 'POST',
-        });
-    //    var labels = ["/VHistorias", "/VHistoria", ];
-    //    var res = labels[0];
-    //    var deferred = $q.defer();
-    //    deferred.resolve(res);
-    //    return deferred.promise;
-    };
-
     this.VCrearHistoria = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
@@ -47,6 +34,19 @@ scrumModule.service('historiasService', ['$q', '$http', function($q, $http) {
           params: args
         });
     //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
+    this.AModifHistoria = function(fHistoria) {
+        return  $http({
+          url: "historias/AModifHistoria",
+          data: fHistoria,
+          method: 'POST',
+        });
+    //    var labels = ["/VHistorias", "/VHistoria", ];
+    //    var res = labels[0];
     //    var deferred = $q.defer();
     //    deferred.resolve(res);
     //    return deferred.promise;
@@ -95,6 +95,19 @@ scrumModule.service('historiasService', ['$q', '$http', function($q, $http) {
         if(typeof args == 'undefined') args={};
         return $http({
           url: 'historias/VPrioridades',
+          method: 'GET',
+          params: args
+        });
+    //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
+    this.VDesempeno = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'historias/VDesempeno',
           method: 'GET',
           params: args
         });
