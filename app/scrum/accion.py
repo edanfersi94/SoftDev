@@ -50,6 +50,7 @@ def ACrearAccion():
             if (creacionCorrecta):
                 res = results[0]
                 
+                
     # Se actualiza el URL de la pág a donde se va a redirigir.
     res['label'] = res['label'] + '/' + str(idProducto)
     res['idPila'] = idProducto

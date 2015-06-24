@@ -118,6 +118,11 @@ def AModifActor():
     # Se actualiza el URL de la pág a donde se va a redirigir.
     if (res == results[1]):
         res['label'] = res['label'] + '/' + str(identificador)
+    
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+
     res['idPila'] = idProducto    
 
     if "actor" in res:

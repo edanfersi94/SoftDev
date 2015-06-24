@@ -187,7 +187,37 @@ class clsHistoria():
             return ( None )
   
     #.-------------------------------------------------------------------------.
+    
+    def eliminar(self, identificador):
+        """
+            @brief Función que elimina la historia cuyo id sea "identificador".
+            @param identificador: id de la historia a eliminar.
+            
+            @return True si la historia deseada fue eliminada correctamente. En
+                    caso contrario retorna False. 
+        """
 
+        # Booleano que indica si el parámetro es del tipo correspondiente.
+        identificadorInt = type(identificador) == int
+
+        if ( identificadorInt ):
+            # Booleano que indica si el parámetro tiene el tamaño válido.
+            identificadorPositivo = identificador > 0
+
+            if ( identificadorPositivo ):
+        
+                    idBuscado = db.session.query(Historias).\
+                                    filter( Historias.identificador == identificador).\
+                                    first()
+
+                    if ( idBuscado != None ):
+                        db.session.delete(idBuscado)
+                        db.session.commit()
+                        return( True )
+        return( False )
+
+    #-------------------------------------------------------------------------------
+   
     def cambiarPrioridad(self, identificador, prioridad):
         """
             @brief Funcion que modifica la escala de una historia cuyo id sea 

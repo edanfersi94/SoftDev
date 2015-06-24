@@ -5,10 +5,8 @@
     Departamento de Computación y Tecnología de la Información.
     CI-3715 - Ingeniería de Software I (CI-3715)
     Abril - Julio 2015
-
     AUTORES:
         Equipo SoftDev
-
     DESCRIPCION: 
         Módulo que contiene los métodos que permitirán insertar, modificar y
         eliminar acciones.
@@ -19,6 +17,7 @@
 from app.scrum.user import clsUser
 from flask import request, session, Blueprint, json
 from app.scrum.controlDeAcceso import clsControlDeAcceso
+from model import db, Users
 
 ident = Blueprint('ident', __name__)
 
@@ -29,8 +28,8 @@ def AIdentificar():
 
     params = request.get_json()
     results = [{'label':'/VProductos', 'msg':['Bienvenido dueño de producto'], "actor":"duenoProducto"}, 
-               {'label':'/VMaestroScrum', 'msg':['Bienvenido Maestro Scrum'],  "actor":"maestroScrum"}, 
-               {'label':'/VDesarrollador','msg':['Bienvenido Desarrollador'], "actor":"desarrollador"}, 
+               {'label':'/VProductos', 'msg':['Bienvenido Maestro Scrum'],  "actor":"maestroScrum"}, 
+               {'label':'/VProductos','msg':['Bienvenido Desarrollador'], "actor":"desarrollador"}, 
                {'label':'/VLogin', 'msg':['Datos de identificación incorrectos']}, ]
     # Resultado de la autenticación del usuario.
     lastResult  = len(results) - 1
@@ -52,8 +51,26 @@ def AIdentificar():
             resultadoVerificacion = controlDeAcceso.verificarPassword(claveEncriptada, 
                                                                       claveSolicitada)
             if ( resultadoVerificacion ):
-                session['usuario'] = usuarioSolicitado
-                res = results[0]
+                
+                usuarioBuscado = db.session.query(Users).\
+                                filter(Users.username == usuarioSolicitado).\
+                                first()
+                                
+                actorBuscado = usuarioBuscado.actor
+                
+                if (actorBuscado == 'PO'):
+                    session['usuario'] = usuarioSolicitado
+                    res = results[0]
+                
+                if (actorBuscado == 'SM'):
+                    session['usuario'] = usuarioSolicitado
+                    res = results[1]
+                    
+                if (actorBuscado == 'DV'):
+                    session['usuario'] = usuarioSolicitado
+                    res = results[2]
+                    
+              
 
     if "actor" in res:
         if res['actor'] is None:
@@ -72,14 +89,15 @@ def ARegistrar():
     results = [{'label':'/VLogin', 'msg':['Felicitaciones, Ya estás registrado en la aplicación']},
                {'label':'/VRegistro', 'msg':['Error al tratar de registrarse']}, ]
     res = results[1]
-
+    
     # Campos correspondiente a la registración del usuario.
     nombreUsuario = params['nombre']
     username = params['usuario']
     clave = params['clave']
     claveRepetida = params['clave2']
     correo = params['correo']
-
+    actor = params['actorScrum']
+    
     usuario = clsUser()
     verificarUsuario = usuario.buscarUsername(nombreUsuario)
     verificarCorreo  = usuario.buscarCorreo(correo)
@@ -90,8 +108,7 @@ def ARegistrar():
                                                             claveRepetida)
 
     if ( verificarUsuario == None and verificarCorreo == None and resultadoVerificacion):
-        resultadoCreacion = usuario.insertar(nombreUsuario, username, 
-                                                    clave, correo)
+        resultadoCreacion = usuario.insertar(nombreUsuario, username,clave,correo,actor)
         if ( resultadoCreacion ):
             res = results[0]
 
@@ -121,6 +138,14 @@ def VRegistro():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
+    res['fUsuario_opcionesActorScrum'] = [
+      {'key':'SM','value':'Maestro Scrum'},
+      {'key':'PO','value':'Dueño de producto'},
+      {'key':'DV','value':'Miembro del equipo de desarrollo'},
+    ]
+    res['fUsuario'] = {'actorScrum' : request.args.get('actorScrum','SM')
+                       
+                       }
     return json.dumps(res)
 
-#.-----------------------------------------------------------------------------.
+#.-----------------------------------------------------------------------------.--------------------------------------.

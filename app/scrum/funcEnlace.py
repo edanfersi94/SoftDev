@@ -89,6 +89,7 @@ class clsEnlace():
                                             idHistoria)
                     db.session.add(enlaceNuevo)
                     db.session.commit()
+                    print('insertar',(idEpica,idHistoria))
                     return( True )
         return( False )
 
@@ -108,7 +109,7 @@ class clsEnlace():
         idViejaEpicaInt = type(idViejaEpica) == int
         idNuevaEpicaInt = type(idNuevaEpica) == int
         idHistoriaInt   = type(idHistoria)   == int
-
+        print(idViejaEpica, idNuevaEpica, idHistoria)
         if ( idViejaEpicaInt and idNuevaEpicaInt and idHistoriaInt ):
 
             # Se procede a generar la lista de enlaces.
@@ -119,14 +120,21 @@ class clsEnlace():
 
                  if (( enlace.idClave != idViejaEpica ) or 
                     ( enlace.idClave == idViejaEpica and enlace.idValor != idHistoria)):
-
+                     
                      if (enlace.idClave in listaEnlace):
                          listaEnlace[enlace.idClave] += [enlace.idValor]
                      else:
                          listaEnlace[enlace.idClave] = [enlace.idValor]
+                     
+                     if (enlace.idClave == idNuevaEpica and 
+                         not(idHistoria in listaEnlace[enlace.idClave])):
+                         listaEnlace[enlace.idClave] += [idHistoria]
 
                      if not(enlace.idValor in listaEnlace):
                          listaEnlace[enlace.idValor] =[]
+                         if (idNuevaEpica == enlace.idValor and 
+                             not(idHistoria in listaEnlace[enlace.idValor])):
+                             listaEnlace[enlace.idValor] += [idHistoria]
 
                      if (enlace.idClave == idNuevaEpica):
                          if not(idHistoria in listaEnlace[enlace.idClave]):
@@ -135,10 +143,9 @@ class clsEnlace():
                          if not( idHistoria in listaEnlace ):
                              listaEnlace[idHistoria] = []
 
-
                  elif (enlace.idClave == idViejaEpica and enlace.idValor == idHistoria):
                      listaEnlace[idHistoria] = []
-        
+                 print(listaEnlace)
              existeCiclo = self.existenciaCiclo(listaEnlace)
                  
              if not(existeCiclo):
@@ -146,6 +153,7 @@ class clsEnlace():
                      filter(Enlaces.idClave == idViejaEpica, Enlaces.idValor == idHistoria).\
                      update({'idClave':idNuevaEpica})
                  db.session.commit()
+                 print('Modificar:',(idNuevaEpica,idHistoria))
                  return( True )
 
         return( False )      

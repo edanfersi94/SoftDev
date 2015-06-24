@@ -9,5 +9,10 @@ def VDesarrollador():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
+
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+    res['usuario'] = session['usuario']
         
     return json.dumps(res)

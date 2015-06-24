@@ -21,7 +21,8 @@
 from flask import request, session, Blueprint, json
 from app.scrum.funcActor import clsActor
 from app.scrum.funcProducto import clsProducto
-from model import db, Productos, Actores, Acciones, Objetivos
+from app.scrum.funcCategoria import clsCategoria
+from model import db, Productos, Actores, Acciones, Objetivos, Categorias
 
 prod = Blueprint('prod', __name__)
 
@@ -45,7 +46,7 @@ def ACrearProducto():
 
         # creacionCorrecta es de la forma (Booleano, idProducto).
         creacionCorrecta = producto.insertar(nombre, descripcion, escala)
-
+        print("creacionCorrecta", creacionCorrecta[0])
         if (creacionCorrecta[0]):
             actor = clsActor()   
             idProducto= creacionCorrecta[1]
@@ -58,10 +59,10 @@ def ACrearProducto():
             creacionD = actor.insertar(idProducto, 'Developer',
                                        'Es el desarrollador del producto')    
 
-        if ( creacionPO and creacionSM and creacionD ):
-            res = results[0]  
-
-    res['idPila'] = idProducto
+            if ( creacionPO and creacionSM and creacionD ):
+                res = results[0]
+                res['idPila'] = idProducto
+                
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
@@ -77,7 +78,7 @@ def AModifProducto():
     params = request.get_json()
     results = [{'label':'/VProductos', 'msg':['Producto actualizado']},
                {'label':'/VProductos', 'msg':['Error al modificar el producto']},]
-    # Resultado de la creación del producto.
+    # Resultado de la modificación del producto.
     res = results[1]
 
     # Se obtiene el identificador del producto actual.
@@ -136,6 +137,11 @@ def VCrearProducto():
 def VProducto():
     res = {}
 
+    if 'usuario' not in session:
+      res['logout'] = '/'
+      return json.dumps(res)
+    res['usuario'] = session['usuario']
+
     # Identificar del producto actual.
     idProducto = int(request.args.get('idPila', 1))
 
@@ -150,11 +156,6 @@ def VProducto():
     # Carga de la información del producto actual.
     producto = db.session.query(Productos).\
                     filter(Productos.identificador == idProducto).first()
-
-    if 'usuario' not in session:
-      res['logout'] = '/'
-      return json.dumps(res)
-    res['usuario'] = session['usuario']
 
     # Se envía la información del producto.
     res['fPila'] = {'idPila': idProducto, 
@@ -199,16 +200,35 @@ def VProductos():
     if "actor" in session:
         res['actor']=session['actor']
 
-    # Se muestra la lista de productos.
-    producto = Productos.query.all()
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
-    res['usuario'] = session['usuario']
-    res['data0'] = [
-        {'idPila':product.identificador, 'nombre':product.nombre}
-        for product in producto ]
+  
+    categorias = db.session.query(Categorias).all()
+    
+    if (categorias == []):
+        categoria = clsCategoria()
+        categoria.insertar('Implementar una acción',2)
+        categoria.insertar('Implementar una vista',2)
+        categoria.insertar('Implementar una regla de negocio o un método de una clase',2)
+        categoria.insertar('Migrar la base de datos',2)
+        categoria.insertar('Crear un diagrama UML',1)
+        categoria.insertar('Crear datos iniciales',1)
+        categoria.insertar('Crear una prueba de aceptación',1)
+        categoria.insertar('Actualizar un elemento implementado en otra tarea',2)
+        categoria.insertar('Actualizar en elemento implementado en otra tarea',1)
+        categoria.insertar('Escribir el manual en línea de unapágina',1)
 
+    # Se muestra la lista de productos.
+    producto = db.session.query(Productos).all()
+    if (producto != []):
+        res['usuario'] = session['usuario']
+        res['data0'] = [
+                        {'idPila':product.identificador, 'nombre':product.nombre}
+                        for product in producto ]
+    else:
+        pass
+        #res['data0'] = [{'nombre':'No hay historias creadas.'}]
     return json.dumps(res)
 
 #.-----------------------------------------------------------------------------.

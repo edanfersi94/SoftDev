@@ -23,7 +23,7 @@ from app.scrum.funcHistObjetivo import clsHistoriaObj
 from app.scrum.funcHistActores  import clsHistoriaActores
 from app.scrum.funcEnlace import clsEnlace
 from model import db,func,Historias,Objetivos,Acciones,Actores
-from model import Productos, ActoresHistorias, ObjHistorias, Enlaces, Tareas
+from model import Productos, ActoresHistorias, ObjHistorias, Enlaces, Tareas, Pesos,func
 from app.scrum.funcTarea import clsTarea
 
 historias = Blueprint('historias', __name__)
@@ -87,10 +87,12 @@ def ACrearHistoria():
     actor = params.get('actores', None)
     idSuper = params.get('super', None)
     prioridad = params.get('prioridad', None)
+    
+    hist = db.session.query(Historias).filter(Historias.codigo == codigo).first()
 
     if (( tipo != None ) and ( codigo != None ) and ( accion != None ) and 
            ( objetivo != None ) and ( actor != None) and (idSuper != None) and 
-           (prioridad != None)):
+           (prioridad != None) and (hist==None)):
         accionBuscada = db.session.query(Historias).\
                             filter(Historias.idAccion == accion).first()
 
@@ -119,6 +121,17 @@ def ACrearHistoria():
 
                     res = results[0]
                     res['idHistoria'] = creacionCorrecta[1]
+                    
+                    ultimoId = db.session.query(func.max(Pesos.identificador)).\
+                                        first()
+                    identificadorP  = ultimoId[0]
+                    # Si no hay acciones en la base de datos, entonces se inicializa 
+                    # el contador.
+                    identificadorP = 1 if identificadorP == None else identificadorP + 1
+            
+                    pesoNuevo = Pesos(identificadorP,creacionCorrecta[1],0)
+                    db.session.add(pesoNuevo)
+                    db.session.commit()
                      
     
     res['idPila'] = idProducto 
@@ -157,8 +170,12 @@ def AElimHistoria():
         if not(enlace.idValor in listaEnlace):
             listaEnlace[enlace.idValor] =[]
 
-    print(listaEnlace)
     if (listaEnlace[identificador] == [] ):
+        
+        pesoBuscado = db.session.query(Pesos).\
+                        filter(Pesos.idHistoria == identificador).first()
+        db.session.delete(pesoBuscado)
+        db.session.commit()
         
         historiaBuscada = db.session.query(Historias).\
                            filter(Historias.identificador == identificador).\
@@ -187,6 +204,8 @@ def AElimHistoria():
         if (enlaceBuscado != None):
             db.session.delete(enlaceBuscado)
             db.session.commit()
+        
+        
         
         # BORRAR LA HISTORIA.         
         eliminarHistoria = historia.eliminar(identificador)
@@ -233,10 +252,12 @@ def AModifHistoria():
     actor = params.get('actores', None)
     idSuper = params.get('super', None)
     prioridad = params.get('prioridad', None)
+    
+    idrepetido = idSuper == identificador
 
     if ((tipo != None) and (codigo != None) and (accion != None) and 
         (objetivo != None) and (actor != None) and (idSuper != None)
-        and (prioridad != None)):
+        and (prioridad != None) and (idrepetido == False)):
 
         if (len(codigo) <= 10):
 
@@ -249,7 +270,7 @@ def AModifHistoria():
                                 filter(Enlaces.idValor == identificador).\
                                 first()
     
-            viejoSuper = enlaceBuscado.identificador
+            viejoSuper = enlaceBuscado.idClave
     
             enlace = clsEnlace()
             modificacionCorrecta = enlace.modificar(viejoSuper, idSuper, 
@@ -286,11 +307,11 @@ def AModifHistoria():
                                 # Se agregan los objetivos seleccionados en la base 
                                 # de datos.
                                 for obj in objetivo:
-                                    histObjetivo.insertar(creacionCorrecta[1], obj)
+                                    histObjetivo.insertar(identificador, obj)
                                 # Se agregan los actores seleccionados en la base de 
                                 # datos.
                                 for act in actor:
-                                    histActores.insertar(creacionCorrecta[1], act)
+                                    histActores.insertar(identificador, act)
                                 res = results[0]
                                 res['label'] = res['label'] + '/' + str(idProducto)
     
@@ -419,8 +440,25 @@ def VHistoria():
     historiaActual = db.session.query(Historias).\
                         filter(Historias.identificador == identificador).\
                         first()
-    print(historiaActual)
-
+    
+    pesoBuscado = db.session.query(Pesos).\
+                  filter(Pesos.idHistoria == identificador).first()
+                  
+    if (pesoBuscado!= None):
+        tareaBuscada = db.session.query(Tareas).\
+                        filter(Tareas.idHistoria == identificador)
+                        
+        if (tareaBuscada!=None):
+            suma = 0
+            for tarea in tareaBuscada:
+                suma = tarea.peso + suma
+            
+            db.session.query(Pesos).\
+                filter(Pesos.idHistoria == identificador).\
+                update({'peso':suma})
+            db.session.commit()
+            
+        
 
     # Se obtiene la información de la historia actual.
     historias = db.session.query(Historias).\
@@ -553,18 +591,28 @@ def VHistorias():
                             first()      
     historias = db.session.query(Historias).\
                     filter(Historias.idProducto == idProducto).\
-                    order_by(Historias.idEscala).all() 
+                    order_by(Historias.idEscala).all()
+                    
+    pesos = db.session.query(Pesos).all()
+    
+    pesosHistoria = {}
+    
+    for peso in pesos:
+        pesosHistoria[peso.idHistoria] = peso.peso
+    
+     
     if (productoTipoEscala[0] == 1):
         escala = {1:'Alta', 2:'Media',3:'Baja'}
         res['data0'] = [
             {'idHistoria':historia.identificador, 'enunciado':historia.codigo, 
-             'prioridad':escala[historia.idEscala]} 
+             'prioridad':escala[historia.idEscala],'peso':pesosHistoria[historia.identificador]} 
             for historia in historias]
     else:
         res['data0'] = [
             {'idHistoria':historia.identificador, 'enunciado':historia.codigo, 
-             'prioridad':historia.idEscala} 
+             'prioridad':historia.idEscala, 'peso':pesosHistoria[historia.identificador]} 
             for historia in historias]
+    
 
     res['idPila'] = idProducto
   
@@ -620,8 +668,7 @@ def VPrioridades():
 
     listHistorias = {}
     dicH = {}
-    listH = []
-    listH.append(None)
+    listH ={}
     
     for j in historias:
         idActoresHistoria = []
@@ -639,28 +686,30 @@ def VPrioridades():
 
 
             idActoresHistoria.append(i.idActores)
+        print("idActoresHistoria",idActoresHistoria)
 
         for i in idActoresHistoria:
             actores = db.session.query(Actores).\
                             filter(Actores.identificador == i).\
-                            all()
+                            first()
 
-            nombreActoresHistoria.append(actores[0].nombre)
-            print(nombreActoresHistoria)
-
-
+            nombreActoresHistoria.append(actores.nombre)
+        print("nombreActoresHistoria",nombreActoresHistoria)
+            
         objetivosHistoria = db.session.query(ObjHistorias).\
                                 filter(ObjHistorias.idHistoria == j.identificador).\
                                 all()
         for i in objetivosHistoria:
             idObjetivosHistoria.append(i.idObjetivo)
+        print("idObjetivosHistoria",idObjetivosHistoria)
 
         for i in idObjetivosHistoria:
             objetivos = db.session.query(Objetivos).\
                             filter(Objetivos.identificador == i).\
-                            all()
+                            first()
 
-            nombreObjetivosHistoria.append(objetivos[0].descripcion)
+            nombreObjetivosHistoria.append(objetivos.descripcion)
+        print("nombreObjetivosHistoria",nombreObjetivosHistoria)
 
         accionesHistoria = db.session.query(Acciones).\
                                 filter(Acciones.identificador == j.idAccion).\
@@ -671,14 +720,36 @@ def VPrioridades():
                  'actor': nombreActoresHistoria,
                  'objetivo':nombreObjetivosHistoria,
                  'accion': accionesHistoria[0].descripcion}
-        listH.append(dicH)
+        listH[j.identificador]=dicH
 
-
+    print("list",listH)
+    print("historias",historias)
     res['idPila'] = idProducto
     res['fPrioridades'] = {'idPila':idProducto,
-      'lista':[
-        {'idHistoria':hist.identificador,'prioridad':hist.idEscala, 'enunciado':'En tanto que '+str(listH[hist.identificador].get('actor')) + ' ' + 'pueda'+ ' '+ str(listH[hist.identificador].get('accion')) + ' para '+ str(listH[hist.identificador].get('objetivo')) }
-          for hist in historias]}
+                           'lista':[
+                                    {'idHistoria':hist.identificador,
+                                     'prioridad':hist.idEscala, 'enunciado':('En tanto que el ' + str(', '.join([ actor 
+                                                                                for actor in listH[hist.identificador].get('actor')])) +
+                                                                             ' ' + ('pueda' if len(listH[hist.identificador].get('actor')) == 1 else 'puedan')+ 
+                                                                             ' '+ str(listH[hist.identificador].get('accion')).lower() + 
+                                                                             ' para '+ str(', '.join([ objetivo.lower() 
+                                                                                for objetivo in listH[hist.identificador].get('objetivo')])))}
+                                    for hist in historias]}
+
+    #Action code ends here
+    return json.dumps(res)
+
+
+@historias.route('/historias/VDesempeno')
+def VDesempeno():
+    #GET parameter
+    idHistoria = request.args['idHistoria']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+
+    res['idHistoria'] = int(idHistoria) 
 
     #Action code ends here
     return json.dumps(res)

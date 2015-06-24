@@ -11,6 +11,9 @@ scrumModule.config(function ($routeProvider) {
             }).when('/VPrioridades/:idPila', {
                 controller: 'VPrioridadesController',
                 templateUrl: 'app/historias/VPrioridades.html'
+            }).when('/VDesempeno/:idHistoria', {
+                controller: 'VDesempenoController',
+                templateUrl: 'app/historias/VDesempeno.html'
             });
 });
 
@@ -160,6 +163,9 @@ scrumModule.controller('VHistoriaController',
           $location.path(label);
           $route.reload();
         });};
+      $scope.VDesempeno10 = function(idHistoria) {
+        $location.path('/VDesempeno/'+idHistoria);
+      };
 
       $scope.fHistoriaSubmitted = false;
       $scope.AModifHistoria0 = function(isValid) {
@@ -216,6 +222,24 @@ scrumModule.controller('VPrioridadesController',
               $route.reload();
           });
         }
+      };
+
+    }]);
+scrumModule.controller('VDesempenoController', 
+   ['$scope', '$location', '$route', 'flash', '$routeParams', 'accionService', 'actorService', 'historiasService', 'identService', 'objetivoService', 'prodService', 'tareasService',
+    function ($scope, $location, $route, flash, $routeParams, accionService, actorService, historiasService, identService, objetivoService, prodService, tareasService) {
+      $scope.msg = '';
+      historiasService.VDesempeno({"idHistoria":$routeParams.idHistoria}).then(function (object) {
+        $scope.res = object.data;
+        for (var key in object.data) {
+            $scope[key] = object.data[key];
+        }
+        if ($scope.logout) {
+            $location.path('/');
+        }
+      });
+      $scope.VHistoria0 = function(idHistoria) {
+        $location.path('/VHistoria/'+idHistoria);
       };
 
     }]);

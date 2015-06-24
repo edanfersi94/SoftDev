@@ -45,6 +45,17 @@ scrumModule.controller('VCrearTareaController',
         }
       };
 
+$scope.$watch('fTarea.categoria', function(newV,oldV) {
+  var tabla = $scope.fTarea_opcionesCategoria;
+  if (tabla) {
+    for (var i=0; i<tabla.length;i++) {
+      if(tabla[i].key==newV) {
+        $scope.fTarea.peso = tabla[i].peso;
+        break;
+      }
+    }
+  }
+});
     }]);
 scrumModule.controller('VTareaController', 
    ['$scope', '$location', '$route', 'flash', '$routeParams', 'historiasService', 'identService', 'tareasService',
@@ -92,4 +103,15 @@ scrumModule.controller('VTareaController',
         }
       };
 
+$scope.$watch('fTarea.categoria', function(newV,oldV) {
+  var tabla = $scope.fTarea_opcionesCategoria;
+  if (tabla) {
+    for (var i=0; i<tabla.length;i++) {
+      if(tabla[i].key==newV) {
+        $scope.fTarea.peso = tabla[i].peso;
+        break;
+      }
+    }
+  }
+});
     }]);

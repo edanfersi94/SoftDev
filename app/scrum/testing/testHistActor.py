@@ -79,7 +79,7 @@ class TestHistActor(unittest.TestCase):
         #Datos a ingresar a la tabla de historia
         NuevoIdHistActor = 1
         NewIdHistoria  = 1
-        NewtipoHistoria_Usuario = "Opcional"
+        NewtipoHistoria_Usuario = 1
         NewCodigoHistoria_Usuario = "codigo1"
         NewId_Pila_Historia_Usuario = 1
         NewId_Acciones_Historia_Usuario = 1

@@ -19,7 +19,7 @@
 #.-----------------------------------------------------------------------------.
 from flask import request, session, Blueprint, json
 from app.scrum.funcTarea import clsTarea
-from model import db,Tareas, Historias
+from model import db,Tareas, Historias, Categorias
 
 tareas = Blueprint('tareas', __name__)
 
@@ -34,12 +34,14 @@ def ACrearTarea():
 
     idHistoria = int(session['idHistoria'])
     descripcion = params.get('descripcion', None)
+    idCategoria = params.get('categoria',None)
+    peso = params.get('peso',None)
 
-    if not(( descripcion == None )):
+    if (( descripcion != None ) and ( idCategoria != None ) and ( peso != None )):
         tarea = clsTarea()
 
-        creaccionCorrecta = tarea.insertar(idHistoria,descripcion)
-
+        creaccionCorrecta = tarea.insertar(idHistoria,descripcion,idCategoria,peso)
+        print("creacionCorrecta",creaccionCorrecta)
         if (creaccionCorrecta[0]):
             res = results[0]
             res['label'] = res['label'] + '/' + repr(idHistoria)
@@ -48,6 +50,7 @@ def ACrearTarea():
             res['label'] = res['label'] + '/' + repr(idHistoria)
 
     res['idHistoria'] = idHistoria 
+    res['idTarea']= creaccionCorrecta[1]
      
     if "actor" in res:
         if res['actor'] is None:
@@ -102,14 +105,15 @@ def AModifTarea():
 
     idHistoria = int(session['idHistoria'])
     descripcion = params.get('descripcion', None)
+    idCategoria = params.get('categoria',None)
+    peso = params.get('peso',None)
 
     identificador = params.get('idTarea',None)
-    print("modificar",identificador)
 
-    if not(( descripcion == None )):
+    if not(( descripcion == None ) and ( idCategoria == None ) and ( peso == None )):
 
         tarea = clsTarea()
-        modificacionCorrecta = tarea.modificar(identificador,descripcion)
+        modificacionCorrecta = tarea.modificar(identificador,descripcion,idCategoria,peso)
 
         if(modificacionCorrecta):
             res = results[0]
@@ -146,8 +150,18 @@ def VCrearTarea():
       res['logout'] = '/'
       return json.dumps(res)
     res['usuario'] = session['usuario']
+    res['codHistoria'] = codigoBuscado.codigo
     session['idHistoria'] = idHistoria
-
+    
+    categoriasBuscadas = db.session.query(Categorias).all()
+    primeraCategoria   = db.session.query(Categorias).first()
+    res['fTarea_opcionesCategoria'] = [
+      {'key':cat.identificador, 'value':cat.nombre, 'peso':cat.peso}
+       for cat in categoriasBuscadas]
+    res['fTarea'] = {'idHistoria':idHistoria, 'idTarea': request.args.get('idTarea',1),
+                     'descripcion':request.args.get('descripcion',None),
+                     'categoria':request.args.get('categoria', primeraCategoria.identificador), 
+                     'peso':request.args.get('peso',primeraCategoria.peso)}  
     res['idHistoria'] = idHistoria 
     #Action code ends here
     return json.dumps(res)
@@ -169,13 +183,33 @@ def VTarea():
     if "actor" in session:
         res['actor']=session['actor']
     
-    res['fTarea'] = {'idTarea': identificador,'descripcion': descripcionBuscada.descripcion}
+    res['fTarea'] = {'idTarea': identificador,
+                     'descripcion': descripcionBuscada.descripcion}
 
     if 'usuario' not in session:
       res['logout'] = '/'
       return json.dumps(res)
     res['usuario'] = session['usuario']
     res['codHistoria'] = codigoBuscado.codigo
+    
+    categoriasBuscadas = db.session.query(Categorias).all()
+    tareaBuscada = db.session.query(Tareas).\
+                        filter(Tareas.identificador == identificador).\
+                        first()   
+    idCategoria = tareaBuscada.idCategoria
+    categorias = db.session.query(Categorias).\
+                filter(Categorias.identificador == idCategoria).\
+                first()
+                        
+    print("peso",tareaBuscada.peso)
+    
+    res['fTarea'] = {'idHistoria':idHistoria, 'idTarea':identificador,
+                     'descripcion':tareaBuscada.descripcion,
+                    'categoria':idCategoria, 'peso':tareaBuscada.peso}  
+  
+    res['fTarea_opcionesCategoria'] = [
+            {'key':cat.identificador, 'value':cat.nombre, 'peso':tareaBuscada.peso}
+            for cat in categoriasBuscadas]
     
     session['idTarea'] = identificador
     res['idTarea'] = identificador
