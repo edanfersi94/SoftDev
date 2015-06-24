@@ -82,6 +82,7 @@ class TestTareas(unittest.TestCase):
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)
         self.crearCategoria(1,'nombre',1)
 
+
         nuevoIdTarea = 8
         nuevaDescTarea = 'caso de prueba'
         nuevaTarea = model.Tareas( nuevoIdTarea, 1, nuevaDescTarea, 1, 1)
@@ -101,7 +102,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         tempTarea = clsTarea()
         nuevaDescTarea = 'tarea 2.0'
         resultado = tempTarea.insertar(1, nuevaDescTarea, 1, nuevoPesoTarea)
@@ -115,7 +117,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoPesoTarea = 1
         for indice in range(5,10,1):
             nuevoIdTarea = indice
@@ -140,7 +143,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         tempTarea = clsTarea()
         nuevaDescTarea = '1'
         nuevoPesoTarea = 1
@@ -156,7 +160,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         tempTarea = clsTarea()
         nuevaDescTarea ='Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibu'
         nuevoPesoTarea = 1
@@ -173,7 +178,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         tempTarea = clsTarea()
         nuevaDescTarea = ''
         nuevoPesoTarea = 1
@@ -188,7 +194,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         tempTarea = clsTarea()
         nuevaDescTarea = 'dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,'
         nuevoPesoTarea = 1
@@ -203,7 +210,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         tempTarea = clsTarea()
         nuevaDescTarea = 501
         nuevoPesoTarea = 1
@@ -218,7 +226,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         tempTarea = clsTarea()
         nuevaDescTarea = None
         nuevoPesoTarea = 1
@@ -233,7 +242,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         tempTarea = clsTarea()
         nuevaDescTarea = 0.54
         nuevoPesoTarea = 1
@@ -251,7 +261,8 @@ class TestTareas(unittest.TestCase):
         
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
-        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)
+        self.crearCategoria(1, 'nombre', 1)
 
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
@@ -277,7 +288,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         tempTarea = clsTarea()
         idTarea = 20
         nuevaDescTarea = 'Esto sigue siendo una prueba'
@@ -294,7 +306,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoPesoTarea = 1
         for indice in range(1,10,1):
             nuevoIdTarea = indice
@@ -317,7 +330,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoPesoTarea = 1
         for indice in range(2,10,1):
             nuevoIdTarea = indice
@@ -342,7 +356,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         # Se inserta un elemento en la base. Dicha insercion se asegura
         # que es valida.
         nuevoIdTarea = 1
@@ -367,7 +382,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -393,7 +409,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'z'
         nuevoPesoTarea = 1
@@ -416,7 +433,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'x'
         nuevoPesoTarea = 1
@@ -440,7 +458,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-            
+        self.crearCategoria(1, 'nombre', 1)
+
         tempTarea = clsTarea()
         idTarea = '1'
         nuevaDescTarea = 'Axx'
@@ -456,7 +475,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-           
+        self.crearCategoria(1, 'nombre', 1)
+
         tempTarea = clsTarea()
         idTarea = -1
         nuevaDescTarea = 'accion de prueba'
@@ -471,8 +491,9 @@ class TestTareas(unittest.TestCase):
         
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
-        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-          
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)
+        self.crearCategoria(1, 'nombre', 1)
+
         tempTarea = clsTarea()
         idTarea = 1.0
         nuevaDescTarea = 'accion de prueba'
@@ -487,8 +508,9 @@ class TestTareas(unittest.TestCase):
         
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
-        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-             
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)
+        self.crearCategoria(1, 'nombre', 1)
+
         tempTarea = clsTarea()
         idTarea = None
         nuevaDescTarea = 'accionPrueba'
@@ -504,11 +526,12 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)    
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
-
-        nuevaTarea = model.Tareas( nuevoIdTarea, nuevoIdHistoria, nuevaDescTarea) 
+        nuevoPesoTarea = 1
+        nuevaTarea = model.Tareas(nuevoIdTarea, 1, nuevaDescTarea, 1, nuevoPesoTarea)  
         model.db.session.add(nuevaTarea)
         model.db.session.commit()
              
@@ -527,7 +550,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -548,8 +572,9 @@ class TestTareas(unittest.TestCase):
         
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
-        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-            
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -571,7 +596,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -593,7 +619,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -616,7 +643,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -639,7 +667,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -662,7 +691,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -685,7 +715,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -707,7 +738,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -729,7 +761,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -751,7 +784,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -773,7 +807,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -795,7 +830,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -817,7 +853,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -839,7 +876,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -861,7 +899,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -883,7 +922,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -905,7 +945,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -927,7 +968,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)   
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -949,7 +991,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -971,7 +1014,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -993,7 +1037,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -1015,7 +1060,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -1037,7 +1083,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -1059,7 +1106,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1) 
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -1081,7 +1129,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -1103,7 +1152,8 @@ class TestTareas(unittest.TestCase):
         self.crearProducto(1, 'prueba', 'descripcion', 1)
         self.crearAccion(1, 1, 'esto es una prueba')
         self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
-        
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 2**31 -1
         nuevaDescTarea = 'Esto es una prueba.'
         nuevoPesoTarea = 1
@@ -1125,6 +1175,11 @@ class TestTareas(unittest.TestCase):
     # Eliminar el id de una categoria que exista en la base de datos de un elemento. 
     def testEliminarIdCategoriaExist(self):
         self.vaciarBaseDeDatos()
+
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearCategoria(1, 'nombre', 1)
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba'
@@ -1142,6 +1197,11 @@ class TestTareas(unittest.TestCase):
     # Eliminar el id de una categoria con base de datos vacia
     def testEliminarIdCategoriaNotExistBaseDeDatosVacia(self):
         self.vaciarBaseDeDatos()
+
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearCategoria(1, 'nombre', 1)
         
         tempTarea = clsTarea()
         nuevoIdTarea = 1000
@@ -1153,6 +1213,11 @@ class TestTareas(unittest.TestCase):
     # Eliminar el id de una categoria con base de datos un elemento y busqueda no exitosa   
     def testEliminarIdCategoriaNotExistOneElementos(self):
         self.vaciarBaseDeDatos()
+
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearCategoria(1, 'nombre', 1)
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba'
@@ -1169,7 +1234,12 @@ class TestTareas(unittest.TestCase):
         
     # Eliminar el id de una categoria con base de datos de varios elemento y busqueda no exitosa   
     def testEliminarIdCategoriaNotExistVariosElementos(self):
-        self.vaciarBaseDeDatos()    
+        self.vaciarBaseDeDatos()
+
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearCategoria(1, 'nombre', 1)   
         
         for indice in range(1,4,1):
             nuevoIdTarea = indice
@@ -1187,7 +1257,12 @@ class TestTareas(unittest.TestCase):
           
     # Eliminar el id de una categoria con base de datos de varios elemento y busqueda exitosa   
     def testEliminarIdCategoriaExistVariosElementos(self):
-        self.vaciarBaseDeDatos()  
+        self.vaciarBaseDeDatos()
+
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearCategoria(1, 'nombre', 1) 
         
         for indice in range(1,4,1):
             nuevoIdTarea = indice
@@ -1207,6 +1282,11 @@ class TestTareas(unittest.TestCase):
     #El id de la categoria a Eliminar es un string.
     def testEliminarIdCategoriaString(self):
         self.vaciarBaseDeDatos()
+
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearCategoria(1, 'nombre', 1)
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba'
@@ -1225,6 +1305,11 @@ class TestTareas(unittest.TestCase):
     # El id de la categoria a Eliminar es de tipo float.
     def testEliminarIdCategoriaFloat(self):
         self.vaciarBaseDeDatos()
+
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearCategoria(1, 'nombre', 1)
         
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba'
@@ -1243,6 +1328,11 @@ class TestTareas(unittest.TestCase):
     def testEliminarIdCategoriaNone(self):
         self.vaciarBaseDeDatos()
 
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearCategoria(1, 'nombre', 1)
+
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba'
         nuevoPesoTarea = 1
@@ -1259,6 +1349,11 @@ class TestTareas(unittest.TestCase):
     #  El id de la categoria a Eliminar es negativo.
     def testEliminarIdCategoriaNegative(self):
         self.vaciarBaseDeDatos()
+
+        self.crearProducto(1, 'prueba', 'descripcion', 1)
+        self.crearAccion(1, 1, 'esto es una prueba')
+        self.crearHistoria(1, 'codigo', 1, 'tipo', 1, 1, 1)  
+        self.crearCategoria(1, 'nombre', 1)
 
         nuevoIdTarea = 1
         nuevaDescTarea = 'Esto es una prueba'
