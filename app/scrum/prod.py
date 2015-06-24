@@ -220,13 +220,15 @@ def VProductos():
         categoria.insertar('Escribir el manual en línea de unapágina',1)
 
     # Se muestra la lista de productos.
-    producto = Productos.query.all()
-
-    res['usuario'] = session['usuario']
-    res['data0'] = [
-        {'idPila':product.identificador, 'nombre':product.nombre}
-        for product in producto ]
-
+    producto = db.session.query(Productos).all()
+    if (producto != []):
+        res['usuario'] = session['usuario']
+        res['data0'] = [
+                        {'idPila':product.identificador, 'nombre':product.nombre}
+                        for product in producto ]
+    else:
+        pass
+        #res['data0'] = [{'nombre':'No hay historias creadas.'}]
     return json.dumps(res)
 
 #.-----------------------------------------------------------------------------.
