@@ -87,7 +87,7 @@ class clsTarea():
                 # Si no hay acciones en la base de datos, entonces se inicializa 
                 # el contador.
                 identificador = 1 if identificador == None else identificador + 1
-                if (listaEnlace[idHistoria] == [] ):
+                if (listaEnlace.get(idHistoria) == [] ):
 
                     tareaNueva = Tareas(identificador, idHistoria, descripcion, idCategoria, peso)
                     db.session.add(tareaNueva)
@@ -115,8 +115,9 @@ class clsTarea():
         # Booleanos que indican si los parámetros son del tipo correspondiente.
         idInt = type(identificador) == int
         descripcionStr = type(descripcion) == str
+        pesoIsInt= type(peso) == int
         
-        if ( idInt and descripcionStr ):
+        if ( idInt and descripcionStr and pesoIsInt ):
             # Booleanos que indican si los parámetros tienen el tamaño válido.
             idPositivo  = identificador > 0
             descripcionLongitud = 1 <= len(descripcion) <= 500
